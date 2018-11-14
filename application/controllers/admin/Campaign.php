@@ -14,6 +14,7 @@ class Campaign extends CI_Controller {
 		$ac_data['tuyendung'] 	= 'active';
 		$ac_data['campaign'] 		= 'active';
 
+		$o_data['mailtemplate'] = $this->Campaign_model->select("mailprofileid,profilename,datasource,presubject,prebody,preattach",'mailprofile',array('profiletype' => '0'),'');
 		$o_data['operator'] = $this->Campaign_model->select("operatorid,operatorname,email",'operator',array('hidden' => 1),'');
 		$this->_data['modal_campaign'] 	= $this->load->view('admin/campaign/modal_campaign',$o_data,true);
 		$this->_data['header'] 	= $this->load->view('admin/home/header',null,true);
@@ -757,6 +758,45 @@ class Campaign extends CI_Controller {
     	echo json_encode(1);
     }
 
+
+    //tool
+    private function upload_files($path, $files)
+    {
+        $config = array(
+            'upload_path'   => $path,
+            'allowed_types' => '*',
+            'overwrite'     => FALSE,                       
+        );
+
+        $this->load->library('upload', $config);
+
+        $images = array();
+
+        foreach ($files['name'] as $key => $image) {
+            $_FILES['attach[]']['name']= $files['name'][$key];
+            $_FILES['attach[]']['type']= $files['type'][$key];
+            $_FILES['attach[]']['tmp_name']= $files['tmp_name'][$key];
+            $_FILES['attach[]']['error']= $files['error'][$key];
+            $_FILES['attach[]']['size']= $files['size'][$key];
+
+            $fileName =  $image;
+
+            $images[] = base_url().$path.$fileName;
+
+            $config['file_name'] = $fileName;
+
+            $this->upload->initialize($config);
+
+            if ($this->upload->do_upload('attach[]')) {
+                $this->upload->data();
+            } else {
+                return false;
+            }
+        }
+
+        return $images;
+    }
+
     public function saveAssessment()
     {
     	$frm = $this->input->post();
@@ -776,29 +816,10 @@ class Campaign extends CI_Controller {
     	$mail['cc'] 		= $frm['cc'];
     	$mail['bcc'] 		= $frm['bcc'];
     	$body 				= $frm['body'];
-    	if (!empty($_FILES['attach']['name'])) {
-            $config['upload_path'] = './public/document/';
-            $config['allowed_types'] = '*';
-            $config['file_name'] = $_FILES['attach']['name'];
-            $config['overwrite'] = FALSE;  
-            $this->load->library('upload', $config);
-            $this->upload->initialize($config);
 
-            if ($this->upload->do_upload('attach')) {
-                $uploadData = $this->upload->data();
-                $mail["attachment"] = base_url().'public/document/'.$uploadData['file_name'];    
-             }
-             else
-             {
-             	$mail["attachment"] ='';
-                $datas['errors'] = $this->upload->display_errors();
-             } 
-        }
-        else
-        {
-        	$mail["attachment"] ='';
-            $datas['errors'] = $this->upload->display_errors();
-        }
+    	$fileattach = $this->upload_files('public/document/',$_FILES['attach']);
+    	$mail["attachment"] = $fileattach;
+    	
     	unset($frm['to']);
     	unset($frm['subject']);
     	unset($frm['cc']);
@@ -824,6 +845,8 @@ class Campaign extends CI_Controller {
         		$mail['emailbody'] = str_replace('$link',$link, $body);
         		$mail['toemail'] = $list_to[$i];
         		$this->Mail_model->sendMail($mail);
+
+        		$mail["attachment"] = json_encode($fileattach);
         		$mail['fromemail'] = $this->session->userdata('user_admin')['email'];
         		$this->Mail_model->insert('mailtable',$mail);
         		$i++;

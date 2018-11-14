@@ -64,34 +64,39 @@ class Import extends CI_Controller {
                 break;
             }
 
-            $data['email']              = $objWorksheet->getCellByColumnAndRow(13,$row)->getValue();
-            $data['idcard']     = $objWorksheet->getCellByColumnAndRow(9,$row)->getValue();
+            $data['email']              = $objWorksheet->getCellByColumnAndRow(12,$row)->getValue();
+            $data['idcard']     = $objWorksheet->getCellByColumnAndRow(8,$row)->getValue();
             
-            $data['firstname']  = $objWorksheet->getCellByColumnAndRow(1,$row)->getValue();
-            $data['lastname']   = $objWorksheet->getCellByColumnAndRow(2,$row)->getValue();
-            $data['name']   = $data['firstname'].' '.$data['lastname'];
-            $gender     = $objWorksheet->getCellByColumnAndRow(3,$row)->getValue();
+            $data['name']  = $objWorksheet->getCellByColumnAndRow(1,$row)->getValue();
+            $name = explode(' ', $data['name']);
+            $length = count($name);
+            $data['firstname'] = $name[$length-1];
+            $data['lastname'] = trim(str_replace($data['firstname'],'', $data['name']));
+            $gender     = $objWorksheet->getCellByColumnAndRow(2,$row)->getValue();
             if ($gender == 'Nữ') {
                 $data['gender'] = 'F';
             }else{
                 $data['gender'] = 'M';
             }
 
-            $date = $objWorksheet->getCellByColumnAndRow(4,$row);
-            if(!strtotime($date)) {
-                if(PHPExcel_Shared_Date::isDateTime($date)) {
-                    $cellValue = $objWorksheet->getCellByColumnAndRow(4, $row)->getValue();
-                    $dateValue = PHPExcel_Shared_Date::ExcelToPHP($cellValue); 
-                    $data['dateofbirth']     = date('Y-m-d',$dateValue);                          
-                } else {                        
-                    $data['dateofbirth']   = "";                                                   
+            $date = $objWorksheet->getCellByColumnAndRow(3,$row);
+            if ($date != '') {
+                if(!strtotime($date)) {
+                    if(PHPExcel_Shared_Date::isDateTime($date)) {
+                        $cellValue = $objWorksheet->getCellByColumnAndRow(3, $row)->getValue();
+                        $dateValue = PHPExcel_Shared_Date::ExcelToPHP($cellValue); 
+                        $data['dateofbirth']     = date('Y-m-d',$dateValue);                          
+                    } else {                        
+                        $data['dateofbirth']   = "";                                                   
+                    } 
+                }else {
+                        $st = strtotime($date);
+                        $data['dateofbirth']  = date('Y-m-d',$st);                         
                 } 
-            }else {
-                    $st = strtotime($date);
-                    $data['dateofbirth']  = date('Y-m-d',$st);                         
-            }    
-            $data['placeofbirth']    = $objWorksheet->getCellByColumnAndRow(5,$row)->getValue();
-            $maritalstatus           = $objWorksheet->getCellByColumnAndRow(6,$row)->getValue();
+            }
+               
+            $data['placeofbirth']    = $objWorksheet->getCellByColumnAndRow(4,$row)->getValue();
+            $maritalstatus           = $objWorksheet->getCellByColumnAndRow(5,$row)->getValue();
             if ($maritalstatus == 'Độc thân') {
                 $data['maritalstatus']  = 'S';
             }
@@ -105,29 +110,32 @@ class Import extends CI_Controller {
                 $data['maritalstatus']  = 'D';
             }
 
-            $data['weight']     = $objWorksheet->getCellByColumnAndRow(7,$row)->getValue();
-            $data['height']     = $objWorksheet->getCellByColumnAndRow(8,$row)->getValue();
+            $data['weight']     = $objWorksheet->getCellByColumnAndRow(6,$row)->getValue();
+            $data['height']     = $objWorksheet->getCellByColumnAndRow(7,$row)->getValue();
             
-            $date = $objWorksheet->getCellByColumnAndRow(10,$row);
-            if(!strtotime($date)) {
-                if(PHPExcel_Shared_Date::isDateTime($date)) {
-                    $cellValue = $objWorksheet->getCellByColumnAndRow(10, $row)->getValue();
-                    $dateValue = PHPExcel_Shared_Date::ExcelToPHP($cellValue);  
-                    // var_dump($dateValue);exit;               
-                    $data['dateofissue']     = date('Y-m-d',$dateValue);                          
-                } else {                        
-                    $data['dateofissue']  = "";                                                   
+            $date = $objWorksheet->getCellByColumnAndRow(9,$row);
+            if ($date != '') {
+                if(!strtotime($date)) {
+                    if(PHPExcel_Shared_Date::isDateTime($date)) {
+                        $cellValue = $objWorksheet->getCellByColumnAndRow(9, $row)->getValue();
+                        $dateValue = PHPExcel_Shared_Date::ExcelToPHP($cellValue);  
+                        // var_dump($dateValue);exit;               
+                        $data['dateofissue']     = date('Y-m-d',$dateValue);                          
+                    } else {                        
+                        $data['dateofissue']  = "";                                                   
+                    } 
+                }else {
+                        $st = strtotime($date);
+                        $data['dateofissue'] = date('Y-m-d',$st);                         
                 } 
-            }else {
-                    $st = strtotime($date);
-                    $data['dateofissue'] = date('Y-m-d',$st);                         
-            }  
+            }
+             
 
-            $data['placeofissue']       = $objWorksheet->getCellByColumnAndRow(11,$row)->getValue();
-            $data['telephone']          = $objWorksheet->getCellByColumnAndRow(12,$row)->getValue();
+            $data['placeofissue']       = $objWorksheet->getCellByColumnAndRow(10,$row)->getValue();
+            $data['telephone']          = $objWorksheet->getCellByColumnAndRow(11,$row)->getValue();
             
-            $data['desirebenefit']      = $objWorksheet->getCellByColumnAndRow(14,$row)->getValue();
-            $istalent           = $objWorksheet->getCellByColumnAndRow(15,$row)->getValue();
+            $data['desirebenefit']      = $objWorksheet->getCellByColumnAndRow(13,$row)->getValue();
+            $istalent           = $objWorksheet->getCellByColumnAndRow(14,$row)->getValue();
             if ($istalent == 'Không tiềm năng') {
                 $data['istalent']  = '';
             }
@@ -141,10 +149,10 @@ class Import extends CI_Controller {
                 $data['istalent']  = '3';
             }
 
-            $data['religion']           = $objWorksheet->getCellByColumnAndRow(17,$row)->getValue();
+            $data['religion']           = $objWorksheet->getCellByColumnAndRow(16,$row)->getValue();
             // $data['ethnic']             = $objWorksheet->getCellByColumnAndRow(18,$row)->getValue();
-            $data['nativeland']         = $objWorksheet->getCellByColumnAndRow(18,$row)->getValue();
-            $data['nationality']        = $objWorksheet->getCellByColumnAndRow(19,$row)->getValue();    
+            $data['nativeland']         = $objWorksheet->getCellByColumnAndRow(17,$row)->getValue();
+            $data['nationality']        = $objWorksheet->getCellByColumnAndRow(18,$row)->getValue();    
             // $data['taxid']              = $objWorksheet->getCellByColumnAndRow(23,$row)->getValue();
             // $data['notes']              = $objWorksheet->getCellByColumnAndRow(25,$row)->getValue();
             $data['profilesrc']         =  'Nội bộ';
@@ -157,14 +165,14 @@ class Import extends CI_Controller {
             $id = $this->Data_model->insert('candidate',$data);
 
             $data1 = array();
-            $data1['address']        = $objWorksheet->getCellByColumnAndRow(20,$row)->getValue(); 
+            $data1['address']        = $objWorksheet->getCellByColumnAndRow(19,$row)->getValue(); 
             if ($data1['address']  != NULL) {
                 $data1['addtype']        = 'PREMANENT';
                 $data1['candidateid']    = $id;
                 $this->Data_model->insert('canaddress',$data1);
             }
             $data2 = array();
-            $data2['address']        = $objWorksheet->getCellByColumnAndRow(21,$row)->getValue();
+            $data2['address']        = $objWorksheet->getCellByColumnAndRow(20,$row)->getValue();
             if ($data2['address']  != NULL) {
                 $data2['addtype']        = 'CONTACT';
                 $data2['candidateid']    = $id;

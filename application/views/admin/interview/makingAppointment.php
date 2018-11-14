@@ -395,8 +395,11 @@
                         Mẫu thư:
                       </div>
                       <div class="col-xs-9">
-                        <select class="js-example-basic-2" name="status26" required="">
-                          <option value="W">Thư mời phỏng vấn</option>
+                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,1)">
+                            <option value="">Chọn mẫu thư</option>
+                          <?php foreach ($mailtemplate as $row): ?>
+                            <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
+                          <?php endforeach ?>
                         </select>
                         <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
                       </div>
@@ -407,7 +410,7 @@
                         Tiêu đề:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100" type="text"  name="subject" value="">
+                        <input class="kttext width_100 subjectmail" type="text"  name="subject" value="">
                       </div>
               </div>
               <div class="rowedit3">
@@ -415,34 +418,20 @@
                         Nội dung:
                       </div>
                       <div class="col-xs-11">
-                        <textarea name="body" class="textarea_profile" rows="3" required="">
-                        	Xin chào $name <br>
-
-							Bộ phận Tuyển dụng Dat Xanh Group xin gửi đến $name lịch phỏng vấn ứng viên: $candidate, vị trí ứng tuyển: $position - $round <br>
-							→ $link1 <br>
-
-							[Prefix] vui lòng xác nhận ngày/ giờ/ địa điểm theo lịch trên và sử dụng phiếu đánh giá dưới đây để ghi nhận kết quả phỏng vấn <br>
-							→ $link2 <br>
-
-							 
-
-							Trân trọng,
+                        <textarea name="body1" class="textarea_profile editor" rows="3" required="">
                         </textarea>
                       </div>
               </div>
               <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                      </div>
-                      <div class="col-xs-11">
-                        <div class="width80 col-xs-9 padding-lr0" "="">
-		                     <div class="col-md-3">
-		                      <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-upload"></i> Tài liệu đính kèm</label>
+                  	<div class="col-xs-1 guide-black cc">
+                  	</div>
+                    <div class="col-xs-11">
+                        <div class="width80 col-xs-9 padding-lr0 filename_label">
+		                    <div class="col-md-3">
+		                      <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach[]" multiple="" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
 		                    </div>
-		                    <div>
-		                      <a   class="fontstyle label1"  href=""></a> 
-		                    </div>
+		                </div>
                     </div>
-                      </div>
               </div>
             </div>
             <input type="hidden" name="interviewid"value="<?php echo $interview['interviewid'] ?>">
@@ -541,8 +530,11 @@
                         Mẫu thư:
                       </div>
                       <div class="col-xs-9">
-                        <select class="js-example-basic-2" name="status26" required="" >
-                          <option value="W">Thư hủy lịch phỏng vấn - tái hẹn</option>
+                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,2)">
+                            <option value="">Chọn mẫu thư</option>
+                          <?php foreach ($mailtemplate as $row): ?>
+                            <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
+                          <?php endforeach ?>
                         </select>
                         <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
                       </div>
@@ -553,7 +545,7 @@
                         Tiêu đề:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100" type="text"  name="subject" >
+                        <input class="kttext width_100 subjectmail" type="text"  name="subject" >
                       </div>
               </div>
               <div class="rowedit3">
@@ -561,15 +553,7 @@
                         Nội dung:
                       </div>
                       <div class="col-xs-11">
-                        <textarea name="body2" class="textarea_profile" rows="3" required="">
-                        	Xin chào $name <br>
-
-							Bộ phận Tuyển dụng Dat Xanh Group xin thông báo đến quý anh/ chị: <br>
-							- Lịch phỏng vấn Ứng viên $candidate vào $datetime đã được huỷ vì lý do $note <br>
-							- Cám ơn quý anh/ chị đã lưu ý <br>
-							 
-
-							Trân trọng,
+                        <textarea name="body2" class="textarea_profile editor" rows="3" required="">
                         </textarea>
                       </div>
               </div>
@@ -577,14 +561,11 @@
                     <div class="col-xs-1 guide-black cc">
                     </div>
                     <div class="col-xs-11">
-                        <div class="width80 col-xs-9 padding-lr0" >
+                        <div class="width80 col-xs-9 padding-lr0 filename_label">
 		                    <div class="col-md-3">
-		                      	<label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-upload"></i> Tài liệu đính kèm</label>
+		                      <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach[]" multiple="" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
 		                    </div>
-		                    <div>
-		                      	<a   class="fontstyle label1"  href=""></a> 
-		                    </div>
-                    	</div>
+		                </div>
                     </div>
               	</div>
             </div>
@@ -672,8 +653,11 @@
                         Mẫu thư:
                       </div>
                       <div class="col-xs-9">
-                        <select class="js-example-basic-2" name="status26" required="">
-                          <option value="W">Thư hủy lịch phỏng vấn - tái hẹn</option>
+                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,3)">
+                            <option value="">Chọn mẫu thư</option>
+                          <?php foreach ($mailtemplate as $row): ?>
+                            <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
+                          <?php endforeach ?>
                         </select>
                         <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
                       </div>
@@ -684,7 +668,7 @@
                         Tiêu đề:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" name="subject" >
+                        <input class="kttext width_100 subjectmail" type="text" name="subject" >
                       </div>
               </div>
               <div class="rowedit3">
@@ -692,15 +676,7 @@
                         Nội dung:
                       </div>
                       <div class="col-xs-11">
-                        <textarea name="body3" class="textarea_profile" rows="3" required="">
-                        	Xin chào $name <br>
-
-							Bộ phận Tuyển dụng Dat Xanh Group xin thông báo đến quý anh/ chị: <br>
-							- Lịch phỏng vấn Ứng viên $candidate vào $datetime đã được huỷ vì lý do $note <br>
-							- Lịch phỏng vấn mới sẽ được gửi đến quý anh/ chị trong thời gian sớm nhất. <br>
-							 
-
-							Trân trọng,
+                        <textarea name="body3" class="textarea_profile editor" rows="3" required="">
                         </textarea>
                       </div>
               </div>
@@ -708,14 +684,11 @@
                     <div class="col-xs-1 guide-black cc">
                     </div>
                     <div class="col-xs-11">
-                        <div class="width80 col-xs-9 padding-lr0">
-                    		<div class="col-md-3">
-		                      	<label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-upload"></i> Tài liệu đính kèm</label>
+                        <div class="width80 col-xs-9 padding-lr0 filename_label">
+		                    <div class="col-md-3">
+		                      <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach[]" multiple="" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
 		                    </div>
-		                    <div>
-		                      	<a   class="fontstyle label1"  href=""></a> 
-		                    </div>
-                    	</div>
+		                </div>
                    	</div>
               </div>
             </div>
@@ -823,8 +796,11 @@
                         Mẫu thư:
                       </div>
                       <div class="col-xs-9">
-                        <select class="js-example-basic-2" name="status26" required="">
-                          <option value="W">Thư thông báo thay đổi người phụ trách phiếu</option>
+                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,4)">
+                            <option value="">Chọn mẫu thư</option>
+                          <?php foreach ($mailtemplate as $row): ?>
+                            <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
+                          <?php endforeach ?>
                         </select>
                         <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
                       </div>
@@ -835,7 +811,7 @@
                         Tiêu đề:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100" type="text"  name="subject" value="">
+                        <input class="kttext width_100 subjectmail" type="text"  name="subject" value="">
                       </div>
               </div>
               <div class="rowedit3">
@@ -843,21 +819,18 @@
                         Nội dung:
                       </div>
                       <div class="col-xs-11">
-                        <textarea name="body3" class="textarea_profile" rows="3" required=""></textarea>
+                        <textarea name="body4" class="textarea_profile editor" rows="3" required=""></textarea>
                       </div>
               </div>
               <div class="rowedit2">
                     <div class="col-xs-1 guide-black cc">
                     </div>
                     <div class="col-xs-11">
-                        <div class="width80 col-xs-9 padding-lr0" >
-                     		<div class="col-md-3">
-		                      	<label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-upload"></i> Tài liệu đính kèm</label>
+                        <div class="width80 col-xs-9 padding-lr0 filename_label">
+		                    <div class="col-md-3">
+		                      <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach[]" multiple="" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
 		                    </div>
-		                    <div>
-		                      	<a class="fontstyle label1"  href=""></a> 
-		                    </div>
-                    	</div>
+		                </div>
                     </div>
               </div>
             </div>
@@ -961,25 +934,22 @@
 	}
 </style>
 <script type="text/javascript">
-	$(document).ready(function(){
-	      $('.browsebutton1 :file').change(function(e){
-	          $(".label1").empty();
-	          var fileName = e.target.files[0].name;
-	          $(".label1").text(fileName);
-	          $(".label1").attr('href','#');
-	      });
-	});  
+	 
 	function addInterviewer(interviewid) {
-		$(".label1").empty();
 		$('.profile_tn').html('<img src="http://recruit.tavicosoft.com/public/image/<?php echo $interview['imagelink'] ?>" ><p class="guide-black"><?php echo $interview['name'] ?></p>');
 		var loca = $('.location_time').contents().clone();
 		$('.loca_1').empty().append(loca);
 		var notes = $('.notes_int').contents().clone();
 		$('.loca_1').append(notes);
+
+		$('#my-file-selector1').val();
+        $(".dom_file").remove();
 		$('#createInterviewer').modal('show');
 	}
 
 	function insertPV1(roundid) {
+		$('#my-file-selector1').val();
+        $(".dom_file").remove();
 	    $('#roundid_pt').val(roundid);
 	    $('#insertPV1').modal('show');
 	}
@@ -1083,7 +1053,10 @@
 		}
         interviewer += '</div>';   
         $('#cc_cancle_pv').val(email_cc);
-        $('.loca_2').append(interviewer);      
+        $('.loca_2').append(interviewer);  
+
+        $('#my-file-selector1').val();
+        $(".dom_file").remove();    
 		$('#cancleAppointment').modal('show');
 	}
 	function removeInterviewer(interviewerid) {
@@ -1116,6 +1089,9 @@
         $('#cc_pv_2').val(email_cc);
         $('.loca_2').append(interviewer);      
    		$('#interviewerid_remove').val(interviewerid);
+
+   		$('#my-file-selector1').val();
+        $(".dom_file").remove();
 		$('#removeInterviewer').modal('show');
 	}
 	function changeAssessment(argument) {
@@ -1140,7 +1116,10 @@
         interviewer += '</div>';   
         // $('#to_pv_2').val(email_to);
         // $('#cc_pv_2').val(email_cc);
-        $('.loca_2').append(interviewer);      
+        $('.loca_2').append(interviewer);   
+
+        $('#my-file-selector1').val();
+        $(".dom_file").remove();   
 		parent.$('#changeAssessment').modal('show');
 	}
 </script>

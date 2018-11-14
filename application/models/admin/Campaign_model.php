@@ -62,7 +62,8 @@ class Campaign_model extends CI_Model{
     }
     function count_row($table,$where)
     {
-        return $this->db->from($table)->where($where)->get()->num_rows();
+        $result = $this->db->select('COUNT(*) as count')->from($table)->where($where)->get()->result_array();
+        return $result[0]['count'];
     }
     public function selectall($table)
     {

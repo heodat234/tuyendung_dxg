@@ -9,13 +9,52 @@ class Interview extends CI_Controller {
 		$this->load->model(array('admin/Campaign_model','admin/Candidate_model','admin/Data_model','admin/Mail_model'));
 		$this->load->library('session');
 		$this->load->library('upload');
-
-
 	}
+
+    //tool
+    private function upload_files($path, $files)
+    {
+        $config = array(
+            'upload_path'   => $path,
+            'allowed_types' => '*',
+            'overwrite'     => FALSE,                       
+        );
+
+        $this->load->library('upload', $config);
+
+        $images = array();
+
+        foreach ($files['name'] as $key => $image) {
+            $_FILES['attach[]']['name']= $files['name'][$key];
+            $_FILES['attach[]']['type']= $files['type'][$key];
+            $_FILES['attach[]']['tmp_name']= $files['tmp_name'][$key];
+            $_FILES['attach[]']['error']= $files['error'][$key];
+            $_FILES['attach[]']['size']= $files['size'][$key];
+
+            $fileName =  $image;
+
+            $images[] = base_url().$path.$fileName;
+
+            $config['file_name'] = $fileName;
+
+            $this->upload->initialize($config);
+
+            if ($this->upload->do_upload('attach[]')) {
+                $this->upload->data();
+            } else {
+                return false;
+            }
+        }
+
+        return $images;
+    }
+
+
 	public function makingAppointment($interviewid, $interviewerid='')
 	{
 		$join[1] = array('table'=> 'document','match' =>'tb.operatorid = document.referencekey');
 	    $o_data['operator'] = $this->Data_model->select_row_option('tb.operatorname,tb.operatorid,tb.email, document.filename',array('tb.hidden' => 1),'','operator tb',$join,'','','','');
+        $o_data['mailtemplate'] = $this->Campaign_model->select("mailprofileid,profilename,datasource,presubject,prebody,preattach",'mailprofile',array('profiletype' => '0'),'');
 
 		$sql = "SELECT tt.*, candidate.name, candidate.email, candidate.imagelink,reccampaign.position FROM interview tt  LEFT JOIN candidate ON tt.candidateid = candidate.candidateid  LEFT JOIN reccampaign ON tt.campaignid = reccampaign.campaignid WHERE tt.interviewid = $interviewid";
 		$result = $this->Campaign_model->select_sql($sql);
@@ -136,36 +175,15 @@ class Interview extends CI_Controller {
 	    	$mail[$k]['cc'] 		= $frm['cc'.$k];
 	    	$mail[$k]['bcc'] 		= $frm['bcc'.$k];
 	    	$body[$k] 				= $frm['body'.$k];
-	    	if (!empty($_FILES['attach'.$k]['name'])) {
-	            $config['upload_path'] = './public/document/';
-	            $config['allowed_types'] = '*';
-	            $config['file_name'] = $_FILES['attach'.$k]['name'];
-	            $config['overwrite'] = FALSE;  
-	            $this->load->library('upload', $config);
-	            $this->upload->initialize($config);
 
-	            if ($this->upload->do_upload('attach'.$k)) {
-	                $uploadData = $this->upload->data();
-	                $mail[$k]["attachment"] = base_url().'public/document/'.$uploadData['file_name'];    
-	             }
-	             else
-	             {
-	             	$mail[$k]["attachment"] ='';
-	                $datas['errors'] = $this->upload->display_errors();
-	             } 
-	        }
-	        else
-	        {
-	        	$mail[$k]["attachment"] ='';
-	            $datas['errors'] = $this->upload->display_errors();
-	        }
+	    	$fileattach = $this->upload_files('public/document/',$_FILES['attach'.$k]);
+            $mail$k]["attachment"] = $fileattach;
 	    	unset($frm['to'.$k]);
 	    	unset($frm['subject'.$k]);
 	    	unset($frm['cc'.$k]);
 	    	unset($frm['bcc'.$k]);
 	    	unset($frm['body'.$k]);
-	    	unset($frm['attach'.$k]);
-
+q
     	}
     	for ($j=1; $j <= $count; $j++) { 
     		$i =0;

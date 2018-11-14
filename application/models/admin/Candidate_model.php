@@ -126,7 +126,7 @@ class Candidate_model extends CI_Model{
     }
     public function filter_table($from='', $where='')
     {
-        $sql = "SELECT TOP 700 candidate.candidateid, candidate.email, candidate.name, candidate.gender, candidate.dateofbirth, candidate.height, candidate.weight, candidate.currentbenefit, candidate.desirebenefit, candidate.istalent, candidate.imagelink, candidate.profilesrc, candidate.blocked, candidate.unsubcribe FROM candidate ".$from." WHERE candidate.status='A' ".$where." GROUP BY candidate.candidateid, candidate.email, candidate.name, candidate.gender, candidate.dateofbirth, candidate.height, candidate.weight, candidate.currentbenefit, candidate.desirebenefit, candidate.istalent, candidate.imagelink, candidate.profilesrc, candidate.blocked, candidate.unsubcribe, candidate.lastupdate ORDER BY candidate.lastupdate desc";
+        $sql = "SELECT TOP 500 candidate.candidateid, candidate.email, candidate.name, candidate.gender, candidate.dateofbirth, candidate.height, candidate.weight, candidate.currentbenefit, candidate.desirebenefit, candidate.istalent, candidate.imagelink, candidate.profilesrc, candidate.blocked, candidate.unsubcribe FROM candidate ".$from." WHERE candidate.status='A' ".$where." GROUP BY candidate.candidateid, candidate.email, candidate.name, candidate.gender, candidate.dateofbirth, candidate.height, candidate.weight, candidate.currentbenefit, candidate.desirebenefit, candidate.istalent, candidate.imagelink, candidate.profilesrc, candidate.blocked, candidate.unsubcribe, candidate.lastupdate ORDER BY candidate.lastupdate desc";
         $query = $this->db->query($sql);
         
             if (!$query) {
@@ -184,7 +184,8 @@ class Candidate_model extends CI_Model{
     }
     function count_row($table,$where)
     {
-        return $this->db->from($table)->where($where)->get()->num_rows();
+        $result = $this->db->select('COUNT(*) as count')->from($table)->where($where)->get()->result_array();
+        return $result[0]['count'];
     }
     public function checkMail( $mail ){
         $a_User =   $this->db->select()

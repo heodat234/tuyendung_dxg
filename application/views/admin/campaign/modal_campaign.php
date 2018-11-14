@@ -88,7 +88,7 @@
                         Gửi đến:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" id="email_to_tn" placeholder="" name="to" value="">
+                        <input class="kttext width_100" type="text" id="email_to_tn" name="to" value="">
                       </div>
               </div>
               <div class="rowedit2">
@@ -96,7 +96,7 @@
                         Cc:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" id="ngaycap" placeholder="" name="cc" value="">
+                        <input class="kttext width_100" type="text" name="cc" value="">
                       </div>
               </div>
               <div class="rowedit2">
@@ -104,7 +104,7 @@
                         Bcc:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" id="ngaycap" placeholder="" name="bcc" value="">
+                        <input class="kttext width_100" type="text" name="bcc" value="">
                       </div>
               </div>
             </div>
@@ -114,9 +114,11 @@
                         Mẫu thư:
                       </div>
                       <div class="col-xs-9">
-                        <select class="js-example-basic-2" name="status3" required="" id="select_status3">
-                          <option value="W">Trắc nghiệm kiến thức tổng quát</option>
-                          <option value="C">Trắc nghiệm kiến thức chuyên môn</option>
+                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,1)">
+                            <option value="">Chọn mẫu thư</option>
+                          <?php foreach ($mailtemplate as $row): ?>
+                            <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
+                          <?php endforeach ?>
                         </select>
                         <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
                       </div>
@@ -127,7 +129,7 @@
                         Tiêu đề:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" id="ngaycap" placeholder="" name="subject" value="">
+                        <input class="kttext width_100 subjectmail" type="text" name="subject" value="">
                       </div>
               </div>
               <div class="rowedit3">
@@ -135,20 +137,7 @@
                         Ghi chú:
                       </div>
                       <div class="col-xs-11">
-                        <textarea name="body" class="textarea_profile" rows="3" required="">
-                          Xin chào $name,<br>
-
-                          Hồ sơ của bạn đã đạt vòng Sơ loại của chúng tôi, <br>
-
-                          Chúng tôi xin gửi đến $name phiếu câu hỏi trắc nghiệm kiến thức tổng quát theo đường link dưới đây: <br>
-
-                          → $link <br>
-
-                          $name hãy thực hiện phiếu trắc nghiệm này theo hướng dẫn, kết quả của phiếu trắc nghiệm này là cơ sở để thực hiện các bước tiếp theo trong quy trình phỏng vấn/ <br>
-
-                          $note <br>
-
-                          Trân trọng,
+                        <textarea name="body1" class="textarea_profile editor" rows="3" required="">
                         </textarea>
                       </div>
               </div>
@@ -156,13 +145,10 @@
                 <div class="col-xs-1 guide-black cc">
                 </div>
                 <div class="col-xs-11">
-                  <div class="width80 col-xs-9 padding-lr0">Ó
+                  <div class="width80 col-xs-9 padding-lr0 filename_label">
                     <div class="col-md-3">
-                      <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
+                      <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach[]" multiple="" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
                     </div>
-                    <div>
-                      <a   class="fontstyle label1"  href=""></a> 
-                    </div> 
                   </div>
                 </div>
               </div>
@@ -193,7 +179,7 @@
                         Ngày phỏng vấn:
                       </div>
                       <div class="col-xs-10">
-                        <input class="kttext width_100 datetimepicker" type="text" name="intdate" value="">
+                        <input class="kttext width_100 datetimepicker" type="text" name="intdate" value="<?php echo date_format(date_create(),"d/m/Y") ?>">
                       </div>
               </div>
               <div class="rowedit3">
@@ -228,7 +214,7 @@
                         Cc:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" id="ngaycap" name="cc1" >
+                        <input class="kttext width_100" type="text"  name="cc1" >
                       </div>
               </div>
               <div class="rowedit2">
@@ -247,8 +233,11 @@
                         Mẫu thư:
                       </div>
                       <div class="col-xs-9">
-                        <select class="js-example-basic-1" name="status26" required="" >
-                          <option value="W">Thư mời phỏng vấn</option>
+                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,2)">
+                            <option value="">Chọn mẫu thư</option>
+                          <?php foreach ($mailtemplate as $row): ?>
+                            <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
+                          <?php endforeach ?>
                         </select>
                         <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
                       </div>
@@ -259,7 +248,7 @@
                         Tiêu đề:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100"  type="text" name="subject1" >
+                        <input class="kttext width_100 subjectmail"  type="text" name="subject1" >
                       </div>
               </div>
               <div class="rowedit3">
@@ -267,19 +256,7 @@
                         Nội dung:
                       </div>
                       <div class="col-xs-11">
-                        <textarea name="body1" class="textarea_profile"  rows="3" required="">
-                          Xin chào $name, <br>
-
-                          Hồ sơ của $name đã đạt đến vòng $round của chúng tôi, <br>
-
-                          Chúng tôi rất hân hạnh được sắp xếp một buổi gặp gỡ với $name để có thể trao đổi thêm về nội dung công việc,
-                          xin gửi đến $name phiếu thông tin phỏng vấn, $name hãy xác nhận khả năng có mặt theo ngày/ giờ/ địa điểm trong đường link dưới đây nhé: <br>
-
-                          → $link <br>
-
-                          Hẹn gặp lại, <br>
-
-                          Trân trọng.
+                        <textarea name="body2" class="textarea_profile editor"  rows="3" required="">
                         </textarea>
                       </div>
               </div>
@@ -287,12 +264,9 @@
                 <div class="col-xs-1 guide-black cc">
                 </div>
                 <div class="col-xs-11">
-                  <div class="width80 col-xs-9 padding-lr0">
+                  <div class="width80 col-xs-9 padding-lr0 filename_label">
                     <div class="col-md-3">
-                      <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach1" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
-                    </div>
-                    <div>
-                      <a   class="fontstyle label1"  href=""></a> 
+                      <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach1[]" multiple="" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
                     </div>
                   </div>
                 </div>
@@ -335,8 +309,11 @@
                         Mẫu thư:
                       </div>
                       <div class="col-xs-9">
-                        <select class="js-example-basic-2" name="status26" required="" >
-                          <option value="W">Thư mời Tham dự phỏng vấn</option>
+                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,3)">
+                            <option value="">Chọn mẫu thư</option>
+                          <?php foreach ($mailtemplate as $row): ?>
+                            <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
+                          <?php endforeach ?>
                         </select>
                         <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
                       </div>
@@ -347,7 +324,7 @@
                         Tiêu đề:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100"  type="text" name="subject2">
+                        <input class="kttext width_100 subjectmail"  type="text" name="subject2">
                       </div>
               </div>
               <div class="rowedit3">
@@ -355,17 +332,7 @@
                         Nội dung:
                       </div>
                       <div class="col-xs-11">
-                        <textarea name="body2" class="textarea_profile" rows="3" required="">
-                          Xin chào $name <br>
-
-                          Bộ phận Tuyển dụng Dat Xanh Group xin gửi đến $name lịch phỏng vấn ứng viên: $candidate, vị trí ứng tuyển: $position - $round <br>
-                          → $link1 <br>
-
-                          Vui lòng xác nhận ngày/ giờ/ địa điểm theo lịch trên và sử dụng phiếu đánh giá dưới đây để ghi nhận kết quả phỏng vấn<br>
-                          → $link2 <br>
-
-
-                          Trân trọng,
+                        <textarea name="body3" class="textarea_profile editor" rows="3" required="">
                         </textarea>
                       </div>
               </div>
@@ -373,12 +340,9 @@
                 <div class="col-xs-1 guide-black cc">
                 </div>
                 <div class="col-xs-11">
-                  <div class="width80 col-xs-9 padding-lr0" "="">
+                  <div class="width80 col-xs-9 padding-lr0 filename_label_1">
                     <div class="col-md-3">
-                      <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach2" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
-                    </div>
-                    <div>
-                      <a   class="fontstyle label1"  href=""></a> 
+                      <label class="fontArial colorcyan labelcontent browsebutton2"><input id="my-file-selector2" name="attach2[]" multiple="" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
                     </div>
                   </div>
                 </div>
@@ -397,11 +361,6 @@
     </div>
   </div>
 </div>
-
-
-
-
-
 
 <!-- <div class="modal fade" id="changeAssessment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog " style="width: 60%">
@@ -606,8 +565,11 @@
                         Mẫu thư:
                       </div>
                       <div class="col-xs-9">
-                        <select class="js-example-basic-2" name="status26" required="">
-                          <option value="W">Thư thông báo thay đổi người phụ trách phiếu</option>
+                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,4)">
+                            <option value="">Chọn mẫu thư</option>
+                          <?php foreach ($mailtemplate as $row): ?>
+                            <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
+                          <?php endforeach ?>
                         </select>
                         <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
                       </div>
@@ -618,7 +580,7 @@
                         Tiêu đề:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" name="subject" value="">
+                        <input class="kttext width_100 subjectmail" type="text" name="subject" value="">
                       </div>
               </div>
               <div class="rowedit3">
@@ -626,19 +588,16 @@
                         Nội dung:
                       </div>
                       <div class="col-xs-11">
-                        <textarea name="body3" class="textarea_profile" rows="3" required=""></textarea>
+                        <textarea name="body4" class="textarea_profile editor" rows="3" required=""></textarea>
                       </div>
               </div>
               <div class="rowedit2">
                 <div class="col-xs-1 guide-black cc">
                 </div>
                 <div class="col-xs-11">
-                  <div class="width80 col-xs-9 padding-lr0" >
+                  <div class="width80 col-xs-9 padding-lr0 filename_label_1">
                     <div class="col-md-4">
-                      <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach2" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
-                    </div>
-                    <div>
-                      <a   class="fontstyle label1"  href=""></a> 
+                      <label class="fontArial colorcyan labelcontent browsebutton2"><input id="my-file-selector2" name="attach[]" multiple="" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
                     </div>
                   </div>
                 </div>
@@ -693,6 +652,7 @@
 </div>
 
 <div class="hide" id="operator_js"><?php echo json_encode($operator); ?></div>
+<div class="hide" id="mail_js"><?php echo json_encode($mailtemplate); ?></div>
 <style type="text/css">
   .width_100{
     width: 100% !important;
@@ -712,44 +672,44 @@
 <script type="text/javascript">
   $(document).ready(function(){
       $('.browsebutton1 :file').change(function(e){
-          $(".label1").empty();
-          var fileName = e.target.files[0].name;
-          $(".label1").text(fileName);
-          $(".label1").attr('href','#');
+          $('#my-file-selector1').val();
+          $(".dom_file").remove();
+          var row = '';
+          for(var i = 0; i< e.target.files.length; i++){
+            var fileName = e.target.files[i].name;
+            row += '<div class="col-md-3 dom_file"><a class="fontstyle label1" href="#">'+fileName+'</a></div>';
+          }
+          $(".filename_label").append(row);
+      });
+      $('.browsebutton2 :file').change(function(e){
+          $('#my-file-selector2').val();
+          $(".dom_file_1").remove();
+          var row = '';
+          for(var i = 0; i< e.target.files.length; i++){
+            var fileName = e.target.files[i].name;
+            row += '<div class="col-md-3 dom_file_1"><a class="fontstyle label1" href="#">'+fileName+'</a></div>';
+          }
+          $(".filename_label_1").append(row);
       });
   });   
   $(document).ready(function() {
       $('.js-example-basic-1').select2();
       $('.js-example-basic-2').select2();
       $('.js-example-basic').select2();
-      CKEDITOR.replace('body',{
-        allowedContent: true,
+      $('.editor').each(function(e){
+        CKEDITOR.replace(this.name,{
+          allowedContent: false,
           disableAutoInline: true,
           toolbarStartupExpanded : false,
           toolbarCanCollapse: true
+        });
       });
-      CKEDITOR.replace('body1',{
-        allowedContent: true,
-          disableAutoInline: true,
-          toolbarStartupExpanded : false,
-          toolbarCanCollapse: true
-      });
+      
+      
       $('#timecomplete').datetimepicker({
             format:'d/m/Y h:i',
       });
-      CKEDITOR.replace('body2',{
-        allowedContent: true,
-          disableAutoInline: true,
-          toolbarStartupExpanded : false,
-          toolbarCanCollapse: true
-      });
-
-      CKEDITOR.replace('body3',{
-              allowedContent: true,
-                disableAutoInline: true,
-                toolbarStartupExpanded : false,
-                toolbarCanCollapse: true
-      });
+      
       $('#timecomplete1').datetimepicker({
         timepicker:false,
         format:'d/m/Y',
@@ -814,12 +774,24 @@
     
   });
 
+  function changeTemplate(id,check) {
+    var mail = $('#mail_js').text();
+    mail = (JSON.parse(mail));
+    for(var i in mail){
+      if (id == mail[i]['mailprofileid']) {
+        $('.subjectmail').val(mail[i]['presubject']);
+        CKEDITOR.instances['body'+check].setData(mail[i]['prebody']);
+      }
+    }
+  }
   $('#saveMChoice').click(function(event) {
     $.ajax({
       url: '<?php echo base_url()?>admin/campaign/saveAssessment',
       type: 'POST',
       dataType: 'json',
-      data: $('#formCreateMChoice').serialize(),
+      data: new FormData($('#formCreateMChoice')[0]),
+      contentType: false,
+      processData: false
     })
     .done(function(data) {
       if (data == 1) {
@@ -939,7 +911,9 @@
       url: '<?php echo base_url()?>admin/interview/saveAppointment',
       type: 'POST',
       dataType: 'json',
-      data: $('#formAppointment').serialize(),
+      data: new FormData($('#formAppointment')[0]),
+      contentType: false,
+      processData: false
     })
     .done(function(data) {
       if (data == 1) {
@@ -961,7 +935,9 @@
       url: '<?php echo base_url()?>admin/interview/saveOffer',
       type: 'POST',
       dataType: 'json',
-      data: $('#formOffer').serialize(),
+      data: new FormData($('#formOffer')[0]),
+      contentType: false,
+      processData: false
     })
     .done(function(data) {
       if (data == 1) {
