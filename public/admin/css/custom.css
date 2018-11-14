@@ -1,0 +1,146 @@
+ul{
+	width: 100%;
+}
+.main-header .sidebar-toggle {
+    padding: 10px 10px;
+    color: black;
+}
+.skin-blue .main-header .navbar .sidebar-toggle {
+    color: black;
+}
+.nav-tabs-custom .nav-tabs li a {
+    color: #FFF;
+    font-weight: 400;
+}
+.nav-tabs-custom .nav-tabs li a {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+.nav-tabs-custom {
+    margin-bottom: 10px;
+    background: #fff;
+    box-shadow: none;
+    width: 100%;
+}
+.nav-tabs-custom .nav-tabs {
+    background: #5fa2dc;
+    padding-top: 10px;
+    padding-left: 10px;
+}
+.nav-tabs-custom .nav-tabs li a:hover {
+    color: #000;
+}
+.nav-tabs-custom .nav-tabs li:hover {
+    background: #fff;
+}
+.nav li a {
+    position: relative;
+    display: block;
+    padding: 7px 15px;
+}
+.box-header>.fa, .box-header>.glyphicon, .box-header>.ion, .box-header .box-title {
+    display: inline-block;
+    font-size: 22px;
+}
+.box-header>h5{
+	display: inline-block;
+}
+.webkit-box{
+	display: -webkit-box !important;
+}
+.inline-box{
+	display: inline-block !important;
+}
+.text-center{
+	text-align: center !important;
+}
+.no-border{
+	border: 0px !important;
+}
+.no-padding{
+	padding: 0px !important;
+}
+.back-blue{
+	background: #5fa2dc !important;
+}
+.fill-white{
+	color: white !important;
+}
+.col-pc-14{
+	width: 14.3%;
+}
+.col-pc-12{
+	width: 12.49%;
+}
+.box-body.no-padding{
+	display: -webkit-box;
+}
+.dash-box>.col-pc-14{
+	padding: 20px;
+	text-align: center;
+	border: 0.5px solid #dbdbdb;
+}
+.tab-pane>.col-pc-12{
+	padding: 5px;
+	text-align: center;
+	border: 0.5px solid #dbdbdb;
+}
+.users-list.dash-box>li{
+	width: auto;
+	padding: 5px;
+}
+.users-list.dash-box>li>img{
+	width: 30px;
+	height: 30px;
+}
+.box-header {
+    padding: 5px;
+}
+.has-feedback {
+	padding: 5px;
+	border-bottom: 1px solid #dbdbdb;
+}
+.form-control-feedback {
+	top: 5px;
+	right: 5px;
+}
+.box.box-solid{
+	margin: 0;
+	border: 1px solid #dbdbdb;
+	border-top: 0;
+	border-radius: unset;
+	box-shadow: none;
+}
+
+.relative{
+	position: relative;
+}
+.absolute{
+	position: absolute;
+}
+
+.user-box{
+	height: 170px;
+}
+.user-box-left{
+	position:  absolute;
+    top: 0;
+    width:  60px;
+    left: 15px;
+    text-align:  center;
+    font-size: 13px;
+}
+.user-box-right{
+	position:  absolute;
+	left: 80px;
+}
+.block-w-f{
+	display: block;
+	width: 100%;
+}
+.user-box-left img {
+    width: 60px;
+    height: 60px;
+    float: left;
+    margin-bottom: 5px;
+}

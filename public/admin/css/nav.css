@@ -1,0 +1,15 @@
+.select2-container
+{
+	float: right !important;
+	margin-right: 10px !important;
+	width: 45% !important;
+}
+.select2-container--default .select2-selection--single
+{
+	height: 25px !important;
+    font-size: 13px !important;
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+    border-radius: 0px !important;
+    border: 0.5px solid #ccc !important;
+}
