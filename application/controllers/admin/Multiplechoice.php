@@ -37,11 +37,15 @@ class Multiplechoice extends CI_Controller {
 		$this->load->view('admin/home/master',$this->data);	
 	}
 
-	public function pageAssessment($candidateid, $campaignid, $check = '0')
+	public function pageAssessment($asmtid, $check = '0')
 	{
-		$sql = "SELECT tt.*, candidate.name, candidate.email FROM assessment tt INNER JOIN (SELECT candidateid, MAX(createddate) AS MaxDateTime FROM assessment WHERE candidateid = '$candidateid' AND campaignid = '$campaignid'  GROUP BY candidateid) groupedtt ON tt.candidateid = groupedtt.candidateid AND tt.createddate = groupedtt.MaxDateTime LEFT JOIN candidate ON tt.candidateid = candidate.candidateid   ";
-		$result = $this->Campaign_model->select_sql($sql);
-		$data['assessment'] = $result[0];
+		if ($asmtid != 0) {
+			$sql = "SELECT tt.*, candidate.name, candidate.email FROM assessment tt  LEFT JOIN candidate ON tt.candidateid = candidate.candidateid  LEFT JOIN reccampaign ON tt.campaignid = reccampaign.campaignid WHERE tt.asmtid = $asmtid";
+			$result = $this->Campaign_model->select_sql($sql);
+			$data['assessment'] = $result[0];
+		}else{
+			$data['assessment']['status'] = '';
+		}
 		$data['check'] = $check;
 		$this->_data['temp'] = $this->load->view('admin/multiplechoice/pageAssessment',$data,true);
 

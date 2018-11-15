@@ -2,6 +2,14 @@
 	$dataEmail[0]['profilename'] = '';
 	$dataEmail[0]['presubject'] = '';
 	$dataEmail[0]['prebody'] = '';
+	$dataEmail[0]['createddate'] = '';
+	$dataEmail[0]['status'] = 0;
+	$dataEmail[0]['profiletype'] = 0;
+	$dataEmail[0]['datasource'] = 0;
+	$dataEmail[0]['prereceiver'] = 0;
+	$dataEmail[0]['precc'] = 0;
+	$dataEmail[0]['prebcc'] =0;
+
 }
 $dataEmail[0]['presender'] = "Tài khoản đang đăng nhập";
  ?>
@@ -79,7 +87,7 @@ $dataEmail[0]['presender'] = "Tài khoản đang đăng nhập";
 								        <div class="width100 row rowedit h-auto padding_bot_15">
 								            <label for="text" class="width20 col-xs-3 label-profile">Người gửi</label>
 								            <div class="col-xs-4 padding-lr0">
-												<input class="kttext" required="" type="text" id="presender" placeholder="" name="presender" value="Tài khoản đang đăng nhập" style="width: 100%">
+												<input class="kttext"  type="text" id="presender" placeholder="" name="presender" readonly="true" value="Tài khoản đang đăng nhập" style="width: 100%">
 								            </div>
 								        </div>
 							    	</div>
@@ -127,13 +135,14 @@ $dataEmail[0]['presender'] = "Tài khoản đang đăng nhập";
 												</select>
 								            </div>
 								        </div>
-								        <p data-toggle="modal" data-target="#insertUser" class="plus-button" style="margin-left: 15px" id="clickPlus"><i class="fa fa-plus" aria-hidden="true"></i> Thêm trường dữ liệu</p>
+								        <p data-toggle="modal" data-target="#insertSubject" class="plus-button" style="margin-left: 15px" id="clickPlus"><i class="fa fa-plus" aria-hidden="true"></i> Thêm trường dữ liệu tiêu đề</p>
 								        <div class="width100 row rowedit h-auto padding_bot_15">
 								            <label for="text" class="width20 col-xs-3 label-profile">Tiêu đề</label>
 								            <div class="col-xs-4 padding-lr0">
-												<input class="kttext" required="" type="text" id="" placeholder="" name="presubject" value="<?php echo $dataEmail[0]['presubject'] ?>" style="width: 100%">
+												<input class="kttext" required="" type="text" id="presubject" placeholder="" name="presubject" value="<?php echo $dataEmail[0]['presubject'] ?>" style="width: 100%">
 								            </div>
 								        </div>
+								        <p data-toggle="modal" data-target="#insertUser" class="plus-button" style="margin-left: 15px" id="clickPlus"><i class="fa fa-plus" aria-hidden="true"></i> Thêm trường dữ liệu nội dung</p>
 								        <div class="width100 row rowedit h-auto padding_bot_15">
 								            <label for="text" class="width20 col-xs-3 label-profile">Nội dung</label>
 								            <div class="col-xs-6 padding-lr0">
@@ -146,7 +155,7 @@ $dataEmail[0]['presender'] = "Tài khoản đang đăng nhập";
 											<div class="col-xs-3 padding-lr0">
 												<label style="color: #5fade0; float: right; cursor: pointer;" class="filebutton">
 												<i class="fa fa-paperclip" aria-hidden="true"></i> Đính kèm
-												<span><input type="file" style="display: none;" id="myfile" name="myfile"></span>
+												<span><input type="file" style="display: none;" id="myfile"></span>
 												</label>
 								            </div>
 								        </div>
@@ -168,7 +177,27 @@ $dataEmail[0]['presender'] = "Tài khoản đang đăng nhập";
     	</div>
     </section>
 </div>
-
+<!-- Thêm trường dl tiêu đề -->
+<div class="modal fade" id="insertSubject" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: #5fade0 !important;
+border-top-left-radius: 5px;
+border-top-right-radius: 5px;">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="opacity: 1;
+color: white;"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" style="color: #FFF">Thêm trường dữ liệu tiêu đề</h4>
+      </div>
+      <div class="modal-body">
+        <p id="titleDatasource">Nguồn dữ liệu: Nghiệp vụ chiến dịch</p>
+        <div class="contentDatasourceSubject">
+        <a class="suggest-field" onclick="getFieldSubject(this)">Ứng viên</a><a class="suggest-field" onclick="getFieldSubject(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getFieldSubject(this)">Tên</a><a class="suggest-field" onclick="getFieldSubject(this)">Vị trí tuyển dụng</a><a class="suggest-field" onclick="getFieldSubject(this)">Prefix</a><a class="suggest-field" onclick="getFieldSubject(this)">Link phiếu trắc nghiệm</a>
+    	</div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- Thêm trường dữ liệu nội dung -->
 <div class="modal fade" id="insertUser" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -177,7 +206,7 @@ border-top-left-radius: 5px;
 border-top-right-radius: 5px;">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="opacity: 1;
 color: white;"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" style="color: #FFF">Thêm trường dữ liệu</h4>
+        <h4 class="modal-title" style="color: #FFF">Thêm trường dữ liệu nội dung</h4>
       </div>
       <div class="modal-body">
         <p id="titleDatasource">Nguồn dữ liệu: Nghiệp vụ chiến dịch</p>
@@ -188,8 +217,14 @@ color: white;"><span aria-hidden="true">&times;</span></button>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
 <div class="content-CK" hidden="true">
 	<?php echo $dataEmail[0]['prebody'] ?>
+</div>
+
+<div class="content-CK1" hidden="true">
+	<?php echo $dataEmail[0]['presubject'] ?>
 </div>
 <style type="text/css">
 	.btn_tk{
@@ -219,7 +254,6 @@ color: white;"><span aria-hidden="true">&times;</span></button>
 </style>
 <script type="text/javascript">
 	$(document).ready(function() {
-		var setdata = $('.content-CK').html();
 	    $('#select_type1').select2({ width: '100%' });
 	    $('#select_type2').select2({ width: '100%' });
 	    $('#select_type3').select2({ width: '100%' });
@@ -247,7 +281,19 @@ color: white;"><span aria-hidden="true">&times;</span></button>
 	        disableAutoInline: true,
 	        toolbarStartupExpanded : false,
 	        toolbarCanCollapse: true});
+
+	    CKEDITOR.replace('presubject',{
+	    	allowedContent: true,
+	        disableAutoInline: true,
+	        toolbarStartupExpanded : false,
+	        toolbarCanCollapse: true});
+
+		var setdata = $('.content-CK').html();
+
 	    	CKEDITOR.instances['prebody'].setData(setdata);
+	    	var setdata1 = $('.content-CK1').html();
+
+	    	CKEDITOR.instances['presubject'].setData(setdata1);
 	});
 	function selectDatasouce(thiss) {
 		var value = thiss.value;
@@ -256,9 +302,12 @@ color: white;"><span aria-hidden="true">&times;</span></button>
 		if(value == 1)
 		{
 			$('.contentDatasource').html('<a class="suggest-field" onclick="getField(this)">Ứng viên</a><a class="suggest-field" onclick="getField(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getField(this)">Tên</a><a class="suggest-field" onclick="getField(this)">Vị trí tuyển dụng</a><a class="suggest-field" onclick="getField(this)">Prefix</a><a class="suggest-field" onclick="getField(this)">Link phiếu trắc nghiệm</a><a class="suggest-field" onclick="getField(this)">Vòng</a>');
+			$('.contentDatasourceSubject').html('<a class="suggest-field" onclick="getField(this)">Ứng viên</a><a class="suggest-field" onclick="getField(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getField(this)">Tên</a><a class="suggest-field" onclick="getField(this)">Vị trí tuyển dụng</a><a class="suggest-field" onclick="getField(this)">Prefix</a><a class="suggest-field" onclick="getField(this)">Link phiếu trắc nghiệm</a><a class="suggest-field" onclick="getField(this)">Vòng</a>');
+			
 		}
 		else{
 			$('.contentDatasource').html('<a class="suggest-field" onclick="getField(this)">Ứng viên</a><a class="suggest-field" onclick="getField(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getField(this)">Tên</a><a class="suggest-field" onclick="getField(this)">Vị trí tuyển dụng</a><a class="suggest-field" onclick="getField(this)">Prefix</a><a class="suggest-field" onclick="getField(this)">Link phiếu trắc nghiệm</a>');
+			$('.contentDatasourceSubject').html('<a class="suggest-field" onclick="getFieldSubject(this)">Ứng viên</a><a class="suggest-field" onclick="getFieldSubject(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getFieldSubject(this)">Tên</a><a class="suggest-field" onclick="getFieldSubject(this)">Vị trí tuyển dụng</a><a class="suggest-field" onclick="getFieldSubject(this)">Prefix</a><a class="suggest-field" onclick="getFieldSubject(this)">Link phiếu trắc nghiệm</a><a class="suggest-field" onclick="getFieldSubject(this)">Vòng</a>');
 		}
 	}
 	function changeTypeEmail(argument) {
@@ -269,7 +318,7 @@ color: white;"><span aria-hidden="true">&times;</span></button>
 			vall 	= 'Tài khoản đang đăng nhập';
 		}
 		else{
-			vall 	= 'tavicosoft@gmail.com';
+			vall 	= '<?php echo $mailSystem[0]['email'] ?>';
 		}
 		$('#presender').val(vall);
 	}
@@ -286,6 +335,45 @@ color: white;"><span aria-hidden="true">&times;</span></button>
 		CKEDITOR.instances['prebody'].insertHtml(value);
 		$('#insertUser').modal('toggle');
 	}
+	function getFieldSubject(id) {
+		var value = ' <span style="color:#3498db;">['+id.text+']&nbsp;</span> ';
+		CKEDITOR.instances['presubject'].insertHtml(value);
+		$('#insertSubject').modal('toggle');
+	}
+
+	function insertAtCaret(areaId,text) {
+    var txtarea = document.getElementById(areaId);
+    var scrollPos = txtarea.scrollTop;
+    var strPos = 0;
+    var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? 
+        "ff" : (document.selection ? "ie" : false ) );
+    if (br == "ie") { 
+        txtarea.focus();
+        var range = document.selection.createRange();
+        range.moveStart ('character', -txtarea.value.length);
+        strPos = range.text.length;
+    }
+    else if (br == "ff") strPos = txtarea.selectionStart;
+
+    var front = (txtarea.value).substring(0,strPos);  
+    var back = (txtarea.value).substring(strPos,txtarea.value.length); 
+    txtarea.value=front+text+back;
+    strPos = strPos + text.length;
+    if (br == "ie") { 
+        txtarea.focus();
+        var range = document.selection.createRange();
+        range.moveStart ('character', -txtarea.value.length);
+        range.moveStart ('character', strPos);
+        range.moveEnd ('character', 0);
+        range.select();
+    }
+    else if (br == "ff") {
+        txtarea.selectionStart = strPos;
+        txtarea.selectionEnd = strPos;
+        txtarea.focus();
+    }
+    txtarea.scrollTop = scrollPos;
+}
 </script>
         </div>
     </div>

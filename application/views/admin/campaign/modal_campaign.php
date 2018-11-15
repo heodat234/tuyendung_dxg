@@ -20,7 +20,85 @@
               </div>
             </div>
             <div class="col-xs-12 body_chuyen_2">
-              <label class="label_chon"><input type="checkbox" name=""> Gửi email thông báo</label>
+              <label class="label_chon"><input type="checkbox" id="checkmail_1"> Gửi email thông báo</label>
+            </div>
+            <div id="mail_composer_1" >
+              <div class="col-xs-12 body_chuyen_1">
+                <div class="rowedit2">
+                        <div class="col-xs-1 guide-black cc">
+                          Gửi đến:
+                        </div>
+                        <div class="col-xs-11">
+                          <input class="kttext width_100" type="text" id="email_to_tn" name="to" value="">
+                        </div>
+                </div>
+                <div class="rowedit2">
+                        <div class="col-xs-1 guide-black cc">
+                          Cc:
+                        </div>
+                        <div class="col-xs-11">
+                          <input class="kttext width_100" type="text" name="cc" value="">
+                        </div>
+                </div>
+                <div class="rowedit2">
+                        <div class="col-xs-1 guide-black cc">
+                          Bcc:
+                        </div>
+                        <div class="col-xs-11">
+                          <input class="kttext width_100" type="text" name="bcc" value="">
+                        </div>
+                </div>
+              </div>
+              <div class="col-xs-12 body_chuyen_2">
+                <div class="rowedit2">
+                        <div class="col-xs-1 guide-black cc" style="color: #5FA2DD;">
+                          Mẫu thư:
+                        </div>
+                        <div class="col-xs-7">
+                          <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,5)">
+                              <option value="">Chọn mẫu thư</option>
+                            <?php foreach ($mailtemplate as $row): ?>
+                              <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
+                            <?php endforeach ?>
+                          </select>
+                          <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
+                        </div>
+                        <div class="col-xs-4">
+                          <p onclick="insertField(5)" class="plus-button" style="margin-left: 15px" id="clickPlus"><i class="fa fa-plus" aria-hidden="true"></i> Thêm trường dữ liệu</p>
+                        </div>
+                </div>
+
+                <div class="rowedit2">
+                        <div class="col-xs-1 guide-black cc">
+                          Tiêu đề:
+                        </div>
+                        <div class="col-xs-11">
+                          <!-- <input class="kttext width_100 subjectmail" type="text" name="subject" value=""> -->
+                          <textarea class="textarea_profile" id="subjectmail5" rows="1" name="subject" required="">
+                          </textarea>
+                        </div>
+                </div>
+                <div class="rowedit3">
+                        <div class="col-xs-1 guide-black cc">
+                          Ghi chú:
+                        </div>
+                        <div class="col-xs-11">
+                          <textarea name="body5" class="textarea_profile editor" rows="3" required="">
+                          </textarea>
+                        </div>
+                </div>
+                <div class="rowedit2">
+                  <div class="col-xs-1 guide-black cc">
+                  </div>
+                  <div class="col-xs-11">
+                    <div class="width80 col-xs-9 padding-lr0 filename_label">
+                      <div class="col-md-6">
+                        <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach[]" multiple="" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <input type="hidden" name="campaignid" id="campaignid_tran" value="">
           </div>
@@ -56,6 +134,84 @@
             </div>
             <div class="col-xs-12 body_chuyen_2">
               <label class="label_chon"><input type="checkbox" name=""> Gửi email thông báo</label>
+            </div>
+            <div id="mail_composer_2" >
+              <div class="col-xs-12 body_chuyen_1">
+                <div class="rowedit2">
+                        <div class="col-xs-1 guide-black cc">
+                          Gửi đến:
+                        </div>
+                        <div class="col-xs-11">
+                          <input class="kttext width_100" type="text" id="email_to_tn" name="to" value="">
+                        </div>
+                </div>
+                <div class="rowedit2">
+                        <div class="col-xs-1 guide-black cc">
+                          Cc:
+                        </div>
+                        <div class="col-xs-11">
+                          <input class="kttext width_100" type="text" name="cc" value="">
+                        </div>
+                </div>
+                <div class="rowedit2">
+                        <div class="col-xs-1 guide-black cc">
+                          Bcc:
+                        </div>
+                        <div class="col-xs-11">
+                          <input class="kttext width_100" type="text" name="bcc" value="">
+                        </div>
+                </div>
+              </div>
+              <div class="col-xs-12 body_chuyen_2">
+                <div class="rowedit2">
+                        <div class="col-xs-1 guide-black cc" style="color: #5FA2DD;">
+                          Mẫu thư:
+                        </div>
+                        <div class="col-xs-7">
+                          <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,6)">
+                              <option value="">Chọn mẫu thư</option>
+                            <?php foreach ($mailtemplate as $row): ?>
+                              <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
+                            <?php endforeach ?>
+                          </select>
+                          <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
+                        </div>
+                        <div class="col-xs-4">
+                          <p onclick="insertField(6)" class="plus-button" style="margin-left: 15px" id="clickPlus"><i class="fa fa-plus" aria-hidden="true"></i> Thêm trường dữ liệu</p>
+                        </div>
+                </div>
+
+                <div class="rowedit2">
+                        <div class="col-xs-1 guide-black cc">
+                          Tiêu đề:
+                        </div>
+                        <div class="col-xs-11">
+                          <!-- <input class="kttext width_100 subjectmail" type="text" name="subject" value=""> -->
+                          <textarea class="textarea_profile" id="subjectmail6" rows="1" name="subject" required="">
+                          </textarea>
+                        </div>
+                </div>
+                <div class="rowedit3">
+                        <div class="col-xs-1 guide-black cc">
+                          Ghi chú:
+                        </div>
+                        <div class="col-xs-11">
+                          <textarea name="body6" class="textarea_profile editor" rows="3" required="">
+                          </textarea>
+                        </div>
+                </div>
+                <div class="rowedit2">
+                  <div class="col-xs-1 guide-black cc">
+                  </div>
+                  <div class="col-xs-11">
+                    <div class="width80 col-xs-9 padding-lr0 filename_label">
+                      <div class="col-md-6">
+                        <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach[]" multiple="" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <input type="hidden" name="campaignid" id="campaignid_dis" value="">
             <input type="hidden" name="roundid" id="roundid" value="">
@@ -113,7 +269,7 @@
                       <div class="col-xs-1 guide-black cc" style="color: #5FA2DD;">
                         Mẫu thư:
                       </div>
-                      <div class="col-xs-9">
+                      <div class="col-xs-7">
                         <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,1)">
                             <option value="">Chọn mẫu thư</option>
                           <?php foreach ($mailtemplate as $row): ?>
@@ -122,6 +278,9 @@
                         </select>
                         <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
                       </div>
+                      <div class="col-xs-3">
+                        <p onclick="insertField(1)" class="plus-button" style="margin-left: 15px" id="clickPlus"><i class="fa fa-plus" aria-hidden="true"></i> Thêm trường dữ liệu</p>
+                      </div>
               </div>
 
               <div class="rowedit2">
@@ -129,7 +288,9 @@
                         Tiêu đề:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100 subjectmail" type="text" name="subject" value="">
+                        <!-- <input class="kttext width_100 subjectmail" type="text" name="subject" value=""> -->
+                        <textarea class="textarea_profile" id="subjectmail1" rows="1" name="subject" required="">
+                        </textarea>
                       </div>
               </div>
               <div class="rowedit3">
@@ -232,7 +393,7 @@
                       <div class="col-xs-1 guide-black cc" style="color: #5FA2DD;">
                         Mẫu thư:
                       </div>
-                      <div class="col-xs-9">
+                      <div class="col-xs-7">
                         <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,2)">
                             <option value="">Chọn mẫu thư</option>
                           <?php foreach ($mailtemplate as $row): ?>
@@ -241,6 +402,9 @@
                         </select>
                         <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
                       </div>
+                      <div class="col-xs-3">
+                        <p onclick="insertField(2)" class="plus-button" style="margin-left: 15px" id="clickPlus"><i class="fa fa-plus" aria-hidden="true"></i> Thêm trường dữ liệu</p>
+                      </div>
               </div>
 
               <div class="rowedit2">
@@ -248,7 +412,9 @@
                         Tiêu đề:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100 subjectmail"  type="text" name="subject1" >
+                        <!-- <input class="kttext width_100 subjectmail"  type="text" name="subject1" > -->
+                        <textarea class="textarea_profile" id="subjectmail2" rows="1" name="subject1" required="">
+                        </textarea>
                       </div>
               </div>
               <div class="rowedit3">
@@ -308,7 +474,7 @@
                       <div class="col-xs-1 guide-black cc" style="color: #5FA2DD;">
                         Mẫu thư:
                       </div>
-                      <div class="col-xs-9">
+                      <div class="col-xs-7">
                         <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,3)">
                             <option value="">Chọn mẫu thư</option>
                           <?php foreach ($mailtemplate as $row): ?>
@@ -317,6 +483,9 @@
                         </select>
                         <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
                       </div>
+                      <div class="col-xs-3">
+                        <p onclick="insertField(3)" class="plus-button" style="margin-left: 15px" id="clickPlus"><i class="fa fa-plus" aria-hidden="true"></i> Thêm trường dữ liệu</p>
+                      </div>
               </div>
 
               <div class="rowedit2">
@@ -324,7 +493,9 @@
                         Tiêu đề:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100 subjectmail"  type="text" name="subject2">
+                        <!-- <input class="kttext width_100 subjectmail"  type="text" name="subject2"> -->
+                        <textarea class="textarea_profile" id="subjectmail3" rows="1" name="subject2" required="">
+                        </textarea>
                       </div>
               </div>
               <div class="rowedit3">
@@ -362,162 +533,6 @@
   </div>
 </div>
 
-<!-- <div class="modal fade" id="changeAssessment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog " style="width: 60%">
-    <div class="modal-content " >
-        <div class="modal-header modal_header_cam">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Thay đổi phiếu đánh giá phỏng vấn</h4>
-        </div>
-        <form id="formDiscard">
-          <div class=" modal_body_chuyen">
-            <div class="body_cam col-xs-12 body_chuyen" id="body_loai">
-              <div class="row" style="margin-right: 0px">
-                <div class="col-md-3 box_profile_tn">
-                  <div class="profile_tn">
-                    <img src="http://recruit.tavicosoft.com/public/image/unknow.jpg" >
-                    <p class="guide-black">Nguyễn Huy Hoàng</p>
-                  </div>
-                </div>
-                <div class="col-md-9 border_left_ddd" >
-                    <p class="titleAppoint1">Thời gian/Địa điểm</p>
-                    <p class="timeappoint1">Thứ 3, 04 Tháng 09 Năm 2018<br>14:00 → 15:00<br>Toà nhà Đất Xanh Group<br>27 Đinh Bộ Lĩnh, Quận Bình Thạnh</p>
-                    <p class="titleAppoint1">Nội dung/ hướng dẫn</p>
-                    <p class="timeappoint1">Trao đổi về vị trí công việc mà bạn đang ứng tuyển và định hướng nghề nghiệp trong thời gian tới.</p>
-                    <div >
-                      <p class="titleAppoint1">Người phỏng vấn</p>
-                      <div class="col-md-4 padding_0 manage_pv ql">
-                        <div class="col-md-3 ">
-                          <img  src="<?php echo base_url() ?>public/image/bbye.jpg">
-                        </div>
-                        <div class="col-md-9 padding_0">
-                          <div class="body-blac5a">Nguyễn Huy Hoàng</div>
-                        </div>
-                      </div>
-                      <div class="col-md-4 padding_0 manage_pv ql">
-                        <div class="col-md-3 ">
-                          <img  src="<?php echo base_url() ?>public/image/bbye.jpg">
-                        </div>
-                        <div class="col-md-9 padding_0">
-                          <div class="body-blac5a">Nguyễn Huy Hoàng</div>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-12 body_chuyen_2">
-              <div class="rowedit3">
-                <div class="col-md-3 padding_0">
-                  <label></label>
-                </div>
-                <div class="col-md-9 padding_0">
-                  <div class="row margin_top_15">
-                    <div class="col-md-4 padding_0">
-                      <span>Phiếu phỏng vấn</span>
-                    </div>
-                    <div class="col-md-8 padding_0">
-                      <select class="js-example-basic-2">
-                        <option>Phiếu phỏng vấn BM004/05</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row margin_top_15" >
-                    <div class="col-md-4 padding_0">
-                      <span>Người phụ trách phiếu</span>
-                    </div>
-                    <div class="col-md-8 padding_0">
-                      <select class="js-example-basic-2">
-                        <option>Jimmy Nguyen</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-xs-12 body_chuyen_2">
-              <div class="rowedit2">
-                      <p class="titleAppoint">Thư thông báo thay đổi phiếu phỏng vấn</p>
-              </div>
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                        Gửi đến:
-                      </div>
-                      <div class="col-xs-11">
-                        <input class="kttext" style="width: 100%" type="text" id="ngaycap" placeholder="" name="publishdate" value="">
-                      </div>
-              </div>
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                        Cc:
-                      </div>
-                      <div class="col-xs-11">
-                        <input class="kttext" style="width: 100%" type="text" id="ngaycap" placeholder="" name="publishdate" value="">
-                      </div>
-              </div>
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                        Bcc:
-                      </div>
-                      <div class="col-xs-11">
-                        <input class="kttext" style="width: 100%" type="text" id="ngaycap" placeholder="" name="publishdate" value="">
-                      </div>
-              </div>
-            </div>
-
-            <div class="col-xs-12 body_chuyen_2">
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc" style="color: #5FA2DD;">
-                        Mẫu thư:
-                      </div>
-                      <div class="col-xs-9">
-                        <select class="js-example-basic-2" name="status26" required="">
-                          <option value="W">Thư thông báo thay đổi người phụ trách phiếu</option>
-                        </select>
-                        <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
-                      </div>
-              </div>
-
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                        Tiêu đề:
-                      </div>
-                      <div class="col-xs-11">
-                        <input class="kttext" style="width: 100%" type="text" id="ngaycap" placeholder="" name="publishdate" value="<?php echo isset($news[0]['publishdate'])? date_format(date_create($news[0]['publishdate']),"d/m/Y") :'' ?>">
-                      </div>
-              </div>
-              <div class="rowedit3">
-                      <div class="col-xs-1 guide-black" style="padding: 0px">
-                        Nội dung:
-                      </div>
-                      <div class="col-xs-11">
-                        <textarea name="body3" style="width: 100%;resize: none;border: 1px solid #E4E4E4;" rows="3" required=""><?php echo isset($news[0]['body'])? $news[0]['body']: ''; ?></textarea>
-                      </div>
-              </div>
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                      </div>
-                      <div class="col-xs-11">
-                        <div class="width80 col-xs-9 padding-lr0" "="">
-                     <label class="fontArial colorcyan labelcontent"><i class="fa fa-upload"></i> Đính kèm</label>
-                     
-                    </div>
-                      </div>
-              </div>
-            </div>
-            <input type="hidden" name="campaignid" id="campaignid" value="">
-            <input type="hidden" name="roundid" id="roundid" value="">
-          </div>
-          <div class="modal-footer modal_footer_cam">
-            <label class="share_chuyen"><input type="checkbox" name=""> Không chia sẻ nội dung này</label>
-            <button type="button" class="btn btn_thoat btn_thoat1" data-dismiss="modal">Hủy</button>
-            <button type="button" class="btn btn_tt btn_tt1" id="saveDiscard" data-dismiss="modal">Tiến hành</button>
-          </div>
-        </form>
-    </div>
-  </div>
-</div> -->
 <!-- thư mời nhận việc -->
 <div class="modal fade" id="createOffer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog " style="width: 50%">
@@ -564,7 +579,7 @@
                       <div class="col-xs-1 guide-black cc" style="color: #5FA2DD;">
                         Mẫu thư:
                       </div>
-                      <div class="col-xs-9">
+                      <div class="col-xs-7">
                         <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,4)">
                             <option value="">Chọn mẫu thư</option>
                           <?php foreach ($mailtemplate as $row): ?>
@@ -573,6 +588,9 @@
                         </select>
                         <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
                       </div>
+                      <div class="col-xs-3">
+                        <p onclick="insertField(4)" class="plus-button" style="margin-left: 15px" id="clickPlus"><i class="fa fa-plus" aria-hidden="true"></i> Thêm trường dữ liệu</p>
+                      </div>
               </div>
 
               <div class="rowedit2">
@@ -580,7 +598,9 @@
                         Tiêu đề:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100 subjectmail" type="text" name="subject" value="">
+                        <!-- <input class="kttext width_100 subjectmail" type="text" name="subject" value=""> -->
+                        <textarea class="textarea_profile" id="subjectmail4" rows="1" name="subject" required="">
+                        </textarea>
                       </div>
               </div>
               <div class="rowedit3">
@@ -651,9 +671,45 @@
   </div>
 </div>
 
+<!-- Thêm trường dl-->
+<div class="modal fade" id="insertSubject" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header modal_header_add" >
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" style="color: #FFF">Thêm trường dữ liệu tiêu đề</h4>
+      </div>
+      <div class="modal-body">
+        <p id="titleDatasource">Nguồn dữ liệu: Nghiệp vụ chiến dịch</p>
+        <div class="contentDatasourceSubject">
+          <input type="hidden" id="check">
+        <a class="suggest-field" onclick="getField(this)">Ứng viên</a><a class="suggest-field" onclick="getField(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getField(this)">Tên</a><a class="suggest-field" onclick="getField(this)">Vị trí tuyển dụng</a><a class="suggest-field" onclick="getField(this)">Prefix</a><a class="suggest-field" onclick="getField(this)">Link phiếu trắc nghiệm</a>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="hide" id="operator_js"><?php echo json_encode($operator); ?></div>
 <div class="hide" id="mail_js"><?php echo json_encode($mailtemplate); ?></div>
 <style type="text/css">
+  .modal_header_add{
+    background-color: #5fade0 !important;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+  .modal_header_add > button{
+    opacity: 1;
+    color: white;
+  }
+  .suggest-field{
+    color: #5fade0;
+    background: #f8f9fc;
+    padding: 3px;
+    margin: 5px;
+    display: inline-block;
+    cursor: pointer;
+  }
   .width_100{
     width: 100% !important;
   }
@@ -668,6 +724,7 @@
   .modal{
     overflow: auto;
   }
+  
 </style>
 <script type="text/javascript">
   $(document).ready(function(){
@@ -718,6 +775,13 @@
         timepicker:false,
         format:'d/m/Y',
       });
+
+      // $('#mail_composer_1').addClass('hide');
+      if (!$('#checkmail_1').prop('checked')) {
+        console.log('111');
+      }else{
+        console.log('222');
+      }
       
   });
   $(document).on('click', '.datetimepicker', function() {
@@ -779,7 +843,7 @@
     mail = (JSON.parse(mail));
     for(var i in mail){
       if (id == mail[i]['mailprofileid']) {
-        $('.subjectmail').val(mail[i]['presubject']);
+        $('#subjectmail'+check).html(mail[i]['presubject']);
         CKEDITOR.instances['body'+check].setData(mail[i]['prebody']);
       }
     }
@@ -795,8 +859,8 @@
     })
     .done(function(data) {
       if (data == 1) {
-        // location.reload();
         alert('tạo thành công');
+        location.reload();
       }
     })
     .fail(function() {
@@ -917,8 +981,8 @@
     })
     .done(function(data) {
       if (data == 1) {
-        // location.reload();
         alert('tạo thành công');
+        location.reload();
       }
     })
     .fail(function() {
@@ -953,4 +1017,15 @@
     });
     
   });
+
+  function insertField(check) {
+    $('#check').val(check);
+    $('#insertSubject').modal('show');
+  }
+  function getField(id) {
+    var value = ' <span style="color:#3498db;">['+id.text+']&nbsp;</span> ';
+    var check = $('#check').val();
+    CKEDITOR.instances['body'+check].insertHtml(value);
+    $('#insertSubject').modal('hide');
+  }
 </script>

@@ -72,17 +72,26 @@ class Interview extends CI_Controller {
 
 	public function interview_question($interviewid, $interviewerid='')
 	{
-
-		$sql = "SELECT tt.*, candidate.name, candidate.email, candidate.imagelink,reccampaign.position FROM interview tt  LEFT JOIN candidate ON tt.candidateid = candidate.candidateid  LEFT JOIN reccampaign ON tt.campaignid = reccampaign.campaignid WHERE tt.interviewid = $interviewid";
-		$result = $this->Campaign_model->select_sql($sql);
-		$this->data2['interview'] = $result[0];
-		$this->data2['interviewerid'] = $interviewerid;
-		$id = $result[0]['candidateid'];
-		$campaignid = $result[0]['campaignid'];
-		$roundid = $result[0]['roundid'];
+        if ($interviewid != 0) {
+            $sql = "SELECT tt.*, candidate.name, candidate.email, candidate.imagelink,reccampaign.position FROM interview tt  LEFT JOIN candidate ON tt.candidateid = candidate.candidateid  LEFT JOIN reccampaign ON tt.campaignid = reccampaign.campaignid WHERE tt.interviewid = $interviewid";
+            $result = $this->Campaign_model->select_sql($sql);
+            $this->data2['interview'] = $result[0];
+            $this->data2['interviewerid'] = $interviewerid;
+            $id = $result[0]['candidateid'];
+            $campaignid = $result[0]['campaignid'];
+            $roundid = $result[0]['roundid'];
+        }else{
+            $this->data2['interview'] = array();
+            $this->data2['interview']['name'] = 'Đỗ Phương Nam';
+            $this->data2['interview']['position'] = 'Giám đốc đầu tư';
+            $this->data2['interviewerid'] = $interviewerid;
+            $id = 1;
+            $campaignid = 1;
+            $roundid = 1;
+        }
 
 		$this->data2['campaignid'] 	= $campaignid;
-		$this->data2['roundid'] 	= $result[0]['roundid'];
+		$this->data2['roundid'] 	= $roundid;
 		$match = array('campaignid' => $campaignid, 'roundid' => $roundid);
 		$this->data2['campaignname'] 	=	($this->Campaign_model->select("position",'reccampaign',array('campaignid' => $campaignid,),''))[0]['position'];
 		$this->data2['roundtype'] 		=	($this->Campaign_model->select("roundtype",'recflow',$match,''))[0]['roundtype'];
@@ -137,9 +146,20 @@ class Interview extends CI_Controller {
 
 	public function invitationcard($interviewid, $interviewerid='')
 	{
-		$sql = "SELECT tt.*, candidate.name,reccampaign.position FROM interview tt LEFT JOIN candidate ON tt.candidateid = candidate.candidateid  LEFT JOIN reccampaign ON tt.campaignid = reccampaign.campaignid WHERE tt.interviewid = $interviewid";
-		$result = $this->Campaign_model->select_sql($sql);
-		$data['interview'] = $result[0];
+        if($interviewid != 0){
+    		$sql = "SELECT tt.*, candidate.name,reccampaign.position FROM interview tt LEFT JOIN candidate ON tt.candidateid = candidate.candidateid  LEFT JOIN reccampaign ON tt.campaignid = reccampaign.campaignid WHERE tt.interviewid = $interviewid";
+    		$result = $this->Campaign_model->select_sql($sql);
+    		$data['interview'] = $result[0];
+        }else{
+            $data['interview'] = array();
+            $data['interview']['name'] = 'Đỗ Phương Nam';
+            $data['interview']['position'] = 'Giám đốc đầu tư';
+            $data['interview']['intdate']   = '2018-11-20';
+            $data['interview']['timefrom']   = '2018-11-20 09:00:00';
+            $data['interview']['timeto']   = '2018-11-20 10:00:00';
+            $data['interview']['location']   = 'Tòa nhà Đất xanh';
+            $data['interview']['notes']   = 'Trao đổi về vị trí công việc';
+        }
 		if ($interviewerid !='') {
 			$data['interviewerid'] = $interviewerid;
 		}
@@ -170,20 +190,20 @@ class Interview extends CI_Controller {
 
     	$mail = array();
     	for ($k=1; $k <= 2 ; $k++) { 
+            $a = $k+1;
     		$to[$k] = explode(',',$frm['to'.$k]);
     		$mail[$k]['emailsubject'] 	= $frm['subject'.$k];
 	    	$mail[$k]['cc'] 		= $frm['cc'.$k];
 	    	$mail[$k]['bcc'] 		= $frm['bcc'.$k];
-	    	$body[$k] 				= $frm['body'.$k];
+	    	$body[$k] 				= $frm['body'.$a];
 
-	    	$fileattach = $this->upload_files('public/document/',$_FILES['attach'.$k]);
-            $mail$k]["attachment"] = $fileattach;
+	    	// $fileattach = $this->upload_files('public/document/',$_FILES['attach'.$k]);
+            // $mail$k]["attachment"] = $fileattach;
 	    	unset($frm['to'.$k]);
 	    	unset($frm['subject'.$k]);
 	    	unset($frm['cc'.$k]);
 	    	unset($frm['bcc'.$k]);
-	    	unset($frm['body'.$k]);
-q
+	    	unset($frm['body'.$a]);
     	}
     	for ($j=1; $j <= $count; $j++) { 
     		$i =0;
@@ -194,6 +214,7 @@ q
     		$a_data['candidateid']			= $key[0];
     		$a_data['campaignid']			= $campaignid;
     		$a_data['roundid']				= $round;
+            $a_data['status']               = 'N';
     		$asmtid = $this->Data_model->insert('assessment',$a_data);
 
     		//lưu phiếu đánh giá cho tuyển dụng viên
@@ -202,6 +223,7 @@ q
     		$a_data['pic']					= $key[9];
     		$a_data['campaignid']			= $campaignid;
     		$a_data['roundid']				= $round;
+            $a_data['status']               = 'N';
     		$scr_asmtid = $this->Data_model->insert('assessment',$a_data);
 
     		//save interview
@@ -222,19 +244,19 @@ q
 
             //mail interview
 
-            array_push($mail, $key[10]);
+      //       array_push($mail, $key[10]);
 
-            $roundname = ($this->Campaign_model->select("roundname",'recflow',array('campaignid' => $campaignid,'roundid' => $round),''))[0]['roundname'];
-            $email_candidate = ($this->Campaign_model->select("email",'candidate',array('candidateid' => $key[0]),''))[0]['email'];
-            $link = '<a href="'.base_url().'admin/Multiplechoice/invitationcard/'.$interviewid.'/" >Lịch '.$roundname.' - '.$key[1].'</a>';
-    		$body[1] = str_replace('$name',$key[1], $body[1]);
-    		$body[1] = str_replace('$note',$key[6], $body[1]);
-    		$body[1] = str_replace('$round',$roundname, $body[1]);
-    		$mail[1]['emailbody'] = str_replace('$link',$link, $body[1]);
-    		$mail[1]['toemail'] = $email_candidate;
-    		$this->Mail_model->sendMail($mail[1]);
-    		$mail[1]['fromemail'] = $this->session->userdata('user_admin')['email'];
-    		$this->Mail_model->insert('mailtable',$mail[1]);
+      //       $roundname = ($this->Campaign_model->select("roundname",'recflow',array('campaignid' => $campaignid,'roundid' => $round),''))[0]['roundname'];
+      //       $email_candidate = ($this->Campaign_model->select("email",'candidate',array('candidateid' => $key[0]),''))[0]['email'];
+      //       $link = '<a href="'.base_url().'admin/Multiplechoice/invitationcard/'.$interviewid.'/" >Lịch '.$roundname.' - '.$key[1].'</a>';
+    		// $body[1] = str_replace('$name',$key[1], $body[1]);
+    		// $body[1] = str_replace('$note',$key[6], $body[1]);
+    		// $body[1] = str_replace('$round',$roundname, $body[1]);
+    		// $mail[1]['emailbody'] = str_replace('$link',$link, $body[1]);
+    		// $mail[1]['toemail'] = $email_candidate;
+    		// $this->Mail_model->sendMail($mail[1]);
+    		// $mail[1]['fromemail'] = $this->session->userdata('user_admin')['email'];
+    		// $this->Mail_model->insert('mailtable',$mail[1]);
 
 
     		//interviewer
@@ -250,6 +272,7 @@ q
 	    		$a_data['pic']					= $row;
 	    		$a_data['campaignid']			= $campaignid;
 	    		$a_data['roundid']				= $round;
+                $a_data['status']               = 'N';
 	    		$asmtid = $this->Data_model->insert('assessment',$a_data);
 
     			//save interviewer
@@ -260,27 +283,27 @@ q
         		$i_data['inv_asmtid']	= $asmtid;
         		if ($key[9] == $row) {
         			$i_data['scr_asmtid']	= $scr_asmtid;
-        			$link2 = '<a href="'.base_url().'admin/interview/interview_question/'.$interviewid.'/'.$row.'" >Phiếu '.$roundname.' - '.$key[1].'</a>';
+        			// $link2 = '<a href="'.base_url().'admin/interview/interview_question/'.$interviewid.'/'.$row.'" >Phiếu '.$roundname.' - '.$key[1].'</a>';
         		}
         		$i_data['createdby']	= $this->session->userdata('user_admin')['operatorid'];
         		$this->Data_model->insert('interviewer',$i_data);
 
-        		//mail interviewer
-        		$position = ($this->Campaign_model->select("position",'reccampaign',array('campaignid' => $campaignid),''))[0]['position'];
-        		$user = ($this->Campaign_model->select("operatorid,operatorname,email",'operator',array('operatorid' => $row),''))[0];
-	            $link1 = '<a href="'.base_url().'admin/interview/invitationcard/'.$interviewid.'/'.$row.'" >Lịch '.$roundname.' - '.$key[1].'</a>';
+        		// //mail interviewer
+        		// $position = ($this->Campaign_model->select("position",'reccampaign',array('campaignid' => $campaignid),''))[0]['position'];
+        		// $user = ($this->Campaign_model->select("operatorid,operatorname,email",'operator',array('operatorid' => $row),''))[0];
+	         //    $link1 = '<a href="'.base_url().'admin/interview/invitationcard/'.$interviewid.'/'.$row.'" >Lịch '.$roundname.' - '.$key[1].'</a>';
 	            
-        		$body[2] = str_replace('$name',$user['operatorname'], $body[2]);
-        		$body[2] = str_replace('$candidate',$key[1], $body[2]);
-        		$body[2] = str_replace('$position',$position, $body[2]);
-        		$body[2] = str_replace('$round',$roundname, $body[2]);
-        		$body[2] = str_replace('$link1',$link1, $body[2]);
-        		$body[2] = str_replace('$link2',$link2, $body[2]);
-        		$mail[2]['emailbody'] = $body[2];
-        		$mail[2]['toemail'] = $user['email'];
-        		$this->Mail_model->sendMail($mail[2]);
-        		$mail[2]['fromemail'] = $this->session->userdata('user_admin')['email'];
-        		$this->Mail_model->insert('mailtable',$mail[2]);
+        		// $body[2] = str_replace('$name',$user['operatorname'], $body[2]);
+        		// $body[2] = str_replace('$candidate',$key[1], $body[2]);
+        		// $body[2] = str_replace('$position',$position, $body[2]);
+        		// $body[2] = str_replace('$round',$roundname, $body[2]);
+        		// $body[2] = str_replace('$link1',$link1, $body[2]);
+        		// $body[2] = str_replace('$link2',$link2, $body[2]);
+        		// $mail[2]['emailbody'] = $body[2];
+        		// $mail[2]['toemail'] = $user['email'];
+        		// $this->Mail_model->sendMail($mail[2]);
+        		// $mail[2]['fromemail'] = $this->session->userdata('user_admin')['email'];
+        		// $this->Mail_model->insert('mailtable',$mail[2]);
     		}
 
     		$i++;
@@ -544,5 +567,148 @@ q
     	
         echo json_encode(1);
     }
+
+
+
+    public function sendMailTestAssessment()
+    {
+        $mail['emailsubject']   = 'Trắc nghiệm kiến thức tổng quát - Vị trí: Giám đốc đầu tư - Đất Xanh Group';
+        $mail['cc']         = '';
+        $mail['bcc']        = '';
+        $mail['attachment']        = '';
+        $body = 'Xin chào Đỗ Phương Nam, <br>
+
+Hồ sơ của bạn đã đạt vòng Sơ loại của chúng tôi, <br>
+
+Chúng tôi xin gửi đến Nam phiếu câu hỏi trắc nghiệm kiến thức tổng quát theo đường link dưới đây: <br>
+
+→ $link <br>
+
+Nam hãy thực hiện phiếu trắc nghiệm này theo hướng dẫn, kết quả của phiếu trắc nghiệm này là cơ sở để thực hiện các bước tiếp theo trong quy trình phỏng vấn/ <br>
+
+
+Trân trọng, <br>
+
+
+
+
+
+Dat Xanh Group Recruitment Specialist <br>
+27 Dinh Bo Linh Str., Ward 24, Binh Thanh Dist., HCM  City, Viet Nam <br>
+Tel: 08.62525252 Ext: 5083# | Fax: 08.62853896 | Mobile: 0914 191982 <br>
+Email : recruiter.dxg02@dxg.com.vn | Website : www.datxanh.vn <br>
+Fanpage: www.facebook.com/PhongnhansuDXG';
+        $link = '<a href="'.base_url().'admin/Multiplechoice/pageAssessment/0/1" >Trắc nghiệm kiến thức tổng quát - Đỗ Phương Nam</a>';
+        // $body = str_replace('$note',$key[4], $body);
+        $mail['emailbody'] = str_replace('$link',$link, $body);
+        $mail['toemail'] = 'namdophuong@gmail.com ';
+        $this->Mail_model->sendMail($mail);
+        echo "success";
+    }
+
+    public function sendMailTestAppointment()
+    {
+        $mail['emailsubject']   = 'Thư mời Phỏng vấn - Vị trí: Giám đốc đầu tư - Dat Xanh Group';
+        $mail['cc']         = '';
+        $mail['bcc']        = '';
+        $mail['attachment']        = '';
+        $body = 'Xin chào Đỗ Phương Nam, <br>
+
+Hồ sơ của Nam đã đạt đến vòng Phỏng vấn V1 của chúng tôi, <br>
+
+Chúng tôi rất hân hạnh được sắp xếp một buổi gặp gỡ với Nam để có thể trao đổi thêm về nội dung công việc, xin gửi đến Nam phiếu thông tin phỏng vấn, Nam hãy xác nhận khả năng có mặt theo ngày/ giờ/ địa điểm trong đường link dưới đây nhé: <br>
+
+→ $link <br>
+
+Hẹn gặp anh, <br>
+
+Trân trọng,<br><br>
+
+
+
+
+
+Dat Xanh Group Recruitment Specialist <br>
+27 Dinh Bo Linh Str., Ward 24, Binh Thanh Dist., HCM  City, Viet Nam <br>
+Tel: 08.62525252 Ext: 5083# | Fax: 08.62853896 | Mobile: 0914 191982 <br>
+Email : recruiter.dxg02@dxg.com.vn | Website : www.datxanh.vn <br>
+Fanpage: www.facebook.com/PhongnhansuDXG';
+
+
+        $link = '<a href="'.base_url().'admin/interview/invitationcard/0" >Lịch phỏng vấn V1 - Đỗ Phương Nam</a>';
+        $mail['emailbody'] = str_replace('$link',$link, $body);
+        $mail['toemail'] = 'namdophuong@gmail.com ';
+        $this->Mail_model->sendMail($mail);
+        echo "success";
+    }
+
+    public function sendMailTestAppointment1()
+    {
+        $mail['emailsubject']   = 'Thư mời Phỏng vấn - Đỗ Phương Nam - Vị trí: Giám đốc đầu tư - Dat Xanh Group';
+        $mail['cc']         = '';
+        $mail['bcc']        = '';
+        $mail['attachment']        = '';
+        $body = 'Xin chào Đỗ Phương Nam, <br>
+
+Bộ phận Tuyển dụng Dat Xanh Group xin gửi đến Đỗ Phương Nam lịch phỏng vấn ứng viên: Đỗ Phương Nam, vị trí ứng tuyển: Giám đốc đầu tư - Phỏng vấn V1 <br>
+→ $link1 <br>
+
+Anh vui lòng xác nhận ngày/ giờ/ địa điểm theo lịch trên và sử dụng phiếu đánh giá dưới đây để ghi nhận kết quả phỏng vấn <br>
+→ $link2 <br>
+
+Trân trọng,<br><br>
+
+
+
+
+
+Dat Xanh Group Recruitment Specialist <br>
+27 Dinh Bo Linh Str., Ward 24, Binh Thanh Dist., HCM  City, Viet Nam <br>
+Tel: 08.62525252 Ext: 5083# | Fax: 08.62853896 | Mobile: 0914 191982 <br>
+Email : recruiter.dxg02@dxg.com.vn | Website : www.datxanh.vn <br>
+Fanpage: www.facebook.com/PhongnhansuDXG';
+
+
+        $link1 = '<a href="'.base_url().'admin/interview/invitationcard/0" >Lịch phỏng vấn V1 - Đỗ Phương Nam</a>';
+        $link2 = '<a href="'.base_url().'admin/interview/interview_question/0/0" >Phiếu phỏng vấn V1 - Đỗ Phương Nam</a>';
+        $body = str_replace('$link1',$link1, $body);
+        $mail['emailbody'] = str_replace('$link2',$link2, $body);
+        $mail['toemail'] = 'namdophuong@gmail.com ';
+        $this->Mail_model->sendMail($mail);
+        echo "success";
+    }
+
+    public function sendMailTestOffer()
+    {
+        $mail['emailsubject']   = 'Thư mời Nhận việc - Vị trí: Giám đốc đầu tư - Dat Xanh Group';
+        $mail['cc']         = '';
+        $mail['bcc']        = '';
+        $mail['attachment']        = '';
+        $body = 'Xin chào Đỗ Phương Nam, <br>
+
+Chúng tôi xin thông báo đến anh Nam đã đạt phỏng vấn, <br>
+xin gửi đến Nam lời mời cộng tác cùng tập đoàn chúng tôi, Nam hãy xác nhận nội dung của thư mời nhận việc theo đường link dưới đây nhé:<br>
+
+→ $link <br>
+
+Mong sớm nhận được phản hồi từ anh, <br> 
+
+Trân trọng. <br> <br>
+
+
+Dat Xanh Group Recruitment Specialist <br>
+27 Dinh Bo Linh Str., Ward 24, Binh Thanh Dist., HCM  City, Viet Nam <br>
+Tel: 08.62525252 Ext: 5083# | Fax: 08.62853896 | Mobile: 0914 191982 <br>
+Email : recruiter.dxg02@dxg.com.vn | Website : www.datxanh.vn <br>
+Fanpage: www.facebook.com/PhongnhansuDXG';
+
+
+        $link = '<a href="'.base_url().'admin/multiplechoice/offer" >Thư mời nhận việc</a>';
+        $mail['emailbody'] = str_replace('$link',$link, $body);
+        $mail['toemail'] = 'namdophuong@gmail.com ';
+        $this->Mail_model->sendMail($mail);
+        echo "success";
+    }
+
 }
 ?>

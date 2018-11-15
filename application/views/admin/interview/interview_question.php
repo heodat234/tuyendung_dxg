@@ -588,21 +588,7 @@
 					<input type="hidden" name="interviewerid" value="<?php echo $interviewerid ?>">
 					<div class="row desc_as">
 						<label>Phiếu phỏng vấn</label>
-						<div class="col-md-12">
-							<div class="col-md-3 padding_0 manage_pv ql">
-	          					<div class="col-md-3 padding_0">
-	          						<img class="img-pv" src="<?php echo base_url() ?>public/image/bbye.jpg">
-	          					</div>
-	          					<div class="col-md-9 padding_0">
-	          						<div class="body-blac5a">Nguyễn Huy Hoàng</div>
-	          					</div>
-	          				</div>
-	          				<div class="pull-right">
-	          					<div class="btn_as">
-									<button onclick="changeAssessment()"><i class="fa fa-pencil fa-lg"></i></button>
-								</div>
-	          				</div>
-						</div>
+						
 					</div>
 					<div>
 						<div class="title_ques">A.	Kiến thức/ Kinh nghiệm/ Năng lực/ Sự phù hợp</div>

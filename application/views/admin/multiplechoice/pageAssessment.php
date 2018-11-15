@@ -16,7 +16,7 @@
 					<label>Người thực hiện: </label>
 				</div>
 				<div class="col-md-9 header_pro">
-					<?php echo $assessment['name'] ?>
+					<?php echo isset($assessment['name'])?$assessment['name'] : 'Đỗ Phương Nam' ?>
 				</div>
 			</div>
 			<div class="row" >
@@ -24,7 +24,7 @@
 					<label>Email: </label>
 				</div>
 				<div class="col-md-9 header_pro">
-					<?php echo $assessment['email'] ?>
+					<?php echo isset($assessment['email'])?$assessment['email'] : 'namdophuong@gmail.com' ?>
 				</div>
 			</div>
 			<div class="row" >
@@ -32,16 +32,16 @@
 					<label>Thời hạn hoàn thành: </label>
 				</div>
 				<div class="col-md-9 header_pro">
-					<?php echo date_format(date_create($assessment['duedate']),"H:i - d/m/Y") ?>
+					<?php echo isset($assessment['duedate'])?date_format(date_create($assessment['duedate']),"H:i - d/m/Y") : '20/11/2018' ?>
 				</div>
-				<input type="hidden" id="duedate" value="<?php echo date_format(date_create($assessment['duedate']),"F d Y H:i:s") ?>">
+				<input type="hidden" id="duedate" value="<?php echo isset($assessment['duedate'])? date_format(date_create($assessment['duedate']),"F d Y H:i:s") : '20/11/2018' ?>">
 			</div>
 		</div>
 		<div class="body_as">
 			<?php if ($check =='0'): ?>
 				<div class="row">
 					<div class="btn_as">
-						<button onclick="huyPhieu(<?php echo $assessment['asmtid'] ?>)"><i class="fa fa-trash-o fa-lg"></i></button>
+						<button onclick="huyPhieu(<?php echo isset($assessment['asmtid'])? $assessment['asmtid'] :'' ?>)"><i class="fa fa-trash-o fa-lg"></i></button>
 						<button><i class="fa fa-print fa-lg"></i></button>
 					</div>
 				</div>
@@ -56,7 +56,7 @@
 			<div class="row">
 				<div class="desc_as">
 					<label>Nội dung</label>
-					<?php if ($assessment['status'] != 'D'){ ?>
+					<?php if (isset($assessment['status']) && $assessment['status'] != 'D'){ ?>
 						<div class="time_as">
 							<p>Thời gian còn lại: <span class="countdown" data-date="November 11 2018 20:59:00">
 					            <span data-hours="">00</span>:<span data-minutes="">00</span>:<span data-seconds="">00</span></span>
@@ -166,7 +166,7 @@
 		})
 		.done(function() {
 			alert('Bạn đã hủy phiếu thành công');
-			location.href= "<?php echo base_url() ?>admin/campaign/round_1_2/<?php echo $assessment['roundid'] ?>/<?php echo $assessment['campaignid'] ?>";
+			location.href= "<?php echo base_url() ?>admin/campaign/round_1_2/<?php echo isset($assessment['roundid'])? $assessment['roundid'] :'0' ?>/<?php echo isset($assessment['campaignid'])? $assessment['campaignid'] :'0' ?>";
 		})
 		.fail(function() {
 			console.log("error");

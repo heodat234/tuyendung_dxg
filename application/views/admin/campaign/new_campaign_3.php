@@ -1102,13 +1102,6 @@
 
 	$('#saveRound').click(function(event) {
 		var campaignid = $('#campaignid_v3').val();
-		var count_round = $('#count_round').val();
-		for (var i = 1; i <= count_round ; i++) {
-			if ($('#manageround_'+i).val() == '') {
-				alert('Bạn chưa chọn người quản lý vòng '+i);
-				return;
-			}
-		}
 		
 		$.ajax({
 			url: '<?php echo base_url() ?>admin/campaign/saveRound',

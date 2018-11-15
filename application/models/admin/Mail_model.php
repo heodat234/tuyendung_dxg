@@ -30,7 +30,7 @@ class Mail_model extends CI_Model{
     public function sendMail($data='')
     {
         //cau hinh email va ten nguoi gui
-        $this->email->from('thanhhung23495@gmail.com', 'Lê Thanh Hưng');
+        $this->email->from('thanhhung23495@gmail.com', 'Đất xanh Group');
         //cau hinh nguoi nhan
         $this->email->to($data['toemail']);
         $this->email->cc(isset($data['cc'])? $data['cc'] : '');

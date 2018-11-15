@@ -1127,8 +1127,9 @@
     <div id="collapse2" class="panel-collapse collapse in">
       <div class="panel-body pad0">
       	<table class="width100">
-      		<?php foreach ($history as $row) { 
-      			$share = $rate = $comment = $icon = '';
+      		<?php 
+      		 foreach ($history as $row) { 
+      			$share = $rate = $comment = $icon = $interviewer ='';
       			if ($row['filename'] == '') {
       				$image = 'bbye.jpg';
       			}else{
@@ -1156,7 +1157,8 @@
 	      				$share = '<label class="colorgray fontArial show-view" >Hiện thị với tất cả mọi người</label>';
 	      			}
 	      			$comment = '<div class="col-xs-11"><p style="font-size: 14px">'.$row['comments'].'</p></div>';
-      			}else if(isset($row['actiontype'])){
+      			}
+      			if(isset($row['actiontype'])){
       				if ($row['actiontype'] == 'Trust') {
 	      				$fa = '<i class="fa fa-check-circle-o color-green size-icon"></i>';
 	      				$type = ' - '.$row['actionnote'].' - '.date_format(date_create($row['createddate']),"d/m/Y - H:i");
@@ -1202,30 +1204,34 @@
 	      			if ($row['isshare'] == 'Y'){
 	      				$share = '<label class="colorgray fontArial show-view" >Hiện thị với tất cả mọi người</label>';
 	      			}
-      			}else if (isset($row['asmtid'])) {
-      				if ($row['status'] == "") {
-      					$fa = '<a onclick="loadAssessment('.$row['candidateid'].','.$row['campaignid'].')"><i class="fa fa-file-text-o star-icon1"></i></a>';
-	      				$type = ' Tạo phiếu trắc nghiệm - '.date_format(date_create($row['createddate']),"d/m/Y - H:i");
-	      				$comment = '<div class="col-md-12">Trắc nghiệm kiến thức tổng quát </div><div class="color-sign-in">Trạng thái: Chưa thực hiện </div>';
-	      				$check = 1;
-      				}
-      				else if ($row['status'] == 'W') {
-      					$fa = '<a onclick="loadAssessment('.$row['candidateid'].','.$row['campaignid'].')"><i class="fa fa-file-text-o star-icon1"></i></a>';
+      			}
+      			if (isset($row['asmtid'])) {
+
+      				if ($row['status'] == 'W') {
+      					$fa = '<a onclick="loadAssessment('.$row['asmtid'].')"><i class="fa fa-file-text-o star-icon1"></i></a>';
 	      				$type = ' Tạo phiếu trắc nghiệm - '.date_format(date_create($row['createddate']),"d/m/Y - H:i");
 	      				$comment = '<div>Trắc nghiệm kiến thức tổng quát </div><div class="color-sign-in">Trạng thái: Đang thực hiện</div>';
 	      				$check = 1;
       				}
       				else if ($row['status'] == 'C') {
-      					$fa = '<a onclick="loadAssessment('.$row['candidateid'].','.$row['campaignid'].')"><i class="fa fa-file-text-o star-icon1"></i></a>';
+      					$fa = '<a onclick="loadAssessment('.$row['asmtid'].')"><i class="fa fa-file-text-o star-icon1"></i></a>';
 	      				$type = ' Tạo phiếu trắc nghiệm - '.date_format(date_create($row['createddate']),"d/m/Y - H:i");
 	      				$comment = '<div>Trắc nghiệm kiến thức tổng quát </div><div class="color-sign-in">Trạng thái: Hoàn thành </div>';
 	      				$check = 1;
       				}
       				else if ($row['status'] == 'D') {
-      					$fa = '<a onclick="loadAssessment('.$row['candidateid'].','.$row['campaignid'].')"><i class="fa fa-file-text-o star-icon1"></i></a>';
+      					$fa = '<a onclick="loadAssessment('.$row['asmtid'].')"><i class="fa fa-file-text-o star-icon1"></i></a>';
 	      				$type = ' Tạo phiếu trắc nghiệm - '.date_format(date_create($row['createddate']),"d/m/Y - H:i");
 	      				$icon = '<div class="pull-right"><i class="fa fa-trash-o fa-lg color-trash"></i></div>';
 	      				$comment = '<div>Trắc nghiệm kiến thức tổng quát </div><div class="color-sign-in">Trạng thái: Hủy phiếu - bởi '.$row['nameupdate'].' - '.date_format(date_create($row['lastupdate']),"d/m/Y - H:i").'</div>';
+	      				$check = 1;
+      				}else if ($row['status'] == 'N') {
+      					continue;
+      				}
+      				else {
+      					$fa = '<a onclick="loadAssessment('.$row['asmtid'].')"><i class="fa fa-file-text-o star-icon1"></i></a>';
+	      				$type = ' Tạo phiếu trắc nghiệm - '.date_format(date_create($row['createddate']),"d/m/Y - H:i");
+	      				$comment = '<div class="col-md-12">Trắc nghiệm kiến thức tổng quát </div><div class="color-sign-in">Trạng thái: Chưa thực hiện </div>';
 	      				$check = 1;
       				}
       				if ($row['isshare'] == 'Y'){
@@ -1351,7 +1357,7 @@
 		     	<input type="text" class="text-cmt width30" name="scorescmt" placeholder="Điểm số">
 		     </div>
 		     <div  class="padding-lr0 phu"></div>
-		     <label class="font-weight"><input type="checkbox"  class="mar-t-l10" name="sharecmt" value="Y"> Chia sẻ nhận xét/ Đánh giá này</label>
+		     <label class="font-weight"><input type="checkbox"  class="mar-t-l10" name="sharecmt" value="N"> Không chia sẻ nội dung này</label>
 		     <button type="submit" class="luu-cmt">Lưu</button>
       </div>
         </form>
@@ -1682,8 +1688,8 @@
 		parent.parent.$('#createMultiChoice').modal('show');
 	}
 
-	function loadAssessment(candidateid, campaignid) {
-		parent.parent.location.href ='<?php echo base_url() ?>admin/Multiplechoice/pageAssessment/'+candidateid+'/'+campaignid;
+	function loadAssessment(asmtid) {
+		parent.parent.location.href ='<?php echo base_url() ?>admin/Multiplechoice/pageAssessment/'+asmtid;
 	}
 	function createAppointment() {
 		parent.parent.$('.body_taopv').remove();

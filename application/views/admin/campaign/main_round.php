@@ -43,6 +43,13 @@
         	<li>
                <h5>Phụ trách vòng</h5>
             </li>
+            <?php if ($ql_tong != '') {
+             foreach ($ql_tong as $key) { ?>
+              <li>
+                <img src="<?php echo base_url() ?>public/image/bbye.jpg" alt="User Image" title="<?php echo $key['operatorname'] ?>">
+              </li>
+            <?php }} ?>
+            <li style="margin-top: 5px;"> - </li>
             <?php if ($manager != '') {
              foreach ($manager as $key) { ?>
               <li>

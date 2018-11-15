@@ -1215,7 +1215,7 @@
 		     	<input type="text" class="text-cmt width30" name="scorescmt" placeholder="Điểm số">
 		     </div>
 		     <div  class="padding-lr0 phu"></div>
-		     <label class="font-weight"><input type="checkbox"  class="mar-t-l10" name="sharecmt" value="Y"> Chia sẻ nhận xét/ Đánh giá này</label>
+		     <label class="font-weight"><input type="checkbox"  class="mar-t-l10" name="sharecmt" value="N"> Không chia sẻ nội dung này</label>
 		     <button type="submit" class="luu-cmt">Lưu</button>
       </div>
         </form>

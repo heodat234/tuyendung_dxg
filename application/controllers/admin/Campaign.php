@@ -86,6 +86,17 @@ class Campaign extends CI_Controller {
 	public function round_1_1($roundid='',$campaignid=''){
 		$match = array('campaignid' => $campaignid, );
 		$data['campaigns'] 		=	$this->Data_model->selectTable('reccampaign',$match);
+		$ql = trim($data['campaigns'][0]['managecampaign'],',');
+		$ql = explode(',', $ql);
+		if ($ql[0] == '') {
+			$c_data['ql_tong'] = '';
+		}else{
+			$join[0]  = array('table' => 'document', 'match' => 'operator.operatorid = document.referencekey' );
+			foreach ($ql as $key =>$value) {
+				$match = array('operatorid' => $value );
+				$c_data['ql_tong'][$key] =($this->Data_model->select_join("operator.operatorid,operator.operatorname,document.filename",$match,'operator',$join))[0];
+			}
+		}
 		if ($roundid != 0) {
 			$data['src'] = base_url().'admin/campaign/list_profile/'.$campaignid.'/'.$roundid.'/';
 
@@ -133,6 +144,17 @@ class Campaign extends CI_Controller {
 		$match = array('campaignid' => $campaignid, );
 		$data['campaigns'] 		=	$this->Data_model->selectTable('reccampaign',$match);
 
+		$ql = trim($data['campaigns'][0]['managecampaign'],',');
+		$ql = explode(',', $ql);
+		if ($ql[0] == '') {
+			$c_data['ql_tong'] = '';
+		}else{
+			$join[0]  = array('table' => 'document', 'match' => 'operator.operatorid = document.referencekey' );
+			foreach ($ql as $key =>$value) {
+				$match = array('operatorid' => $value );
+				$c_data['ql_tong'][$key] =($this->Data_model->select_join("operator.operatorid,operator.operatorname,document.filename",$match,'operator',$join))[0];
+			}
+		}
 		$c_data['bien'] 			= $roundid;
 		$c_data['campaignid']		= $campaignid;
 		$match = array('campaignid' => $campaignid, );
@@ -266,9 +288,11 @@ class Campaign extends CI_Controller {
 	        $type = array('Talent','Nottalent','Trust','Block');
 	        $history_profile1 = $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename',array('tb.candidateid'=>$id, 'tb.campaignid' => 0),'','profilehistory tb',$join,'',$orderby,'','');
 	        $history_profile2 = $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','profilehistory tb',$join,'',$orderby,'','');
+
 	        $join[2] = array('table'=> 'operator c','match' =>'tb.updatedby = c.operatorid');
-	        $history_profile3 = $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','assessment tb',$join,'',$orderby,'','');
-	        $history_profile4 = $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','interview tb',$join,'',$orderby,'','');
+	        $orderby1 = array('colname'=>'tb.lastupdate','typesort'=>'desc');
+	        $history_profile3 = $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','assessment tb',$join,'',$orderby1,'','');
+	        $history_profile4 = $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','interview tb',$join,'',$orderby1,'','');
 	        for ($i=0; $i < count($history_profile4); $i++) { 
 	        	$join1[0] = array('table'=> 'operator','match' =>'tb.interviewer = operator.operatorid');
 	        	$join1[1] = array('table'=> 'document','match' =>'tb.interviewer = document.referencekey');
@@ -283,7 +307,7 @@ class Campaign extends CI_Controller {
 	            }
 	            return ($a['createddate'] < $b['createddate']) ? 1 : -1;
 	        }
-	       //  uasort($this->data2['history'], 'cmp');
+	        uasort($this->data2['history'], 'cmp');
 	       //  echo "<pre>";
         // print_r($this->data2['history']);
         // echo "</pre>";exit;
@@ -815,7 +839,7 @@ class Campaign extends CI_Controller {
     	$mail['emailsubject'] 	= $frm['subject'];
     	$mail['cc'] 		= $frm['cc'];
     	$mail['bcc'] 		= $frm['bcc'];
-    	$body 				= $frm['body'];
+    	$body 				= $frm['body1'];
 
     	$fileattach = $this->upload_files('public/document/',$_FILES['attach']);
     	$mail["attachment"] = $fileattach;
@@ -838,17 +862,17 @@ class Campaign extends CI_Controller {
 	            $data['createdby']   = $this->session->userdata('user_admin')['operatorid'];
 	            $this->Data_model->insert('assessment',$data);
 
-	            //mail
-	            $link = '<a href="'.base_url().'admin/Multiplechoice/pageAssessment/'.$key[0].'/'.$id.'/1" >Trắc nghiệm kiến thức tổng quát - '.$key[1].'</a>';
-        		$body = str_replace('$name',$key[1], $body);
-        		$body = str_replace('$note',$key[4], $body);
-        		$mail['emailbody'] = str_replace('$link',$link, $body);
-        		$mail['toemail'] = $list_to[$i];
-        		$this->Mail_model->sendMail($mail);
+	         //    //mail
+	         //    $link = '<a href="'.base_url().'admin/Multiplechoice/pageAssessment/'.$key[0].'/'.$id.'/1" >Trắc nghiệm kiến thức tổng quát - '.$key[1].'</a>';
+        		// $body = str_replace('$name',$key[1], $body);
+        		// $body = str_replace('$note',$key[4], $body);
+        		// $mail['emailbody'] = str_replace('$link',$link, $body);
+        		// $mail['toemail'] = $list_to[$i];
+        		// $this->Mail_model->sendMail($mail);
 
-        		$mail["attachment"] = json_encode($fileattach);
-        		$mail['fromemail'] = $this->session->userdata('user_admin')['email'];
-        		$this->Mail_model->insert('mailtable',$mail);
+        		// $mail["attachment"] = json_encode($fileattach);
+        		// $mail['fromemail'] = $this->session->userdata('user_admin')['email'];
+        		// $this->Mail_model->insert('mailtable',$mail);
         		$i++;
         	}            
         }
@@ -858,16 +882,21 @@ class Campaign extends CI_Controller {
     public function cancleAssessment()
     {
     	$frm = $this->input->post();
-    	$assessment = ($this->Campaign_model->select("asmttemp,candidateid,campaignid,roundid,duedate,createdby,createddate",'assessment',array('asmtid' => $frm['asmtid']),''))[0];
+    	$match = array('asmtid' => $frm['asmtid']);
     	$assessment['status'] 	= 'D';
     	if (isset($frm['isshare'])) {
     		$assessment['isshare'] 	= $frm['isshare'];
     	}
         $assessment['updatedby']   = $this->session->userdata('user_admin')['operatorid'];
-        $this->Data_model->insert('assessment',$assessment);
+        $this->Data_model->update('assessment',$match,$assessment);
         echo json_encode(1);
     }
 
     
+    public function iframeInfo()
+    {
+    	$data['temp'] 	= $this->load->view('admin/campaign/content_iframe_info',null,true);
+		$this->load->view('admin/home/master',$data);
+    }
 }
 ?>
