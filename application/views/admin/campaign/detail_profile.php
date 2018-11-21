@@ -8,6 +8,7 @@
 <input type="hidden" id="candidatename" value="<?php echo $candidate['name']?>">
 <input type="hidden" id="candidateimage" value="<?php echo $candidate['imagelink']?>">
 <input type="hidden" id="candidateemail" value="<?php echo $candidate['email']?>">
+<input type="hidden" id="manageround" value="<?php echo $manageround?>">
 <div style="background-color: white">
 	<div class="row rowedit">
 		<div class="col-md-6 col-xs-6">
@@ -1225,8 +1226,6 @@
 	      				$icon = '<div class="pull-right"><i class="fa fa-trash-o fa-lg color-trash"></i></div>';
 	      				$comment = '<div>Trắc nghiệm kiến thức tổng quát </div><div class="color-sign-in">Trạng thái: Hủy phiếu - bởi '.$row['nameupdate'].' - '.date_format(date_create($row['lastupdate']),"d/m/Y - H:i").'</div>';
 	      				$check = 1;
-      				}else if ($row['status'] == 'N') {
-      					continue;
       				}
       				else {
       					$fa = '<a onclick="loadAssessment('.$row['asmtid'].')"><i class="fa fa-file-text-o star-icon1"></i></a>';
@@ -1608,25 +1607,35 @@
 			
 			var option = '';
 			for(var i in data){
-				if (data[i]['roundid'] == new_round) {
-					option += '<option value="'+data[i]['roundid']+'" selected >'+data[i]['roundname']+'</option>';
+				if(data[i]['roundtype'] == 'Profile'){
+					continue;
 				}else{
-					option += '<option value="'+data[i]['roundid']+'">'+data[i]['roundname']+'</option>';
+					if (data[i]['roundid'] == new_round) {
+						option += '<option value="'+data[i]['roundid']+'" selected >'+data[i]['roundname']+'</option>';
+					}else{
+						option += '<option value="'+data[i]['roundid']+'">'+data[i]['roundname']+'</option>';
+					}
 				}
 			}
-			var row ='';
+			var row = to_mail = '';
 			for (var i = 2; i < form.length; i++) {
 				var name = $('#candidatename').val();
 				var avatar = $('#candidateimage').val();
+				var email = $('#candidateemail').val();
 				row += '<div class="col-xs-4 candidate_chuyen"><div><img src="<?php echo base_url() ?>public/image/'+avatar+'" class="img_chuyen"></div><label>'+name+'</label></div><input type="hidden" name="id[]" value="'+form[i].value+'">';
+				to_mail += email ;
 			}
 			if (type == 1) {
+				parent.parent.$('#email_to_tran').val(to_mail);
+				parent.parent.$('#email_cc_tran').val($('#manageround').val());
 				parent.parent.$('#campaignid_tran').val(campaignid);
 				parent.parent.$('#body_chuyen').append(row);
 				parent.parent.$('.select_chuyen').append(option);
 				parent.$('.select_chuyen').find('option [value="'+new_round+'"]').attr('selected', true);
 				parent.parent.$('#transferHS').modal('show');
 			}else{
+				parent.parent.$('#email_to_dis').val(to_mail);
+				parent.parent.$('#email_cc_dis').val($('#manageround').val());
 				parent.parent.$('#campaignid_dis').val(campaignid);
 				parent.parent.$('#body_loai').append(row);
 				parent.parent.$('#roundid').val(roundid);
@@ -1670,9 +1679,14 @@
 		for (var i = 2; i < form.length; i++) {
 			var name = $('#candidatename').val();
 			var avatar = $('#candidateimage').val();
-			row += '<div class="body_cam col-xs-12 body_chuyen body_taophieu" ><div class="row"><div class="col-md-3 box_profile_tn"><div class="profile_tn">';
-            row += '<img src="<?php echo base_url() ?>public/image/'+avatar+'"><p class="guide-black">'+name+'</p><input type="hidden" name="profile_'+k+'[]" value="'+form[i].value+'"><input type="hidden" name="profile_'+k+'[]" value="'+name+'"></div></div>';       
-            row += '<div class="col-md-9 border_left_ddd"><div class="rowedit2"><div class="col-xs-3 body-blac4">Mẫu phiếu trắc nghiệm: </div><div class="col-xs-8"><select class="js-example-basic-2" name="profile_'+k+'[]" required="" id="select_status1" style="width: 100%"><option value="1">Trắc nghiệm kiến thức tổng quát</option><option value="2">Trắc nghiệm kiến thức chuyên môn</option></select></div></div><div class="rowedit2"><div class="col-xs-3 body-blac4">Thời hạn hoàn thành:</div><div class="col-xs-8"><input class="kttext datepicker" type="text"  name="profile_'+k+'[]" value="<?php echo date_format(date_create(),"d/m/Y h:i")  ?>"></div></div><div class="rowedit3"><div class="col-xs-3 body-blac4">Ghi chú:</div><div class="col-xs-8"><textarea name="profile_'+k+'[]" class="textarea_profile" rows="3" required=""></textarea></div></div></div></div></div>';
+			row += '<div class="body_cam col-xs-12 body_chuyen body_taophieu" ><div class="row"><div class="col-md-3 box_profile_tn"><div class="profile_tn"><input type="hidden" name="profile_'+k+'[]" value="'+form[i].value+'">';
+            row += '<img src="<?php echo base_url() ?>public/image/'+avatar+'"><p class="guide-black">'+name+'</p></div></div>';       
+            row += '<div class="col-md-9 border_left_ddd"><div class="rowedit2"><div class="col-xs-3 body-blac4">Mẫu phiếu trắc nghiệm: </div><div class="col-xs-8"><select class="js-example-basic-2" name="profile_'+k+'[]" required="" style="width: 100%">';
+            <?php foreach ($asmt_tn as $key): ?>
+            	row += '<option value="<?php echo $key['asmttemp'] ?>"><?php echo $key['asmtname'] ?></option>';
+            <?php endforeach ?>
+            row += '</select></div></div>';
+            row += '<div class="rowedit2"><div class="col-xs-3 body-blac4">Thời hạn hoàn thành:</div><div class="col-xs-8"><input class="kttext datepicker" type="text"  name="profile_'+k+'[]" value="<?php echo date_format(date_create(),"d/m/Y h:i")  ?>"></div></div><div class="rowedit3"><div class="col-xs-3 body-blac4">Ghi chú:</div><div class="col-xs-8"><textarea name="profile_'+k+'[]" class="textarea_profile" rows="3" required=""></textarea></div></div></div></div></div>';
             if (email == '') {
             	email += $('#candidateemail').val();
             }else{
@@ -1682,14 +1696,14 @@
             k = Number(k)+1;
 		}
 		parent.parent.$('#profile_taophieu').prepend(row);
-		parent.parent.$('#email_to_tn').val(email);
+		parent.parent.$('#email_to_tn_1').val(email);
 		parent.parent.$('#campaignid_tn').val(campaignid);
 		parent.parent.$('#roundid_tn').val(roundid);
 		parent.parent.$('#createMultiChoice').modal('show');
 	}
 
 	function loadAssessment(asmtid) {
-		parent.parent.location.href ='<?php echo base_url() ?>admin/Multiplechoice/pageAssessment/'+asmtid;
+		parent.parent.location.href ='<?php echo base_url() ?>admin/campaign/pageAssessment/'+asmtid+'/0';
 	}
 	function createAppointment() {
 		parent.parent.$('.body_taopv').remove();
@@ -1710,13 +1724,17 @@
             row += '<div class="rowedit2"><div class="col-xs-3 body-blac4">Địa điểm:</div><div class="col-xs-8"><input class="kttext width_100" type="text" name="profile_'+k+'[]"></div></div>';             
             row += '<div class="rowedit3"><div class="col-xs-3 body-blac4">Nội dung:</div><div class="col-xs-8"><textarea name="profile_'+k+'[]" class="textarea_profile" rows="3" required=""></textarea></div></div>';              
             row += '<div class="rowedit3"><div class="col-xs-3 body-blac4">Người phỏng vấn:</div><div class="col-xs-8"><div class="col-xs-6 manage_pv" id="col_add_pt_'+k+'"><div ><img src="<?php echo base_url() ?>public/image/unknow.jpg"><a href="javascript:void(0)" class="add_pt" onclick="insertPV('+k+')"><span>Thêm người phỏng vấn</span></a></div></div></div><input type="hidden" id="managePV_'+k+'" name="profile_'+k+'[]"></div>';          
-            row += '<div class="rowedit2"><div class="col-xs-3 body-blac4">Phiếu phỏng vấn:</div><div class="col-xs-8"><select class="js-example-basic-2" name="profile_'+k+'[]" required="" style="width: 100%"><option id="option_ass'+k+'" value="">Chọn phiếu phỏng vấn</option></select></div></div>';          
+            row += '<div class="rowedit2"><div class="col-xs-3 body-blac4">Phiếu phỏng vấn:</div><div class="col-xs-8"><select class="js-example-basic-2" name="profile_'+k+'[]" required="" style="width: 100%">';
+            <?php foreach ($asmt_pv as $key): ?>
+            	row += '<option value="<?php echo $key['asmttemp'] ?>"><?php echo $key['asmtname'] ?></option>';
+            <?php endforeach ?>
+            row += '</select></div></div>';          
             row += '<div class="rowedit2"><div class="col-xs-3 body-blac4">Người phụ trách phiếu:</div><div class="col-xs-8"><select class="js-example-basic-2" name="profile_'+k+'[]" required="" style="width: 100%"><option id="option_'+k+'" value="">Chọn người phụ trách</option></select></div></div></div></div></div>';         
                     
           	if (email == '') {
-            	email += name+'('+$('#candidateemail').val()+')';
+            	email += $('#candidateemail').val();
             }else{
-            	email += ', '+name+'('+$('#candidateemail').val()+')';
+            	email += ', '+$('#candidateemail').val();
             }
             parent.parent.$('#count_candidate_pv').val(k);
             k = Number(k)+1;
@@ -1752,7 +1770,7 @@
             row += '<div class="col-md-9 border_left_ddd"><div class="row"><div class="col-md-3 "><span>Ngày nhận việc</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 datetimepicker" name="profile_'+k+'[]" value="<?php echo date_format(date_create(),"d/m/Y") ?>"></div></div>';
             row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Thời gian thử việc</span></div><div class="col-md-9 padding_0"><div class="col-md-6 padding_0"><input type="text"  name="profile_'+k+'[]"></div><div class="col-md-6"><input type="text"  name="" value="Tháng" readonly=""></div></div></div>';          
             row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Địa điểm</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90"  name="profile_'+k+'[]"></div></div>';             
-            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Chế độ làm việc</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90" name="profile_'+k+'[]"></div></div>';              
+            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Chế độ làm việc</span></div><div class="col-md-9 padding_0"><select class="js-example-basic-2" name="profile_'+k+'[]" required="" style="width: 100%"><option value="">Toàn thời gian</option><option value="">Bán thời gian</option></select></div></div>';              
             row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Người hướng dẫn</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90" name="profile_'+k+'[]"></div></div>';          
             row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Báo cáo cho</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90" name="profile_'+k+'[]"></div></div>';          
             row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Mức lương thử việc</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90" name="profile_'+k+'[]"></div></div>';              
@@ -1760,9 +1778,9 @@
             row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phụ cấp</span></div><div class="col-md-9 padding_0"><textarea rows="3" class="width_90 textarea_profile" name="profile_'+k+'[]"></textarea></div></div></div></div></div>';           
                   
           	if (email == '') {
-            	email += name+'('+$('#candidateemail').val()+')';
+            	email += $('#candidateemail').val();
             }else{
-            	email += ', '+name+'('+$('#candidateemail').val()+')';
+            	email += ', '+$('#candidateemail').val();
             }
             parent.parent.$('#count_candidate_offer').val(k);
             k = Number(k)+1;

@@ -20,16 +20,16 @@
               </div>
             </div>
             <div class="col-xs-12 body_chuyen_2">
-              <label class="label_chon"><input type="checkbox" id="checkmail_1"> Gửi email thông báo</label>
+              <label class="share_chuyen"><input type="checkbox" onclick="checkbox(this)" name="checkmail" value="1">  Gửi email thông báo</label>
             </div>
-            <div id="mail_composer_1" >
+            <div class="hide" id="check_mail1">
               <div class="col-xs-12 body_chuyen_1">
                 <div class="rowedit2">
                         <div class="col-xs-1 guide-black cc">
                           Gửi đến:
                         </div>
                         <div class="col-xs-11">
-                          <input class="kttext width_100" type="text" id="email_to_tn" name="to" value="">
+                          <input class="kttext width_100" type="text" id="email_to_tran" name="to" value="">
                         </div>
                 </div>
                 <div class="rowedit2">
@@ -37,7 +37,7 @@
                           Cc:
                         </div>
                         <div class="col-xs-11">
-                          <input class="kttext width_100" type="text" name="cc" value="">
+                          <input class="kttext width_100" type="text" name="cc" id="email_cc_tran">
                         </div>
                 </div>
                 <div class="rowedit2">
@@ -55,7 +55,7 @@
                           Mẫu thư:
                         </div>
                         <div class="col-xs-7">
-                          <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,5)">
+                          <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,5)" style="width: 50%">
                               <option value="">Chọn mẫu thư</option>
                             <?php foreach ($mailtemplate as $row): ?>
                               <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
@@ -103,7 +103,7 @@
             <input type="hidden" name="campaignid" id="campaignid_tran" value="">
           </div>
           <div class="modal-footer modal_footer_cam">
-            <label class="share_chuyen"><input type="checkbox" name=""> Không chia sẻ nội dung này</label>
+            <label class="share_chuyen"><input type="checkbox" name="isshare" value="Y"> Không chia sẻ nội dung này</label>
             <button type="button" class="btn btn_thoat btn_thoat1" data-dismiss="modal">Hủy</button>
             <button type="button" class="btn btn_tt btn_tt1" id="saveTransfer" data-dismiss="modal">Lưu</button>
           </div>
@@ -133,16 +133,16 @@
               </div>
             </div>
             <div class="col-xs-12 body_chuyen_2">
-              <label class="label_chon"><input type="checkbox" name=""> Gửi email thông báo</label>
+              <label class="share_chuyen"><input type="checkbox" onclick="checkbox(this)" name="checkmail" value="2">  Gửi email thông báo</label>
             </div>
-            <div id="mail_composer_2" >
+            <div class="hide" id="check_mail2">
               <div class="col-xs-12 body_chuyen_1">
                 <div class="rowedit2">
                         <div class="col-xs-1 guide-black cc">
                           Gửi đến:
                         </div>
                         <div class="col-xs-11">
-                          <input class="kttext width_100" type="text" id="email_to_tn" name="to" value="">
+                          <input class="kttext width_100" type="text" id="email_to_dis" name="to" value="">
                         </div>
                 </div>
                 <div class="rowedit2">
@@ -150,7 +150,7 @@
                           Cc:
                         </div>
                         <div class="col-xs-11">
-                          <input class="kttext width_100" type="text" name="cc" value="">
+                          <input class="kttext width_100" type="text" name="cc" id="email_cc_dis">
                         </div>
                 </div>
                 <div class="rowedit2">
@@ -244,7 +244,7 @@
                         Gửi đến:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" id="email_to_tn" name="to" value="">
+                        <input class="kttext width_100" type="text" id="email_to_tn_1" name="to" value="">
                       </div>
               </div>
               <div class="rowedit2">
@@ -270,7 +270,7 @@
                         Mẫu thư:
                       </div>
                       <div class="col-xs-7">
-                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,1)">
+                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,1)" style="width: 50%">
                             <option value="">Chọn mẫu thư</option>
                           <?php foreach ($mailtemplate as $row): ?>
                             <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
@@ -375,7 +375,7 @@
                         Cc:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100" type="text"  name="cc1" >
+                        <input class="kttext width_100" type="text"  name="cc_1" >
                       </div>
               </div>
               <div class="rowedit2">
@@ -383,7 +383,7 @@
                         Bcc:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" id="email_bcc_pv1" name="bcc1" >
+                        <input class="kttext width_100" type="text" id="email_bcc_pv1" name="bcc_1" >
                       </div>
               </div>
             </div>
@@ -394,7 +394,7 @@
                         Mẫu thư:
                       </div>
                       <div class="col-xs-7">
-                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,2)">
+                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,2)" style="width: 50%">
                             <option value="">Chọn mẫu thư</option>
                           <?php foreach ($mailtemplate as $row): ?>
                             <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
@@ -456,7 +456,7 @@
                         Cc:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100" type="text"  name="cc2" >
+                        <input class="kttext width_100" type="text"  name="cc_2" >
                       </div>
               </div>
               <div class="rowedit2">
@@ -464,7 +464,7 @@
                         Bcc:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100"  type="text" name="bcc2" >
+                        <input class="kttext width_100"  type="text" name="bcc_12" >
                       </div>
               </div>
             </div>
@@ -475,7 +475,7 @@
                         Mẫu thư:
                       </div>
                       <div class="col-xs-7">
-                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,3)">
+                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,3)" style="width: 50%">
                             <option value="">Chọn mẫu thư</option>
                           <?php foreach ($mailtemplate as $row): ?>
                             <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
@@ -580,7 +580,7 @@
                         Mẫu thư:
                       </div>
                       <div class="col-xs-7">
-                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,4)">
+                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,4)" style="width: 50%">
                             <option value="">Chọn mẫu thư</option>
                           <?php foreach ($mailtemplate as $row): ?>
                             <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
@@ -683,7 +683,7 @@
         <p id="titleDatasource">Nguồn dữ liệu: Nghiệp vụ chiến dịch</p>
         <div class="contentDatasourceSubject">
           <input type="hidden" id="check">
-        <a class="suggest-field" onclick="getField(this)">Ứng viên</a><a class="suggest-field" onclick="getField(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getField(this)">Tên</a><a class="suggest-field" onclick="getField(this)">Vị trí tuyển dụng</a><a class="suggest-field" onclick="getField(this)">Prefix</a><a class="suggest-field" onclick="getField(this)">Link phiếu trắc nghiệm</a>
+        <a class="suggest-field" onclick="getField(this)">Tên Ứng viên</a><a class="suggest-field" onclick="getField(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getField(this)">Tên</a><a class="suggest-field" onclick="getField(this)">Vị trí</a><a class="suggest-field" onclick="getField(this)">Vòng phỏng vấn</a><a class="suggest-field" onclick="getField(this)">Link phiếu trắc nghiệm</a><a class="suggest-field" onclick="getField(this)">Link phiếu mời tham dự phỏng vấn</a><a class="suggest-field" onclick="getField(this)">Link phiếu đánh giá</a><a class="suggest-field" onclick="getField(this)">Ghi chú</a>
       </div>
       </div>
     </div>
@@ -727,6 +727,14 @@
   
 </style>
 <script type="text/javascript">
+  function checkbox(id) {
+    var i = id.value;
+    if ($(id).prop('checked')) {
+      $('#check_mail'+i).removeClass('hide');
+    }else{
+      $('#check_mail'+i).addClass('hide');
+    }
+  }
   $(document).ready(function(){
       $('.browsebutton1 :file').change(function(e){
           $('#my-file-selector1').val();
@@ -775,13 +783,6 @@
         timepicker:false,
         format:'d/m/Y',
       });
-
-      // $('#mail_composer_1').addClass('hide');
-      if (!$('#checkmail_1').prop('checked')) {
-        console.log('111');
-      }else{
-        console.log('222');
-      }
       
   });
   $(document).on('click', '.datetimepicker', function() {
@@ -802,7 +803,9 @@
       url: '<?php echo base_url()?>admin/campaign/transfer/1',
       type: 'POST',
       dataType: 'json',
-      data: $('#formTransfer').serialize(),
+      data: new FormData($('#formTransfer')[0]),
+      contentType: false,
+      processData: false
     })
     .done(function(data) {
       if (data == 1) {
@@ -822,7 +825,10 @@
       url: '<?php echo base_url()?>admin/campaign/transfer/0',
       type: 'POST',
       dataType: 'json',
-      data: $('#formDiscard').serialize(),
+      data: new FormData($('#formDiscard')[0]),
+      contentType: false,
+      processData: false
+
     })
     .done(function(data) {
       if (data == 1) {
@@ -849,6 +855,9 @@
     }
   }
   $('#saveMChoice').click(function(event) {
+    for (instance in CKEDITOR.instances) {
+        CKEDITOR.instances[instance].updateElement();
+    }
     $.ajax({
       url: '<?php echo base_url()?>admin/campaign/saveAssessment',
       type: 'POST',
@@ -900,7 +909,7 @@
   function subPV(i) {
     $('#body_cam_pt_'+i).remove();
   }
-  function subColPV(id,roundid,name) {
+  function subColPV(id,roundid) {
     $('#col_pt_'+id).remove();
     var manageround = $('#managePV_'+roundid).val();
     manageround1 = manageround.replace(id+',', '');
@@ -910,7 +919,7 @@
     operator = (JSON.parse(operator));
     for(var j in operator ){
       if (id == operator[j]['operatorid']) { 
-        var temp = operator[j]['operatorname']+'('+operator[j]['email']+')';
+        var temp = operator[j]['email'];
         var listmail = $('#email_to_pv2').val();
         listmail1 = listmail.replace(temp+',', '');
         $('#email_to_pv2').val(listmail1);
@@ -939,9 +948,8 @@
           row += '<span class="body-blac4">'+operator[j]['operatorname']+'</span></div>';
           $('#col_add_pt_'+roundid).before(row);
 
-          var temp = operator[j]['operatorname']+'('+operator[j]['email']+')';
+          var temp = operator[j]['email'];
             email += temp+', ';
-          
         } 
       }
       str += data[i].value + ',';                     
@@ -971,6 +979,9 @@
   });
 
   $('#saveAppointment').click(function(event) {
+    for (instance in CKEDITOR.instances) {
+        CKEDITOR.instances[instance].updateElement();
+    }
     $.ajax({
       url: '<?php echo base_url()?>admin/interview/saveAppointment',
       type: 'POST',
@@ -995,6 +1006,9 @@
   });
 
   $('#saveOffer').click(function(event) {
+    for (instance in CKEDITOR.instances) {
+        CKEDITOR.instances[instance].updateElement();
+    }
     $.ajax({
       url: '<?php echo base_url()?>admin/interview/saveOffer',
       type: 'POST',

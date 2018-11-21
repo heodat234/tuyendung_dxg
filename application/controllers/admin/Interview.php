@@ -86,8 +86,8 @@ class Interview extends CI_Controller {
             $this->data2['interview']['position'] = 'Giám đốc đầu tư';
             $this->data2['interviewerid'] = $interviewerid;
             $id = 1;
-            $campaignid = 1;
-            $roundid = 1;
+            $campaignid = 2;
+            $roundid = 3;
         }
 
 		$this->data2['campaignid'] 	= $campaignid;
@@ -177,8 +177,8 @@ class Interview extends CI_Controller {
     	$mail = array();
     	$intdate 			= $frm['intdate'];
     	$campaignid 		= $frm['campaignid'];
-    	$round 		= $frm['roundid'];
-    	$count 		= $frm['count'];
+    	$roundid 		    = $frm['roundid'];
+    	$count 		        = $frm['count'];
     	if (isset($frm['private'])) {
     		$data['private'] = $private; 
     		unset($frm['private']);
@@ -191,30 +191,31 @@ class Interview extends CI_Controller {
     	$mail = array();
     	for ($k=1; $k <= 2 ; $k++) { 
             $a = $k+1;
-    		$to[$k] = explode(',',$frm['to'.$k]);
-    		$mail[$k]['emailsubject'] 	= $frm['subject'.$k];
-	    	$mail[$k]['cc'] 		= $frm['cc'.$k];
-	    	$mail[$k]['bcc'] 		= $frm['bcc'.$k];
-	    	$body[$k] 				= $frm['body'.$a];
+    		$to[$k]                 = explode(',',$frm['to'.$k]);
+    		$subject[$k]            = $frm['subject'.$k];
+	    	$cc[$k] 		        = $frm['cc_'.$k];
+	    	$bcc[$k] 		        = $frm['bcc_'.$k];
+	    	$body[$k] 				= html_entity_decode($frm['body'.$a]);
 
-	    	// $fileattach = $this->upload_files('public/document/',$_FILES['attach'.$k]);
-            // $mail$k]["attachment"] = $fileattach;
-	    	unset($frm['to'.$k]);
-	    	unset($frm['subject'.$k]);
-	    	unset($frm['cc'.$k]);
-	    	unset($frm['bcc'.$k]);
-	    	unset($frm['body'.$a]);
     	}
+        $mail['attachment']     =  '';
+        $fileattach_1 = $this->upload_files('public/document/',$_FILES['attach1']);
+        $fileattach_2 = $this->upload_files('public/document/',$_FILES['attach2']);
+
+        $roundname = ($this->Campaign_model->select("roundname",'recflow',array('campaignid' => $campaignid,'roundid' => $roundid),''))[0]['roundname'];
+        $position = ($this->Campaign_model->select("position",'reccampaign',array('campaignid' => $campaignid),''))[0]['position'];
+
+        $interviewid = array();
+        $notes = array();
     	for ($j=1; $j <= $count; $j++) { 
-    		$i =0;
     		$key = $frm['profile_'.$j];
 
     		//lưu phiếu mời phỏng vấn ứng viên
     		$a_data['asmttemp']				= '1';
     		$a_data['candidateid']			= $key[0];
     		$a_data['campaignid']			= $campaignid;
-    		$a_data['roundid']				= $round;
-            $a_data['status']               = 'N';
+    		$a_data['roundid']				= $roundid;
+            $a_data['sysform']              = 'N';
     		$asmtid = $this->Data_model->insert('assessment',$a_data);
 
     		//lưu phiếu đánh giá cho tuyển dụng viên
@@ -222,14 +223,14 @@ class Interview extends CI_Controller {
     		$a_data['candidateid']			= $key[0];
     		$a_data['pic']					= $key[9];
     		$a_data['campaignid']			= $campaignid;
-    		$a_data['roundid']				= $round;
-            $a_data['status']               = 'N';
+    		$a_data['roundid']				= $roundid;
+            $a_data['sysform']              = 'N';
     		$scr_asmtid = $this->Data_model->insert('assessment',$a_data);
 
     		//save interview
     		$data['candidateid'] 	= $key[0];
             $data['campaignid'] 	= $campaignid;
-            $data['roundid'] 		= $round;
+            $data['roundid'] 		= $roundid;
             $data['intdate']		= date('Y-m-d',strtotime(str_replace('/', '-', $intdate)));
             $timefrom 				= $intdate.' '.$key[3];
             $timeto 				= $intdate.' '.$key[4];
@@ -240,28 +241,13 @@ class Interview extends CI_Controller {
             $data['notes']			= $key[6];
             $data['inv_asmtid']		= $asmtid;
             $data['createdby']   	= $this->session->userdata('user_admin')['operatorid'];
-            $interviewid = $this->Data_model->insert('interview',$data);
+            $interviewid[$j]        = $this->Data_model->insert('interview',$data);
 
-            //mail interview
-
-      //       array_push($mail, $key[10]);
-
-      //       $roundname = ($this->Campaign_model->select("roundname",'recflow',array('campaignid' => $campaignid,'roundid' => $round),''))[0]['roundname'];
-      //       $email_candidate = ($this->Campaign_model->select("email",'candidate',array('candidateid' => $key[0]),''))[0]['email'];
-      //       $link = '<a href="'.base_url().'admin/Multiplechoice/invitationcard/'.$interviewid.'/" >Lịch '.$roundname.' - '.$key[1].'</a>';
-    		// $body[1] = str_replace('$name',$key[1], $body[1]);
-    		// $body[1] = str_replace('$note',$key[6], $body[1]);
-    		// $body[1] = str_replace('$round',$roundname, $body[1]);
-    		// $mail[1]['emailbody'] = str_replace('$link',$link, $body[1]);
-    		// $mail[1]['toemail'] = $email_candidate;
-    		// $this->Mail_model->sendMail($mail[1]);
-    		// $mail[1]['fromemail'] = $this->session->userdata('user_admin')['email'];
-    		// $this->Mail_model->insert('mailtable',$mail[1]);
-
-
+            $notes[$j]              = $key[6];
     		//interviewer
-    		$link2 = '';
+    		$link1 = '';
     		$interviewer = explode(',',$key[7]);
+
     		foreach ($interviewer as $row) {
     			if ($row == '') {
     				continue;
@@ -271,43 +257,82 @@ class Interview extends CI_Controller {
 	    		$a_data['candidateid']			= $key[0];
 	    		$a_data['pic']					= $row;
 	    		$a_data['campaignid']			= $campaignid;
-	    		$a_data['roundid']				= $round;
-                $a_data['status']               = 'N';
+	    		$a_data['roundid']				= $roundid;
+                $a_data['sysform']              = 'N';
 	    		$asmtid = $this->Data_model->insert('assessment',$a_data);
 
     			//save interviewer
-    			$i_data['interviewid']	= $interviewid;
+    			$i_data['interviewid']	= $interviewid[$j];
         		$i_data['interviewer']	= $row;
         		$i_data['status']		= 'W';
         		$i_data['marked']		= '';
         		$i_data['inv_asmtid']	= $asmtid;
         		if ($key[9] == $row) {
         			$i_data['scr_asmtid']	= $scr_asmtid;
-        			// $link2 = '<a href="'.base_url().'admin/interview/interview_question/'.$interviewid.'/'.$row.'" >Phiếu '.$roundname.' - '.$key[1].'</a>';
+        			$link1 = '<a href="'.base_url().'admin/interview/interview_question/'.$interviewid[$j].'/'.$row.'" >Phiếu '.$roundname.' - '.$key[1].'</a>';
         		}
         		$i_data['createdby']	= $this->session->userdata('user_admin')['operatorid'];
         		$this->Data_model->insert('interviewer',$i_data);
 
         		// //mail interviewer
-        		// $position = ($this->Campaign_model->select("position",'reccampaign',array('campaignid' => $campaignid),''))[0]['position'];
-        		// $user = ($this->Campaign_model->select("operatorid,operatorname,email",'operator',array('operatorid' => $row),''))[0];
-	         //    $link1 = '<a href="'.base_url().'admin/interview/invitationcard/'.$interviewid.'/'.$row.'" >Lịch '.$roundname.' - '.$key[1].'</a>';
+        		$operator = ($this->Campaign_model->select("operatorid,operatorname,email",'operator',array('operatorid' => $row),''))[0];
 	            
-        		// $body[2] = str_replace('$name',$user['operatorname'], $body[2]);
-        		// $body[2] = str_replace('$candidate',$key[1], $body[2]);
-        		// $body[2] = str_replace('$position',$position, $body[2]);
-        		// $body[2] = str_replace('$round',$roundname, $body[2]);
-        		// $body[2] = str_replace('$link1',$link1, $body[2]);
-        		// $body[2] = str_replace('$link2',$link2, $body[2]);
-        		// $mail[2]['emailbody'] = $body[2];
-        		// $mail[2]['toemail'] = $user['email'];
-        		// $this->Mail_model->sendMail($mail[2]);
-        		// $mail[2]['fromemail'] = $this->session->userdata('user_admin')['email'];
-        		// $this->Mail_model->insert('mailtable',$mail[2]);
+                $user = $this->Campaign_model->select("candidateid,email,lastname,name",'candidate',array('candidateid' => $key[0]),'');
+                if (isset($user[0])) {
+                    $lastname   = $user[0]['lastname'];
+                    $name       = $user[0]['name'];
+                    $link = '<a href="'.base_url().'admin/interview/invitationcard/'.$interviewid[$j].'/" >Lịch phỏng vấn V1 - '.$name.'</a>';
+                }else{
+                    $lastname   = 'Bạn';
+                    $name       = 'Bạn';
+                    $link = '<a href="'.base_url().'admin/interview/invitationcard/0/" >Lịch phỏng vấn V1 - '.$name.'</a>';
+                }
+                $chuoi_tim      = array('[Tuyển dụng viên]','[Tên Ứng viên]','[Vòng tuyển dụng]','[Tên]','[Link phiếu mời phỏng vấn]','[Ghi chú]','[Vị trí]','[Link phiếu đánh giá]');
+                $chuoi_thay_the = array($operator['operatorname'],$name,$roundname,$lastname,$link,$key[6],$position,$link1);
+                $mail['emailsubject']   = str_replace($chuoi_tim,$chuoi_thay_the, $subject[2]);
+                $mail['emailbody']      = str_replace($chuoi_tim,$chuoi_thay_the, $body[2]);
+                $mail['toemail']        = $operator['email'];
+                $mail['cc']             = $cc[2];
+                $mail['bcc']            = $bcc[2];
+                $mail['attachment']     = $fileattach_2;
+                $this->Mail_model->sendMail($mail);
+
+                $mail["attachment"] = json_encode($fileattach_2);
+                $mail['fromemail'] = $this->session->userdata('user_admin')['email'];
+                $this->Mail_model->insert('mailtable',$mail);                
     		}
 
-    		$i++;
     	}
+
+        //mail interview
+        $c = 1;
+        foreach ($to[1] as $key) {
+            $user = $this->Campaign_model->select("candidateid,email,lastname,name",'candidate',array('email' => $key),'');
+            if (isset($user[0])) {
+                $lastname   = $user[0]['lastname'];
+                $name       = $user[0]['name'];
+                $link = '<a href="'.base_url().'admin/interview/invitationcard/'.$interviewid[$c].'/" >Lịch phỏng vấn V1 - '.$name.'</a>';
+            }else{
+                $lastname   = 'Bạn';
+                $name       = 'Bạn';
+                $link = '<a href="'.base_url().'admin/interview/invitationcard/0/" >Lịch phỏng vấn V1 - '.$name.'</a>';
+            }
+            $chuoi_tim      = array('[Tên Ứng viên]','[Vòng tuyển dụng]','[Tên]','[Link phiếu mời tam dự phỏng vấn]','[Ghi chú]','[Vị trí]');
+            $chuoi_thay_the = array($name,$roundname,$lastname,$link,$notes[$c],$position);
+            $mail['emailsubject']   = str_replace($chuoi_tim,$chuoi_thay_the, $subject[1]);
+            $mail['emailbody']      = str_replace($chuoi_tim,$chuoi_thay_the, $body[1]);
+            $mail['toemail']        = '';
+            $mail['cc']             = $cc[1];
+            $mail['bcc']            = $bcc[1];
+            $mail['attachment']     = $fileattach_1;
+            $this->Mail_model->sendMail($mail);
+
+            $mail["attachment"] = json_encode($fileattach_1);
+            $mail['fromemail'] = $this->session->userdata('user_admin')['email'];
+            $this->Mail_model->insert('mailtable',$mail);
+            $c++;
+        }
+        
     	
         echo json_encode(1);
     }
@@ -315,6 +340,8 @@ class Interview extends CI_Controller {
     public function saveAddInterviewer()
     {
     	$frm = $this->input->post();
+                var_dump($frm);exit;
+
     	$interviewer = explode(',',$frm['profile']);
     	$mail['emailsubject'] 	= $frm['subject'];
     	$mail['cc'] 			= $frm['cc'];
@@ -356,59 +383,91 @@ class Interview extends CI_Controller {
     public function removeInterviewer()
     {
     	$frm = $this->input->post();
-    	$mail['emailsubject'] 	= $frm['subject'];
-    	$mail['cc'] 			= $frm['cc'];
-    	$mail['bcc'] 			= $frm['bcc'];
-		
-		$match  = array('interviewid' => $frm['interviewid'],'interviewerid' => $frm['interviewer']);
-		$i_data['status']		= 'D';
-		$i_data['updatedby']	= $this->session->userdata('user_admin')['operatorid'];
-		$this->Data_model->update('interviewer',$i_data);
+        $note                       = $frm['note'];
+        $fileattach                 = $this->upload_files('public/document/',$_FILES['attach1']);
+		$mail["attachment"]         = $fileattach;
 
-		//mail interviewer
-		$position = ($this->Campaign_model->select("position",'reccampaign',array('campaignid' => $frm['campaignid']),''))[0]['position'];
-		$user = ($this->Campaign_model->select("operatorid,operatorname,email",'operator',array('operatorid' => $frm['interviewer']),''))[0];
+		$match                      = array('interviewid' => $frm['interviewid'],'interviewerid' => $frm['interviewer']);
+		$i_data['status']		    = 'C';
+		$i_data['updatedby']	    = $this->session->userdata('user_admin')['operatorid'];
+		$this->Data_model->update('interviewer',$match,$i_data);
 
-		$frm['body'] = str_replace('$name',$user['operatorname'], $frm['body2']);
-		$frm['body'] = str_replace('$candidate',$frm['name'], $frm['body']);
-		$frm['body'] = str_replace('$datetime',$frm['datetime'], $frm['body']);
-		$frm['body'] = str_replace('$note',$frm['note'], $frm['body']);
-		$mail['emailbody'] = $frm['body'];
-		$mail['toemail'] = $user['email'];
-		$this->Mail_model->sendMail($mail);
-		$mail['fromemail'] = $this->session->userdata('user_admin')['email'];
-		$this->Mail_model->insert('mailtable',$mail);
-		redirect(base_url('admin/interview/makingAppointment/'.$frm['candidateid'].'/'.$frm['campaignid']));
+		//mail interview
+        if (isset($frm['checkmail'])) {
+            $subject                 = $frm['subject'];
+            $mail['cc']              = $frm['cc'];
+            $mail['bcc']             = $frm['bcc'];
+            $body                    = $frm['body2'];
+            $roundname               = ($this->Campaign_model->select("roundname",'recflow',array('campaignid' => $campaignid,'roundid' => $roundid),''))[0]['roundname'];
+            $position                = ($this->Campaign_model->select("position",'reccampaign',array('campaignid' => $campaignid),''))[0]['position'];
+            $user                    = $this->Campaign_model->select("candidateid,email,lastname,name",'candidate',array('candidateid' => $frm['candidateid']),'');
+            if (isset($user[0])) {
+                $lastname   = $user[0]['lastname'];
+                $name       = $user[0]['name'];
+            }else{
+                $lastname   = 'Bạn';
+                $name       = 'Bạn';
+            }
+            $chuoi_tim              = array('[Tên Ứng viên]','[Vòng tuyển dụng]','[Tên]','[Ghi chú]','[Vị trí]');
+            $chuoi_thay_the         = array($name,$roundname,$lastname,$note,$position);
+            $mail['emailsubject']   = str_replace($chuoi_tim,$chuoi_thay_the, $subject);
+            $mail['emailbody']      = str_replace($chuoi_tim,$chuoi_thay_the, $body);
+            $this->Mail_model->sendMail($mail);
+
+            $mail["attachment"]     = json_encode($fileattach);
+            $mail['fromemail']      = $this->session->userdata('user_admin')['email'];
+            if (isset($frm['isshare'])) {
+                $mail["isshare"]    = $frm['isshare']; 
+            }
+            $this->Mail_model->insert('mailtable',$mail);
+        }
+        
+		redirect(base_url('admin/interview/makingAppointment/'.$frm['interviewid'].'/'.$i_data['updatedby']));
 
     }
 
-    public function cancleAppointment()
+    public function cancelAppointment()
     {
     	$frm = $this->input->post();
-    	$mail['emailsubject'] 	= $frm['subject'];
+        $note                   = $frm['note'];
+    	$subject            	= $frm['subject'];
+        $mail['tomail']         = $frm['to'];
     	$mail['cc'] 			= $frm['cc'];
     	$mail['bcc'] 			= $frm['bcc'];
-		
+		$body                   = html_entity_decode($frm['body3']);
+        $fileattach             = $this->upload_files('public/document/',$_FILES['attach1']);
+        $mail["attachment"]     = $fileattach;
+        //update status
 		$match  = array('interviewid' => $frm['interviewid']);
+        if (isset($frm['isshare'])) {
+            $i_data["isshare"]  = $frm['isshare']; 
+        }
 		$i_data['status']		= 'D';
 		$i_data['updatedby']	= $this->session->userdata('user_admin')['operatorid'];
 		$this->Data_model->update('interview',$i_data);
 
-		//mail interviewer
-		$position = ($this->Campaign_model->select("position",'reccampaign',array('campaignid' => $frm['campaignid']),''))[0]['position'];
-		$user = ($this->Campaign_model->select("operatorid,operatorname,email",'operator',array('operatorid' => $frm['interviewer']),''))[0];
+		//mail interview
+        if (isset($frm['checkmail'])) {
+    		$roundname            = ($this->Campaign_model->select("roundname",'recflow',array('campaignid' => $campaignid,'roundid' => $roundid),''))[0]['roundname'];
+            $position             = ($this->Campaign_model->select("position",'reccampaign',array('campaignid' => $campaignid),''))[0]['position'];
+            $user                 = $this->Campaign_model->select("candidateid,email,lastname,name",'candidate',array('candidateid' => $frm['candidateid']),'');
+            if (isset($user[0])) {
+                $lastname         = $user[0]['lastname'];
+                $name             = $user[0]['name'];
+            }else{
+                $lastname         = 'Bạn';
+                $name             = 'Bạn';
+            }
+            $chuoi_tim              = array('[Tên Ứng viên]','[Vòng tuyển dụng]','[Tên]','[Ghi chú]','[Vị trí]');
+            $chuoi_thay_the         = array($name,$roundname,$lastname,$note,$position);
+            $mail['emailsubject']   = str_replace($chuoi_tim,$chuoi_thay_the, $subject);
+            $mail['emailbody']      = str_replace($chuoi_tim,$chuoi_thay_the, $body);
+            $this->Mail_model->sendMail($mail);
 
-		$frm['body'] = str_replace('$name',$user['operatorname'], $frm['body3']);
-		$frm['body'] = str_replace('$candidate',$frm['name'], $frm['body']);
-		$frm['body'] = str_replace('$datetime',$frm['datetime'], $frm['body']);
-		$frm['body'] = str_replace('$note',$frm['note'], $frm['body']);
-		$mail['emailbody'] = $frm['body'];
-		$mail['toemail'] = $user['email'];
-		$this->Mail_model->sendMail($mail);
-		$mail['fromemail'] = $this->session->userdata('user_admin')['email'];
-		$this->Mail_model->insert('mailtable',$mail);
-		redirect(base_url('admin/interview/makingAppointment/'.$frm['candidateid'].'/'.$frm['campaignid']));
-
+            $mail["attachment"]     = json_encode($fileattach);
+            $mail['fromemail']      = $this->session->userdata('user_admin')['email'];
+            $this->Mail_model->insert('mailtable',$mail);
+        }
     }
 
     public function changeAppointment()
@@ -443,128 +502,98 @@ class Interview extends CI_Controller {
 		redirect(base_url('admin/interview/makingAppointment/'.$frm['candidateid'].'/'.$frm['campaignid']));
 
     }
+    public function offer()
+    {
+        $this->_data['temp'] = $this->load->view('admin/multiplechoice/offer',null,true);
 
+        $this->load->view('admin/home/master-iframe',$this->_data); 
+    }
 
     public function saveOffer()
     {
     	$frm = $this->input->post();
-      	$intdate 			= $frm['intdate'];
     	$campaignid 		= $frm['campaignid'];
-    	$round 		= $frm['roundid'];
-    	$count 		= $frm['count'];
+    	$roundid 		    = $frm['roundid'];
+    	$count 		        = $frm['count'];
     	if (isset($frm['private'])) {
     		$data['private'] = $private; 
     		unset($frm['private']);
     	}
-    	unset($frm['intdate']);
     	unset($frm['campaignid']);
     	unset($frm['roundid']);
     	unset($frm['count']);
 
     	$mail = array();
-    	for ($k=1; $k <= 2 ; $k++) { 
-    		$to[$k] = explode(',',$frm['to'.$k]);
-    		$mail[$k]['emailsubject'] 	= $frm['subject'.$k];
-	    	$mail[$k]['cc'] 		= $frm['cc'.$k];
-	    	$mail[$k]['bcc'] 		= $frm['bcc'.$k];
-	    	$body[$k] 				= $frm['body'.$k];
-	    	if (!empty($_FILES['attach'.$k]['name'])) {
-	            $config['upload_path'] = './public/document/';
-	            $config['allowed_types'] = '*';
-	            $config['file_name'] = $_FILES['attach'.$k]['name'];
-	            $config['overwrite'] = FALSE;  
-	            $this->load->library('upload', $config);
-	            $this->upload->initialize($config);
+    	
+		$toemail                = explode(',',$frm['to']);
+		$subject 	            = $frm['subject'];
+    	$mail['cc'] 		    = $frm['cc'];
+    	$mail['bcc'] 		    = $frm['bcc'];
+    	$body     				= html_entity_decode($frm['body']);
+        $fileattach             = $this->upload_files('public/document/',$_FILES['attach']);
+    	
+    	unset($frm['to']);
+    	unset($frm['subject']);
+    	unset($frm['cc']);
+    	unset($frm['bcc']);
+    	unset($frm['body']);
 
-	            if ($this->upload->do_upload('attach'.$k)) {
-	                $uploadData = $this->upload->data();
-	                $mail[$k]["attachment"] = base_url().'public/document/'.$uploadData['file_name'];    
-	             }
-	             else
-	             {
-	             	$mail[$k]["attachment"] ='';
-	                $datas['errors'] = $this->upload->display_errors();
-	             } 
-	        }
-	        else
-	        {
-	        	$mail[$k]["attachment"] ='';
-	            $datas['errors'] = $this->upload->display_errors();
-	        }
-	    	unset($frm['to'.$k]);
-	    	unset($frm['subject'.$k]);
-	    	unset($frm['cc'.$k]);
-	    	unset($frm['bcc'.$k]);
-	    	unset($frm['body'.$k]);
-	    	unset($frm['attach'.$k]);
-
-    	}
+        $offer = array();
     	for ($j=1; $j <= $count; $j++) { 
-    		$i =0;
     		$key = $frm['profile_'.$j];
-    		$data['candidateid'] 	= $key[0];
-            $data['campaignid'] 	= $campaignid;
-            $data['roundid'] 		= $round;
-            $data['intdate']		= date('Y-m-d',strtotime(str_replace('/', '-', $intdate)));
-            $timefrom 				= $intdate.' '.$key[2];
-            $timeto 				= $intdate.' '.$key[3];
-            $data['inttype']		= date('Y-m-d H:i:s',strtotime(str_replace('/', '-', $timefrom)));
-            $data['timefrom']		= date('Y-m-d H:i:s',strtotime(str_replace('/', '-', $timeto)));
-            $data['timeto']			= $key[4];
-            $data['location']		= $key[5];
-            $data['notes']			= $key[6];
-            $data['createdby']   	= $this->session->userdata('user_admin')['operatorid'];
-            $interviewid = $this->Data_model->insert('interview',$data);
 
-            //mail interview
-            $roundname = ($this->Campaign_model->select("roundname",'recflow',array('campaignid' => $campaignid,'roundid' => $round),''))[0]['roundname'];
-            $email_candidate = ($this->Campaign_model->select("email",'candidate',array('candidateid' => $key[0]),''))[0]['email'];
-            $link = '<a href="'.base_url().'admin/Multiplechoice/invitationcard/'.$key[0].'/'.$campaignid.'" >Lịch '.$roundname.' - '.$key[1].'</a>';
-    		$body[1] = str_replace('$name',$key[1], $body[1]);
-    		$body[1] = str_replace('$note',$key[6], $body[1]);
-    		$body[1] = str_replace('$round',$roundname, $body[1]);
-    		$mail[1]['emailbody'] = str_replace('$link',$link, $body[1]);
-    		$mail[1]['toemail'] = $email_candidate;
-    		$this->Mail_model->sendMail($mail[1]);
-    		$mail[1]['fromemail'] = $this->session->userdata('user_admin')['email'];
-    		$this->Mail_model->insert('mailtable',$mail[1]);
+            //lưu phiếu mời đề nghị ứng viên
+            $a_data['asmttemp']             = '2';
+            $a_data['candidateid']          = $key[0];
+            $a_data['campaignid']           = $campaignid;
+            $a_data['roundid']              = $roundid;
+            $a_data['sysform']              = 'N';
+            $asmtid = $this->Data_model->insert('assessment',$a_data);
 
-    		//interviewer
-    		$interviewer = explode(',',$key[7]);
-    		foreach ($interviewer as $row) {
-    			if ($row == '') {
-    				continue;
-    			}
-    			$i_data['interviewid']	= $interviewid;
-        		$i_data['interviewer']	= $row;
-        		$i_data['status']		= 'W';
-        		$i_data['marked']		= '';
-        		$i_data['inv_asmtid']	= '';
-        		$i_data['scr_asmtid']	= '';
-        		$i_data['createdby']	= $this->session->userdata('user_admin')['operatorid'];
-        		$this->Data_model->insert('interviewer',$i_data);
+    		$data['candidateid'] 	    = $key[0];
+            $data['campaignid'] 	    = $campaignid;
+            $data['roundid'] 		    = $roundid;
+            $data['startdate']		    = date('Y-m-d',strtotime(str_replace('/', '-', $key[2])));
+            $data['duration']		    = $key[3];
+            $data['drationunit']        = 'Tháng';
+            $data['workingtype']        = $key[4];
+            $data['location']           = $key[5];
+            $data['trainer']		    = $key[6];
+            $data['reportto']			= $key[7];
+            $data['tempbenefit']   	    = $key[8];
+            $data['officialbenefit']    = $key[9];
+            $data['note']               = $key[10];
+            $data['off_asmtid']         = $asmtid;
+            $offer[$j]                  = $this->Data_model->insert('offer',$data);
 
-        		//mail interviewer
-        		$position = ($this->Campaign_model->select("position",'reccampaign',array('campaignid' => $campaignid),''))[0]['position'];
-        		$user = ($this->Campaign_model->select("operatorid,operatorname,email",'operator',array('operatorid' => $row),''))[0];
-	            $link1 = '<a href="'.base_url().'admin/interview/invitationcard/'.$key[0].'/'.$campaignid.'/'.$row.'/'.$interviewid.'" >Lịch '.$roundname.' - '.$key[1].'</a>';
-	            $link2 = '<a href="'.base_url().'admin/interview/interview_question/'.$interviewid.'/'.$row.'" >Phiếu '.$roundname.' - '.$key[1].'</a>';
-        		$body[2] = str_replace('$name',$user['operatorname'], $body[2]);
-        		$body[2] = str_replace('$candidate',$key[1], $body[2]);
-        		$body[2] = str_replace('$position',$position, $body[2]);
-        		$body[2] = str_replace('$round',$roundname, $body[2]);
-        		$body[2] = str_replace('$link1',$link1, $body[2]);
-        		$body[2] = str_replace('$link2',$link2, $body[2]);
-        		$mail[2]['emailbody'] = $body[2];
-        		$mail[2]['toemail'] = $user['email'];
-        		$this->Mail_model->sendMail($mail[2]);
-        		$mail[2]['fromemail'] = $this->session->userdata('user_admin')['email'];
-        		$this->Mail_model->insert('mailtable',$mail[2]);
-    		}
-
-    		$i++;
     	}
     	
+        //mail
+        foreach ($toemail as $key) {
+            $roundname = ($this->Campaign_model->select("roundname",'recflow',array('campaignid' => $campaignid,'roundid' => $roundid),''))[0]['roundname'];
+            $position = ($this->Campaign_model->select("position",'reccampaign',array('campaignid' => $campaignid),''))[0]['position'];
+            $user = $this->Campaign_model->select("candidateid,email,lastname,name",'candidate',array('email' => $key),'');
+            if (isset($user[0])) {
+                $lastname   = $user[0]['lastname'];
+                $name       = $user[0]['name'];
+                $link       = '<a href="'.base_url().'admin/Campaign/offer/'.$offer[$j].'" >Thư mời nhận việc</a>';
+            }else{
+                $lastname   = 'Bạn';
+                $name       = 'Bạn';
+                $link       = '<a href="'.base_url().'admin/Campaign/offer/" >Thư mời nhận việc</a>';
+            }
+            $chuoi_tim              = array('[Tên Ứng viên]','[Vòng tuyển dụng]','[Tên]','[Link phiếu mời nhận việc]','[Ghi chú]','[Vị trí]');
+            $chuoi_thay_the         = array($name,$roundname,$lastname,$link,$notes[$j],$position);
+            $mail['emailsubject']   = str_replace($chuoi_tim,$chuoi_thay_the, $subject);
+            $mail['emailbody']      = str_replace($chuoi_tim,$chuoi_thay_the, $body);
+            $mail['toemail']        = $key;
+            $mail["attachment"]     = $fileattach;
+            $this->Mail_model->sendMail($mail);
+
+            $mail["attachment"] = json_encode($fileattach);
+            $mail['fromemail'] = $this->session->userdata('user_admin')['email'];
+            $this->Mail_model->insert('mailtable',$mail);
+        }
         echo json_encode(1);
     }
 
@@ -598,7 +627,7 @@ Dat Xanh Group Recruitment Specialist <br>
 Tel: 08.62525252 Ext: 5083# | Fax: 08.62853896 | Mobile: 0914 191982 <br>
 Email : recruiter.dxg02@dxg.com.vn | Website : www.datxanh.vn <br>
 Fanpage: www.facebook.com/PhongnhansuDXG';
-        $link = '<a href="'.base_url().'admin/Multiplechoice/pageAssessment/0/1" >Trắc nghiệm kiến thức tổng quát - Đỗ Phương Nam</a>';
+        $link = '<a href="'.base_url().'admin/campaign/pageAssessment/0/1" >Trắc nghiệm kiến thức tổng quát - Đỗ Phương Nam</a>';
         // $body = str_replace('$note',$key[4], $body);
         $mail['emailbody'] = str_replace('$link',$link, $body);
         $mail['toemail'] = 'namdophuong@gmail.com ';
@@ -703,7 +732,7 @@ Email : recruiter.dxg02@dxg.com.vn | Website : www.datxanh.vn <br>
 Fanpage: www.facebook.com/PhongnhansuDXG';
 
 
-        $link = '<a href="'.base_url().'admin/multiplechoice/offer" >Thư mời nhận việc</a>';
+        $link = '<a href="'.base_url().'admin/interview/offer" >Thư mời nhận việc</a>';
         $mail['emailbody'] = str_replace('$link',$link, $body);
         $mail['toemail'] = 'namdophuong@gmail.com ';
         $this->Mail_model->sendMail($mail);

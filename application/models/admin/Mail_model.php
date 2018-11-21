@@ -32,7 +32,9 @@ class Mail_model extends CI_Model{
         //cau hinh email va ten nguoi gui
         $this->email->from('thanhhung23495@gmail.com', 'Đất xanh Group');
         //cau hinh nguoi nhan
-        $this->email->to($data['toemail']);
+        if ($data['toemail'] != '') {
+            $this->email->to($data['toemail']);
+        }
         $this->email->cc(isset($data['cc'])? $data['cc'] : '');
         $this->email->bcc(isset($data['bcc'])? $data['bcc'] : '');
          
@@ -40,7 +42,13 @@ class Mail_model extends CI_Model{
         $this->email->message($data['emailbody']);
          
         //dinh kem file
-        $this->email->attach($data['attachment']);
+        if(is_array($data['attachment'])){
+            foreach ($data['attachment'] as $key) {
+                $this->email->attach($key);
+            }
+        }
+        // $this->email->attach('http://recruit.tavicosoft.com/public/document/Chiến dịch tuyển dụng.docx');
+        // $this->email->attach('http://recruit.tavicosoft.com/public/document/DXG - Breakdown checklist.xlsx');
         //thuc hien gui
         if ( ! $this->email->send())
         {

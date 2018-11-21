@@ -22,6 +22,43 @@ class Campaign extends CI_Controller {
 	    $this->_data['footer'] 	= $this->load->view('admin/home/footer',null,true);
 	}
 
+	private function upload_files($path, $files)
+    {
+        $config = array(
+            'upload_path'   => $path,
+            'allowed_types' => '*',
+            'overwrite'     => FALSE,                       
+        );
+
+        $this->load->library('upload', $config);
+
+        $images = array();
+
+        foreach ($files['name'] as $key => $image) {
+            $_FILES['attach[]']['name']= $files['name'][$key];
+            $_FILES['attach[]']['type']= $files['type'][$key];
+            $_FILES['attach[]']['tmp_name']= $files['tmp_name'][$key];
+            $_FILES['attach[]']['error']= $files['error'][$key];
+            $_FILES['attach[]']['size']= $files['size'][$key];
+
+            $fileName =  $image;
+
+            $images[] = base_url().$path.$fileName;
+
+            $config['file_name'] = $fileName;
+
+            $this->upload->initialize($config);
+
+            if ($this->upload->do_upload('attach[]')) {
+                $this->upload->data();
+            } else {
+                return false;
+            }
+        }
+
+        return $images;
+    }
+
 	function loadNotifi()
 	{
 		$sql = "SELECT a.*, b.operatorname, c.filename,d.name, e.position FROM profilehistory a LEFT JOIN operator b ON a.createdby = b.operatorid LEFT JOIN document c ON a.createdby = c.referencekey LEFT JOIN candidate d ON a.candidateid = d.candidateid LEFT JOIN reccampaign e ON a.campaignid = e.campaignid  where a.campaignid in (SELECT campaignid FROM reccampaign  WHERE managecampaign LIKE  '%".$this->session->userdata('user_admin')['operatorid']."%' ) ORDER BY createddate desc";
@@ -54,12 +91,15 @@ class Campaign extends CI_Controller {
 
 
 	public function main(){
+		$from = '';
+		$where = 'AND candidate.hidden = 1';
 		$match = array('1' => 1, );
 		$data['campaigns'] 		=	$this->Data_model->selectTable('reccampaign',$match);
 		for ($i=0; $i < count($data['campaigns']); $i++) { 
 			$match = array('campaignid' => $data['campaigns'][$i]['campaignid'] );
 			$data['campaigns'][$i]['round'] =	$this->Campaign_model->select("roundid,sorting,roundname,roundtype",'recflow',$match,'');
-			$data['campaigns'][$i]['round'][0]['count_round'] = $this->Candidate_model->count_row('candidate',array('1'=>1));
+
+			$data['campaigns'][$i]['round'][0]['count_round'] = $this->Candidate_model->count_round_hs($from,$where,$data['campaigns'][$i]['campaignid'])[0]['count'];
 			for ($j=1; $j < count($data['campaigns'][$i]['round']); $j++) { 
 				$data['campaigns'][$i]['round'][$j]['count_round'] = $this->total_round($data['campaigns'][$i]['campaignid'],$data['campaigns'][$i]['round'][$j]['roundid'],'Transfer');
 			}
@@ -105,7 +145,9 @@ class Campaign extends CI_Controller {
 			$c_data['campaignid']		= $campaignid;
 			$c_data['bien'] 			= $roundid;
 
-			$c_data['round_main'][0]['count_round'] = $this->Candidate_model->count_row('candidate',array('1'=>1));
+			$from = '';
+			$where = 'AND candidate.hidden = 1';
+			$c_data['round_main'][0]['count_round'] = $this->Candidate_model->count_round_hs($from,$where,$campaignid)[0]['count'];
 			for ($j=1; $j < count($c_data['round_main']); $j++) { 
 				$c_data['round_main'][$j]['count_round'] = $this->total_round($campaignid,$c_data['round_main'][$j]['roundid'],'Transfer');
 			}
@@ -151,15 +193,17 @@ class Campaign extends CI_Controller {
 		}else{
 			$join[0]  = array('table' => 'document', 'match' => 'operator.operatorid = document.referencekey' );
 			foreach ($ql as $key =>$value) {
-				$match = array('operatorid' => $value );
-				$c_data['ql_tong'][$key] =($this->Data_model->select_join("operator.operatorid,operator.operatorname,document.filename",$match,'operator',$join))[0];
+				$match1 = array('operatorid' => $value );
+				$c_data['ql_tong'][$key] =($this->Data_model->select_join("operator.operatorid,operator.operatorname,document.filename",$match1,'operator',$join))[0];
 			}
 		}
 		$c_data['bien'] 			= $roundid;
 		$c_data['campaignid']		= $campaignid;
-		$match = array('campaignid' => $campaignid, );
 		$c_data['round_main'] 		=	$this->Data_model->selectTable('recflow',$match);
-		$c_data['round_main'][0]['count_round'] = $this->Candidate_model->count_row('candidate',array('1'=>1));
+
+		$from = '';
+		$where = 'AND candidate.hidden = 1';
+		$c_data['round_main'][0]['count_round'] = $this->Candidate_model->count_round_hs($from,$where,$campaignid)[0]['count'];
 		for ($j=1; $j < count($c_data['round_main']); $j++) { 
 			$c_data['round_main'][$j]['count_round'] = $this->total_round($campaignid,$c_data['round_main'][$j]['roundid'],'Transfer');
 
@@ -197,8 +241,18 @@ class Campaign extends CI_Controller {
 		$join = '';
 		$where = 'AND candidate.hidden = 1';
 		$this->session->set_userdata('filter', $where);
-		$this->data1['candidate'] = $this->Candidate_model->list_filter($join,$where); 
-		// $this->data1['candidate'] = $this->Candidate_model->selectAllCan();
+		$this->data1['candidate'] = $this->Candidate_model->list_filter_campaign($join,$where,$campaignid); 
+
+		$match 						= array('campaignid' => $campaignid, 'roundid' => $roundid);
+		$manageround				=	$this->Data_model->selectTable('recflow', $match)[0]['manageround'];
+        $email 						= '';
+        $mana 						= trim($manageround,',');
+		$mana 						= explode(',', $mana);
+        foreach ($mana as $key =>$value) {
+			$match 					= array('operatorid' => $value );
+			$email 					.=($this->Data_model->select_join("email",$match,'operator',''))[0]['email'].',';
+		}
+        $this->data2['manageround'] = $email;
 
 		$this->data2['total_candidate'] = $this->Candidate_model->count_row('candidate',array('1'=>1));
         $this->data1['total_candidate'] = $this->data2['total_candidate'];
@@ -240,62 +294,75 @@ class Campaign extends CI_Controller {
 			}
 			
 		}else{
-			$where = $this->session->userdata('filter');
-			$join = '';
-	        $join = $this->session->userdata('join');
+			$where 		= $this->session->userdata('filter');
+			$join 		= '';
+	        $join 		= $this->session->userdata('join');
 	        $this->data2['candidate'] = $this->Candidate_model->list_filter($join,$where); 
 		}
 		$this->data2['campaignid'] 	= $campaignid;
 		$this->data2['roundid'] 	= $roundid;
 		$this->data1['campaignid'] 	= $campaignid;
 		$this->data1['roundid'] 	= $roundid;
-        $this->data2['id_active'] = $id;
+        $this->data2['id_active'] 	= $id;
         
-        $match = array('campaignid' => $campaignid, 'roundid' => $roundid);
-		$this->data2['roundtype'] 		=	($this->Campaign_model->select("roundtype",'recflow',$match,''))[0]['roundtype'];
+        $match 						= array('campaignid' => $campaignid, 'roundid' => $roundid);
+		$this->data2['roundtype'] 	=	($this->Campaign_model->select("roundtype",'recflow',$match,''))[0]['roundtype'];
+
+		$manageround				=	$this->Data_model->selectTable('recflow', $match)[0]['manageround'];
+        $email 						= '';
+        $mana 						= trim($manageround,',');
+		$mana 						= explode(',', $mana);
+        foreach ($mana as $key =>$value) {
+			$match 					= array('operatorid' => $value );
+			$email 					.=($this->Data_model->select_join("email",$match,'operator',''))[0]['email'].',';
+		}
+        $this->data2['manageround'] = $email;
+
+		$this->data2['asmt_tn'] 	= $this->Campaign_model->select("asmttemp,asmtname",'asmtheader',array('asmtstatus' => 'W','asmttype' => '1'),'');
+		$this->data2['asmt_pv'] 	= $this->Campaign_model->select("asmttemp,asmtname",'asmtheader',array('asmtstatus' => 'W','asmttype' => '1'),'');
 		
-		$this->data1['nav'] = $this->load->view('admin/campaign/nav_profile',$this->data2,true);
-		$this->data1['id'] = $id;
-		$iframe_data['temp'] = $this->load->view('admin/campaign/profile_candidate',$this->data1,true);
+		$this->data1['nav'] 		= $this->load->view('admin/campaign/nav_profile',$this->data2,true);
+		$this->data1['id'] 			= $id;
+		$iframe_data['temp'] 		= $this->load->view('admin/campaign/profile_candidate',$this->data1,true);
 
 		$this->load->view('admin/home/master-iframe',$iframe_data);
 	}
-	public function profile_pv($id='')
-	{
-		$where = $this->session->userdata('filter');
+	// public function profile_pv($id='')
+	// {
+	// 	$where = $this->session->userdata('filter');
 		
-		$this->data1['candidate'] =  $this->Campaign_model->select_row_option('*',$where,'','candidate','','','','','');
-		$this->data1['nav'] = $this->load->view('admin/campaign/nav_profile_pv',$this->data1,true);
-		$this->data1['id'] = $id;
-		$iframe_data['temp'] = $this->load->view('admin/campaign/profile_candidate',$this->data1,true);
+	// 	$this->data1['candidate'] =  $this->Campaign_model->select_row_option('*',$where,'','candidate','','','','','');
+	// 	$this->data1['nav'] = $this->load->view('admin/campaign/nav_profile_pv',$this->data1,true);
+	// 	$this->data1['id'] = $id;
+	// 	$iframe_data['temp'] = $this->load->view('admin/campaign/profile_candidate',$this->data1,true);
 
-		$this->load->view('admin/home/master-iframe',$iframe_data);
-	}
+	// 	$this->load->view('admin/home/master-iframe',$iframe_data);
+	// }
 	public function hosochitiet($id = '',$campaignid='',$roundid='')
 	{
-		$this->data2['campaignid'] 	= $campaignid;
-		$this->data2['roundid'] 	= $roundid;
-		$match = array('campaignid' => $campaignid, 'roundid' => $roundid);
+		$this->data2['campaignid'] 		= $campaignid;
+		$this->data2['roundid'] 		= $roundid;
+		$match 							= array('campaignid' => $campaignid, 'roundid' => $roundid);
 		$this->data2['campaignname'] 	=	($this->Campaign_model->select("position",'reccampaign',array('campaignid' => $campaignid,),''))[0]['position'];
 		$this->data2['roundtype'] 		=	($this->Campaign_model->select("roundtype",'recflow',$match,''))[0]['roundtype'];
 		if ($id != '-1') {
-			$this->data2['id'] = $id;
-			$join[0] = array('table'=> 'operator','match' =>'tb.createdby = operator.operatorid');
-	        $join[1] = array('table'=> 'document','match' =>'tb.createdby = document.referencekey');
-	        $orderby = array('colname'=>'tb.createddate','typesort'=>'desc');
-	        $history_cmt = $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename',array('tb.candidateid'=>$id),'','cancomment tb',$join,'',$orderby,'','');
+			$this->data2['id'] 	= $id;
+			$join[0] 			= array('table'=> 'operator','match' =>'tb.createdby = operator.operatorid');
+	        $join[1] 			= array('table'=> 'document','match' =>'tb.createdby = document.referencekey');
+	        $orderby 			= array('colname'=>'tb.createddate','typesort'=>'desc');
+	        $history_cmt 		= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename',array('tb.candidateid'=>$id),'','cancomment tb',$join,'',$orderby,'','');
 
-	        $type = array('Talent','Nottalent','Trust','Block');
-	        $history_profile1 = $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename',array('tb.candidateid'=>$id, 'tb.campaignid' => 0),'','profilehistory tb',$join,'',$orderby,'','');
-	        $history_profile2 = $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','profilehistory tb',$join,'',$orderby,'','');
+	        $type 				= array('Talent','Nottalent','Trust','Block');
+	        $history_profile1 	= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename',array('tb.candidateid'=>$id, 'tb.campaignid' => 0),'','profilehistory tb',$join,'',$orderby,'','');
+	        $history_profile2 	= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','profilehistory tb',$join,'',$orderby,'','');
 
-	        $join[2] = array('table'=> 'operator c','match' =>'tb.updatedby = c.operatorid');
-	        $orderby1 = array('colname'=>'tb.lastupdate','typesort'=>'desc');
-	        $history_profile3 = $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','assessment tb',$join,'',$orderby1,'','');
-	        $history_profile4 = $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','interview tb',$join,'',$orderby1,'','');
+	        $join[2] 			= array('table'=> 'operator c','match' =>'tb.updatedby = c.operatorid');
+	        $orderby1 			= array('colname'=>'tb.lastupdate','typesort'=>'desc');
+	        $history_profile3 	= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid,'sysform !=' => 'N'),'','assessment tb',$join,'',$orderby1,'','');
+	        $history_profile4 	= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','interview tb',$join,'',$orderby1,'','');
 	        for ($i=0; $i < count($history_profile4); $i++) { 
-	        	$join1[0] = array('table'=> 'operator','match' =>'tb.interviewer = operator.operatorid');
-	        	$join1[1] = array('table'=> 'document','match' =>'tb.interviewer = document.referencekey');
+	        	$join1[0] 		= array('table'=> 'operator','match' =>'tb.interviewer = operator.operatorid');
+	        	$join1[1] 		= array('table'=> 'document','match' =>'tb.interviewer = document.referencekey');
 	        	$history_profile4[$i]['interviewer'] = $this->Data_model->select_row_option('tb.interviewer,tb.status, operator.operatorname, document.filename',array('tb.interviewid'=>$history_profile4[$i]['interviewid']),'','interviewer tb',$join1,'',$orderby,'','');
 	        }
 
@@ -311,26 +378,36 @@ class Campaign extends CI_Controller {
 	       //  echo "<pre>";
         // print_r($this->data2['history']);
         // echo "</pre>";exit;
-
-	        $this->data2['city'] = $this->Campaign_model->selectall('city');
-	        $this->data2['document'] = $this->Candidate_model->first_row('document',array('referencekey'=>$id,'tablename' => 'candidate'),'filename,url','');
-	        $this->data2['comment'] = $this->Candidate_model->first_row('cancomment',array('candidateid' => $id, 'rate !=' => 0),'AVG(rate) AS scores','');
-			$this->data2['address'] = $this->Candidate_model->selectTableByIds('canaddress',$id);
-			$this->data2['candidate'] = $this->Candidate_model->selectTableById('candidate',$id);
-			$this->data2['family'] = $this->Candidate_model->selectTableByIds('cansocial',$id);
-			$this->data2['experience'] = $this->Candidate_model->selectTableByIds('canexperience',$id);
-			$this->data2['vt'] = $this->Candidate_model->selectTableGroupBy('position,company','canexperience',$id,'dateto');
-			$this->data2['reference'] = $this->Candidate_model->selectTableByIds('canreference',$id);
-			$this->data2['knowledge'] = $this->Candidate_model->selectTableByIds('canknowledge',$id);
-			$this->data2['language'] = $this->Candidate_model->selectTableByIds('canlanguage',$id);
-			$this->data2['software'] = $this->Candidate_model->selectTableByIds('cansoftware',$id);
+	        $manageround				=	$this->Data_model->selectTable('recflow', $match)[0]['manageround'];
+	        $email = '';
+	        $mana 						= trim($manageround,',');
+			$mana 						= explode(',', $mana);
+	        foreach ($mana as $key =>$value) {
+				$match 					= array('operatorid' => $value );
+				$email 					.=($this->Data_model->select_join("email",$match,'operator',''))[0]['email'].',';
+			}
+	        $this->data2['manageround'] = $email;
+	        $this->data2['city'] 		= $this->Campaign_model->selectall('city');
+	        $this->data2['document'] 	= $this->Candidate_model->first_row('document',array('referencekey'=>$id,'tablename' => 'candidate'),'filename,url','');
+	        $this->data2['comment'] 	= $this->Candidate_model->first_row('cancomment',array('candidateid' => $id, 'rate !=' => 0),'AVG(rate) AS scores','');
+			$this->data2['address'] 	= $this->Candidate_model->selectTableByIds('canaddress',$id);
+			$this->data2['candidate'] 	= $this->Candidate_model->selectTableById('candidate',$id);
+			$this->data2['family'] 		= $this->Candidate_model->selectTableByIds('cansocial',$id);
+			$this->data2['experience'] 	= $this->Candidate_model->selectTableByIds('canexperience',$id);
+			$this->data2['vt'] 			= $this->Candidate_model->selectTableGroupBy('position,company','canexperience',$id,'dateto');
+			$this->data2['reference'] 	= $this->Candidate_model->selectTableByIds('canreference',$id);
+			$this->data2['knowledge'] 	= $this->Candidate_model->selectTableByIds('canknowledge',$id);
+			$this->data2['language'] 	= $this->Candidate_model->selectTableByIds('canlanguage',$id);
+			$this->data2['software'] 	= $this->Candidate_model->selectTableByIds('cansoftware',$id);
 			$sql = "SELECT count(recordid) as count FROM profilehistory WHERE candidateid = '$id' AND actiontype = 'Recruite'";
-			$this->data2['recruite'] = $this->Campaign_model->select_sql($sql)[0]['count'];
+			$this->data2['recruite'] 	= $this->Campaign_model->select_sql($sql)[0]['count'];
 		}else{
-			$this->data2['id'] = '';
+			$this->data2['id'] 			= '';
 		}
+		$this->data2['asmt_tn'] = $this->Campaign_model->select("asmttemp,asmtname",'asmtheader',array('asmtstatus' => 'W','asmttype' => '1'),'');
+		$this->data2['asmt_pv'] = $this->Campaign_model->select("asmttemp,asmtname",'asmtheader',array('asmtstatus' => 'W','asmttype' => '1'),'');
 		
-		$data['temp'] = $this->load->view('admin/campaign/detail_profile',$this->data2,true);
+		$data['temp'] 			= $this->load->view('admin/campaign/detail_profile',$this->data2,true);
 		$this->load->view('admin/home/master-iframe',$data);
 	}
 
@@ -738,23 +815,63 @@ class Campaign extends CI_Controller {
     public function transfer($type)
     {
     	$id = $this->input->post('campaignid');
-    	$round = $this->input->post('roundid');
-    	$roundname		=	($this->Campaign_model->select("roundname",'recflow', array('roundid' => $round ),''))[0]['roundname'];
+    	$roundid = $this->input->post('roundid');
+    	$roundname		=	($this->Campaign_model->select("roundname",'recflow', array('roundid' => $roundid ),''))[0]['roundname'];
+    	$data = array();
     	$frm = $this->input->post('id');
+    	$isshare = $this->input->post('isshare');
+    	if (isset($isshare)) {
+            $data["isshare"] = $isshare; 
+        }
         foreach ($frm as $key ) {
-            $data = array();
             $data['candidateid'] 	= $key;
             $data['campaignid'] 	= $id;
-            $data['roundid'] 		= $round;
+            $data['roundid'] 		= $roundid;
             if ($type == '1') {
+            	$body 				 = html_entity_decode($frm['body5']);
                 $data['actiontype']  = 'Transfer';
                 $data['actionnote']  = 'Chuyển hồ sơ --> '.$roundname;
             }else{
+            	$body 				 = html_entity_decode($frm['body6']);
                 $data['actiontype']  = 'Discard';
                 $data['actionnote']  = 'Chuyển hồ sơ --> '.$roundname.'/ Không đạt';
             }
            $data['createdby']   = $this->session->userdata('user_admin')['operatorid'];
            $this->Data_model->insert('profilehistory',$data);
+        }
+
+        //mail interview
+        $checkmail = $this->input->post('checkmail');
+        if (isset($checkmail)) {
+        	$list_to = explode(',',$frm['to']);
+	    	$mail = array();
+	    	$subject		 	= $frm['subject'];
+	    	$mail['cc'] 		= $frm['cc'];
+	    	$mail['bcc'] 		= $frm['bcc'];
+        	$fileattach 		= $this->upload_files('public/document/',$_FILES['attach']);
+        	$mail["attachment"] = $fileattach;
+
+	    	$position 			= ($this->Campaign_model->select("position",'reccampaign',array('campaignid' => $id),''))[0]['position'];
+    		foreach ($list_to as $key) {
+	    		$user = $this->Campaign_model->select("candidateid,email,lastname,name",'candidate',array('email' => $key),'');
+	    		if (isset($user[0])) {
+	    			$lastname 			= $user[0]['lastname'];
+	    			$name 				= $user[0]['name'];
+	    		}else{
+	    			$lastname 			= 'Bạn';
+	    			$name 				= 'Bạn';
+	    		}
+	    		$chuoi_tim 				= array('[Tên Ứng viên]','[Vòng tuyển dụng]','[Tên]','[Vị trí]');
+	    		$chuoi_thay_the 		= array($name,$roundname,$lastname,$position);
+	    		$mail['emailsubject'] 	= str_replace($chuoi_tim,$chuoi_thay_the, $subject);
+	    		$mail['emailbody'] 		= str_replace($chuoi_tim,$chuoi_thay_the, $body);
+	    		$mail['toemail'] 		= $key;
+	    		$this->Mail_model->sendMail($mail);
+
+	    		$mail["attachment"] = json_encode($fileattach);
+	    		$mail['fromemail'] = $this->session->userdata('user_admin')['email'];
+	    		$this->Mail_model->insert('mailtable',$mail);
+	        }
         }
         echo json_encode(1);
     }
@@ -784,50 +901,30 @@ class Campaign extends CI_Controller {
 
 
     //tool
-    private function upload_files($path, $files)
-    {
-        $config = array(
-            'upload_path'   => $path,
-            'allowed_types' => '*',
-            'overwrite'     => FALSE,                       
-        );
+    
 
-        $this->load->library('upload', $config);
+    public function pageAssessment($asmtid, $check = '1')
+	{
+		if ($asmtid != 0) {
+			$sql = "SELECT tt.*, candidate.name, candidate.email FROM assessment tt  LEFT JOIN candidate ON tt.candidateid = candidate.candidateid  WHERE tt.asmtid = $asmtid ";
+			$result = $this->Campaign_model->select_sql($sql);
+			$data['assessment'] = $result[0];
+		}else{
+			$data['assessment']['status'] = '';
+		}
+		$data['check'] = $check;
+		$this->_data['temp'] = $this->load->view('admin/multiplechoice/pageAssessment',$data,true);
 
-        $images = array();
+		$this->load->view('admin/home/master-iframe',$this->_data);	
+	}
 
-        foreach ($files['name'] as $key => $image) {
-            $_FILES['attach[]']['name']= $files['name'][$key];
-            $_FILES['attach[]']['type']= $files['type'][$key];
-            $_FILES['attach[]']['tmp_name']= $files['tmp_name'][$key];
-            $_FILES['attach[]']['error']= $files['error'][$key];
-            $_FILES['attach[]']['size']= $files['size'][$key];
-
-            $fileName =  $image;
-
-            $images[] = base_url().$path.$fileName;
-
-            $config['file_name'] = $fileName;
-
-            $this->upload->initialize($config);
-
-            if ($this->upload->do_upload('attach[]')) {
-                $this->upload->data();
-            } else {
-                return false;
-            }
-        }
-
-        return $images;
-    }
 
     public function saveAssessment()
     {
     	$frm = $this->input->post();
-    	
     	$data = array();
-    	$id 		= $frm['campaignid'];
-    	$round 		= $frm['roundid'];
+    	$campaignid 	= $frm['campaignid'];
+    	$roundid 		= $frm['roundid'];
     	if (isset($frm['private'])) {
     		$data['private'] = $private; 
     		unset($frm['private']);
@@ -836,45 +933,62 @@ class Campaign extends CI_Controller {
     	unset($frm['roundid']);
     	$list_to = explode(',',$frm['to']);
     	$mail = array();
-    	$mail['emailsubject'] 	= $frm['subject'];
+    	$subject		 	= $frm['subject'];
     	$mail['cc'] 		= $frm['cc'];
     	$mail['bcc'] 		= $frm['bcc'];
-    	$body 				= $frm['body1'];
+    	$body 				= html_entity_decode($frm['body1']);
 
     	$fileattach = $this->upload_files('public/document/',$_FILES['attach']);
     	$mail["attachment"] = $fileattach;
-    	
+
     	unset($frm['to']);
     	unset($frm['subject']);
     	unset($frm['cc']);
     	unset($frm['bcc']);
     	unset($frm['body']);
-    	unset($frm['attach']);
     	$i =0;
+    	$notes = array();
         foreach ($frm as $key ) {
 
         	if(is_array($key)){
         		$data['candidateid'] 	= $key[0];
-	            $data['campaignid'] 	= $id;
-	            $data['roundid'] 		= $round;
-	            $data['duedate']		= date('Y-m-d H:i:s',strtotime(str_replace('/', '-', $key[3])));
-	            $data['asmttemp']		= $key[2];
+	            $data['campaignid'] 	= $campaignid;
+	            $data['roundid'] 		= $roundid;
+	            $data['duedate']		= date('Y-m-d H:i:s',strtotime(str_replace('/', '-', $key[2])));
+	            $data['asmttemp']		= $key[1];
 	            $data['createdby']   = $this->session->userdata('user_admin')['operatorid'];
 	            $this->Data_model->insert('assessment',$data);
 
-	         //    //mail
-	         //    $link = '<a href="'.base_url().'admin/Multiplechoice/pageAssessment/'.$key[0].'/'.$id.'/1" >Trắc nghiệm kiến thức tổng quát - '.$key[1].'</a>';
-        		// $body = str_replace('$name',$key[1], $body);
-        		// $body = str_replace('$note',$key[4], $body);
-        		// $mail['emailbody'] = str_replace('$link',$link, $body);
-        		// $mail['toemail'] = $list_to[$i];
-        		// $this->Mail_model->sendMail($mail);
-
-        		// $mail["attachment"] = json_encode($fileattach);
-        		// $mail['fromemail'] = $this->session->userdata('user_admin')['email'];
-        		// $this->Mail_model->insert('mailtable',$mail);
+	            $notes[$i] = $key[3];
         		$i++;
         	}            
+        }
+        //mail
+        $j = 0;
+        foreach ($list_to as $key) {
+        	$roundname = ($this->Campaign_model->select("roundname",'recflow',array('campaignid' => $campaignid,'roundid' => $roundid),''))[0]['roundname'];
+    		$position = ($this->Campaign_model->select("position",'reccampaign',array('campaignid' => $campaignid),''))[0]['position'];
+    		$user = $this->Campaign_model->select("candidateid,email,lastname,name",'candidate',array('email' => $key),'');
+    		if (isset($user[0])) {
+    			$lastname 	= $user[0]['lastname'];
+    			$name 		= $user[0]['name'];
+    			$link = '<a href="'.base_url().'admin/Campaign/pageAssessment/'.$user[0]['candidateid'].'/'.$campaignid.'" >Trắc nghiệm kiến thức tổng quát - '.$name.'</a>';
+    		}else{
+    			$lastname 	= 'Bạn';
+    			$name 		= 'Bạn';
+    			$link = '<a href="'.base_url().'admin/Campaign/pageAssessment/0/'.$campaignid.'" >Trắc nghiệm kiến thức tổng quát - '.$name.'</a>';
+    		}
+    		$chuoi_tim 		= array('[Tên Ứng viên]','[Vòng tuyển dụng]','[Tên]','[Link phiếu trắc nghiệm]','[Ghi chú]','[Vị trí]');
+    		$chuoi_thay_the = array($name,$roundname,$lastname,$link,$notes[$j],$position);
+    		$mail['emailsubject'] 	= str_replace($chuoi_tim,$chuoi_thay_the, $subject);
+    		$mail['emailbody'] 		= str_replace($chuoi_tim,$chuoi_thay_the, $body);
+    		$mail['toemail'] 		= $key;
+    		$this->Mail_model->sendMail($mail);
+
+    		$mail["attachment"] = json_encode($fileattach);
+    		$mail['fromemail'] = $this->session->userdata('user_admin')['email'];
+    		$this->Mail_model->insert('mailtable',$mail);
+    		$j++;
         }
         echo json_encode(1);
     }
@@ -898,5 +1012,6 @@ class Campaign extends CI_Controller {
     	$data['temp'] 	= $this->load->view('admin/campaign/content_iframe_info',null,true);
 		$this->load->view('admin/home/master',$data);
     }
+
 }
 ?>

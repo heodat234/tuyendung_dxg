@@ -13,7 +13,7 @@
 		<div class="body_as">
 			<div class="row">
 				<div class="btn_as">
-					<button onclick="cancleAppointment()"><i class="fa fa-trash-o fa-lg"></i></button>
+					<button onclick="cancelAppointment()"><i class="fa fa-trash-o fa-lg"></i></button>
 					<button><i class="fa fa-print fa-lg"></i></button>
 				</div>
 			</div>
@@ -358,82 +358,85 @@
                     </div>
               	</div>
             </div>
-
             <div class="col-xs-12 body_chuyen_2">
-              <div class="rowedit2">
-                      <p class="titleAppoint">Thư mời tham dự phỏng vấn (dành cho người phỏng vấn) </p>
-              </div>
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                        Gửi đến:
-                      </div>
-                      <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" id="email_to_pv" name="to" >
-                      </div>
-              </div>
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                        Cc:
-                      </div>
-                      <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" name="cc">
-                      </div>
-              </div>
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                        Bcc:
-                      </div>
-                      <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" name="bcc">
-                      </div>
-              </div>
+            	<label class="share_chuyen"><input type="checkbox" onclick="checkbox(this)" name="checkmail" value="1">  Gửi email thông báo</label>
             </div>
+            <div class="hide" id="check_mail1">
+	            <div class="col-xs-12 body_chuyen_2">
+	              <div class="rowedit2">
+	                      <p class="titleAppoint">Thư mời tham dự phỏng vấn (dành cho người phỏng vấn) </p>
+	              </div>
+	              <div class="rowedit2">
+	                      <div class="col-xs-1 guide-black cc">
+	                        Gửi đến:
+	                      </div>
+	                      <div class="col-xs-11">
+	                        <input class="kttext width_100" type="text" id="email_to_pv" name="to" >
+	                      </div>
+	              </div>
+	              <div class="rowedit2">
+	                      <div class="col-xs-1 guide-black cc">
+	                        Cc:
+	                      </div>
+	                      <div class="col-xs-11">
+	                        <input class="kttext width_100" type="text" name="cc">
+	                      </div>
+	              </div>
+	              <div class="rowedit2">
+	                      <div class="col-xs-1 guide-black cc">
+	                        Bcc:
+	                      </div>
+	                      <div class="col-xs-11">
+	                        <input class="kttext width_100" type="text" name="bcc">
+	                      </div>
+	              </div>
+	            </div>
+	            <div class="col-xs-12 body_chuyen_2">
+	              <div class="rowedit2">
+	                      <div class="col-xs-1 guide-black cc" style="color: #5FA2DD;">
+	                        Mẫu thư:
+	                      </div>
+	                      <div class="col-xs-9">
+	                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,1)">
+	                            <option value="">Chọn mẫu thư</option>
+	                          <?php foreach ($mailtemplate as $row): ?>
+	                            <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
+	                          <?php endforeach ?>
+	                        </select>
+	                        <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
+	                      </div>
+	              </div>
 
-            <div class="col-xs-12 body_chuyen_2">
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc" style="color: #5FA2DD;">
-                        Mẫu thư:
-                      </div>
-                      <div class="col-xs-9">
-                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,1)">
-                            <option value="">Chọn mẫu thư</option>
-                          <?php foreach ($mailtemplate as $row): ?>
-                            <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
-                          <?php endforeach ?>
-                        </select>
-                        <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
-                      </div>
-              </div>
-
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                        Tiêu đề:
-                      </div>
-                      <div class="col-xs-11">
-                        <input class="kttext width_100 subjectmail" type="text"  name="subject" value="">
-                      </div>
-              </div>
-              <div class="rowedit3">
-                      <div class="col-xs-1 guide-black" style="padding: 0px">
-                        Nội dung:
-                      </div>
-                      <div class="col-xs-11">
-                        <textarea name="body1" class="textarea_profile editor" rows="3" required="">
-                        </textarea>
-                      </div>
-              </div>
-              <div class="rowedit2">
-                  	<div class="col-xs-1 guide-black cc">
-                  	</div>
-                    <div class="col-xs-11">
-                        <div class="width80 col-xs-9 padding-lr0 filename_label">
-		                    <div class="col-md-3">
-		                      <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach[]" multiple="" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
-		                    </div>
-		                </div>
-                    </div>
-              </div>
-            </div>
+	              <div class="rowedit2">
+	                      <div class="col-xs-1 guide-black cc">
+	                        Tiêu đề:
+	                      </div>
+	                      <div class="col-xs-11">
+	                        <input class="kttext width_100 subjectmail" type="text"  name="subject" value="">
+	                      </div>
+	              </div>
+	              <div class="rowedit3">
+	                      <div class="col-xs-1 guide-black" style="padding: 0px">
+	                        Nội dung:
+	                      </div>
+	                      <div class="col-xs-11">
+	                        <textarea name="body1" class="textarea_profile editor" rows="3" required="">
+	                        </textarea>
+	                      </div>
+	              </div>
+	              <div class="rowedit2">
+	                  	<div class="col-xs-1 guide-black cc">
+	                  	</div>
+	                    <div class="col-xs-11">
+	                        <div class="width80 col-xs-9 padding-lr0 filename_label">
+			                    <div class="col-md-3">
+			                      <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach[]" multiple="" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
+			                    </div>
+			                </div>
+	                    </div>
+	              </div>
+	            </div>
+	        </div>
             <input type="hidden" name="interviewid"value="<?php echo $interview['interviewid'] ?>">
             <input type="hidden" name="campaignid"value="<?php echo $interview['campaignid'] ?>">
             <input type="hidden" name="roundid"value="<?php echo $interview['roundid'] ?>">
@@ -457,7 +460,7 @@
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Xác nhận xoá người phụ trách phỏng vấn</h4>
         </div>
-        <form method="post" action="<?php echo base_url() ?>admin/interview/removeInterviewer">
+        <form method="post" action="<?php echo base_url() ?>admin/interview/removeInterviewer" enctype="multipart/form-data">
           <div class=" modal_body_chuyen">
             <div class="body_cam col-xs-12 body_chuyen" id="body_loai">
               <div class="row" style="margin-right: 0px">
@@ -493,107 +496,114 @@
                 </div>
               </div>
             </div>
-
             <div class="col-xs-12 body_chuyen_2">
-              <div class="rowedit2">
-                      <p class="titleAppoint">Thư thông báo hủy phỏng vấn</p>
-              </div>
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                        Gửi đến:
-                      </div>
-                      <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" name="to" id="to_pv_2">
-                      </div>
-              </div>
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                        Cc:
-                      </div>
-                      <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" name="cc" id="cc_pv_2">
-                      </div>
-              </div>
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                        Bcc:
-                      </div>
-                      <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" name="bcc" >
-                      </div>
-              </div>
+            	<label class="share_chuyen"><input type="checkbox" onclick="checkbox(this)" name="checkmail" value="2">  Gửi email thông báo</label>
             </div>
+            <div class="hide" id="check_mail2">
+            	<div class="col-xs-12 body_chuyen_2">
+		              <div class="rowedit2">
+		                      <p class="titleAppoint">Thư thông báo hủy phỏng vấn</p>
+		              </div>
+		              <div class="rowedit2">
+		                      <div class="col-xs-1 guide-black cc">
+		                        Gửi đến:
+		                      </div>
+		                      <div class="col-xs-11">
+		                        <input class="kttext width_100" type="text" name="to" id="to_pv_2">
+		                      </div>
+		              </div>
+		              <div class="rowedit2">
+		                      <div class="col-xs-1 guide-black cc">
+		                        Cc:
+		                      </div>
+		                      <div class="col-xs-11">
+		                        <input class="kttext width_100" type="text" name="cc" id="cc_pv_2">
+		                      </div>
+		              </div>
+		              <div class="rowedit2">
+		                      <div class="col-xs-1 guide-black cc">
+		                        Bcc:
+		                      </div>
+		                      <div class="col-xs-11">
+		                        <input class="kttext width_100" type="text" name="bcc" >
+		                      </div>
+		              </div>
+		        </div>
+	            <div class="col-xs-12 body_chuyen_2">
+	              	<div class="rowedit2">
+	                      <div class="col-xs-1 guide-black cc" style="color: #5FA2DD;">
+	                        Mẫu thư:
+	                      </div>
+	                      <div class="col-xs-7">
+	                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,2)" style="width: 50%">
+	                            <option value="">Chọn mẫu thư</option>
+	                          <?php foreach ($mailtemplate as $row): ?>
+	                            <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
+	                          <?php endforeach ?>
+	                        </select>
+	                        <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
+	                      </div>
+	                      <div class="col-xs-3">
+	                        <p onclick="insertField(2)" class="plus-button" style="margin-left: 15px" id="clickPlus"><i class="fa fa-plus" aria-hidden="true"></i> Thêm trường dữ liệu</p>
+	                      </div>
+	              	</div>
 
-            <div class="col-xs-12 body_chuyen_2">
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc" style="color: #5FA2DD;">
-                        Mẫu thư:
-                      </div>
-                      <div class="col-xs-9">
-                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,2)">
-                            <option value="">Chọn mẫu thư</option>
-                          <?php foreach ($mailtemplate as $row): ?>
-                            <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
-                          <?php endforeach ?>
-                        </select>
-                        <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
-                      </div>
-              </div>
-
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                        Tiêu đề:
-                      </div>
-                      <div class="col-xs-11">
-                        <input class="kttext width_100 subjectmail" type="text"  name="subject" >
-                      </div>
-              </div>
-              <div class="rowedit3">
-                      <div class="col-xs-1 guide-black" style="padding: 0px">
-                        Nội dung:
-                      </div>
-                      <div class="col-xs-11">
-                        <textarea name="body2" class="textarea_profile editor" rows="3" required="">
-                        </textarea>
-                      </div>
-              </div>
-              	<div class="rowedit2">
-                    <div class="col-xs-1 guide-black cc">
-                    </div>
-                    <div class="col-xs-11">
-                        <div class="width80 col-xs-9 padding-lr0 filename_label">
-		                    <div class="col-md-3">
-		                      <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach[]" multiple="" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
-		                    </div>
-		                </div>
-                    </div>
-              	</div>
+		            <div class="rowedit2">
+		                      <div class="col-xs-1 guide-black cc">
+		                        Tiêu đề:
+		                      </div>
+		                      <div class="col-xs-11">
+		                        <textarea class="textarea_profile" id="subjectmail2" rows="1" name="subject" required="">
+		                        </textarea>
+		                      </div>
+		            </div>
+	                <div class="rowedit3">
+	                      <div class="col-xs-1 guide-black" style="padding: 0px">
+	                        Nội dung:
+	                      </div>
+	                      <div class="col-xs-11">
+	                        <textarea name="body2" class="textarea_profile editor" rows="3" required="">
+	                        </textarea>
+	                      </div>
+	                </div>
+	              	<div class="rowedit2">
+	                    <div class="col-xs-1 guide-black cc">
+	                    </div>
+	                    <div class="col-xs-11">
+	                        <div class="width80 col-xs-9 padding-lr0 filename_label">
+			                    <div class="col-md-3">
+			                      <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach[]" multiple="" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
+			                    </div>
+			                </div>
+	                    </div>
+	              	</div>
+	            </div>
             </div>
+            
             <input type="hidden" name="interviewid" value="<?php echo $interview['interviewid'] ?>">
             <input type="hidden" name="campaignid" value="<?php echo $interview['campaignid'] ?>">
             <input type="hidden" name="roundid" value="<?php echo $interview['roundid'] ?>">
-            <input type="hidden" name="name" value="<?php echo $interview['name'] ?>">
             <input type="hidden" name="candidateid" value="<?php echo $interview['candidateid'] ?>">
             <input type="hidden" name="interviewer" id="interviewerid_remove">
           </div>
           <div class="modal-footer modal_footer_cam">
-            <label class="share_chuyen"><input type="checkbox" name=""> Không chia sẻ nội dung này</label>
+            <label class="share_chuyen"><input type="checkbox" name="isshare" value="Y"> Không chia sẻ nội dung này</label>
             <button type="button" class="btn btn_thoat btn_thoat1" data-dismiss="modal">Hủy</button>
-            <button type="submit" class="btn btn_tt btn_tt1" data-dismiss="modal">Tiến hành</button>
+            <button type="submit" class="btn btn_tt btn_tt1">Tiến hành</button>
           </div>
         </form>
     </div>
   </div>
 </div>
 <!-- hủy lịch phỏng vấn -->
-<div class="modal fade" id="cancleAppointment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="cancelAppointment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog " style="width: 60%">
     <div class="modal-content " >
         <div class="modal-header modal_header_cam">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Xác nhận Huỷ lịch phỏng vấn</h4>
         </div>
-        <form method="post" action="<?php echo base_url() ?>admin/interview/cancleAppointment">
+        <form method="post" action="<?php echo base_url() ?>admin/interview/cancelAppointment" enctype="multipart/form-data">
           <div class=" modal_body_chuyen">
             <div class="body_cam col-xs-12 body_chuyen" id="body_loai">
               <div class="row" style="margin-right: 0px">
@@ -616,92 +626,98 @@
                 </div>
               </div>
             </div>
-
             <div class="col-xs-12 body_chuyen_2">
-              <div class="rowedit2">
-                      <p class="titleAppoint">Thư thông báo hủy phỏng vấn</p>
-              </div>
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                        Gửi đến:
-                      </div>
-                      <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" name="to" value="<?php echo $interview['name'].'('.$interview['email'].')' ?>">
-                      </div>
-              </div>
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                        Cc:
-                      </div>
-                      <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" name="cc" id="cc_cancle_pv" >
-                      </div>
-              </div>
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                        Bcc:
-                      </div>
-                      <div class="col-xs-11">
-                        <input class="kttext width_100"type="text" name="bcc" >
-                      </div>
-              </div>
+            	<label><input type="checkbox" onclick="checkbox(this)" name="checkmail" value="3">  Gửi email thông báo</label>
             </div>
+            <div class="hide" id="check_mail3">
+	            <div class="col-xs-12 body_chuyen_2">
+	              <div class="rowedit2">
+	                      <p class="titleAppoint">Thư thông báo hủy phỏng vấn</p>
+	              </div>
+	              <div class="rowedit2">
+	                      <div class="col-xs-1 guide-black cc">
+	                        Gửi đến:
+	                      </div>
+	                      <div class="col-xs-11">
+	                        <input class="kttext width_100" type="text" name="to" value="<?php echo $interview['email'] ?>">
+	                      </div>
+	              </div>
+	              <div class="rowedit2">
+	                      <div class="col-xs-1 guide-black cc">
+	                        Cc:
+	                      </div>
+	                      <div class="col-xs-11">
+	                        <input class="kttext width_100" type="text" name="cc" id="cc_cancle_pv" >
+	                      </div>
+	              </div>
+	              <div class="rowedit2">
+	                      <div class="col-xs-1 guide-black cc">
+	                        Bcc:
+	                      </div>
+	                      <div class="col-xs-11">
+	                        <input class="kttext width_100"type="text" name="bcc" >
+	                      </div>
+	              </div>
+	            </div>
+	            <div class="col-xs-12 body_chuyen_2">
+	              <div class="rowedit2">
+	                      <div class="col-xs-1 guide-black cc" style="color: #5FA2DD;">
+	                        Mẫu thư:
+	                      </div>
+	                      <div class="col-xs-7">
+	                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,3)" style="width: 50%">
+	                            <option value="">Chọn mẫu thư</option>
+	                          <?php foreach ($mailtemplate as $row): ?>
+	                            <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
+	                          <?php endforeach ?>
+	                        </select>
+	                        <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
+	                      </div>
+	                      <div class="col-xs-3">
+	                        <p onclick="insertField(3)" class="plus-button" style="margin-left: 15px" id="clickPlus"><i class="fa fa-plus" aria-hidden="true"></i> Thêm trường dữ liệu</p>
+	                      </div>
+	              </div>
 
-            <div class="col-xs-12 body_chuyen_2">
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc" style="color: #5FA2DD;">
-                        Mẫu thư:
-                      </div>
-                      <div class="col-xs-9">
-                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,3)">
-                            <option value="">Chọn mẫu thư</option>
-                          <?php foreach ($mailtemplate as $row): ?>
-                            <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
-                          <?php endforeach ?>
-                        </select>
-                        <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
-                      </div>
-              </div>
-
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                        Tiêu đề:
-                      </div>
-                      <div class="col-xs-11">
-                        <input class="kttext width_100 subjectmail" type="text" name="subject" >
-                      </div>
-              </div>
-              <div class="rowedit3">
-                      <div class="col-xs-1 guide-black" style="padding: 0px">
-                        Nội dung:
-                      </div>
-                      <div class="col-xs-11">
-                        <textarea name="body3" class="textarea_profile editor" rows="3" required="">
-                        </textarea>
-                      </div>
-              </div>
-              <div class="rowedit2">
-                    <div class="col-xs-1 guide-black cc">
-                    </div>
-                    <div class="col-xs-11">
-                        <div class="width80 col-xs-9 padding-lr0 filename_label">
-		                    <div class="col-md-3">
-		                      <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach[]" multiple="" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
-		                    </div>
-		                </div>
-                   	</div>
-              </div>
-            </div>
+	              <div class="rowedit2">
+	                      <div class="col-xs-1 guide-black cc">
+	                        Tiêu đề:
+	                      </div>
+	                      <div class="col-xs-11">
+	                        <textarea class="textarea_profile" id="subjectmail3" rows="1" name="subject" required="">
+	                        </textarea>
+	                      </div>
+	              </div>
+	              <div class="rowedit3">
+	                      <div class="col-xs-1 guide-black" style="padding: 0px">
+	                        Nội dung:
+	                      </div>
+	                      <div class="col-xs-11">
+	                        <textarea name="body3" class="textarea_profile editor" rows="3" required="">
+	                        </textarea>
+	                      </div>
+	              </div>
+	              <div class="rowedit2">
+	                    <div class="col-xs-1 guide-black cc">
+	                    </div>
+	                    <div class="col-xs-11">
+	                        <div class="width80 col-xs-9 padding-lr0 filename_label">
+			                    <div class="col-md-3">
+			                      <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach[]" multiple="" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
+			                    </div>
+			                </div>
+	                   	</div>
+	              </div>
+	            </div>
+	        </div>
             <input type="hidden" name="interviewid" value="<?php echo $interview['interviewid'] ?>">
             <input type="hidden" name="campaignid" value="<?php echo $interview['campaignid'] ?>">
             <input type="hidden" name="roundid" value="<?php echo $interview['roundid'] ?>">
-            <input type="hidden" name="name" value="<?php echo $interview['name'] ?>">
             <input type="hidden" name="candidateid" value="<?php echo $interview['candidateid'] ?>">
           </div>
           <div class="modal-footer modal_footer_cam">
-            <label class="share_chuyen"><input type="checkbox" name="isshare" value="N"> Không chia sẻ nội dung này</label>
+            <label class="share_chuyen"><input type="checkbox" name="isshare" value="Y"> Không chia sẻ nội dung này</label>
             <button type="button" class="btn btn_thoat btn_thoat1" data-dismiss="modal">Hủy</button>
-            <button type="submit" class="btn btn_tt btn_tt1"  data-dismiss="modal">Tiến hành</button>
+            <button type="submit" class="btn btn_tt btn_tt1" >Tiến hành</button>
           </div>
         </form>
     </div>
@@ -759,81 +775,84 @@
                 </div>
               </div>
             </div>
-
             <div class="col-xs-12 body_chuyen_2">
-              <div class="rowedit2">
-                      <p class="titleAppoint">Thư thông báo thay đổi phiếu phỏng vấn</p>
-              </div>
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                        Gửi đến:
-                      </div>
-                      <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" name="to" >
-                      </div>
-              </div>
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                        Cc:
-                      </div>
-                      <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" name="cc" value="">
-                      </div>
-              </div>
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                        Bcc:
-                      </div>
-                      <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" name="bcc" value="">
-                      </div>
-              </div>
+            	<label><input type="checkbox" onclick="checkbox(this)" name="checkmail" value="4">  Gửi email thông báo</label>
             </div>
+            <div class="hide" id="check_mail4">
+	            <div class="col-xs-12 body_chuyen_2">
+	              <div class="rowedit2">
+	                      <p class="titleAppoint">Thư thông báo thay đổi phiếu phỏng vấn</p>
+	              </div>
+	              <div class="rowedit2">
+	                      <div class="col-xs-1 guide-black cc">
+	                        Gửi đến:
+	                      </div>
+	                      <div class="col-xs-11">
+	                        <input class="kttext width_100" type="text" name="to" >
+	                      </div>
+	              </div>
+	              <div class="rowedit2">
+	                      <div class="col-xs-1 guide-black cc">
+	                        Cc:
+	                      </div>
+	                      <div class="col-xs-11">
+	                        <input class="kttext width_100" type="text" name="cc" value="">
+	                      </div>
+	              </div>
+	              <div class="rowedit2">
+	                      <div class="col-xs-1 guide-black cc">
+	                        Bcc:
+	                      </div>
+	                      <div class="col-xs-11">
+	                        <input class="kttext width_100" type="text" name="bcc" value="">
+	                      </div>
+	              </div>
+	            </div>
+	            <div class="col-xs-12 body_chuyen_2">
+	              <div class="rowedit2">
+	                      <div class="col-xs-1 guide-black cc" style="color: #5FA2DD;">
+	                        Mẫu thư:
+	                      </div>
+	                      <div class="col-xs-9">
+	                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,4)">
+	                            <option value="">Chọn mẫu thư</option>
+	                          <?php foreach ($mailtemplate as $row): ?>
+	                            <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
+	                          <?php endforeach ?>
+	                        </select>
+	                        <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
+	                      </div>
+	              </div>
 
-            <div class="col-xs-12 body_chuyen_2">
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc" style="color: #5FA2DD;">
-                        Mẫu thư:
-                      </div>
-                      <div class="col-xs-9">
-                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,4)">
-                            <option value="">Chọn mẫu thư</option>
-                          <?php foreach ($mailtemplate as $row): ?>
-                            <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
-                          <?php endforeach ?>
-                        </select>
-                        <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
-                      </div>
-              </div>
-
-              <div class="rowedit2">
-                      <div class="col-xs-1 guide-black cc">
-                        Tiêu đề:
-                      </div>
-                      <div class="col-xs-11">
-                        <input class="kttext width_100 subjectmail" type="text"  name="subject" value="">
-                      </div>
-              </div>
-              <div class="rowedit3">
-                      <div class="col-xs-1 guide-black" style="padding: 0px">
-                        Nội dung:
-                      </div>
-                      <div class="col-xs-11">
-                        <textarea name="body4" class="textarea_profile editor" rows="3" required=""></textarea>
-                      </div>
-              </div>
-              <div class="rowedit2">
-                    <div class="col-xs-1 guide-black cc">
-                    </div>
-                    <div class="col-xs-11">
-                        <div class="width80 col-xs-9 padding-lr0 filename_label">
-		                    <div class="col-md-3">
-		                      <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach[]" multiple="" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
-		                    </div>
-		                </div>
-                    </div>
-              </div>
-            </div>
+	              <div class="rowedit2">
+	                      <div class="col-xs-1 guide-black cc">
+	                        Tiêu đề:
+	                      </div>
+	                      <div class="col-xs-11">
+	                        <input class="kttext width_100 subjectmail" type="text"  name="subject" value="">
+	                      </div>
+	              </div>
+	              <div class="rowedit3">
+	                      <div class="col-xs-1 guide-black" style="padding: 0px">
+	                        Nội dung:
+	                      </div>
+	                      <div class="col-xs-11">
+	                        <textarea name="body4" class="textarea_profile editor" rows="3" required=""></textarea>
+	                      </div>
+	              </div>
+	              <div class="rowedit2">
+	                    <div class="col-xs-1 guide-black cc">
+	                    </div>
+	                    <div class="col-xs-11">
+	                        <div class="width80 col-xs-9 padding-lr0 filename_label">
+			                    <div class="col-md-3">
+			                      <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach[]" multiple="" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
+			                    </div>
+			                </div>
+	                    </div>
+	              </div>
+	            </div>
+	        </div>
             <input type="hidden" name="interviewid" value="<?php echo $interview['interviewid'] ?>">
             <input type="hidden" name="campaignid" value="<?php echo $interview['campaignid'] ?>">
             <input type="hidden" name="roundid" value="<?php echo $interview['roundid'] ?>">
@@ -843,7 +862,7 @@
           <div class="modal-footer modal_footer_cam">
             <label class="share_chuyen"><input type="checkbox" name="isshare" value="N"> Không chia sẻ nội dung này</label>
             <button type="button" class="btn btn_thoat btn_thoat1" data-dismiss="modal">Hủy</button>
-            <button type="submit" class="btn btn_tt btn_tt1" data-dismiss="modal">Tiến hành</button>
+            <button type="submit" class="btn btn_tt btn_tt1">Tiến hành</button>
           </div>
         </form>
     </div>
@@ -987,7 +1006,7 @@
 	    operator = (JSON.parse(operator));
 	    for(var j in operator ){
 	      if (id == operator[j]['operatorid']) { 
-	        var temp = operator[j]['operatorname']+'('+operator[j]['email']+')';
+	        var temp = operator[j]['email'];
 	        var listmail = $('#email_to_pv').val();
 	        listmail1 = listmail.replace(temp+',', '');
 	        $('#email_to_pv').val(listmail1);
@@ -1013,7 +1032,7 @@
 	          row += '<div class="col-md-9 padding_0"><div class="body-blac5a">'+operator[j]['operatorname']+'</div></div></div>';
 	          $('#col_add_pt').before(row);
 
-	          var temp = operator[j]['operatorname']+'('+operator[j]['email']+')';
+	          var temp = operator[j]['email'];
 	            email += temp+', ';
 	          
 	        } 
@@ -1031,7 +1050,7 @@
 	    $('#insertPV1').modal('hide');    
 	});
 
-	function cancleAppointment(argument) {
+	function cancelAppointment(argument) {
 		$('.profile_tn').html('<img src="http://recruit.tavicosoft.com/public/image/<?php echo $interview['imagelink'] ?>" ><p class="guide-black"><?php echo $interview['name'] ?></p>');
 		var loca = $('.location_time').contents().clone();
 		$('.loca_2').empty().append(loca);
@@ -1043,7 +1062,7 @@
 	    inter = (JSON.parse(inter));
 		var interviewer = '<div><p class="titleAppoint1">Người phỏng vấn</p>';
 		for (var i = 0; i < inter.length; i++) {
-			var temp = inter[i]['operatorname']+'('+inter[i]['email']+')';
+			var temp = inter[i]['email'];
 			email_cc += temp+', ';
 
 			interviewer += '<div class="col-md-4 padding_0 manage_pv ql"><div class="col-md-3 ">';
@@ -1057,7 +1076,7 @@
 
         $('#my-file-selector1').val();
         $(".dom_file").remove();    
-		$('#cancleAppointment').modal('show');
+		$('#cancelAppointment').modal('show');
 	}
 	function removeInterviewer(interviewerid) {
 		$('.profile_tn').html('<img src="http://recruit.tavicosoft.com/public/image/<?php echo $interview['imagelink'] ?>" ><p class="guide-black"><?php echo $interview['name'] ?></p>');
@@ -1071,7 +1090,7 @@
 	    inter = (JSON.parse(inter));
 		var interviewer = '<div><p class="titleAppoint1">Người phỏng vấn</p>';
 		for (var i = 0; i < inter.length; i++) {
-			var temp = inter[i]['operatorname']+'('+inter[i]['email']+')';
+			var temp = inter[i]['email'];
 			if (inter[i]['interviewerid'] == interviewerid) {
 				$('#img_remove').html('<img src="<?php echo base_url() ?>public/image/'+inter[i]['filename']+'">');
 				$('#name_remove').text(inter[i]['operatorname']);
@@ -1122,4 +1141,5 @@
         $(".dom_file").remove();   
 		parent.$('#changeAssessment').modal('show');
 	}
+	
 </script>

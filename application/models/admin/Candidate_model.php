@@ -135,10 +135,26 @@ class Candidate_model extends CI_Model{
                 return $query->result_array();
             }
     }
+    public function filter_table_campaign($from='', $where='', $campaignid= '')
+    {
+        $sql = "SELECT TOP 500 candidate.candidateid, candidate.email, candidate.name, candidate.gender, candidate.dateofbirth, candidate.height, candidate.weight, candidate.currentbenefit, candidate.desirebenefit, candidate.istalent, candidate.imagelink, candidate.profilesrc, candidate.blocked, candidate.unsubcribe FROM candidate ".$from." WHERE candidate.candidateid NOT IN (SELECT tt.candidateid FROM profilehistory tt INNER JOIN (SELECT ph.candidateid, MAX(ph.createddate) AS MaxDateTime FROM profilehistory ph WHERE ph.campaignid = ".$campaignid." AND ph.actiontype != 'Recruite'  GROUP BY ph.candidateid) groupedtt ON tt.candidateid = groupedtt.candidateid AND tt.createddate = groupedtt.MaxDateTime) AND candidate.status='A' ".$where." GROUP BY candidate.candidateid, candidate.email, candidate.name, candidate.gender, candidate.dateofbirth, candidate.height, candidate.weight, candidate.currentbenefit, candidate.desirebenefit, candidate.istalent, candidate.imagelink, candidate.profilesrc, candidate.blocked, candidate.unsubcribe, candidate.lastupdate ORDER BY candidate.lastupdate desc";
+        $query = $this->db->query($sql);
+        
+            if (!$query) {
+                return $this->db->error();
+            }else{
+                return $query->result_array();
+            }
+    }
     public function list_filter($from='', $where='')
     {
         return $this->list_candidate($this->filter_table($from, $where)); 
     }
+    public function list_filter_campaign($from='', $where='',$campaignid='')
+    {
+        return $this->list_candidate($this->filter_table_campaign($from, $where, $campaignid)); 
+    }
+    
     public function selectAllCan()
     {   
         return $this->list_candidate($this->filter_table()); 
@@ -247,6 +263,17 @@ class Candidate_model extends CI_Model{
         } else {
             return false;
         }
+    }
+    public function count_round_hs($from='', $where='', $campaignid= '')
+    {
+        $sql = "SELECT count(*) as count FROM candidate ".$from." WHERE candidate.candidateid NOT IN (SELECT tt.candidateid FROM profilehistory tt INNER JOIN (SELECT ph.candidateid, MAX(ph.createddate) AS MaxDateTime FROM profilehistory ph WHERE ph.campaignid = ".$campaignid." AND ph.actiontype != 'Recruite'  GROUP BY ph.candidateid) groupedtt ON tt.candidateid = groupedtt.candidateid AND tt.createddate = groupedtt.MaxDateTime) AND candidate.status='A' ".$where." ";
+        $query = $this->db->query($sql);
+        
+            if (!$query) {
+                return $this->db->error();
+            }else{
+                return $query->result_array();
+            }
     }
 }
 ?>

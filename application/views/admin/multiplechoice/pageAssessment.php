@@ -41,7 +41,7 @@
 			<?php if ($check =='0'): ?>
 				<div class="row">
 					<div class="btn_as">
-						<button onclick="huyPhieu(<?php echo isset($assessment['asmtid'])? $assessment['asmtid'] :'' ?>)"><i class="fa fa-trash-o fa-lg"></i></button>
+						<button onclick="huyPhieu(<?php echo isset($assessment['asmtid'])? $assessment['asmtid'] :'0' ?>)"><i class="fa fa-trash-o fa-lg"></i></button>
 						<button><i class="fa fa-print fa-lg"></i></button>
 					</div>
 				</div>

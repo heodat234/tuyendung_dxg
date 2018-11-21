@@ -149,6 +149,7 @@
 		
 	</section>
 </div>
+<div class="hide" id="list_candidate"><?php echo ($candidate != '')? json_encode($candidate) :'' ?> </div>
 <style type="text/css">
 	.color-flag-recruite{
 		color: #A0BA82;
@@ -268,6 +269,7 @@
 
 	function transfer(type)
 	{
+		var list_candidate = JSON.parse($('#list_candidate').text()) ;
 		parent.$('#body_chuyen').empty();
 		parent.$('#body_loai').empty();
 		var form = $('#form_candidate').serializeArray();
@@ -281,7 +283,6 @@
 			data: {campaignid: campaignid},
 		})
 		.done(function(data) {
-			console.log(data);
 			var option = '';
 			for(var i in data){
 				if (data[i]['roundid'] == new_round) {
@@ -290,23 +291,33 @@
 					option += '<option value="'+data[i]['roundid']+'">'+data[i]['roundname']+'</option>';
 				}
 			}
-			var row ='';
+			var row = to_mail='';
 			for (var i = 2; i < form.length; i++) {
-				<?php foreach ($candidate as $can): ?>
-					if (form[i].value == <?php echo $can['candidateid'] ?>) {
-						var name = '<?php echo $can['name'] ?>';
-						var avatar = '<?php echo $can['imagelink'] ?>';
+				for(var j =0;j < list_candidate.length; j++){
+					if (form[i].value == list_candidate[j]['candidateid']) {
+						var name = list_candidate[j]['name'];
+						var avatar = list_candidate[j]['imagelink'];
+						var email 	= list_candidate[j]['email'];
 						row += '<div class="col-xs-4 candidate_chuyen"><div><img src="<?php echo base_url() ?>public/image/'+avatar+'" class="img_chuyen"></div><label>'+name+'</label></div><input type="hidden" name="id[]" value="'+form[i].value+'">';
+						if (to_mail == '') {
+			            	to_mail += email;
+			            }else{
+			            	to_mail += ', '+ email;
+			            }
 					}
-				<?php endforeach ?>
+				}
 			}
 			if (type == 1) {
+				parent.$('#email_to_tran').val(to_mail);
+				parent.$('#email_cc_tran').val('<?php echo $manageround ?>');
 				parent.$('#campaignid_tran').val(campaignid);
 				parent.$('#body_chuyen').append(row);
 				parent.$('.select_chuyen').append(option);
 				parent.$('.select_chuyen').find('option [value="'+new_round+'"]').attr('selected', true);
 				parent.$('#transferHS').modal('show');
 			}else{
+				parent.$('#email_to_dis').val(to_mail);
+				parent.$('#email_cc_dis').val('<?php echo $manageround ?>');
 				parent.$('#campaignid_dis').val(campaignid);
 				parent.$('#body_loai').append(row);
 				parent.$('#roundid').val(roundid);

@@ -174,7 +174,7 @@ class Login extends CI_Controller {
 			echo json_encode('-2');
 		}
 		else{
-			$a_UserInfo['operatorid'] = $this->Login_model->InsertData("candidate",$data);
+			$this->Login_model->InsertData("candidate",$data);
 			$a_UserInfo['candidateid'] = $this->Login_model->Set_idcandite()['candidateid'];
 			$this->Login_model->insertUser( $a_UserInfo );
 			$this->session->set_userdata('user', $a_UserInfo);
