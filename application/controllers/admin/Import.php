@@ -203,32 +203,35 @@ class Import extends CI_Controller {
                 }
                 if ($candidateid1 == $key) {
                     $date = $objWorksheet2->getCellByColumnAndRow(1,$row);
-                    if(!strtotime($date)) {
-                        if(PHPExcel_Shared_Date::isDateTime($date)) {
-                            $cellValue = $objWorksheet2->getCellByColumnAndRow(1, $row)->getValue();
-                            $dateValue = PHPExcel_Shared_Date::ExcelToPHP($cellValue);                      
-                            $data1['datefrom']     = date('Y-m-d',$dateValue);                          
-                        } else {                        
-                            $data1['datefrom']  = "";                                                   
+                    if ($date != '') {
+                        if(!strtotime($date)) {
+                            if(PHPExcel_Shared_Date::isDateTime($date)) {
+                                $cellValue = $objWorksheet2->getCellByColumnAndRow(1, $row)->getValue();
+                                $dateValue = PHPExcel_Shared_Date::ExcelToPHP($cellValue);    
+                                $data1['datefrom']     = date('Y-m-d',$dateValue);   
+                            } else {                        
+                                $data1['datefrom']  = "";                                                   
+                            } 
+                        }else {
+                                $st = strtotime($date);
+                                $data1['datefrom'] = date('Y-m-d',$st);                         
                         } 
-                    }else {
-                            $st = strtotime($date);
-                            $data1['datefrom'] = date('Y-m-d',$st);                         
-                    } 
-
+                    }
                     $date = $objWorksheet2->getCellByColumnAndRow(2,$row);
-                    if(!strtotime($date)) {
-                        if(PHPExcel_Shared_Date::isDateTime($date)) {
-                            $cellValue = $objWorksheet2->getCellByColumnAndRow(2, $row)->getValue();
-                            $dateValue = PHPExcel_Shared_Date::ExcelToPHP($cellValue);                  
-                            $data1['dateto']     = date('Y-m-d',$dateValue);                          
-                        } else {                        
-                            $data1['dateto']  = "";                                                   
+                    if ($date != '') {
+                        if(!strtotime($date)) {
+                            if(PHPExcel_Shared_Date::isDateTime($date)) {
+                                $cellValue = $objWorksheet2->getCellByColumnAndRow(2, $row)->getValue();
+                                $dateValue = PHPExcel_Shared_Date::ExcelToPHP($cellValue);                  
+                                $data1['dateto']     = date('Y-m-d',$dateValue);                          
+                            } else {                        
+                                $data1['dateto']  = "";                                                   
+                            } 
+                        }else {
+                                $st = strtotime($date);
+                                $data1['dateto'] = date('Y-m-d',$st);                         
                         } 
-                    }else {
-                            $st = strtotime($date);
-                            $data1['dateto'] = date('Y-m-d',$st);                         
-                    } 
+                    }
                     $data1['company']       = $objWorksheet2->getCellByColumnAndRow(3,$row)->getValue();
                     $data1['position']      = $objWorksheet2->getCellByColumnAndRow(4,$row)->getValue();
                     $data1['candidateid']   =  $value;
@@ -263,31 +266,34 @@ class Import extends CI_Controller {
                 }
                 if ($candidateid1 == $key) {
                     $date = $objWorksheet3->getCellByColumnAndRow(1,$row);
-                    if(!strtotime($date)) {
-                        if(PHPExcel_Shared_Date::isDateTime($date)) {
-                            $cellValue = $objWorksheet3->getCellByColumnAndRow(1, $row)->getValue();
-                            $dateValue = PHPExcel_Shared_Date::ExcelToPHP($cellValue);                
-                            $data1['datefrom']     = date('Y-m-d',$dateValue);                          
-                        } else {                        
-                            $data1['datefrom']  = "";                                                   
+                    if ($date != '') {
+                        if(!strtotime($date)) {
+                            if(PHPExcel_Shared_Date::isDateTime($date)) {
+                                $cellValue = $objWorksheet3->getCellByColumnAndRow(1, $row)->getValue();
+                                $dateValue = PHPExcel_Shared_Date::ExcelToPHP($cellValue);                
+                                $data1['datefrom']     = date('Y-m-d',$dateValue);                          
+                            } else {                        
+                                $data1['datefrom']  = "";                                                   
+                            } 
+                        }else {
+                                $st = strtotime($date);
+                                $data1['datefrom'] = date('Y-m-d',$st);                         
                         } 
-                    }else {
-                            $st = strtotime($date);
-                            $data1['datefrom'] = date('Y-m-d',$st);                         
-                    } 
-
+                    }
                     $date = $objWorksheet3->getCellByColumnAndRow(2,$row);
-                    if(!strtotime($date)) {
-                        if(PHPExcel_Shared_Date::isDateTime($date)) {
-                            $cellValue = $objWorksheet3->getCellByColumnAndRow(2, $row)->getValue();
-                            $dateValue = PHPExcel_Shared_Date::ExcelToPHP($cellValue);                  
-                            $data1['dateto']     = date('Y-m-d',$dateValue);                          
-                        } else {                        
-                            $data1['dateto']  = "";                                                   
-                        } 
-                    }else {
-                            $st = strtotime($date);
-                            $data1['dateto'] = date('Y-m-d',$st);                         
+                    if ($date != '') {
+                        if(!strtotime($date)) {
+                            if(PHPExcel_Shared_Date::isDateTime($date)) {
+                                $cellValue = $objWorksheet3->getCellByColumnAndRow(2, $row)->getValue();
+                                $dateValue = PHPExcel_Shared_Date::ExcelToPHP($cellValue);                  
+                                $data1['dateto']     = date('Y-m-d',$dateValue);                          
+                            } else {                        
+                                $data1['dateto']  = "";                                                   
+                            } 
+                        }else {
+                                $st = strtotime($date);
+                                $data1['dateto'] = date('Y-m-d',$st);                         
+                        }
                     } 
                     $data1['trainingcenter']  = $objWorksheet3->getCellByColumnAndRow(3,$row)->getValue();
                     $data1['trainingplace']   = $objWorksheet3->getCellByColumnAndRow(4,$row)->getValue();

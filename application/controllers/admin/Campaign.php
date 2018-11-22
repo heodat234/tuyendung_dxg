@@ -828,11 +828,11 @@ class Campaign extends CI_Controller {
             $data['campaignid'] 	= $id;
             $data['roundid'] 		= $roundid;
             if ($type == '1') {
-            	$body 				 = html_entity_decode($frm['body5']);
+            	$body 				 = html_entity_decode($this->input->post('body5'));
                 $data['actiontype']  = 'Transfer';
                 $data['actionnote']  = 'Chuyển hồ sơ --> '.$roundname;
             }else{
-            	$body 				 = html_entity_decode($frm['body6']);
+            	$body 				 = html_entity_decode($this->input->post('body6'));
                 $data['actiontype']  = 'Discard';
                 $data['actionnote']  = 'Chuyển hồ sơ --> '.$roundname.'/ Không đạt';
             }
@@ -948,6 +948,7 @@ class Campaign extends CI_Controller {
     	unset($frm['body']);
     	$i =0;
     	$notes = array();
+    	$asmt = array();
         foreach ($frm as $key ) {
 
         	if(is_array($key)){
@@ -957,7 +958,7 @@ class Campaign extends CI_Controller {
 	            $data['duedate']		= date('Y-m-d H:i:s',strtotime(str_replace('/', '-', $key[2])));
 	            $data['asmttemp']		= $key[1];
 	            $data['createdby']   = $this->session->userdata('user_admin')['operatorid'];
-	            $this->Data_model->insert('assessment',$data);
+	            $asmt[$i] = $this->Data_model->insert('assessment',$data);
 
 	            $notes[$i] = $key[3];
         		$i++;
@@ -972,11 +973,11 @@ class Campaign extends CI_Controller {
     		if (isset($user[0])) {
     			$lastname 	= $user[0]['lastname'];
     			$name 		= $user[0]['name'];
-    			$link = '<a href="'.base_url().'admin/Campaign/pageAssessment/'.$user[0]['candidateid'].'/'.$campaignid.'" >Trắc nghiệm kiến thức tổng quát - '.$name.'</a>';
+    			$link = '<a href="'.base_url().'admin/Campaign/pageAssessment/'.$asmt[$j].'" >Trắc nghiệm kiến thức tổng quát - '.$name.'</a>';
     		}else{
     			$lastname 	= 'Bạn';
     			$name 		= 'Bạn';
-    			$link = '<a href="'.base_url().'admin/Campaign/pageAssessment/0/'.$campaignid.'" >Trắc nghiệm kiến thức tổng quát - '.$name.'</a>';
+    			$link = '<a href="'.base_url().'admin/Campaign/pageAssessment/0/" >Trắc nghiệm kiến thức tổng quát - '.$name.'</a>';
     		}
     		$chuoi_tim 		= array('[Tên Ứng viên]','[Vòng tuyển dụng]','[Tên]','[Link phiếu trắc nghiệm]','[Ghi chú]','[Vị trí]');
     		$chuoi_thay_the = array($name,$roundname,$lastname,$link,$notes[$j],$position);

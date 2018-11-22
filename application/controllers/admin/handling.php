@@ -1048,10 +1048,46 @@ class Handling extends CI_Controller {
         $data['height'] = $frm['height'];
         $data['weight'] = $frm['weight'];
         $data['dateofissue'] = $frm['dateofissue'];
-        $data['placeofbirth'] = $frm['placeofbirth'];
+        $data['placeofissue'] = $frm['placeofissue'];
         $this->Candidate_model->UpdateData('candidate',array('candidateid' => $id),$data);
         echo json_encode("1");
               
+    }
+
+    public function updateCV()
+    {
+        $id = $this->input->post('candidateid');
+        if (!empty($_FILES['fileCV']['name'])) {
+            $config['upload_path'] = './public/document/';
+            $config['allowed_types'] = '*';
+            $config['file_name'] = $_FILES['fileCV']['name'];
+            $config['overwrite'] = FALSE;  
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
+
+            if ($this->upload->do_upload('fileCV')) {
+                $uploadData = $this->upload->data();
+                $data2["tablename"]         = 'candidate';
+                $data2["referencekey"]      = $id;
+                $data2["filename"]          = $uploadData['file_name'];
+                $data2["category"]          = $uploadData['file_ext'];
+                $data2["subject"]           = 'File CV';
+                $data2["author"]            = $id;
+                $data2["url"]               = base_url().'public/document/'.$uploadData['file_name'];
+                $data2["createdby"]         = $this->session->userdata('user_admin')['operatorid'];
+                $data2["updatedby"]         = $this->session->userdata('user_admin')['operatorid'];
+                $this->Candidate_model->InsertData('document',$data2);
+             }
+             else
+             {
+                $datas['errors'] = $this->upload->display_errors();
+             } 
+        }
+        else
+        {
+            $datas['errors'] = $this->upload->display_errors();
+        }
+        echo json_encode("1");
     }
 }
 ?>
