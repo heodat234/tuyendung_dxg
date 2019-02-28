@@ -1,6 +1,3 @@
-<?php 
-if($this->session->has_userdata('user_admin')) {
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +5,8 @@ if($this->session->has_userdata('user_admin')) {
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Tuyển dụng Admin</title>
   <!-- Tell the browser to be responsive to screen width -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/bootstrap.min.css">
@@ -36,18 +35,25 @@ if($this->session->has_userdata('user_admin')) {
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/mycss2.css">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/profile.css">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/custom.css">
+  <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/bootstrap-tagsinput.css">
 
   <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>public/admin/css/campaign_css.css">
   <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>public/admin/css/hung_css.css">
 
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/bootstrap-multiselect.css">
-  <script src="<?php echo base_url()?>public/admin/js/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="<?php echo base_url()?>public/admin/js/bootstrap-multiselect.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
   <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>public/datetimepicker-master/jquery.datetimepicker.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-<!-- 
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic"> -->
+    <script src="<?php echo base_url() ?>public/datetimepicker-master/build/jquery.datetimepicker.full.min.js"></script>
+    <script src="<?php echo base_url()?>public/admin/js/bootstrap-tagsinput.js"></script>
+    <script src="<?php echo base_url()?>public/admin/js/typeahead.js"></script>
+    
+    <script src="<?php echo base_url()?>public/admin/js/jquery.number.js"></script>
+  <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url()?>public/admin/css/print.min.css">
+  <script type="text/javascript" src="<?php echo base_url()?>public/admin/js/print.min.js"></script>
+  <script type="text/javascript" src="<?php echo base_url()?>public/admin/js/printPreview.js"></script> -->
 </head>
 <body>
 
@@ -61,6 +67,7 @@ if($this->session->has_userdata('user_admin')) {
 <script>
   $.widget.bridge('uibutton', $.ui.button);
 </script>
+<script src="<?php echo base_url()?>public/admin/js/moment.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="<?php echo base_url()?>public/admin/js/bootstrap.min.js"></script>
 
@@ -80,14 +87,14 @@ if($this->session->has_userdata('user_admin')) {
 <script src="<?php echo base_url()?>public/admin/js/adminlte.min.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="<?php echo base_url()?>public/admin/js/dashboard.js"></script>
-<script src="<?php echo base_url() ?>public/datetimepicker-master/build/jquery.datetimepicker.full.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="<?php echo base_url()?>public/admin/js/demo.js"></script>
 <script src="<?php echo base_url()?>public/admin/js/countdown.js"></script>
+<script src="<?php echo base_url()?>public/admin/js/jquery-jvectormap-1.2.2.min.js"></script>
+<script src="<?php echo base_url()?>public/admin/js/jquery-jvectormap-world-mill-en.js"></script>
+<script src="<?php echo base_url()?>public/admin/js/morris.js"></script>
+
 <?php echo isset($script)? $script: ""; ?>
 <?php echo isset($modal_campaign)? $modal_campaign: ""; ?>
 </body>
 </html>
-<?php 
-}else{redirect(base_url('login.html'));}
-?>

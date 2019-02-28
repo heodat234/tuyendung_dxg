@@ -13,9 +13,9 @@
 			</label>
 		</div>
 		<div class="col-md-6 col-xs-6 hov-btn-ad">
-			<button type="button" class="btn-icon-header" ><i class="fa fa-print color-ccc" ></i></button>
-			<button type="button" class="btn-icon-header margin-r7" ><i class="fa fa-envelope-o color-ccc" ></i></button>
-			<div class=""> 
+			<!-- <button type="button" class="btn-icon-header" ><i class="fa fa-print color-ccc" ></i></button>
+			<button type="button" class="btn-icon-header margin-r7" ><i class="fa fa-envelope-o color-ccc" ></i></button> -->
+			<!-- <div class=""> 
 				<button type="button" class="btn-icon-header margin-r7" id="starbtn" data-toggle="dropdown" >
 					<span class="fa-stack fa-1x fixicon">
 						<?php if (!isset($candidate['istalent'])){ ?>
@@ -53,7 +53,7 @@
 				<?php } else { ?>
 					<i class="fa fa-check-circle-o color-green size-icon"></i> 
 				<?php } ?>
-			</button>
+			</button> -->
 		</div>
 	</div>
 	<div class="margin-t4 dash-horizontal"  ></div>
@@ -67,13 +67,36 @@
 	<div class="row rowcontent">
 		<div class="col-md-6 col-xs-6">
 			<label class="can-name"><?php echo isset($candidate['name'])? $candidate['name'] : 'New Profile'; ?></label>
-			<label class="cv-old">Chuyên viên tuyển dụng - VP BANK</label>
-			<label class="tag-lb">Tuyển dụng, đào tạo</label>
-			<span class="highR">#HighR</span>
+			<label class="cv-old"><?php echo isset($candidate['position'])? $candidate['position'] : ''; ?></label>
+			<label class="tag-lb">
+			<?php 
+			if(isset($tags))
+			{
+				$aa = array();
+					foreach ($tags as $key) {
+						array_push($aa, $key['title']);
+					}
+				
+					echo implode(", ", $aa);
+			}
+				?></label>
+			<span class="highR">
+			<?php 
+				if(isset($tagstrandom))
+				{
+					$aaa = array();
+						foreach ($tagstrandom as $key) {
+							array_push($aaa, "#".$key['title']);
+						}
+					
+						echo implode(", ", $aaa);
+				}
+			?>
+			</span>
 		</div>
 		<div class="col-md-6 col-xs-6" style="text-align: right; padding-right: 30px">
 			<label class="diem">0 điểm</label>
-			<!-- <label class="mau3">3 chiến dịch</label> -->
+			<label class="mau3">0 chiến dịch</label>
 			<br><br>
 			<span class="webportal"><?php echo isset($candidate['profilesrc'])? $candidate['profilesrc'] : 'Web Admin'; ?></span>							
 		</div>
@@ -84,73 +107,147 @@
 		<div class="panel panel-default border-rad0" >
 			<div class="panel-heading b-blue rad-pad0">
 				<ul class="nav nav-tabs ul-nav">
-					<li class="active"><a data-toggle="tab" href="#total" class="nemu-info-pf">Tổng quát</a></li>
-					<li ><a data-toggle="tab" href="#personal" class="nemu-info-pf" >Cá nhân</a></li>
-					<li ><a data-toggle="tab" href="#contact" class="nemu-info-pf" >Liên hệ</a></li>
-					<li ><a data-toggle="tab" href="#family" class="nemu-info-pf" >Gia đình</a></li>
-					<li ><a data-toggle="tab" href="#experience" class="nemu-info-pf" >Kinh nghiệm</a></li>
-					<li ><a data-toggle="tab" href="#knowledge" class="nemu-info-pf" >Học vấn</a></li>
-					<li ><a data-toggle="tab" href="#language" class="nemu-info-pf" >Ngoại ngữ</a></li>
-					<li ><a data-toggle="tab" href="#software" class="nemu-info-pf" >Tin học</a></li>
+					<li class="<?php echo ($tabActive == '1')?'active' : '' ?>"><a data-toggle="tab" href="#total" class="nemu-info-pf">Tổng quát</a></li>
+					<li class="<?php echo ($tabActive == '2')?'active' : '' ?>"><a data-toggle="tab" href="#personal" class="nemu-info-pf" >Cá nhân</a></li>
+					<li class="<?php echo ($tabActive == '3')?'active' : '' ?>"><a data-toggle="tab" href="#contact" class="nemu-info-pf" >Liên hệ</a></li>
+					<li class="<?php echo ($tabActive == '4')?'active' : '' ?>"><a data-toggle="tab" href="#family" class="nemu-info-pf" >Gia đình</a></li>
+					<li class="<?php echo ($tabActive == '5')?'active' : '' ?>"><a data-toggle="tab" href="#experience" class="nemu-info-pf" >Kinh nghiệm</a></li>
+					<li class="<?php echo ($tabActive == '6')?'active' : '' ?>"><a data-toggle="tab" href="#knowledge" class="nemu-info-pf" >Học vấn</a></li>
+					<li class="<?php echo ($tabActive == '7')?'active' : '' ?>"><a data-toggle="tab" href="#language" class="nemu-info-pf" >Ngoại ngữ</a></li>
+					<li class="<?php echo ($tabActive == '8')?'active' : '' ?>"><a data-toggle="tab" href="#software" class="nemu-info-pf" >Tin học</a></li>
 				</ul>
 			</div>
 			<!-- ket thuc phan heading cua tab 1 thong tin ung vien -->
 			<div id="collapse1" class="panel-collapse collapse in">
 				<div class="panel-body tab-collapse">
 					<div class="tab-content">
-						<div id="total" class="tab-pane in active">
+						<div id="total" class="tab-pane <?php echo ($tabActive == '1')?'in active' : '' ?> ">
 							<div class="panel-group bor-mar-b0">
 								<div class="panel panel-default border-rad0">
 									<!-- heading ho so noi bo -->
 									<div id="collapsetotal2" class="panel-collapse collapse in">
-										<form method="post" action="<?php echo base_url() ?>admin/handling/insertCandidate" enctype="multipart/form-data">
+										<form id="form_newProfile" method="post" action="<?php echo base_url() ?>admin/handling/insertCandidate" enctype="multipart/form-data">
+											<input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : 0; ?>">
 											<div class="panel-body" style="border: 0px">
 												<div class="width100">
 													<label for="text" class="width20 col-xs-3 label-profile">Họ tên</label>
 													<div class="col-xs-3 width30 padding-lr0">
-														<input type="text" name="firstname" class="textbox" required="" placeholder="First name" value="<?php echo isset($candidate['firstname'])? $candidate['firstname'] : ''; ?>">
+														<input type="text" id="firstname" name="firstname" class="textbox" required placeholder="Họ" value="<?php echo isset($can_detail['firstname'])? $can_detail['firstname'] : ''; ?>">
 													</div>
 													<label for="text" class="col-xs-3 width20 col-xs-3 label-profile">Email</label>
 													<div class="col-xs-3 width30 padding-lr0">
-														<input type="email" name="email" class="textbox" required="" value="<?php echo isset($candidate['email'])? $candidate['email'] : ''; ?>">
+														<input type="email" id="email" name="email" class="textbox" value="<?php echo isset($can_detail['email'])? $can_detail['email'] : ''; ?>">
 													</div>   
 												</div>
 												<br><br>
 												<div class="width100">
 													<label for="text" class="width20 col-xs-3 label-profile"></label>
 													<div class="col-xs-3 width30 padding-lr0">
-														<input type="text" name="lastname" class="textbox" required="" placeholder="Last name" value="<?php echo isset($candidate['lastname'])? $candidate['lastname'] : ''; ?>">
+														<input type="text" id="lastname" name="lastname" class="textbox" required placeholder="Tên" value="<?php echo isset($can_detail['lastname'])? $can_detail['lastname'] : ''; ?>">
 													</div>
 													<label for="text" class="col-xs-3 width20 col-xs-3 label-profile">CMND/ ID</label>
 													<div class="col-xs-3 width30 padding-lr0">
-														<input type="text" class="so" name="idcard" class="textbox" maxlength="10" required="" value="<?php echo isset($candidate['idcard'])? $candidate['idcard'] : ''; ?>">
+														<input type="text" class="so textbox" id="idcard" name="idcard" class="textbox" maxlength="" value="<?php echo isset($can_detail['idcard'])? $can_detail['idcard'] : ''; ?>">
 													</div>   
 												</div>
 												<br><br>
 												<div class="width100">
+													<label for="text" class="width20 col-xs-3 label-profile">Số điện thoại</label>
+													<?php 
+													if (isset($can_detail['telephone'])) {
+														$pizza  = $can_detail['telephone'];
+									                    $pieces = explode(",", $pizza);
+									                    $p1 = isset($pieces[0])? $pieces[0] : "" ;
+									                    $p2 = isset($pieces[1])? $pieces[1] : "" ;
+													}else{ $p1 = $p2 = '';}
+									              	?>
+													<div class="col-xs-3 width30 padding-lr0">
+														<input type="text" name="phone1" class="textbox so" maxlength="10" id="phone1" placeholder="Số thứ 1" value="<?php echo $p1 ?>">
+													</div>
+													<label for="text" class="col-xs-3 width20 col-xs-3 label-profile"></label>
+													<div class="col-xs-3 width30 padding-lr0">
+														<input type="text" name="phone2" class="textbox so" maxlength="10" id="phone2" placeholder="Số thứ 2" value="<?php echo $p2 ?>">
+													</div>   
+												</div>
+												
+												<br><br>
+												<div class="width100">
 													<label for="text" class="width20 col-xs-3 label-profile">Nguồn hồ sơ</label>
 													<div class="col-xs-3 width30 padding-lr0">
-														<select class="textbox" name="profilesrc" required="">
-															<option value="">Chọn nguồn hồ sơ...</option>
-															<option value="web">Web Admin</option>
+														<select class="textbox" name="profilesrc" required="" id="profilesrc_id">
+															<!-- <option value="">Chọn nguồn hồ sơ...</option> -->
+															<option value="Nội bộ" selected="">Nội bộ</option>
 														</select>
 													</div>
 												</div>
+												<?php if (isset($can_detail['profilesrc'])): ?>
+													<script type="text/javascript">
+														$('#profilesrc_id option[value="<?php echo $can_detail['profilesrc'] ?>"]').prop('selected', true);
+													</script>
+												<?php endif ?>
+												
 												<br><br>
 												<div class="width100">
 													<label for="text" class="width20 col-xs-3 label-profile">Vị trí phù hợp</label>
 													<div class="col-xs-9 width80 padding-lr0">
-														<input type="text" name="" class="textbox2">
+														<div id="the-basics" style="font-size: 15px">
+									                    <input id="typeahead" type="text" data-role="tagsinput" value="
+									                    <?php 
+									                    if(isset($tags)){
+									                    for($i=0; $i < count($tags) ; $i++)
+									                          {
+									                            echo $tags[$i]['title'];
+									                            if($i < count($tags)-1)
+									                            {
+									                              echo ',';
+									                            }
+									                          }
+									                    }
+									                    ?>
+									                    ">
+									                  </div>
+									                  <input type="hidden" name="tags" id="tags" value="<?php
+									                  if(isset($tags)){
+									                    for($i=0; $i < count($tags) ; $i++)
+									                          {
+									                            echo $tags[$i]['title'];
+									                            if($i < count($tags)-1)
+									                            {
+									                              echo ',';
+									                            }
+									                          }
+									                    }
+									                    ?>
+									                  ">
 													</div>
 												</div>
 												<br><br>
 												<div class="width100">
 													<label for="text" class="width20 col-xs-3 label-profile">Tag</label>
 													<div class="col-xs-9 width80 padding-lr0">
-														<input type="text" name="" class="textbox2">
+														<input name="tagsrandom" type="text" data-role="tagsinput" value="
+															<?php 
+															if(isset($tagstrandom)){
+																for($i=0; $i < count($tagstrandom) ; $i++)
+											                          {
+											                            echo $tagstrandom[$i]['title'];
+											                            if($i < count($tagstrandom)-1)
+											                            {
+											                              echo ',';
+											                            }
+											                          }
+										                      }
+										                    ?>">
 													</div>
 												</div>
 												<br><br>
+												<div class="width100">
+													<label for="text" class="width20 col-xs-3 label-profile ">Địa chỉ MXH</label>
+										            <div class="col-xs-9 width80 padding-lr0">
+														<input name="snid" type="text" class="textbox width100" value="<?php echo isset($can_detail['snid'])? $can_detail['snid'] : "";?>">
+										            </div>
+										        </div>
+									            <br><br>
 												<div class="width100">
 													<label for="text" class="width20 col-xs-3 label-profile">Hồ sơ tải lên</label>
 													<div class="width80 col-xs-9 padding-lr0"">
@@ -169,7 +266,7 @@
 									                    </div>
 													</div>
 												</div>
-												<button type="submit" class="btn-luu-nav floatright"> Lưu</button>
+												<button type="button" id="btn_newProfile" class="btn-luu-nav floatright"><i></i> Lưu</button>
 											</div>
 										</form>
 									</div>
@@ -179,7 +276,7 @@
 							</div>
 						</div>
 							<!-- ket thuc id tab tong quat -->
-						<div id="personal" class="tab-pane">
+						<div id="personal" class="tab-pane <?php echo ($tabActive == '2')?'in active' : '' ?> ">
 							<div class="panel-group bor-mar-b0">
 								<!--   ket thuc ho so ca nhan 2-->
 								<div class="panel panel-default border-rad0">
@@ -190,11 +287,11 @@
 												<div class="width100">
 													<label for="text" class="width20 col-xs-3 label-profile">Ngày sinh/ Giới tính</label>
 													<div class="col-xs-3 width30 padding-lr0">
-														<input type="text" name="dateofbirth" id="ngaysinh123" class="textbox2" value="<?php echo isset($candidate['dateofbirth'])? date_format(date_create($candidate['dateofbirth']),"d/m/Y") : '' ?>">
+														<input type="text" name="dateofbirth" id="ngaysinh123" class="textbox2" value="<?php echo isset($can_detail['dateofbirth'])? date_format(date_create($can_detail['dateofbirth']),"d/m/Y") : '' ?>">
 													</div>
 													<div class="col-xs-1 width5 padding-lr0"></div>
-													<?php if (isset($candidate['gender'])){ 
-														if($candidate['gender'] == 'M'){ $gender_M = 'checked'; $gender_F ='';}
+													<?php if (isset($can_detail['gender'])){ 
+														if($can_detail['gender'] == 'M'){ $gender_M = 'checked'; $gender_F ='';}
 														else { $gender_F = 'checked'; $gender_M ='';}; 
 													}else{ $gender_M  = $gender_F = '';}
 													?>
@@ -212,7 +309,7 @@
 														<select class="textbox2 js-example-basic-single" name="placeofbirth" style="width: 195px">
 															<option value="0" style="width: 195px" >Chọn tỉnh thành</option>
 															<?php foreach ($city as $key ) {	?>
-																<option value="<?php echo $key['name'] ?>" <?php if(isset($candidate['placeofbirth']) && $key['name'] == $candidate['placeofbirth']) echo "selected";?> ><?php echo $key['name'] ?></option>
+																<option value="<?php echo $key['name'] ?>" <?php if(isset($can_detail['placeofbirth']) && $key['name'] == $can_detail['placeofbirth']) echo "selected";?> ><?php echo $key['name'] ?></option>
 															<?php } ?>
 														</select>
 													</div> 
@@ -221,7 +318,7 @@
 												<div class="width100">
 													<label for="text" class="width20 col-xs-3 label-profile">Dân tộc</label>
 													<div class="col-xs-3 width30 padding-lr0">
-														<input type="text" name="ethnic" class="textbox2" value="<?php echo isset($candidate['ethnic'])? $candidate['ethnic'] : '' ?>">
+														<input type="text" name="ethnic" class="textbox2" value="<?php echo isset($can_detail['ethnic'])? $can_detail['ethnic'] : '' ?>">
 													</div>
 												</div>
 												<br><br>
@@ -238,21 +335,21 @@
 												<div class="width100">
 													<label for="text" class="width20 col-xs-3 label-profile">Chiều cao (Cm)</label>
 													<div class="col-xs-3 width30 padding-lr0">
-														<input type="text" name="height" class="textbox2 so" maxlength="3" value="<?php echo isset($candidate['height'])? $candidate['height'] : '' ?>">
+														<input type="text" name="height" class="textbox2 so" maxlength="3" value="<?php echo isset($can_detail['height'])? $can_detail['height'] : '' ?>">
 													</div>
 												</div>
 												<br><br>
 												<div class="width100">
 													<label for="text" class="width20 col-xs-3 label-profile">Cân nặng (Kg)</label>
 													<div class="col-xs-3 width30 padding-lr0">
-														<input type="text" name="weight" maxlength="3" class="textbox2 so" value="<?php echo isset($candidate['weight'])? $candidate['weight'] : '' ?>">
+														<input type="text" name="weight" maxlength="3" class="textbox2 so" value="<?php echo isset($can_detail['weight'])? $can_detail['weight'] : '' ?>">
 													</div>
 												</div>
 												<br><br>
 												<div class="width100">
 													<label for="text" class="width20 col-xs-3 label-profile">Ngày cấp/ Nơi cấp</label>
 													<div class="col-xs-3 width30 padding-lr0">
-														<input type="text" name="dateofissue" id="ngaycap1" class="textbox2" value="<?php echo isset($candidate['dateofissue'])? date_format(date_create($candidate['dateofissue']),"d/m/Y") : '' ?>">
+														<input type="text" name="dateofissue" id="ngaycap1" class="textbox2" value="<?php echo isset($can_detail['dateofissue'])? date_format(date_create($can_detail['dateofissue']),"d/m/Y") : '' ?>">
 													</div>
 													<div class="col-xs-1 width5 padding-lr0"></div>
 													<div class="col-xs-3 width30 padding-lr0">
@@ -260,7 +357,7 @@
 															<option value="0" style="width: 195px" >Chọn tỉnh thành</option>
 															<?php foreach ($city as $key ) {
 																?>
-																<option value="<?php echo $key['name'] ?>" <?php if(isset($candidate['placeofissue']) && $key['name'] == $candidate['placeofissue']) echo "selected";?> ><?php echo $key['name'] ?></option>
+																<option value="<?php echo $key['name'] ?>" <?php if(isset($can_detail['placeofissue']) && $key['name'] == $can_detail['placeofissue']) echo "selected";?> ><?php echo $key['name'] ?></option>
 															<?php } ?>
 														</select>
 													</div> 
@@ -276,7 +373,7 @@
 							</div>
 						</div>
 							<!-- ket thuc id tab ca nhan -->
-						<div id="contact" class="tab-pane">
+						<div id="contact" class="tab-pane <?php echo ($tabActive == '3')?'in active' : '' ?> ">
 							<div class="panel-group bor-mar-b0">
 								<!--   ket thuc ho so ca nhan 3-->
 								<div class="panel panel-default border-rad0">
@@ -302,18 +399,18 @@
 														</select>
 														<div class="h10-w-auto"></div>
 
-														<select class="seletext js-example-basic-single" name="district[]" id="quanhuyen8-ad" style="width: 100%" required onchange="comb_admin_qhpx(this.value,<?php echo isset($address[1]['ward'])? $address[1]['ward'] : '0' ?>)">
+														<select class="seletext js-example-basic-single" name="district[]" id="quanhuyen8-ad" style="width: 100%" onchange="comb_admin_qhpx(this.value,<?php echo isset($address[1]['ward'])? $address[1]['ward'] : '0' ?>)">
 															<option value="0" id="chonqh-ad1" >Chọn quận huyện</option>
 														</select>
 
 														<div class="h10-w-auto"></div>
 
-														<select class="textbox2 js-example-basic-single" name="ward[]" id="phuongxa8-ad" style="width: 100%" required>
+														<select class="textbox2 js-example-basic-single" name="ward[]" id="phuongxa8-ad" style="width: 100%" >
 															<option value="0" id="chonpx-ad1" >Chọn phường xã</option>				                
 														</select>
 														<div class="h10-w-auto"></div>
 
-														<textarea class="form-control off-resize fontstyle" rows="2" name="street[]" id="duong8" placeholder="Tên đường" required><?php echo isset($address[1]['street'])? $address[1]['street'] : '' ?></textarea>
+														<textarea class="form-control off-resize fontstyle" rows="2" name="street[]" id="duong8" placeholder="Tên đường" ><?php echo isset($address[1]['street'])? $address[1]['street'] : '' ?></textarea>
 														<div class="h10-w-auto"></div>
 														<textarea class="form-control off-resize fontstyle" rows="2" name="addressno[]" id="toanha8" placeholder="Số nhà/ Toà nhà"><?php echo isset($address[1]['addressno'])? $address[1]['addressno'] : '' ?></textarea>
 													</div>
@@ -333,43 +430,27 @@
 															<?php } ?>
 														</select>
 														<div class="h10-w-auto"></div>
-														<select class="seletext js-example-basic-single" name="district[]" id="quanhuyen-ad2" style="width: 100%" required onchange="comb_admin_qhpx2(this.value,<?php echo isset($address[0]['ward'])? $address[0]['ward'] : '0' ?>)">
+														<select class="seletext js-example-basic-single" name="district[]" id="quanhuyen-ad2" style="width: 100%"  onchange="comb_admin_qhpx2(this.value,<?php echo isset($address[0]['ward'])? $address[0]['ward'] : '0' ?>)">
 															<option value="0" id="chonqh-ad2" >Chọn quận huyện</option>
 														</select>
 														<div class="h10-w-auto"></div>
-														<select class="seletext js-example-basic-single" name="ward[]" id="phuongxa8" style="width: 100%" required>
+														<select class="seletext js-example-basic-single" name="ward[]" id="phuongxa8" style="width: 100%" >
 															<option value="0" id="chonpx-ad2" >Chọn phường xã</option>
 														</select>
 														<div class="h10-w-auto"></div>
-														<textarea class="form-control off-resize fontstyle" rows="2" name="street[]" id="duong8" required placeholder="Tên đường"><?php echo isset($address[0]['street'])? $address[0]['street'] : '' ?></textarea>
+														<textarea class="form-control off-resize fontstyle" rows="2" name="street[]" id="duong8"  placeholder="Tên đường"><?php echo isset($address[0]['street'])? $address[0]['street'] : '' ?></textarea>
 														<div class="h10-w-auto"></div>
 														<textarea class="form-control off-resize fontstyle" rows="2" name="addressno[]" id="toanha8" placeholder="Số nhà/ Toà nhà"><?php echo isset($address[0]['addressno'])? $address[0]['addressno'] : '' ?></textarea>
 													</div>
 												</div>
 
-												<div class="width100">
-													<label for="text" class="width20 col-xs-3 label-profile margin-t10" >Số điện thoại</label>
-													<?php 
-													if (isset($candidate['telephone'])) {
-														$pizza  = $candidate['telephone'];
-									                    $pieces = explode(" ", $pizza);
-									                    $p1 = isset($pieces[0])? $pieces[0] : "" ;
-									                    $p2 = isset($pieces[1])? $pieces[1] : "" ;
-													}else{ $p1 = $p2 = '';}
-									              	?>
-													<div class="col-xs-3 width30 padding-lr0">
-														<input type="text" name="phone1" class="textbox2 margin-t10 so" maxlength="10" placeholder="Số thứ 1" value="<?php echo $p1 ?>">
-													</div>
-													<div class="col-xs-3 width40 padding-lr0 mar-tam" >
-														<input type="text" name="phone2" class="textbox2 so" maxlength="10" placeholder="Số thứ 2" value="<?php echo $p2 ?>">
-													</div>
-												</div>
+												
 
 
-												<div class="width100">
+												<div class="width100" style="float: left;">
 													<label for="text" class="width20 col-xs-3 label-profile margin-t10" >Liên lạc khẩn cấp</label>
 													<div class="col-xs-3 width30 padding-lr0">
-														<input type="text" name="emergencycontact" class="textbox2 margin-t10 so" maxlength="10" value="<?php echo isset($candidate['height'])? $candidate['height'] : '' ?>" > 
+														<input type="text" name="emergencycontact" class="textbox2 margin-t10 so" maxlength="10" value="<?php echo isset($can_detail['emergencycontact'])? $can_detail['emergencycontact'] : '' ?>" > 
 													</div>
 												</div>
 												<input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" id="candidateid_2">
@@ -385,7 +466,7 @@
 							</div>
 						</div>
 							<!-- ket thuc id tab lien he -->
-						<div id="family" class="tab-pane">
+						<div id="family" class="tab-pane <?php echo ($tabActive == '4')?'in active' : '' ?> ">
 							<div class="panel-group bor-mar-b0">
 								<div class="panel panel-default border-rad0">
 											<!-- heading ho so noi bo 4-->
@@ -432,7 +513,7 @@
 							</div>
 						</div>
 											<!-- ket thuc id tab gia dinh -->
-						<div id="experience" class="tab-pane">
+						<div id="experience" class="tab-pane <?php echo ($tabActive == '5')?'in active' : '' ?> ">
 							<div class="panel-group bor-mar-b0">
 								<div class="panel panel-default border-rad0">
 									<div id="collapsetotal52" class="panel-collapse collapse in">
@@ -476,7 +557,7 @@
 										             <?php $i++; } } ?>
 												</tbody> 
 											</table>
-											<a href="javascript:void(0)" onclick="showmodel2()"><label class="floatright">Thêm quan hệ <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a>
+											<a href="javascript:void(0)" onclick="showmodel2()"><label class="floatright">Thêm kinh nghiệm <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a>
 											<br>
 											<label>Người phụ trách tham khảo</label>
 											<table   class="table table-striped table-bordered" > 
@@ -510,7 +591,7 @@
 										             <?php $i++; } } ?>
 												</tbody> 
 											</table>
-											<a href="javascript:void(0)" onclick="showmodel3()"><label class="floatright">Thêm quan hệ <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a>
+											<a href="javascript:void(0)" onclick="showmodel3()"><label class="floatright">Thêm người tham chiếu <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a>
 										</div>
 									</div>
 									<!-- body ho so noi bo 5-->
@@ -519,7 +600,7 @@
 							</div>
 						</div>
 						<!-- ket thuc id tab kinh nghiệm -->
-						<div id="knowledge" class="tab-pane">
+						<div id="knowledge" class="tab-pane <?php echo ($tabActive == '6')?'in active' : '' ?> ">
 							<div class="panel-group bor-mar-b0">
 								<!--   ket thuc ho so ca nhan 6-->
 								<div class="panel panel-default border-rad0">
@@ -615,7 +696,7 @@
 							</div>
 						</div>
 						<!-- ket thuc id tab hoc van-->
-						<div id="language" class="tab-pane">
+						<div id="language" class="tab-pane <?php echo ($tabActive == '7')?'in active' : '' ?> ">
 							<div class="panel-group bor-mar-b0">
 								<div class="panel panel-default border-rad0">
 									<div id="collapsetotal72" class="panel-collapse collapse in">
@@ -666,7 +747,7 @@
 							</div>
 						</div>
 							<!-- ket thuc id tab ngoai ngu-->
-						<div id="software" class="tab-pane">
+						<div id="software" class="tab-pane <?php echo ($tabActive == '8')?'in active' : '' ?> ">
 							<div class="panel-group bor-mar-b0">
 								<div class="panel panel-default border-rad0">
 									<div id="collapsetotal82" class="panel-collapse collapse in">
@@ -717,7 +798,7 @@
 </div>
 								<!-- ket thuc tat ca tab 1 thong tin ung vien -->
 <div class="modal fade" id="edit_anh_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  	<div class="modal-dialog" role="document">
+  	<div class="modal-dialog width-50" role="document">
     	<div class="modal-content">
       		<form action="<?php echo base_url()?>admin/handling/upload_image" method="POST" enctype="multipart/form-data" id="form_image">
       			<div class="modal-header">
@@ -745,7 +826,7 @@
 </div>
 
 <div class="modal fade" id="myModal11" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog width-30" role="document">
+  <div class="modal-dialog width-50" role="document">
     <div class="modal-content" style="padding: 20px;">
       <form action="<?php echo base_url()?>admin/handling/insert_relationship" method="post" id="form_can_3">
       <h3 class="title-modal margin-bot-15">Thêm người thân</h3>
@@ -755,7 +836,7 @@
             <label for="staticEmail"  class="col-sm-4 col-form-label fontstyle">Họ và tên</label>
             <div class="col-sm-8">
            
-              <input class="fontstyle width100" type="text" required  placeholder="" name="hoten" id="hoten11">
+              <input class="fontstyle width100" type="text"  placeholder="" name="hoten" id="hoten11">
             </div>
           </div>
            <div class="form-group row padding-left-right-20 margin-bot-15" >
@@ -809,7 +890,7 @@
 </div>
 
 <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog width-30" role="document">
+  <div class="modal-dialog width-50" role="document">
     <div class="modal-content" style="padding: 20px;">
       <form action="<?php echo base_url()?>admin/handling/insert_experience" method="post" id="form_can_4">
       <h3 class="title-modal margin-bot-15">Thêm quá trình công tác</h3>
@@ -819,9 +900,9 @@
             <div class="col-sm-8">
               <div class="form-group row">
                 <div class="col-sm-6">
-                <input class="form-control fontstyle" type="text" id="tuden5" placeholder="" name="tu" required></div>
+                <input class="form-control fontstyle datepicker" type="text" id="tuden5" placeholder="" name="tu"></div>
                 <div class="col-sm-6">
-                <input class="form-control fontstyle" type="text" id="tuden6" placeholder="" name="den" required></div>
+                <input class="form-control fontstyle datepicker" type="text" id="tuden6" placeholder="" name="den"></div>
               </div>
             </div>
           </div>
@@ -829,21 +910,21 @@
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Tên công ty</label>
             <div class="col-sm-6">
            
-              <input class="form-control fontstyle" type="text"  placeholder="" name="tencty" id="cty2" required>
+              <input class="form-control fontstyle" type="text"  placeholder="" name="tencty" id="cty2">
             </div>
           </div>
            <div class="form-group row padding-left-right-20 margin-bot-15" >
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Địa chỉ</label>
             <div class="col-sm-8">
            
-              <textarea class="form-control off-resize fontstyle" rows="2" name="diachi" id="dc2" required></textarea>
+              <textarea class="form-control off-resize fontstyle" rows="2" name="diachi" id="dc2"></textarea>
             </div>
           </div>
           <div class="form-group row padding-left-right-20 margin-bot-15" >
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Số điện thoại</label>
             <div class="col-sm-8">
            
-              <input class="form-control fontstyle" type="text"  maxlength="12" name="sdt" id="sdt2" required>
+              <input class="form-control fontstyle" type="text"  maxlength="12" name="sdt" id="sdt2" >
             </div>
           </div>
           <div class="form-group row padding-left-right-20 margin-bot-12" >
@@ -877,7 +958,7 @@
 </div>
 
 <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog width-30" role="document">
+  <div class="modal-dialog width-50" role="document">
     <div class="modal-content" style="padding: 20px;">
       <form action="<?php echo base_url()?>admin/handling/insert_reference" method="post" id="form_can_5">
       <h3 class="title-modal margin-bot-15">Thêm người tham khảo</h3>
@@ -886,27 +967,27 @@
             <div class="form-group row padding-left-right-20" >
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Họ và tên</label>
             <div class="col-sm-8">
-              <input class="form-control fontstyle" type="text"  placeholder="" name="hoten" id="hoten3" required>
+              <input class="form-control fontstyle" type="text"  placeholder="" name="hoten" id="hoten3">
             </div>
           </div>
            <div class="form-group row padding-left-right-20" >
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Chức vụ</label>
             <div class="col-sm-8">
            
-              <input class="form-control fontstyle" type="text"  placeholder="" name="chucvu" id="chucvu3" required>
+              <input class="form-control fontstyle" type="text"  placeholder="" name="chucvu" id="chucvu3">
             </div>
           </div>
           <div class="form-group row padding-left-right-20" >
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Công ty</label>
             <div class="col-sm-8">
            
-              <input class="form-control fontstyle" type="text"  placeholder="" name="congty" id="congty3" required>
+              <input class="form-control fontstyle" type="text"  placeholder="" name="congty" id="congty3">
             </div>
           </div>
           <div class="form-group row padding-left-right-20" >
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Liên hệ</label>
             <div class="col-sm-8">
-              <input class="form-control fontstyle" type="text"  placeholder="" name="lienhe" id="lienhe3" required>
+              <input class="form-control fontstyle" type="text"  placeholder="" name="lienhe" id="lienhe3">
             </div>
           </div>
           <input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" id="candidateid_5">
@@ -917,7 +998,7 @@
 </div>
 
 <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog width-30" role="document">
+  <div class="modal-dialog width-50" role="document">
     <div class="modal-content" style="padding: 20px;">
       <form action="<?php echo base_url()?>admin/handling/insert_knowledge" method="post" id="form_can_6">
       <h3 class="title-modal margin-bot-15">Thêm trình độ học vấn</h3>
@@ -927,9 +1008,9 @@
             <div class="col-sm-8">
               <div class="form-group row">
                 <div class="col-sm-6">
-                <input class="form-control fontstyle" type="text" id="tuden1" placeholder="" name="tu" required></div>
+                <input class="form-control fontstyle datepicker" type="text" id="tuden1" placeholder="" name="tu" ></div>
                 <div class="col-sm-6">
-                <input class="form-control fontstyle" type="text" id="tuden2" placeholder="" name="den" required></div>
+                <input class="form-control fontstyle datepicker" type="text" id="tuden2" placeholder="" name="den"></div>
               </div>
             </div>
           </div>
@@ -937,7 +1018,7 @@
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Tên trường</label>
             <div class="col-sm-6">
            
-              <input class="form-control fontstyle" type="text"  placeholder="" name="tentruong" id="truong4" required>
+              <input class="form-control fontstyle" type="text"  placeholder="" name="tentruong" id="truong4">
             </div>
           </div>
            <div class="form-group row padding-left-right-20" >
@@ -973,7 +1054,7 @@
 </div>
 
 <div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog width-30" role="document">
+  <div class="modal-dialog width-50" role="document">
     <div class="modal-content" style="padding: 20px;">
       <form action="<?php echo base_url()?>admin/handling/insert_knowledge_v2" method="post" id="form_can_7">
       <h3 class="title-modal margin-bot-15">Thêm khóa huấn luyện/ đào tạo</h3>
@@ -983,9 +1064,9 @@
             <div class="col-sm-8">
               <div class="form-group row">
                 <div class="col-sm-6">
-                <input class="form-control fontstyle" type="text" id="tuden3" placeholder="" name="tu" required></div>
+                <input class="form-control fontstyle datepicker" type="text" id="tuden3" placeholder="" name="tu" ></div>
                 <div class="col-sm-6">
-                <input class="form-control fontstyle" type="text" id="tuden4" placeholder="" name="den" required></div>
+                <input class="form-control fontstyle datepicker" type="text" id="tuden4" placeholder="" name="den" ></div>
               </div>
             </div>
           </div>
@@ -993,7 +1074,7 @@
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Tên cơ sở đào tạo</label>
             <div class="col-sm-6">
            
-              <input class="form-control fontstyle" type="text"  placeholder="" name="cs_daotao" id="truong5" required>
+              <input class="form-control fontstyle" type="text"  placeholder="" name="cs_daotao" id="truong5" >
             </div>
           </div>
           <div class="form-group row padding-left-right-20 margin-bot-2">
@@ -1001,7 +1082,7 @@
             <div class="col-sm-8">
               <div class="form-group row">
                 <div class="col-sm-6">
-                <input class="form-control fontstyle" type="text"  placeholder="" name="tghoc" id="tghoc5"></div>
+                <input class="form-control fontstyle so" type="text"  placeholder="" name="tghoc" id="tghoc5" value="0"></div>
                 <div class="col-sm-6">
                 <select class="form-control height3 fontstyle" name="donvi" id="donvi5">
                   <!-- <option value="0" disabled>Chọn...</option> -->
@@ -1037,7 +1118,7 @@
 
 
 <div class="modal fade" id="myModal6" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog width-30" role="document">
+  <div class="modal-dialog width-50" role="document">
     <div class="modal-content" style="padding: 20px;">
       <form action="<?php echo base_url()?>admin/handling/insert_language" method="post" id="form_can_8">
       <h3 class="title-modal margin-bot-15">Thêm ngoại ngữ</h3>
@@ -1046,7 +1127,7 @@
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Ngoại ngữ</label>
             <div class="col-sm-8">
            
-              <input class="form-control fontstyle" type="text"  placeholder="" name="tentruong" id="truong6" required>
+              <input class="form-control fontstyle" type="text"  placeholder="" name="tentruong" id="truong6">
             </div>
           </div>
             <div class="form-group row padding-left-right-20 margin-bot-12">
@@ -1109,7 +1190,7 @@
 </div>
 
 <div class="modal fade" id="myModal7" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog width-30"  role="document">
+  <div class="modal-dialog width-50"  role="document">
     <div class="modal-content" style="padding: 20px;">
       <form action="<?php echo base_url()?>admin/handling/insert_software" method="post" id="form_can_9">
       <h3 class="title-modal margin-bot-15">Thêm trình độ tin học</h3>
@@ -1118,7 +1199,7 @@
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Kiến thức/ Phần mềm</label>
             <div class="col-sm-8">
            
-              <textarea class="form-control off-resize fontstyle" rows="2" name="phanmem" id="pm7" required></textarea>
+              <textarea class="form-control off-resize fontstyle" rows="2" name="phanmem" id="pm7"></textarea>
             </div>
           </div>
             <div class="form-group row padding-left-right-20">
@@ -1143,11 +1224,12 @@
 
 <!-- modal delete -->
 <div class="modal fade" id="myModaldel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog width-30" role="document">
+  <div class="modal-dialog width-50" role="document">
     <div class="modal-content">
       <form action="<?php echo base_url()?>admin/handling/del_relationship" method="POST" enctype="multipart/form-data" id="form_can_8">
-      <input type="hidden" name="checkup" id="checkup1d" value="0">     
-         <strong class="title-anhdaidien fontbig" style="margin-left: 25%;">Thông báo</strong>
+      <input type="hidden" name="checkup" id="checkup1d" value="0"> 
+      <input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" >
+      <strong class="title-anhdaidien fontbig" style="margin-left: 25%;">Thông báo</strong>
       <br>
           <label for="staticEmail"  style="margin-left: 40px">Bạn có muốn xóa thông tin này không?</label>
        <br>
@@ -1160,10 +1242,11 @@
   </div>
 </div>
 <div class="modal fade" id="myModaldel2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog width-30" role="document">
+  <div class="modal-dialog width-50" role="document">
     <div class="modal-content">
       <form action="<?php echo base_url()?>admin/handling/del_experience" method="POST" enctype="multipart/form-data">
       <input type="hidden" name="checkup" id="checkup2d" value="0">     
+      <input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" >
          <strong class="title-anhdaidien fontbig" style="margin-left: 25%;">Thông báo</strong>
       <br>
           <label for="staticEmail"  style="margin-left: 40px">Bạn có muốn xóa thông tin này không?</label>
@@ -1177,10 +1260,11 @@
   </div>
 </div>
 <div class="modal fade" id="myModaldel3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog width-30" role="document">
+  <div class="modal-dialog width-50" role="document">
     <div class="modal-content">
       <form action="<?php echo base_url()?>admin/handling/del_reference" method="POST" enctype="multipart/form-data">
-      <input type="hidden" name="checkup" id="checkup3d" value="0">     
+      <input type="hidden" name="checkup" id="checkup3d" value="0">
+      <input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" >     
          <strong class="title-anhdaidien fontbig" style="margin-left: 25%;">Thông báo</strong>
       <br>
           <label for="staticEmail"  style="margin-left: 40px">Bạn có muốn xóa thông tin này không?</label>
@@ -1194,10 +1278,11 @@
   </div>
 </div>
 <div class="modal fade" id="myModaldel4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog width-30" role="document">
+  <div class="modal-dialog width-50" role="document">
     <div class="modal-content">
       <form action="<?php echo base_url()?>admin/handling/del_knowledge" method="POST" enctype="multipart/form-data">
-      <input type="hidden" name="checkup" id="checkup4d" value="0">     
+      <input type="hidden" name="checkup" id="checkup4d" value="0"> 
+      <input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" >    
          <strong class="title-anhdaidien fontbig" style="margin-left: 25%;">Thông báo</strong>
       <br>
           <label for="staticEmail"  style="margin-left: 40px">Bạn có muốn xóa thông tin này không?</label>
@@ -1211,10 +1296,11 @@
   </div>
 </div>
 <div class="modal fade" id="myModaldel6" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog width-30" role="document">
+  <div class="modal-dialog width-50" role="document">
     <div class="modal-content">
       <form action="<?php echo base_url()?>admin/handling/del_language" method="POST" enctype="multipart/form-data">
-      <input type="hidden" name="checkup" id="checkup6d" value="0">     
+      <input type="hidden" name="checkup" id="checkup6d" value="0"> 
+      <input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" >    
          <strong class="title-anhdaidien fontbig" style="margin-left: 25%;">Thông báo</strong>
       <br>
           <label for="staticEmail"  style="margin-left: 40px">Bạn có muốn xóa thông tin này không?</label>
@@ -1228,10 +1314,11 @@
   </div>
 </div>
 <div class="modal fade" id="myModaldel7" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog width-30" role="document">
+  <div class="modal-dialog width-50" role="document">
     <div class="modal-content">
       <form action="<?php echo base_url()?>admin/handling/del_software" method="POST" enctype="multipart/form-data">
-      <input type="hidden" name="checkup" id="checkup7d" value="0">     
+      <input type="hidden" name="checkup" id="checkup7d" value="0">   
+      <input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" >  
          <strong class="title-anhdaidien fontbig" style="margin-left: 25%;">Thông báo</strong>
       <br>
           <label for="staticEmail"  style="margin-left: 40px">Bạn có muốn xóa thông tin này không?</label>
@@ -1244,6 +1331,10 @@
     </div>
   </div>
 </div>
+<div class="hide" id="sstag">
+	<?php echo json_encode($ss_tags) ?>
+</div>
+
 <style type="text/css">
 	.margin-bot-21 {
 		margin-bottom: 0px !important;
@@ -1684,6 +1775,12 @@
 	$(".so").on('input', function (e) {
     $(this).val($(this).val().replace(/[^0-9]/g, ''));});
 
+	$(document).on('click', '.datepicker', function() {
+	    $( this ).datetimepicker({
+	        timepicker:false,
+	        format:'d-m-Y',
+	    });
+	});
 
 	$(document).ready(function(){
 
@@ -1846,9 +1943,6 @@
 		})
 		.fail(function() {
 			console.log("error");
-		})
-		.always(function() {
-			console.log("complete");
 		});
 	}
 	function changeblock(obj)
@@ -1884,9 +1978,87 @@
 		})
 		.fail(function() {
 			console.log("error");
-		})
-		.always(function() {
-			console.log("complete");
 		});
 	}
+
+	$('#btn_newProfile').on( "click", function() {
+		
+		if ($('#lastname').val() == "") { alert('Vui lòng nhập Họ tên đầy đủ!'); }
+		else if ($('#firstname').val() == "") { alert('Vui lòng nhập Họ tên đầy đủ!'); }
+		else if ($('#phone1').val() == 0 && $('#phone2').val() == 0) { alert('Vui lòng nhập số điện thoại!'); }
+		else {
+			$('#btn_newProfile').find('i').addClass('fa fa-spin fa-spinner');
+			$('#btn_newProfile').prop('disabled', true);
+	  		$('#form_newProfile').submit();
+		}
+	  		
+	});
+
+	var substringMatcher = function(strs) {
+	  return function findMatches(q, cb) {
+	    var matches, substringRegex;
+
+	    // an array that will be populated with substring matches
+	    matches = [];
+
+	    // regex used to determine if a string contains the substring `q`
+	    substrRegex = new RegExp(q, 'i');
+
+	    // iterate through the pool of strings and for any string that
+	    // contains the substring `q`, add it to the `matches` array
+	    $.each(strs, function(i, str) {
+	      if (substrRegex.test(str)) {
+	        matches.push(str);
+	      }
+	    });
+
+	    cb(matches);
+	  };
+	};
+
+	var states = jQuery.parseJSON($('#sstag').text());
+	// console.log(states);
+
+	$('#typeahead').tagsinput({
+	    typeaheadjs: {
+	    name: 'states',
+	    source: substringMatcher(states)
+	    },
+	    freeInput: true,
+	});
+
+	$('#typeahead').on('itemAdded', function(event) { 
+	 $('#typeahead').tagsinput('focus');
+	  $('#tags').val($('#typeahead').val());
+
+	});
+
+
+	  
+	$('#typeahead').on('itemRemoved', function(event) {
+	  $('#tags').val($('#typeahead').val());
+	});	
+
+	$(document).on('click', '.so', function(e) {
+    if ($(this).val() == '') {
+              $(this).val(0);
+        }
+    $(this).number( true );
+    }).on('keypress', '.so',function(e){
+        // if ($(this).val() == 0)
+        //   $(this).val('');
+        // $(this).number( true );
+        if(!$.isNumeric(String.fromCharCode(e.which))) e.preventDefault();
+    }).on('paste', '.so', function(e){    
+        var cb = e.originalEvent.clipboardData || window.clipboardData;      
+        if(!$.isNumeric(cb.getData('text'))) e.preventDefault();
+    });
+    $("input[id='tghoc5']").on('input', function (e) {
+    $(this).val($(this).val().replace(/[^0-9]/g, ''));});
 </script>
+<style type="text/css">
+	.tt-input
+	{
+		vertical-align: unset !important;
+	}
+</style>

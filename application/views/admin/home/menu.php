@@ -4,17 +4,10 @@
    
       <ul class="sidebar-menu" data-widget="tree">
       <!--   <li class="header">MAIN NAVIGATION</li> -->
-        <li >
-          <a href="#">
+        <li class="<?php echo isset($dashboard)? $dashboard : '' ?>">
+          <a href="<?php echo base_url() ?>admin/dashboard/index">
             <i class="fa fa-desktop"></i> <span>Dashboard</span>
-            <!-- <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span> -->
           </a>
-         <!--  <ul class="treeview-menu">
-            <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-            <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
-          </ul> -->
         </li>
         <li class="<?php echo isset($hoso)? $hoso : '' ?>">
           <a href="<?php echo base_url()?>admin/handling/index">
@@ -51,7 +44,8 @@
           <ul class="treeview-menu">
             <li class="<?php echo isset($user)? $user : '' ?>"><a href="<?php echo base_url()?>admin/user"><i class="fa fa-users"></i> Tài khoản người dùng</a></li>
             <li class="<?php echo isset($email)? $email : '' ?>"><a href="<?php echo base_url()?>admin/email"><i class="fa fa-file-text-o"></i> Mẫu e-mail</a></li>
-            <li class="<?php echo isset($config)? $config : '' ?>"><a href="<?php echo base_url()?>admin/recruitprocess/"><i class="fa fa-cogs"></i> Cấu hình chung</a></li>
+            <li class="<?php echo isset($config)? $config : '' ?>"><a href="<?php echo base_url()?>admin/config/"><i class="fa fa-cogs"></i> Cấu hình chung</a></li>
+            <li class="<?php echo isset($printtemp)? $printtemp : '' ?>"><a href="<?php echo base_url()?>admin/printtemp/"><i class="fa fa-print"></i> Mẫu in</a></li>
             <li class="<?php echo isset($import)? $import : '' ?>"><a href="<?php echo base_url()?>admin/import/"><i class="fa fa-cogs"></i> Import data</a></li>
           </ul>
         </li>

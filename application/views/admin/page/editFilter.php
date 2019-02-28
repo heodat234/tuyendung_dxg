@@ -42,15 +42,20 @@
 						      	<div class="panel-body ">
 						      		<div class="row form_campaign">
 						      			<div class="col-xs-4">
-						      				<label class="label_cam"><input type="checkbox" id="chk_tiemnang"
-						      					<?php foreach ($detail as $key) {
+						      				<label class="label_cam"><input type="checkbox" onchange="testtiemnang()" id="chk_tiemnang"
+						      					<?php $f1 = ''; $f1_1 = ''; 
+						      					foreach ($detail as $key) {
 						      						if($key['fieldname'] == 'istalent')
 						      						{
 						      							echo "checked";
+						      							$f1 = $key['filterfrom'];
+						      							$f1_1 = $key['filterto'];
 						      							break;
 						      						}
 						      					}?>
 						      					> Hồ sơ tiềm năng</label>
+						      				<input type="text" id="tiemnang_tu" class="input_hs_cam" placeholder="Từ" maxlength="1" onkeyup="testtiemnang()" value="<?php echo $f1 ?>">
+						      				<input type="text" id="tiemnang_den" class="input_hs_cam" placeholder="Đến" maxlength="1" onkeyup="testtiemnang()" value="<?php echo $f1_1 ?>">
 						      			</div>
 						      			<div class="col-xs-4">
 						      				<label class="label_cam"><input type="checkbox" onchange="testdiem()" id="chk_diem"
@@ -82,11 +87,28 @@
 						      			</div>
 						      		</div>
 						      		<div class="row form_campaign_1">
-						      			<div class="col-xs-4">
+						      			<!-- <div class="col-xs-4">
 						      				<label class="label_cam"><input type="checkbox" name=""> Hồ sơ có lịch sử tương tác</label>
 						      			</div>
 						      			<div class="col-xs-4">
 						      				<label class="label_cam"><input type="checkbox" name=""> Hồ sơ có CV đính kèm</label>
+						      			</div> -->
+						      			<div class="col-xs-4">
+						      				<label class="label_cam"><input type="checkbox" onchange="testngay()" id="chk_lastupdate"
+						      					<?php $f1 = ''; $f1_1 = ''; 
+						      						foreach ($detail as $key) {
+						      						if($key['fieldname'] == 'lastupdate')
+						      						{
+						      							echo "checked";
+						      							$f1 = $key['filterfrom'];
+						      							$f1_1 = $key['filterto'];
+						      							break;
+						      						} }
+						      					?>
+						      					> Ngày cập nhật</label>
+						      				<input type="text" id="update_tu" class="input_hs_cam thoigian" placeholder="Từ" maxlength="3" onkeyup="testngay()" value="<?php echo $f1 ?>">
+						      				<input type="text" id="update_den" class="input_hs_cam thoigian" placeholder="Đến" maxlength="3" onkeyup="testngay()" value="<?php echo $f1_1 ?>">
+
 						      			</div>
 						      		</div>
 						      	</div>
@@ -138,7 +160,47 @@
 						       		<i class="fa fa-angle-right a-tabcs rotate rotate_3 down"></i>
 						       		<div class="ul-nav">
 								       	<label class="tittle-tab">
-								       		Vị trí/ Thu nhập
+								       		Vị trí
+								       	</label>
+						       		</div>
+						    	</div>
+						    </a>
+						    <div id="collapse3" class="panel-collapse collapse in">
+						      	<div class="panel-body">
+						      		<div class="row form_campaign_1">
+						      			 <?php  
+                                        for($i = 0; $i < count($tag); $i++) {
+                                     	?> 
+	                                   <div class="col-xs-4">
+	                                   		<label class="label_cam"><input type="checkbox" name="" id="<?php echo 'tag'.$i?>" value="<?php echo $tag[$i]['tagid']?>"  
+	                                   			<?php
+		                                        foreach ($detail as $key) {
+							      					if($key['fieldname'] == 'tag')
+							      					{
+							      						if($key['filterfrom'] == $tag[$i]['tagid'])
+							      						{
+							      							echo "checked";
+							      							break;
+							      						}
+							      					}
+							      				}
+		                                        ?>
+	                                   			> <?php echo $tag[$i]['title'] ?>
+	                                   		</label> 
+	                                   </div>
+                                   		<?php } ?>
+                                   		<input type="hidden" id="counttag" value="<?php echo count($tag) ?>">
+						      		</div>
+						      	</div>
+						    </div>
+					  	</div>
+					  	<div class="panel panel-default border-rad0">
+					  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse3" onclick="rotate(4)">
+						    	<div class="panel-heading rad-pad0 b-blue"> 
+						       		<i class="fa fa-angle-right a-tabcs rotate rotate_3 down"></i>
+						       		<div class="ul-nav">
+								       	<label class="tittle-tab">
+								       		Thu nhập
 								       	</label>
 						       		</div>
 						    	</div>
@@ -195,7 +257,7 @@
 					  	</div>
 
 					  	<div class="panel panel-default border-rad0">
-					  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse4" onclick="rotate(4)">
+					  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse4" onclick="rotate(5)">
 						    	<div class="panel-heading rad-pad0 b-blue"> 
 						       		<i class="fa fa-angle-right a-tabcs rotate rotate_4 down"></i>
 						       		<div class="ul-nav">
@@ -252,7 +314,7 @@
 					  	</div>
 
 					  	<div class="panel panel-default border-rad0">
-					  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse5" onclick="rotate(5)">
+					  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse5" onclick="rotate(6)">
 						    	<div class="panel-heading rad-pad0 b-blue"> 
 						       		<i class="fa fa-angle-right a-tabcs rotate rotate_4 down"></i>
 						       		<div class="ul-nav">
@@ -316,7 +378,7 @@
 					  	</div>
 
 					  	<div class="panel panel-default border-rad0">
-					  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse6" onclick="rotate(6)">
+					  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse6" onclick="rotate(7)">
 						    	<div class="panel-heading rad-pad0 b-blue"> 
 						       		<i class="fa fa-angle-right a-tabcs rotate rotate_5 down "></i>
 						       		<div class="ul-nav">
@@ -377,7 +439,7 @@
 					  	</div>
 
 					  	<div class="panel panel-default border-rad0">
-					  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse7" onclick="rotate(7)">
+					  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse7" onclick="rotate(8)">
 						    	<div class="panel-heading rad-pad0 b-blue"> 
 						       		<i class="fa fa-angle-right a-tabcs rotate rotate_6  down"></i>
 						       		<div class="ul-nav">
@@ -441,7 +503,7 @@
 					  	</div>
 
 					  	<div class="panel panel-default border-rad0">
-					  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse8" onclick="rotate(8)">
+					  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse8" onclick="rotate(9)">
 						    	<div class="panel-heading rad-pad0 b-blue"> 
 						       		<i class="fa fa-angle-right a-tabcs rotate rotate_7 down"></i>
 						       		<div class="ul-nav">
@@ -650,7 +712,7 @@
 					  	</div>
 
 					  	<div class="panel panel-default border-rad0">
-					  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse9" onclick="rotate(9)">
+					  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse9" onclick="rotate(10)">
 						    	<div class="panel-heading rad-pad0 b-blue"> 
 						       		<i class="fa fa-angle-right a-tabcs rotate rotate_8 down"></i>
 						       		<div class="ul-nav">
@@ -694,7 +756,7 @@
 					  	</div>
 
 					  	<div class="panel panel-default border-rad0">
-					  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse10" onclick="rotate(10)">
+					  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse10" onclick="rotate(11)">
 						    	<div class="panel-heading rad-pad0 b-blue"> 
 						       			<i class="fa fa-angle-right a-tabcs rotate rotate_9"></i>
 						       		<div class="ul-nav">
@@ -704,14 +766,31 @@
 						       		</div>
 						    	</div>
 						    </a>
-						    <div id="collapse10" class="panel-collapse collapse">
+						    <div id="collapse10" class="panel-collapse collapse in">
 						      	<div class="panel-body">
 						      		<div class="row form_campaign_1">
-						      			<div class="col-xs-4">
-						      				<label class="label_cam label_cam_1"><input type="checkbox" name=""> 
-						      					<input type="text" name="" placeholder="Nhập tag cần tìm" class="input_hs_cam_70">
-						      				</label>
-						      			</div>
+						      			 <?php  
+                                        for($i = 0; $i < count($tagrandom); $i++) {
+                                     	?> 
+	                                   <div class="col-xs-4">
+	                                   		<label class="label_cam"><input type="checkbox" name="" id="<?php echo 'tagr'.$i?>" value="<?php echo $tagrandom[$i]['tagid']?>"  
+	                                   			<?php
+		                                        foreach ($detail as $key) {
+							      					if($key['fieldname'] == 'tagrandom')
+							      					{
+							      						if($key['filterfrom'] == $tagrandom[$i]['tagid'])
+							      						{
+							      							echo "checked";
+							      							break;
+							      						}
+							      					}
+							      				}
+		                                        ?>
+	                                   			> <?php echo $tagrandom[$i]['title'] ?>
+	                                   		</label> 
+	                                   </div>
+                                   		<?php } ?>
+                                   		<input type="hidden" id="counttagrandom" value="<?php echo count($tagrandom) ?>">
 						      		</div>
 						      	</div>
 						    </div>
@@ -749,7 +828,7 @@
 						      					}?>">
 <style type="text/css">
 	.input_hs_cam{
-		width: 60px;
+		width: 80px;
 		margin-bottom: 10px;
 	}
 	.input_hs_cam_70{
@@ -780,13 +859,17 @@
 	        toolbarStartupExpanded : false,
 	        toolbarCanCollapse: true});
 	});
+	$('.thoigian').datetimepicker({
+	    timepicker:false,
+	    format:'d-m-Y',
+	  });
 	function rotate(id) {
-		for (var i = 1; i <= 9; i++) {
-			if(i != id){
-				$(".rotate_"+i).removeClass("down"); 
-			}
-		}
-		$(".rotate_"+id).toggleClass("down"); 
+		// for (var i = 1; i <= 10; i++) {
+		// 	if(i != id){
+		// 		$(".rotate_"+i).removeClass("down"); 
+		// 	}
+		// }
+		// $(".rotate_"+id).toggleClass("down"); 
 	}
 	 $('#example-multiple-selected').multiselect();
      $('.js-example-basic-single').select2();
@@ -819,6 +902,10 @@
     $("input[id='kinhnghiem_tu']").on('input', function (e) {
     $(this).val($(this).val().replace(/[^0-9]/g, ''));});
     $("input[id='kinhnghiem_den']").on('input', function (e) {
+    $(this).val($(this).val().replace(/[^0-9]/g, ''));});
+    $("input[id='tiemnang_tu']").on('input', function (e) {
+    $(this).val($(this).val().replace(/[^0-9]/g, ''));});
+    $("input[id='tiemnang_den']").on('input', function (e) {
     $(this).val($(this).val().replace(/[^0-9]/g, ''));});
     $('.so').on('input', function(e){
       if ($(this).val() == '') {
@@ -862,6 +949,20 @@
     	if( $('#diem_tu').val() == '' && $('#diem_den').val() == '')
     	{
     		$( "#chk_diem").prop('checked', false); 
+    	}
+    }
+    function testtiemnang()
+    {
+    	if( $('#tiemnang_tu').val() == '' && $('#tiemnang_den').val() == '')
+    	{
+    		$( "#chk_tiemnang").prop('checked', false); 
+    	}
+    }
+    function testngay()
+    {
+    	if( $('#update_tu').val() == '' && $('#update_den').val() == '')
+    	{
+    		$( "#chk_lastupdate").prop('checked', false); 
     	}
     }
     function test_tnht()
@@ -1037,7 +1138,7 @@
     }
 	function save_filter()
     {
-      var value = {'gender' : '','placeofbirth' : '' , 'age': '' , 'height' : '',  'weight' : '', 'ethnic' : '', 'nationality' : '' , 'cityori' : '' , 'citycurr' : '' , 'district' : '' , 'currentbenefit' : '' , 'desirebenefit' : '' , 'experience' : '' , 'knowledge' : '' , 'language' : '' , 'software' : '' , 'maritalstatus' : '' , 'istalent' : '' , 'blocked' : '' , 'rate' : ''};
+      var value = {'gender' : '','placeofbirth' : '' , 'age': '' , 'height' : '',  'weight' : '', 'ethnic' : '', 'nationality' : '' , 'cityori' : '' , 'citycurr' : '' , 'district' : '' , 'currentbenefit' : '' , 'desirebenefit' : '' , 'experience' : '' , 'knowledge' : '' , 'language' : '' , 'software' : '' , 'maritalstatus' : '' , 'istalent' : '' , 'lastupdate' : '' , 'blocked' : '' , 'rate' : '' , 'tag' : '' , 'tagrandom' : ''};
        if($('#name_filter').val() == '')
        {
        		alert("Tên gọi của tiêu chí không được bỏ trống!");
@@ -1196,10 +1297,36 @@
             value['profilesrc'+i] = 'candidate/profilesrc/S/=/'+$('#src'+i).val()+'/';
          }
        }
+       for(var i = 0; i < $('#counttag').val() ; i++ )
+       {
+          if($('#tag'+i).is(':checked'))
+         {
+            value['tag'+i] = 'tagtransaction/tag/S/=/'+$('#tag'+i).val()+'/';
+         }
+       }
+       for(var i = 0; i < $('#counttagrandom').val() ; i++ )
+       {
+          if($('#tagr'+i).is(':checked'))
+         {
+            value['tagrandom'+i] = 'tagtransaction/tagrandom/S/=/'+$('#tagr'+i).val()+'/';
+         }
+       }
        if($('#chk_tiemnang').is(':checked'))
        {
-          value['istalent'] = 'candidate/istalent/N/<>/0/';
+       	if(($('#tiemnang_tu').val() != '' ) && ($('#tiemnang_den').val() != '') ) $ope = "BETWEEN";
+          else if($('#tiemnang_tu').val() != '') $ope = "BEGIN WITH";
+          else $ope = "END WITH";
+          value['istalent'] = 'candidate/istalent/N/'+$ope+'/'+$('#tiemnang_tu').val()+'/'+$('#tiemnang_den').val();
        }
+
+       if($('#chk_lastupdate').is(':checked'))
+       {
+          if(($('#update_tu').val() != '' ) && ($('#update_den').val() != '') ) $ope = "BETWEEN";
+          else if($('#update_tu').val() != '') $ope = "BEGIN WITH";
+          else $ope = "END WITH";
+          value['lastupdate'] = 'candidate/lastupdate/N/'+$ope+'/'+$('#update_tu').val()+'/'+$('#update_den').val();
+       }
+
        if($('#chk_chan').is(':checked'))
        {
           value['blocked'] = 'candidate/blocked/S/=/Y/';

@@ -19,13 +19,16 @@ class News extends CI_Controller {
 		$this->load->library('session');
 		
 		
-		$this->load->model(array('admin/News_model'));
+		$this->load->model(array('admin/News_model','M_auth'));
 		
 		$ac_data['tuyendung'] 	= 'active';
 		$ac_data['tintuc'] 		= 'active';
 		$this->data['header'] 	= $this->load->view('admin/home/header',null,true);
 	    $this->data['menu'] 	= $this->load->view('admin/home/menu',$ac_data,true);
 	    $this->data['footer'] 	= $this->load->view('admin/home/footer',null,true);
+
+	    $this->seg = 3;
+	    $this->sess  = $this->session->userdata('user_admin');  
 	}
 
 	public function index()
@@ -39,7 +42,12 @@ class News extends CI_Controller {
         $news_data['news_c'] = $this->News_model->select_row_option('news.*, candidate.name',array('news.status'=> 'C'),'news', $join,'',$order_by,'','');
 		$data['nav'] = $this->load->view('admin/news/nav-newsrecruit',$news_data,true);
 		$this->data['script'] = $this->load->view('admin/script/script_newsrecruit', $data, TRUE); 
-		$this->data['temp'] = $this->load->view('admin/news/infoPostRecruit',null,true);
+		if(!$this->M_auth->checkPermission($this->sess['groupid'],$this->seg)){
+			$this->data['temp'] 	= $this->load->view('admin/error/404',null,true);
+		}else{
+			$this->data['temp'] = $this->load->view('admin/news/infoPostRecruit',null,true);
+		}
+		// $this->data['temp'] = $this->load->view('admin/news/infoPostRecruit',null,true);
 
 		$this->load->view('admin/home/master',$this->data);
 	}

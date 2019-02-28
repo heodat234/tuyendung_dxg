@@ -1,7 +1,7 @@
 <h3 class="color-blue">Lịch sử ứng tuyển</h3>
-<label><< Quay lại  </label>
+<label><a href="<?php echo base_url() ?>handling/lichsu_apply">Quay lại</a></label>
 <br>
-<label>Chuyên viên kế hoạch và phân thích đầu tư (30/09/2018)</label>
+<label><?php echo $campaigns['position'].' ('.$campaigns['expdate'].')' ?></label>
 <table   class="table table-striped table-bordered fontstyle text-center" > 
   <thead> 
       <tr> 

@@ -4,7 +4,7 @@
     <h1 class="title-pg">Hồ sơ của tôi</h1>
     <div class="fullContent">
       <?php $d = 0;
-         if($candidate['introduction'] != "") $d++;
+         if($candidate['introduction'] != "" || count($tags) > 0) $d++;
          if($candidate['firstname'] !== "") $d++;
          if(empty($address) !== true) $d++;
          if(empty($family) !== true) $d++;
@@ -142,7 +142,7 @@
 
             <ul class="nav nav-tabs width100" >
               <li class="<?php echo isset($one)? $one : "";?>">
-                <a  data-toggle="tab" href="#collapseOne" ><i class="fa fa-circle size10 <?php  if($candidate['introduction'] !== ""){echo 'green'; } else{ echo 'orange'; }?>"  ></i> Giới thiệu bản thân</a>
+                <a  data-toggle="tab" href="#collapseOne" ><i class="fa fa-circle size10 <?php  if($candidate['introduction'] !== "" || count($tags) > 0){echo 'green'; } else{ echo 'orange'; }?>"  ></i> Giới thiệu bản thân</a>
               </li>
               <li class="<?php echo isset($two)? $two : "";?>"><a  data-toggle="tab"  href="#collapseTwo" ><i class="fa fa-circle size10 <?php if($candidate['firstname'] !== ""){ echo 'green'; } else { echo 'orange';}?>" ></i> Thông tin cá nhân</a></li>
               <li class="<?php echo isset($three)? $three : "";?>"><a  data-toggle="tab"  href="#collapseThree" ><i class="fa fa-circle size10 <?php  if(empty($address) !== true) {echo 'green';} else {echo 'orange';}?>" ></i> Thông tin liên hệ</a>
@@ -159,7 +159,7 @@
         <div class="col-md-9 ">
           <div class="tab-content">
         <div id="collapseOne" class="tab-pane  <?php echo isset($one)? $one : ""; ?>">
-          <form action="<?php echo base_url()?>handling/update_introduce" method="post" enctype="multipart/form-data">
+          <form id="form_updateIntro" action="<?php echo base_url()?>handling/update_introduce" method="post" enctype="multipart/form-data">
             <!-- <label for="staticEmail" style ="float: right;" class="col-form-label">Tóm tắt bản thân</label> -->
         
           <div class="form-group row kcform">
@@ -172,8 +172,21 @@
           <div class="form-group row kcform">
             <label for="inputPassword" class="col-sm-4 col-form-label" >VỊ TRÍ MONG MUỐN (EXPECTED POSITION)</label>
             <div class="col-sm-8">
-              <textarea class="areatext kttext off-resize" rows="2" name="position"></textarea>
-              
+              <!-- <textarea class="areatext kttext off-resize" rows="2" name="position"></textarea> -->
+              <div id="the-basics" style="font-size: 15px">
+                    <input id="typeahead" type="text" data-role="tagsinput" value="
+                    <?php for($i=0; $i < count($tags) ; $i++)
+                          {
+                            echo $tags[$i]['title'];
+                            if($i < count($tags)-1)
+                            {
+                              echo ',';
+                            }
+                          }
+                    ?>
+                    ">
+                  </div>
+                  <input type="hidden" name="tags" id="tags">
             </div>
           </div>
           <div class="form-group row kcform">
@@ -187,6 +200,12 @@
             <label for="inputPassword" class="col-sm-4 col-form-label"  >THU NHẬP MONG MUỐN (EXPECTATION INCOME) (IN VND)</label>
             <div class="col-sm-8">
                <input class="kttext so" type="text"  name="desirebenefit" id="desirebenefit" value="<?php echo number_format($candidate['desirebenefit']) ?>">
+            </div>
+          </div>
+          <div class="form-group row kcform">
+            <label for="inputPassword" class="col-sm-4 col-form-label"  >ĐỊA CHỈ LIÊN HỆ MẠNG XÃ HỘI</label>
+            <div class="col-sm-8">
+               <input type="text" style="width: 100%" name="snid" id="snid" value="<?php echo $candidate['snid'] ?>" placeholder="facebook.com/abc, instagram.com/abc...">
             </div>
           </div>
           <div class="form-group row kcform">
@@ -206,13 +225,13 @@
                     </div>
                     <div class="col-sm-6">
                     <label id="browsebutton1" class="btn btn-default input-group-addon btn-tailen" for="my-file-selector1" style="background-color:white">
-                        <input id="my-file-selector1" name="profilesrc" type="file" style="display:none;">
+                        <input id="my-file-selector1" name="profilesrc" type="file" style="display:none;" >
                         Tải lên
                     </label>
                     </div>
 
                   </div>
-                <button type="submit" class="btn btnlong margin-top12" > Lưu</button>
+                <button type="button" class="btn btnlong margin-top12" id="btn_updateIntro" > Lưu</button>
             </div>
           </div>
         </form>
@@ -227,9 +246,9 @@
             <div class="col-sm-8">
               <div class="form-group row">
                 <div class="col-sm-6">
-                <input class="kttext" type="text" required placeholder="Họ" name="ho" value="<?php echo $candidate['lastname'] ?>"> </div>
+                <input class="kttext" type="text" required placeholder="Họ" name="ho" value="<?php echo $candidate['firstname'] ?>"> </div>
                 <div class="col-sm-6">
-                <input class="kttext" type="text" required placeholder="Tên" name="ten" value="<?php echo $candidate['firstname'] ?>"></div>
+                <input class="kttext" type="text" required placeholder="Tên" name="ten" value="<?php echo $candidate['lastname'] ?>"></div>
               </div>
             </div>
           </div>
@@ -282,6 +301,18 @@
             </div>
           </div>
           <div class="form-group row kcform-more">
+            <label for="inputPassword" class="col-sm-4 col-form-label">NGUYÊN QUÁN (NATIVELAND)</label>
+            <div class="col-sm-6">
+               <input class="kttext" type="text" placeholder="" name="nativeland" value="<?php echo $candidate['nativeland'] ?>">
+            </div>
+          </div>
+          <div class="form-group row kcform-more">
+            <label for="inputPassword" class="col-sm-4 col-form-label">TÔN GIÁO (RELIGION)</label>
+            <div class="col-sm-6">
+               <input class="kttext" type="text" placeholder="" name="religion" value="<?php echo $candidate['religion'] ?>">
+            </div>
+          </div>
+          <div class="form-group row kcform-more">
             <label for="inputPassword" class="col-sm-4 col-form-label">CHIỀU CAO (HEIGHT) (CM)</label>
             <div class="col-sm-6">
                <input class="kttext" type="text" placeholder="" maxlength="3" name="chieucao" id="chieucao" value="<?php echo $candidate['height'] ?>">
@@ -296,7 +327,7 @@
           <div class="form-group row kcform-more">
             <label for="inputPassword" class="col-sm-4 col-form-label">CMND (ID)</label>
             <div class="col-sm-6">
-               <input class="kttext" type="text" placeholder="" required maxlength="10" name="cmnd" id="idid" value="<?php echo $candidate['idcard'] ?>">
+               <input class="kttext" type="text" placeholder="" required maxlength="" name="cmnd" id="idid" value="<?php echo $candidate['idcard'] ?>">
             </div>
           </div>
           <div class="form-group row kcform-more">
@@ -413,7 +444,7 @@
             <div class="col-sm-8">
                <?php 
                     $pizza  = $candidate['telephone'];
-                    $pieces = explode(" ", $pizza);
+                    $pieces = explode(",", $pizza);
                     $p1 = isset($pieces[0])? $pieces[0] : "" ;
                     $p2 = isset($pieces[1])? $pieces[1] : "" ;
               ?>
@@ -1365,6 +1396,17 @@
   </div>
 </div>
 <div id="candidatejs" style="display: none;"><?php echo base_url()?></div>
-<script type="text/javascript" src="<?php echo base_url()?>public/js/candidate.js">
-
- </script>
+<script type="text/javascript" src="<?php echo base_url()?>public/js/candidate.js"></script>
+<script type="text/javascript">
+  $('#btn_updateIntro').click(function(event) {
+    <?php if (empty($document)){ ?>
+      if ($('#my-file-selector1').get(0).files.length == 0) {
+        alert('Bạn phải chọn file CV trước khi cập nhật thông tin');
+      }else{
+        $('#form_updateIntro').submit();
+      }
+    <?php }else{ ?>
+      $('#form_updateIntro').submit();
+    <?php } ?>
+  });
+</script>

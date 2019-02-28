@@ -21,7 +21,7 @@ class Handling extends CI_Controller {
 		$this->load->library('session');
 		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
 		
-		$this->load->model(array('Login_model','Candidate_model'));
+		$this->load->model(array('Login_model','Candidate_model','admin/Mail_model','admin/Candidate_model','admin/Campaign_model'));
 		$this->load->helper(array('url','my_helper','file'));
 		$this->datamenu['address'] = $this->Candidate_model->countTableById('canaddress',$this->session->userdata('user')['candidateid']);
 		$this->datamenu['candidate'] = $this->Candidate_model->selectTableById('candidate',$this->session->userdata('user')['candidateid']);
@@ -31,9 +31,15 @@ class Handling extends CI_Controller {
 		$this->datamenu['knowledge'] = $this->Candidate_model->countTableById('canknowledge',$this->session->userdata('user')['candidateid']);
 		$this->datamenu['language'] = $this->Candidate_model->countTableById('canlanguage',$this->session->userdata('user')['candidateid']);
 		$this->datamenu['software'] = $this->Candidate_model->countTableById('cansoftware',$this->session->userdata('user')['candidateid']);
-		
+		$this->datamenu['tags'] = $this->Candidate_model->select_tags_byId($this->session->userdata('user')['candidateid']);  
 		$this->data['header'] = $this->load->view('home/header',null,true);
 	    $this->data['footer'] = $this->load->view('home/footer',null,true);
+	    $a = array();
+		$_jsoncity = $this->Candidate_model->select_sugg_tag('tagprofile.title',array('tagtransaction.tablename' => 'candidate' , 'tagtransaction.categoryid' => 'position'));
+		foreach ($_jsoncity as $key) {
+			array_push($a, $key['title']);
+		}
+		$this->data['tag'] = $a;
 	}
 	public function test()
 	{
@@ -83,20 +89,36 @@ class Handling extends CI_Controller {
 	}
 	public function cohoi_nghe_nghiep()
 	{
-		$this->datamenu['cohoi'] = "active";
-		$match = array('showtype' => 'O', );
-		$data['campaigns'] 		=	$this->Candidate_model->selectByWhere('reccampaign',$match);
-		$this->data['modal'] = $this->load->view('home/modal-master',null,true);
-		$this->data['menu'] = $this->load->view('home/menu',$this->datamenu,true);
-		$this->data['temp'] = $this->load->view('page/cohoi_nghe_nghiep',$data,true);
+		$this->datamenu['cohoi'] 	= "active";
+		$match 						= array('showtype' => 'O');
+		$data 						= $this->Candidate_model->selectByWhere('reccampaign',$match);
+		for ($i=0; $i < count($data); $i++) { 
+			if($data[$i]['expdate'] < date('Y-m-d H:i:s')){
+				unset($data[$i]);
+			}
+		}
+		function cmp($a, $b) {
+            if ($a['expdate'] == $b['expdate']) {
+                return 0;
+            }
+            return ($a['expdate'] < $b['expdate']) ? 1 : -1;
+        }
+        uasort($data, 'cmp');
+        $array['campaigns'] = array_values($data); 
+		// echo "<pre>";
+  //       print_r($array['campaigns']);
+  //       echo "</pre>";exit;
+		$this->data['modal'] 		= $this->load->view('home/modal-master',null,true);
+		$this->data['menu'] 		= $this->load->view('home/menu',$this->datamenu,true);
+		$this->data['temp'] 		= $this->load->view('page/cohoi_nghe_nghiep',$array,true);
 		$this->load->view('home/master',$this->data);
 	}
 
 	public function co_hoi_nghe_nghiep_detail($id='')
 	{
-		$match = array('campaignid' => $id, );
-		$data['recruite'] = $this->Candidate_model->selectByWhere('recartical',$match);
-		$this->data['temp'] = $this->load->view('page/cohoi_nghe_nghiep_detail',$data,true);
+		$match 						= array('campaignid' => $id, );
+		$data['recruite'] 			= $this->Candidate_model->selectByWhere('recartical',$match);
+		$this->data['temp'] 		= $this->load->view('page/cohoi_nghe_nghiep_detail',$data,true);
 		$this->load->view('home/master',$this->data);
 	}
 	public function applyCampaign()
@@ -108,6 +130,64 @@ class Handling extends CI_Controller {
 		unset($frm['check_btn']);
 		$frm['createdby'] 	= $this->session->userdata('user')['operatorid'];
 		$this->Candidate_model->InsertData('profilehistory',$frm);
+
+		//mail candidate
+		
+		$mail = array();
+		$mailtemplate = $this->Mail_model->select('mailprofile',array('mailprofileid' => 4));
+		if(isset($mailtemplate[0])){
+			$subject 			= $mailtemplate[0]['presubject'];
+			$body 				= $mailtemplate[0]['prebody'];
+			$mail["attachment"] = $mailtemplate[0]['preattach'];
+			$presender 			= $mailtemplate[0]['presender'];
+			// $mail["cc"] 		= $mailtemplate[0]['cc'];
+			// $mail["bcc"] 		= $mailtemplate[0]['bcc'];
+		}else{
+			$subject			= $body = $mail["attachment"] = $mail["cc"] = $mail["bcc"] = $presender = '';
+		}
+		if ($presender != 'usersession') {
+			$arrayName1 = array('operatorname' => 'mailsystem' );
+			$mailSystem = $this->Mail_model->select('operator',$arrayName1);
+			
+        	$mail['mcsmtp']	= $mailSystem[0]['mcsmtp'];
+        	
+        	$mail['mcuser']	= $mailSystem[0]['mcuser'];
+        	$mail['mcpass']	= base64_decode($mailSystem[0]['mcpass']);
+        	$mail['mcport']	= $mailSystem[0]['mcport'];
+		}else{
+			echo json_encode(1);
+		}
+
+		$match 						= array('candidateid' => $frm['candidateid']);
+		$candidate 					= $this->Candidate_model->selectByWhere('candidate',$match)[0];
+		$lastname 					= $candidate['lastname'];
+		$name 						= $candidate['name'];
+		$match 						= array('campaignid' => $frm['campaignid']);
+		$campaigns 					= $this->Candidate_model->selectByWhere('reccampaign',$match)[0];
+		$position 					= $campaigns['position'];
+		$temp						= trim($campaigns['managecampaign'],',');
+		$manage 					= explode(',', $temp);
+		foreach ($manage as $key) {
+			$match 						= array('operatorid' => $key);
+			$operator 					= $this->Candidate_model->selectByWhere('operator',$match)[0];
+			$chuoi_tim 				= array('[Tên Ứng viên]','[Tên]','[Vị trí]','[Tuyển dụng viên]');
+			$chuoi_thay_the 		= array($name,$lastname,$position,$operator['operatorname']);
+			$mail['emailsubject'] 	= str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($subject));
+			$mail['emailbody'] 		= str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($body));
+			$mail['toemail'] 		= $operator['email'];
+			$this->Mail_model->sendMail($mail);
+
+			$mail1['fromemail'] 		= $mail['mcuser'];
+			$mail1['toemail'] 			= $operator['email'];
+			$mail1['emailbody'] 		= $mail['emailbody'];
+			$mail1['emailsubject'] 		= $mail['emailsubject'];
+			$mail1["attachment"] 		= json_encode($mail["attachment"]);
+			$mail1['createdby'] 		= $this->session->userdata('user_admin')['operatorid'];
+			$this->Mail_model->insert('mailtable',$mail1);
+		}
+
+		
+		   
 		echo json_encode(1);
 	}
 	public function hoso_canhan($tab = 'one')
@@ -117,7 +197,7 @@ class Handling extends CI_Controller {
     		 {
 		           $data['city'] = $this->Candidate_model->selectall('city');
 		     }
-		    $data['document'] = $this->Candidate_model->selectFirstRows('document',array('referencekey'=>$this->session->userdata('user')['candidateid'],'tablename' => 'candidate'));
+		    $data['document'] = $this->Candidate_model->selectFirstRowsOrderBy('document',array('referencekey'=>$this->session->userdata('user')['candidateid'],'tablename' => 'candidate'),"lastupdate");
 		    $data['address'] = $this->Candidate_model->selectTableByIds('canaddress',$this->session->userdata('user')['candidateid']);
 		     
 		    $data['candidate'] =  $this->Candidate_model->selectTableById('candidate',$this->session->userdata('user')['candidateid']);
@@ -133,7 +213,7 @@ class Handling extends CI_Controller {
 		    $data['language'] =  $this->Candidate_model->selectTableByIds('canlanguage',$this->session->userdata('user')['candidateid']);
 		         
 		    $data['software']=  $this->Candidate_model->selectTableByIds('cansoftware',$this->session->userdata('user')['candidateid']);
-		          
+		    $data['tags'] = $this->Candidate_model->select_tags_byId($this->session->userdata('user')['candidateid']);     
 			$data[$tab] = "in active";
 
 			$this->datamenu['hoso'] = "active";
@@ -145,16 +225,22 @@ class Handling extends CI_Controller {
 	public function lichsu_apply()
 	{
 		$this->datamenu['ls'] = "active";
-		
+		$candidateid = $this->session->userdata('user')['candidateid'];
+		$sql = "SELECT a.*, b.position, b.expdate FROM profilehistory a LEFT JOIN reccampaign b ON a.campaignid = b.campaignid WHERE a.candidateid = $candidateid AND a.actiontype = 'Apply'";
+		$m_data['history'] = $this->Candidate_model->select_sql($sql);
+
 		$this->data['menu'] = $this->load->view('home/menu',$this->datamenu,true);
-		$this->data['temp'] = $this->load->view('page/lichsu_ungtuyen',null,true);
+		$this->data['temp'] = $this->load->view('page/lichsu_ungtuyen',$m_data,true);
 		$this->load->view('home/master',$this->data);	
 	}
-	public function lichsu_detail()
+	public function lichsu_detail($campaignid)
 	{
 		$this->datamenu['ls'] = "active";
+		$sql = "SELECT * FROM reccampaign WHERE campaignid = $campaignid ";
+		$m_data['campaigns'] = $this->Candidate_model->select_sql($sql)[0];
+
 		$this->data['menu'] = $this->load->view('home/menu',$this->datamenu,true);
-		$this->data['temp'] = $this->load->view('page/lichsu_detail',null,true);
+		$this->data['temp'] = $this->load->view('page/lichsu_detail',$m_data,true);
 		$this->load->view('home/master',$this->data);	
 	}
 	public function update_introduce()
@@ -163,11 +249,13 @@ class Handling extends CI_Controller {
 		$data['introduction'] = $frm['introduction'];
 		$data['currentbenefit'] = $this->toInt($frm['cur_benefit']);
 		$data['desirebenefit'] = $this->toInt($frm['desirebenefit']);
-
+		$data['snid'] = $frm['snid'];
+		
 		if (!empty($_FILES['profilesrc']['name'])) {
 	        $config['upload_path'] = './public/document/';
 	        $config['allowed_types'] = '*';
-	        $config['file_name'] = $_FILES['profilesrc']['name'];
+	        $filename = preg_replace('([\s_&#%]+)', '-', $_FILES['profilesrc']['name']);
+	        $config['file_name'] = $filename;
 	    	$config['overwrite'] = FALSE;  
 	        $this->load->library('upload', $config);
 	        $this->upload->initialize($config);
@@ -176,11 +264,11 @@ class Handling extends CI_Controller {
           		$uploadData = $this->upload->data();
           		$data2["tablename"] = 'candidate';
           		$data2["referencekey"] = $this->session->userdata('user')['candidateid'];
-          		$data2["filename"] = $uploadData['file_name'];
+          		$data2["filename"] = $filename;
         		$data2["category"] = $uploadData['file_ext'];
         		$data2["subject"] = 'File CV';
         		$data2["author"] = $this->session->userdata('user')['candidateid'];
-        		$data2["url"] = base_url().'public/document/'.$uploadData['file_name'];
+        		$data2["url"] = base_url().'public/document/'.$filename;
         		$data2["createdby"] = $this->session->userdata('user')['operatorid'];
         		$data2["updatedby"] = $this->session->userdata('user')['operatorid'];
         		$this->Candidate_model->InsertData('document',$data2);
@@ -197,6 +285,33 @@ class Handling extends CI_Controller {
 	     }
 	     //var_dump($data['errors']);
 	      $this->Login_model->updateCandidate($this->session->userdata('user')['candidateid'],$data);
+	      $this->Candidate_model->delete_real('tagtransaction',array('tablename' => 'candidate', 'recordid' => $this->session->userdata('user')['candidateid']));
+	      $tag['tags'] = $frm['tags'];
+	      $arr_tags = explode(',', $tag['tags']);
+	      foreach ($arr_tags as $key => $value) {
+	      	$data2 = array();
+      		$row['data'] = $this->Candidate_model->checktagsprofile(array('title' =>  trim($value)));
+			if(!is_array($row['data']))
+			{	if(trim($value) == "")
+				{
+					continue;
+				}
+				$data1['title'] = trim($value);
+				$data2['tagid'] = $this->Login_model->InsertData("tagprofile",$data1);
+				$data2['tablename'] = "candidate";
+				$data2['recordid'] = $this->session->userdata('user')['candidateid'];
+				$data2['categoryid'] = "position"; 
+				$this->Login_model->InsertData("tagtransaction",$data2);
+			}
+			else
+			{
+				$data2['tagid'] = $row['data']['tagid'];
+				$data2['tablename'] = "candidate";
+				$data2['recordid'] = $this->session->userdata('user')['candidateid'];
+				$data2['categoryid'] = "position"; 
+				$this->Login_model->InsertData("tagtransaction",$data2);
+			}	
+		}
 	      $this->cache->delete('candidate');
 	      header('location:hoso_canhan');
  	}
@@ -231,13 +346,15 @@ class Handling extends CI_Controller {
  	public function update_profile()
  	{
  		$frm = $this->input->post();	
-		$data['firstname'] = $frm['ten'];
-		$data['lastname'] = $frm['ho'];
+		$data['lastname'] = $frm['ten'];
+		$data['firstname'] = $frm['ho'];
 		$data['dateofbirth'] =  date("Y-m-d", strtotime($frm['ngaysinh1']));
 		$data['gender'] = $frm['gender'];
 		$data['placeofbirth'] = $frm['noisinh'];
 		$data['ethnic'] = $frm['ethnic'];
 		$data['nationality'] = $frm['quoctich'];
+		$data['nativeland'] = $frm['nativeland'];
+		$data['religion'] = $frm['religion'];
 		$data['height'] = $frm['chieucao'];
 		$data['weight'] = $frm['cannang'];
 		$data['idcard'] = $frm['cmnd'];
@@ -253,7 +370,7 @@ class Handling extends CI_Controller {
  	{
  		$frm = $this->input->post();	
 		$data['email'] = $frm['email'];
-		$data['telephone'] = $frm['dt1']." ".$frm['dt2'];	
+		$data['telephone'] = $frm['dt1'].",".$frm['dt2'];	
 		$data['emergencycontact'] = $frm['dtkhancap'];
 		$this->Login_model->updateCandidate($this->session->userdata('user')['candidateid'],$data);
 		$this->cache->delete('candidate');
@@ -383,6 +500,20 @@ class Handling extends CI_Controller {
 			$data1['candidateid'] = $this->session->userdata('user')['candidateid'];
 			$this->Login_model->InsertData("canexperience",$data1);
  		}
+
+ 		$candidateid = $this->session->userdata('user')['candidateid'];
+        $sql = "select count(*) as count from profilehistory where candidateid = $candidateid AND actiontype = 'Talent'";
+        $checkAuto = $this->Campaign_model->select_sql($sql)[0]['count'];
+        if($checkAuto <= 0){
+            $namkn = $this->Candidate_model->yearexperirence($candidateid);
+            if ($namkn >=1 && $namkn < 5) {
+                $this->Candidate_model->UpdateData('candidate',array('candidateid' => $candidateid),array('istalent' => 1));
+            }else if ($namkn >=5 && $namkn < 10) {
+                $this->Candidate_model->UpdateData('candidate',array('candidateid' => $candidateid),array('istalent' => 2));
+            }else{
+                $this->Candidate_model->UpdateData('candidate',array('candidateid' => $candidateid),array('istalent' => 3));
+            }
+        }
  		$this->cache->delete('experience');
  		redirect(base_url('hoso_canhan.html/five'));
 	}
@@ -633,6 +764,15 @@ class Handling extends CI_Controller {
     function toInt($str)
 	{
 	    return (int)preg_replace("/\..+$/i", "", preg_replace("/[^0-9\.]/i", "", $str));
+	}
+	public function suggestions_tag()
+	{
+		$a = array();
+		$_jsoncity = $this->Candidate_model->select_sugg_tag('tagprofile.title',array('tagtransaction.tablename' => 'candidate' , 'tagtransaction.categoryid' => 'position'));
+		foreach ($_jsoncity as $key) {
+			array_push($a, $key['title']);
+		}
+		echo json_encode($a);
 	}
 }
 ?>

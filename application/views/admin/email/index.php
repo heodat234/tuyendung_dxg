@@ -9,7 +9,7 @@
 						 foreach ($dataEmail as $email) {
 						 		?>
 						<div class="col-md-4">
-							<div class="panel panel-default">
+							<div class="panel panel-default" style="height: 170px">
 							  	<button type="button" class="btn-icon-top"><i class="fa fa-list color-gray"></i></button>
 							  <div class="panel-body height-170">
 							    <a href="<?php echo base_url().'admin/email/detail/'.$email['mailprofileid'] ?>"><p class="title-news"><?php echo $email['profilename'] ?></p></a>
@@ -24,7 +24,7 @@
 								    	echo "Hệ thống";
 								    }
 							     ?></a></p>
-							    <p class="body-blac3"><?php echo $email['presubject'] ?></p>
+							    <p class="body-blac3" ><?php echo substr($email['presubject'], 0,120) ?></p>
 							    <p class="body-blac3">Ngày tạo: <?php echo convertDate($email['createddate']) ?> - Bởi: <?php echo $email['createdby'] ?></p>
 							  </div>
 							</div>

@@ -5,18 +5,6 @@ class Mail_model extends CI_Model{
         parent::__construct();
         $this->load->database();
 
-        $config = array(
-            'protocol'  =>  'smtp',
-            'smtp_host' =>  'ssl://smtp.googlemail.com',
-            'smtp_port' =>  465,
-            'smtp_user' =>  'thanhhung23495@gmail.com',
-            'smtp_pass' =>  'Heodat1323',
-            'mailtype'  =>  'html', 
-            'charset'   =>  'utf-8',
-        );
-        $this->load->library('email');
-        $this->email->initialize($config);
-        $this->email->set_newline("\r\n");
     } 
     public function insert_id()
     {
@@ -28,25 +16,47 @@ class Mail_model extends CI_Model{
     }
 
     public function sendMail($data='')
-    {
+    {   
+        $attach = '';
+        // var_dump($data);exit;
+        $config = array(
+            'protocol'  =>  'smtp',
+            'smtp_host' =>  $data['mcsmtp'],
+            'smtp_port' =>  $data['mcport'],
+            'smtp_user' =>  trim($data['mcuser']),
+            'smtp_pass' =>  $data['mcpass'],
+            'mailtype'  =>  'html', 
+            'charset'   =>  'utf-8',
+            'smtp_crypto' => 'tls',
+            // 'smtp_auto_tls' => true
+        );
+        $this->load->library('email');
+        $this->email->initialize($config);
+        $this->email->set_newline("\r\n");
+        
         //cau hinh email va ten nguoi gui
-        $this->email->from('thanhhung23495@gmail.com', 'Đất xanh Group');
+        $this->email->from($data['mcuser'], 'Đất xanh Group');
         //cau hinh nguoi nhan
         if ($data['toemail'] != '') {
             $this->email->to($data['toemail']);
         }
+        $this->email->reply_to($data['mcuser'], 'Đất xanh Group');
         $this->email->cc(isset($data['cc'])? $data['cc'] : '');
         $this->email->bcc(isset($data['bcc'])? $data['bcc'] : '');
          
         $this->email->subject($data['emailsubject']);
-        $this->email->message($data['emailbody']);
+        $body = $data['emailbody'];
+        $data_body['content'] = $data['emailbody'];
+        // var_dump($body);exit;
+        $this->email->message($this->load->view('admin/email/view_file', $data_body, TRUE));
          
         //dinh kem file
-        if(is_array($data['attachment'])){
-            foreach ($data['attachment'] as $key) {
-                $this->email->attach($key);
+        $attach = isset($data['attachment'])? $data['attachment']: '';
+            if(is_array($attach) && !empty($attach)){
+                foreach ($attach as $key) {
+                    $this->email->attach($key);
+                }
             }
-        }
         // $this->email->attach('http://recruit.tavicosoft.com/public/document/Chiến dịch tuyển dụng.docx');
         // $this->email->attach('http://recruit.tavicosoft.com/public/document/DXG - Breakdown checklist.xlsx');
         //thuc hien gui
@@ -54,11 +64,63 @@ class Mail_model extends CI_Model{
         {
             // Generate error
             return $this->email->print_debugger();
+            exit;
         }else{
+            $this->email->clear(TRUE);
+            $mbox = imap_open("{".$data['mcsmtp'].":143}Sent Items", "".trim($data['mcuser'])."", "".$data['mcpass']."");
+
+            $subject = mb_encode_mimeheader($data['emailsubject']);
+            $new_body = $this->load->view('admin/email/view_file', $data_body, TRUE);
+            
+
+            $dmy = date("r", strtotime("now"));
+            $boundary = "------=".md5(uniqid(rand()));
+            
+            // $msgid = $this->generateMessageID();
+            $msg = "From: ".trim($data['mcuser'])."\r\n";
+            $msg .= "To: ".$data['toemail']."\r\n";
+            $msg .= "Cc: ".$data['cc']."\r\n";
+            $msg .= "Bcc: ".$data['bcc']."\r\n";
+            $msg .= "Date: $dmy\r\n";
+            $msg .= "Subject: $subject\r\n";
+            $msg .= "MIME-Version: 1.0\r\n";
+            $msg .= "Content-Type: multipart/mixed; boundary=\"$boundary\"\r\n";
+            $msg .= "\r\n\r\n";
+            $msg .= "--$boundary\r\n";
+            $msg .= "Content-Type: text/html;\r\n\tcharset=\"utf-8\"\r\n";
+            $msg .= "Content-Transfer-Encoding: quoted-printable \r\n";
+            $msg .= "\r\n\r\n";
+            $msg .= "$new_body\r\n";
+            if(!empty($attach)) {
+                $msg .= "\r\n\r\n";
+                $msg .= "--$boundary\r\n";
+                foreach ($attach as $filelink) {
+                    $arr = explode('/', $filelink);
+                    $filename = $arr[count($arr)-1];
+                    $attachment = chunk_split(base64_encode(file_get_contents($filelink)));
+                    $msg .= "Content-Transfer-Encoding: base64\r\n";
+                    $msg .= "Content-Disposition: attachment; filename=\"$filename\"\r\n";
+                    $msg .= "\r\n" . $attachment . "\r\n\r\n";
+                }
+            }
+            $msg .= "\r\n\r\n\r\n";
+            $msg .= "--$boundary--\r\n\r\n";
+            imap_append($mbox, "{".$data['mcsmtp'].":143}Sent Items",$msg);
+                // close mail connection.
+                imap_close($mbox);
             return 1;
         }
+        //The first line connects to your inbox over port 143
+        
+        return 1;
     }
 
+    public function select($table,$where)
+    {
+        $this->db->select()->where( $where);
+        $query = $this->db->get($table);
+       return $query->result_array();
+    }
     public function insert($table,$data)
     {
         $a_User =   $this->db->insert($table,$data);

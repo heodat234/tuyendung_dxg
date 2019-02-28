@@ -37,14 +37,14 @@
 			            <div class="boxbox-solid row no-margin">
 				            <div class="nav-tabs-custom">
 							    <ul class="nav nav-tabs">
-							      	<li class="active"><a href="#tab_1" id="tab1" data-toggle="tab" aria-expanded="true">Đang xử lý ( <?php echo $count_tranfer ?> )</a></li>
-							      	<li class=""><a href="#tab_2" id="tab2" data-toggle="tab" aria-expanded="false">Không đạt ( <?php echo $count_discard ?> )</a></li>
+							      	<li class="active"><a href="#tab_11" id="tab1" data-toggle="tab" aria-expanded="true">Đang xử lý ( <?php echo $count_tranfer ?> )</a></li>
+							      	<li class=""><a href="#tab_22" id="tab2" data-toggle="tab" aria-expanded="false">Không đạt ( <?php echo $count_discard ?> )</a></li>
 							    </ul>
 							    <div class="tab-content" id="tab_round">
-							      	<div class="tab-pane active webkit-box text-center" id="tab_1">
+							      	<div class="tab-pane active webkit-box text-center" id="tab_11">
 				            			<iframe class="iframe_abc" id="frame_1" src="<?php echo $src_1; ?>"></iframe>
 				            		</div>
-				            		<div class="tab-pane webkit-box text-center" id="tab_2">
+				            		<div class="tab-pane webkit-box text-center" id="tab_22">
 				            			<iframe class="iframe_abc" id="frame_2" src="<?php echo $src_2; ?>"  width=100%></iframe>
 				            		</div>
 				            	</div>

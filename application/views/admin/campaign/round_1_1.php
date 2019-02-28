@@ -34,7 +34,7 @@
 	            	<a href="<?php echo base_url()?>admin/Campaign/main" class="btn btn-box-tool" data-toggle="tooltip" title="" data-original-title="Previous"><i class="fa fa-chevron-left"></i> Quay lại</a>
 	            	<div class="box-body no-padding dash-box">
 						<?php echo isset($main_round)? $main_round : '' ?>
-			            <div class="boxbox-solid row no-margin">
+			            <div class="boxbox-solid row no-margin" id="box_detail">
 				            <div class="box-header back-blue with-border">
 				              <h5 class="fill-white">Tìm kiếm hồ sơ ứng viên</h5>
 				            </div>
@@ -46,4 +46,14 @@
       	</div>
     </section>
 </div>
+<script type="text/javascript">
+	$('#tab_cam_1').click(function(event) {
+	    $('#list_manage').show();
+	    $('#box_detail').show();
+	  });
+	  $('#tab_cam_2').click(function(event) {
+	    $('#list_manage').hide();
+	    $('#box_detail').hide();
+	  });
+</script>
  

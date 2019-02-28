@@ -91,14 +91,17 @@
 						      	<div class="row form_campaign">
 						            <label for="text" class=" col-xs-2 label-profile">Quy trình mẫu</label>
 						            <div class="col-xs-5  padding-lr0">
-						             	<select class="textbox" name="">
-						             		<option>Hoạt động</option>
+						             	<select class="textbox select2" name="" onchange="changeProcess(this.value)">
+						             		<option value="0">Chọn quy trình mẫu</option>
+						             		<?php foreach ($process as $pc): ?>
+						             			<option value="<?php echo $pc['flowpresetid'] ?>"><?php echo $pc['flowpresetname'] ?></option>
+						             		<?php endforeach ?>
 						             	</select>
 						            </div>
 						        </div>
 						        <p class="title_ql">Sử dụng quy trình mẫu giúp rút ngắn thời gian xây dựng một chiến dịch. Người thiết lập có thể hiệu chỉnh số lượng vòng và thêm thành viên chiến dịch vào mỗi vòng.</p>
 						        <p class="title_ql">Xem trước quy trình:</p>
-						        <div class="box-body no-padding dash-box">
+						        <div class="box-body no-padding dash-box" id="box_temp">
 						            <div class=" col-pc-12" >
 						                <span class="info-box-number count_hs">V1</span>
 						                <span class="info-box-text">HỒ SƠ</span>
@@ -137,7 +140,7 @@
 						        <ul id="sortable" class="sortable-dragging sortable-placeholder">
 						        	<form id="form_round">
 						        		<input type="hidden" name="campaignid" id="campaignid_v3" value="<?php echo $campaignid ?>">
-						        		<li class="ui-state-disabled" data-index="1" data-position="1">
+						        		<li class="li_round ui-state-disabled" data-index="1" data-position="1">
 							        		<div class="v_1" >
 								        		<div class="header_vong_cd ">
 								        			<input type="hidden" name="round1[]" value="1" class="sorting">
@@ -155,7 +158,7 @@
 								        			<div class="row form_campaign">
 											            <label for="text" class=" col-xs-2 label-profile">Loại vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round1[]" >
+											             	<select class="textbox select2" name="round1[]" >
 											             		<option value="Profile" >Hồ sơ</option>
 											             	</select>
 											            </div>
@@ -179,25 +182,31 @@
 											        	</div>
 											        </div>
 											        <div class="row form_campaign">
-											            <label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round1[]" value="Y"> Email Chuyển vòng</label>
+											            <label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round1[]" > Email Chuyển vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round1[]">
-											             		<option>Hoạt động</option>
+											             	<select class="textbox select2" name="round1[]">
+											             		<option value="0">Chọn mẫu mail thông báo</option>
+											             		<?php foreach ($mailtemplate as $mail): ?>
+									                              	<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>
+									                            <?php endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
 											        <div class="row form_campaign_1">
-											            <label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round1[]" value="Y"> Email loại</label>
+											            <label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round1[]" > Email loại</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round1[]">
-											             		<option>Hoạt động</option>
+											             	<select class="textbox select2" name="round1[]">
+											             		<option value="0">Chọn mẫu mail thông báo</option>
+											             		<?php foreach ($mailtemplate as $mail): ?>
+									                              	<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>
+									                            <?php endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
 								        		</div>
 								        	</div>
 							        	</li>
-							        	<li id="round_2" data-index="2" data-position="2">
+							        	<li class="li_round" id="round_2" data-index="2" data-position="2">
 							        		<div class="v_2" >
 								        		<div class="header_vong_cd">
 								        			<input type="hidden" name="round2[]" value="2" class="sorting">
@@ -216,7 +225,7 @@
 								        			<div class="row form_campaign">
 											            <label for="text" class=" col-xs-2 label-profile">Loại vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round2[]">
+											             	<select class="textbox select2" name="round2[]" id="select_type2">
 											             		<option value="Profile" disabled="">Hồ sơ</option>
 											             		<option value="Filter">Sơ loại</option>
 											             		<option value="Contact">Tiếp cận</option>
@@ -248,23 +257,29 @@
 											        <div class="row form_campaign">
 											            <label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round2[]"> Email Chuyển vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round2[]">
-											             		<option>Hoạt động</option>
+											             	<select class="textbox select2" name="round2[]">
+											             		<option value="0">Chọn mẫu mail thông báo</option>
+											             		<?php foreach ($mailtemplate as $mail): ?>
+									                              	<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>
+									                            <?php  endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
 											        <div class="row form_campaign_1">
 											            <label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round2[]"> Email loại</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round2[]">
-											             		<option>Hoạt động</option>
+											             	<select class="textbox select2" name="round2[]">
+											             		<option value="0">Chọn mẫu mail thông báo</option>
+											             		<?php foreach ($mailtemplate as $mail): ?>
+									                              	<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>
+									                            <?php  endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
 								        		</div>
 								        	</div>
 							        	</li>
-							        	<li id="round_3" data-index="3" data-position="3">
+							        	<li class="li_round" id="round_3" data-index="3" data-position="3">
 							        		<div class="v_3" >
 								        		<div class="header_vong_cd">
 								        			<input type="hidden" name="round3[]" value="3" class="sorting">
@@ -284,7 +299,7 @@
 								        			<div class="row form_campaign">
 											            <label for="text" class=" col-xs-2 label-profile">Loại vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round3[]">
+											             	<select class="textbox select2" name="round3[]" id="select_type3">
 											             		<option value="Profile" disabled="">Hồ sơ</option>
 											             		<option value="Filter">Sơ loại</option>
 											             		<option value="Contact" selected="">Tiếp cận</option>
@@ -316,23 +331,29 @@
 											        <div class="row form_campaign">
 											            <label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round3[]"> Email Chuyển vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round3[]">
-											             		<option>Hoạt động</option>
+											             	<select class="textbox select2" name="round3[]">
+											             		<option value="0">Chọn mẫu mail thông báo</option>
+											             		<?php foreach ($mailtemplate as $mail): ?>
+									                              	<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>
+									                            <?php  endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
 											        <div class="row form_campaign_1">
 											            <label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round3[]"> Email loại</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round3[]">
-											             		<option>Hoạt động</option>
+											             	<select class="textbox select2" name="round3[]">
+											             		<option value="0">Chọn mẫu mail thông báo</option>
+											             		<?php foreach ($mailtemplate as $mail): ?>
+									                              	<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>
+									                            <?php  endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
 								        		</div>
 								        	</div>
 							        	</li>
-							        	<li id="round_4" data-index="4" data-position="4">
+							        	<li class="li_round" id="round_4" data-index="4" data-position="4">
 							        		<div class="v_4" >
 								        		<div class="header_vong_cd">
 								        			<input type="hidden" name="round4[]" value="4" class="sorting">
@@ -351,7 +372,7 @@
 								        			<div class="row form_campaign">
 											            <label for="text" class=" col-xs-2 label-profile">Loại vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round4[]">
+											             	<select class="textbox select2" name="round4[]" id="select_type4">
 											             		<option value="Profile" disabled="">Hồ sơ</option>
 											             		<option value="Filter">Sơ loại</option>
 											             		<option value="Contact">Tiếp cận</option>
@@ -383,16 +404,22 @@
 											        <div class="row form_campaign">
 											            <label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round4[]"> Email Chuyển vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round4[]">
-											             		<option>Hoạt động</option>
+											             	<select class="textbox select2" name="round4[]">
+											             		<option value="0">Chọn mẫu mail thông báo</option>
+											             		<?php foreach ($mailtemplate as $mail): ?>
+									                              	<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>
+									                            <?php endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
 											        <div class="row form_campaign_1">
 											            <label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round4[]"> Email loại</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round4[]">
-											             		<option>Hoạt động</option>
+											             	<select class="textbox select2" name="round4[]">
+											             		<option value="0">Chọn mẫu mail thông báo</option>
+											             		<?php foreach ($mailtemplate as $mail): ?>
+									                              	<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>
+									                            <?php endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
@@ -401,23 +428,29 @@
 											        <div class="row form_campaign">
 											            <label for="text" class=" col-xs-2 label-profile">Giới hạn mẫu phiếu trắc nghiệm</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round4[]">
-											             		<option>Trắc nghiệm Kiến thức Tổng quát</option>
+											             	<select class="textbox select2" name="round4[]">
+											             		<option value="0">Chọn phiếu trắc nghiệm</option>
+											             		<?php foreach ($asmt_tn as $tn): ?>
+									                              	<option value="<?php echo $tn['asmttemp'] ?>"><?php echo $tn['asmtname'] ?></option>
+									                            <?php endforeach ?>	
 											             	</select>
 											            </div>
 											        </div>
 											        <div class="row form_campaign_1">
 											            <label for="text" class=" col-xs-2 label-profile">Email thông báo</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round4[]">
-											             		<option>Thư thông báo trắc nghiệm - TQ</option>
+											             	<select class="textbox select2" name="round4[]">
+											             		<option value="0">Chọn mẫu mail thông báo</option>
+											             		<?php foreach ($mailtemplate as $mail): ?>
+									                              	<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>
+									                            <?php endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
 								        		</div>
 								        	</div>
 							        	</li>
-							        	<li id="round_5" data-index="5" data-position="5">
+							        	<li class="li_round" id="round_5" data-index="5" data-position="5">
 							        		<div class="v_5" >
 								        		<div class="header_vong_cd">
 								        			<input type="hidden" name="round5[]" value="5" class="sorting">
@@ -436,7 +469,7 @@
 								        			<div class="row form_campaign">
 											            <label for="text" class=" col-xs-2 label-profile">Loại vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round5[]">
+											             	<select class="textbox select2" name="round5[]" id="select_type5">
 											             		<option value="Profile" disabled="">Hồ sơ</option>
 											             		<option value="Filter">Sơ loại</option>
 											             		<option value="Contact">Tiếp cận</option>
@@ -468,16 +501,22 @@
 											        <div class="row form_campaign">
 											            <label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round5[]"> Email Chuyển vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round5[]">
-											             		<option>Hoạt động</option>
+											             	<select class="textbox select2" name="round5[]">
+											             		<option value="0">Chọn mẫu mail thông báo</option>
+											             		<?php foreach ($mailtemplate as $mail): ?>
+									                              	<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>
+									                            <?php endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
 											        <div class="row form_campaign_1">
 											            <label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round5[]"> Email loại</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round5[]">
-											             		<option>Hoạt động</option>
+											             	<select class="textbox select2" name="round5[]">
+											             		<option value="0">Chọn mẫu mail thông báo</option>
+											             		<?php foreach ($mailtemplate as $mail): ?>
+									                              	<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>
+									                            <?php endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
@@ -486,31 +525,40 @@
 											        <div class="row form_campaign">
 											            <label for="text" class=" col-xs-2 label-profile">Giới hạn mẫu phiếu phỏng vấn</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round5[]">
-											             		<option>Phiếu phỏng vấn BM004/05</option>
+											             	<select class="textbox select2" name="round5[]">
+											             		<option value="0">Chọn phiếu phỏng vấn</option>
+											             		<?php foreach ($asmt_pv as $tn): ?>
+									                              	<option value="<?php echo $tn['asmttemp'] ?>"><?php echo $tn['asmtname'] ?></option>
+									                            <?php endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
 											        <div class="row form_campaign">
 											            <label for="text" class=" col-xs-2 label-profile">Email thông báo Ứng viên</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round5[]">
-											             		<option>Thư mời phỏng vấn</option>
+											             	<select class="textbox select2" name="round5[]">
+											             		<option value="0">Chọn mẫu mail thông báo</option>
+											             		<?php foreach ($mailtemplate as $mail): ?>
+									                              	<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>
+									                            <?php endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
 											        <div class="row form_campaign_1">
 											            <label for="text" class=" col-xs-2 label-profile">Email thông báo Người PV</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="">
-											             		<option>Thư mời tham dự phỏng vấn</option>
+											             	<select class="textbox select2" name="round5[]">
+											             		<option value="0">Chọn mẫu mail thông báo</option>
+											             		<?php foreach ($mailtemplate as $mail): ?>
+									                              	<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>
+									                            <?php endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
 								        		</div>
 								        	</div>
 							        	</li>
-							        	<li id="round_6" data-index="6" data-position="6">
+							        	<li class="li_round" id="round_6" data-index="6" data-position="6">
 							        		<div class="v_6" >
 								        		<div class="header_vong_cd">
 								        			<input type="hidden" name="round6[]" value="6" class="sorting">
@@ -529,7 +577,7 @@
 								        			<div class="row form_campaign">
 											            <label for="text" class=" col-xs-2 label-profile">Loại vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round6[]">
+											             	<select class="textbox select2" name="round6[]" id="select_type6">
 											             		<option value="Profile" disabled="">Hồ sơ</option>
 											             		<option value="Filter">Sơ loại</option>
 											             		<option value="Contact">Tiếp cận</option>
@@ -561,16 +609,22 @@
 											        <div class="row form_campaign">
 											            <label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round6[]"> Email Chuyển vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round6[]">
-											             		<option>Hoạt động</option>
+											             	<select class="textbox select2" name="round6[]">
+											             		<option value="0">Chọn mẫu mail thông báo</option>
+											             		<?php foreach ($mailtemplate as $mail): ?>
+									                              	<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>
+									                            <?php endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
 											        <div class="row form_campaign_1">
 											            <label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round6[]"> Email loại</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round6[]">
-											             		<option>Hoạt động</option>
+											             	<select class="textbox select2" name="round6[]">
+											             		<option value="0">Chọn mẫu mail thông báo</option>
+											             		<?php foreach ($mailtemplate as $mail): ?>
+									                              	<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>
+									                            <?php endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
@@ -579,31 +633,40 @@
 											        <div class="row form_campaign">
 											            <label for="text" class=" col-xs-2 label-profile">Giới hạn mẫu phiếu phỏng vấn</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round6[]">
-											             		<option>Phiếu phỏng vấn BM004/05</option>
+											             	<select class="textbox select2" name="round6[]">
+											             		<option value="0">Chọn phiếu phỏng vấn</option>
+											             		<?php foreach ($asmt_pv as $tn): ?>
+									                              	<option value="<?php echo $tn['asmttemp'] ?>"><?php echo $tn['asmtname'] ?></option>
+									                            <?php endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
 											        <div class="row form_campaign">
 											            <label for="text" class=" col-xs-2 label-profile">Email thông báo Ứng viên</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round6[]">
-											             		<option>Thư mời phỏng vấn</option>
+											             	<select class="textbox select2" name="round6[]">
+											             		<option value="0">Chọn mẫu mail thông báo</option>
+											             		<?php foreach ($mailtemplate as $mail): ?>
+									                              	<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>
+									                            <?php endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
 											        <div class="row form_campaign_1">
 											            <label for="text" class=" col-xs-2 label-profile">Email thông báo Người PV</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round6[]">
-											             		<option>Thư mời tham dự phỏng vấn</option>
+											             	<select class="textbox select2" name="round6[]">
+											             		<option value="0">Chọn mẫu mail thông báo</option>
+											             		<?php foreach ($mailtemplate as $mail): ?>
+									                              	<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>
+									                            <?php endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
 								        		</div>
 								        	</div>
 							        	</li>
-							        	<li id="round_7" data-index="7" data-position="7">
+							        	<li class="li_round" id="round_7" data-index="7" data-position="7">
 							        		<div class="v_7" >
 								        		<div class="header_vong_cd">
 								        			<input type="hidden" name="round7[]" value="7" class="sorting">
@@ -622,7 +685,7 @@
 								        			<div class="row form_campaign">
 											            <label for="text" class=" col-xs-2 label-profile">Loại vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round7[]">
+											             	<select class="textbox select2" name="round7[]" id="select_type7">
 											             		<option value="Profile" disabled="">Hồ sơ</option>
 											             		<option value="Filter">Sơ loại</option>
 											             		<option value="Contact">Tiếp cận</option>
@@ -654,16 +717,22 @@
 											        <div class="row form_campaign">
 											            <label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round7[]"> Email Chuyển vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round7[]">
-											             		<option>Hoạt động</option>
+											             	<select class="textbox select2" name="round7[]">
+											             		<option value="0">Chọn mẫu mail thông báo</option>
+											             		<?php foreach ($mailtemplate as $mail): ?>
+									                              	<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>
+									                            <?php endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
 											        <div class="row form_campaign_1">
 											            <label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round7[]"> Email loại</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round7[]">
-											             		<option>Hoạt động</option>
+											             	<select class="textbox select2" name="round7[]">
+											             		<option value="0">Chọn mẫu mail thông báo</option>
+											             		<?php foreach ($mailtemplate as $mail): ?>
+									                              	<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>
+									                            <?php endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
@@ -672,15 +741,18 @@
 											        <div class="row form_campaign_1">
 											            <label for="text" class=" col-xs-2 label-profile">Email Đề nghị</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round7[]">
-											             		<option>Thư mời nhận việc</option>
+											             	<select class="textbox select2" name="round7[]">
+											             		<option value="0">Chọn mẫu mail thông báo</option>
+											             		<?php foreach ($mailtemplate as $mail): ?>
+									                              	<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>
+									                            <?php endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
 								        		</div>
 								        	</div>
 							        	</li>
-							        	<li id="round_8" class="ui-state-disabled" data-index="8" data-position="8">
+							        	<li id="round_8" class="li_round ui-state-disabled" data-index="8" data-position="8">
 							        		<div class="v_8 ">
 								        		<div class="header_vong_cd">
 								        			<input type="hidden" name="round8[]" value="8" class="sorting">
@@ -698,7 +770,7 @@
 								        			<div class="row form_campaign">
 											            <label for="text" class=" col-xs-2 label-profile">Loại vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<select class="textbox" name="round8[]">
+											             	<select class="textbox select2" name="round8[]">
 											             		<option value="Recruite" selected="">Tuyển dụng</option>
 											             	</select>
 											            </div>
@@ -759,7 +831,7 @@
 		      			<i class="fa fa-plus-circle fa-lg" onclick="addQL(1)"></i>
 		      		</div>
 		      		<div class="col-xs-11">
-		      			<select class="seletext js-example-basic_ql" name="managecampaign[]" required="" id="select_type_1" >
+		      			<select class="seletext select2 js-example-basic_ql" name="managecampaign[]" required="" id="select_type_1" >
 		      				<option value="">Tìm kiếm từ danh sách người dùng</option>
 		      				<?php foreach ($operator as $row): ?>
 		      					<option value="<?php echo $row['operatorid'] ?>" ><?php echo $row['operatorname'] ?></option>
@@ -794,7 +866,7 @@
 		      			<i class="fa fa-plus-circle fa-lg fa_pt" onclick="addPT(1)"></i>
 		      		</div>
 		      		<div class="col-xs-11">
-		      			<select class="seletext js-example-basic" name="managecampaign[]" required="" id="select_type_pt_1" >
+		      			<select class="seletext select2 js-example-basic" name="managecampaign[]" required="" id="select_type_pt_1" >
 		      				<option value="">Tìm kiếm từ danh sách người dùng</option>
 		      				<?php foreach ($operator as $row): ?>
 		      					<option value="<?php echo $row['operatorid'] ?>" ><?php echo $row['operatorname'] ?></option>
@@ -879,9 +951,11 @@
 			$('#round_'+i).removeAttr('data-position').attr('data-position', j).attr('data-index', j);
 			$('#round_'+i).find('.btn_copy_'+i).attr('onclick', 'copyRound('+j+')').addClass('btn btn_cd btn_copy_'+j).removeClass('btn_copy_'+i);
 			$('#round_'+i).find('.btn_delete_'+i).attr('onclick', 'deleteRound('+j+')').addClass('btn btn_cd btn_delete_'+j).removeClass('btn_delete_'+i);
-			$('#round_'+i).find('.btn_edit_'+i).attr('onclick', 'editRound('+j+')').addClass('btn btn_cd btn_edit_'+j).removeClass('btn_edit_'+i);
+			$('#round_'+i).find('.btn_edit_'+i).attr('onclick', 'editTitle('+j+')').addClass('btn btn_cd btn_edit_'+j).removeClass('btn_edit_'+i);
 			$('#round_'+i).find('.roundname').addClass('roundname input_title_'+j).removeClass('input_title_'+i);
+			$('#round_'+i).contents().find('#title_'+i).attr('id', 'title_' + j);
 			$('#round_'+i).find('#col_add_pt_'+i).attr('id', 'col_add_pt_'+j);
+			$('#round_'+i).find('#select_type'+i).attr('id', 'select_type'+j);
 			$('#round_'+i).find('.add_pt').attr('onclick', 'insertPT('+j+')');
 			$('#round_'+i).find('#manageround_'+i).attr('id', 'manageround_'+j);
 			$('#round_'+i).find('[name*="round"]').each(function(){
@@ -893,6 +967,7 @@
 			$('#box_round_'+i).attr('id', 'box_round_'+j);
 		}
 
+		var roundtype = $('#select_type'+round).val();
 		var row = $('#round_'+round).clone().attr('id', 'round_'+new_round).after('#round_'+round);
 		$('#round_'+round).after(row);
 		$('#round_'+new_round).attr('data-index', new_round);
@@ -907,12 +982,13 @@
 		$('#round_'+new_round).contents().find('.btn_delete_'+round).attr('onclick', 'deleteRound('+new_round+')');
 		$('#round_'+new_round).contents().find('.btn_edit_'+round).attr('onclick', 'editTitle('+new_round+')');
 		$('#round_'+new_round).find('#col_add_pt_'+round).attr('id', 'col_add_pt_'+new_round);
+		$('#round_'+new_round).find('#select_type'+round).attr('id', 'select_type'+new_round);
 		$('#round_'+new_round).find('.add_pt').attr('onclick', 'insertPT('+new_round+')');
 		$('#round_'+new_round).find('#manageround_'+round).attr('id', 'manageround_'+new_round);
 		$('#round_'+new_round).find('[name*="round"]').each(function(){
 		    $(this).attr('name','round'+new_round+'[]');
 		}); 
-
+		$('#select_type'+new_round+' option[value="'+roundtype+'"]').prop('selected', true);
 		var new_count = count_round+1;		
 		$('#count_round').val(new_count);
 
@@ -922,6 +998,11 @@
 		$('#box_round_'+new_round).find('.info-box-text').text(title+' Copy');
 		var width = 100/new_count;
 		$('.col-pc-12').css('width', width+'%');
+
+		$('.thoihan').datetimepicker({
+	    	timepicker:false,
+	    	format:'d/m/Y',
+	    });
 	}
 	function deleteRound(round) {
 		var count_round = $('#count_round').val();
@@ -937,8 +1018,9 @@
 			$('#round_'+i).attr('data-position', j).attr('data-index', j);
 			$('#round_'+i).find('.btn_copy_'+i).attr('onclick', 'copyRound('+j+')').addClass('btn btn_cd btn_copy_'+j).removeClass('btn_copy_'+i);
 			$('#round_'+i).find('.btn_delete_'+i).attr('onclick', 'deleteRound('+j+')').addClass('btn btn_cd btn_delete_'+j).removeClass('btn_delete_'+i);
-			$('#round_'+i).find('.btn_edit_'+i).attr('onclick', 'editRound('+j+')').addClass('btn btn_cd btn_edit_'+j).removeClass('btn_edit_'+i);
+			$('#round_'+i).find('.btn_edit_'+i).attr('onclick', 'editTitle('+j+')').addClass('btn btn_cd btn_edit_'+j).removeClass('btn_edit_'+i);
 			$('#round_'+i).find('.roundname').addClass('roundname input_title_'+j).removeClass('input_title_'+i);
+			$('#round_'+i).contents().find('#title_'+i).attr('id', 'title_' + j);
 			$('#round_'+i).find('#col_add_pt_'+i).attr('id', 'col_add_pt_'+j);
 			$('#round_'+i).find('.add_pt').attr('onclick', 'insertPT('+j+')');
 			$('#round_'+i).find('#manageround_'+i).attr('id', 'manageround_'+j);
@@ -1045,6 +1127,7 @@
 			$('#body_cam_pt_'+j).contents().find('.seletext').attr('id', 'select_type_pt_'+j);
 			$('#body_cam_pt_'+j).contents().find('#show_name_pt_'+i).attr('id', 'show_name_pt_'+j);
 			$('#body_cam_pt_'+j).children().attr('id', 'btn_event_pt_'+j);
+			// initializeSelect2($(".select2"));
 			$('.js-example-basic').select2({ width: '100%' });
 			$('.js-example-basic').last().next().next().remove();
 
@@ -1091,7 +1174,7 @@
 		if(manageround != ''){
 			manageround += str;
 		}else{
-			manageround = str;
+			manageround = ','+str+',';
 		}
 		$('#manageround_'+roundid).val(manageround);
 		$('#insertPT').modal('hide');
@@ -1099,6 +1182,193 @@
 		
 		
 	});
+
+	function changeProcess(id) {
+		$.ajax({
+			url: '<?php echo base_url() ?>admin/RecruitProcess/changeProcess/'+id,
+			type: 'POST',
+			dataType: 'json',
+			data: {},
+		})
+		.done(function(data) {
+			$('#box_temp').empty();
+			$('.li_round').remove();
+			var width = 100/(data.length);
+        	width +='%';
+        	var j = 1;
+        	var color = row = '';
+        	for (var i = 0; i < data.length; i++) {
+        		if (data[i]['roundtype'] == 'Profile' || data[i]['roundtype'] == 'Filter') {
+        	 		color = 'count_hs';
+        	 	}else if (data[i]['roundtype'] == 'Offer') {
+        	 		color = 'count_dn';
+        	 	}else if (data[i]['roundtype'] == 'Recruite') {
+        	 		color = 'count_td';
+        	 	}else{
+        	 		color = 'count_pv';
+        	 	}
+        	 	row += '<div class="col-pc-12" id="box_round_'+j+'" style="width: '+width+' "><span class="info-box-number '+color+' ">V'+j+'</span><span class="info-box-text">'+data[i]['roundname']+'</span></div>';
+        	 	j++;
+        	}
+        	$('#box_temp').append(row);	
+
+        	
+        	var k =1;
+        	for (var i = 0; i < data.length; i++) {
+        		var row1 = check1 = check2 = '';
+        		if (data[i]['transferemail'] == 'Y' ) {
+        			check1 = 'checked';
+        		}
+        		if (data[i]['discardemail'] == 'Y' ) {
+        			check2 = 'checked';
+        		}
+        		if (data[i]['roundtype'] == 'Profile' ) {
+        	 		row1 += '<li class="li_round ui-state-disabled" id="round_'+k+'" data-index="'+k+'" data-position="'+k+'">';
+					row1 += '<div class="v_'+k+'" >';
+					row1 += '<div class="header_vong_cd "><input type="hidden" name="round'+k+'[]" value="'+k+'" class="sorting"><div class=" col-xs-4 pull-left"><i class="fa fa-ellipsis-v dis_fa"></i> '+data[i]['roundname']+'</div><input type="hidden" name="round'+k+'[]" value="'+data[i]['roundname']+'" class="roundname hide "><div class="pull-right box_btn_cd disabled" ><button class="btn btn_cd" disabled><i class="fa fa-plus" ></i></button><button class="btn btn_cd" disabled><i class="fa fa-pencil" ></i></button></div></div>';        		
+					row1 += '<div class="body_vong_cd"><div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile">Loại vòng</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]" ><option value="Profile" >Hồ sơ</option></select></div><label for="text" class=" col-xs-2 label-profile">Thời hạn vòng</label><div class="col-xs-4  padding-lr0"><input type="text" name="round'+k+'[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>"></div></div>';		        		
+					row1 += '<div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile">Phụ trách vòng</label><div class="col-xs-10  padding-lr0"><div class="col-xs-2 padding_le_ri_0" id="col_add_pt_'+k+'"><div class="col-xs-3 padding_le_ri_0"><img class="img_ql" src="<?php echo base_url() ?>public/image/bbye.jpg"></div><div class="col-xs-9 padding_le_ri_0"><a href="javascript:void(0)" class="add_pt" onclick="insertPT('+k+')"><p class="name_ql">Thêm phụ trách vòng</p></a></div></div><input type="hidden" id="manageround_'+k+'" name="round'+k+'[]" value=""></div></div>';			        	
+					row1 += '<div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round'+k+'[]" '+check1+' > Email Chuyển vòng</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]"><option value="0">Chọn mẫu mail thông báo</option>';
+						<?php foreach ($mailtemplate as $mail): ?>
+							if ( data[i]['transfmailtemp'] == '<?php echo $mail['mailprofileid'] ?>') { 
+								row1 += '<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>';
+							}else{
+								row1 += '<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>';
+							}
+						<?php endforeach ?>
+					row1 += '</select></div></div>';
+					row1 += '<div class="row form_campaign_1"><label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round'+k+'[]" '+check2+'> Email loại</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]"><option value="0">Chọn mẫu mail thông báo</option>';
+						<?php foreach ($mailtemplate as $mail): ?>
+							if ( data[i]['discmailtemp'] == '<?php echo $mail['mailprofileid'] ?>') { 
+								row1 += '<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>';
+							}else{
+								row1 += '<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>';
+							}
+						<?php endforeach ?>
+					row1 += '</select></div></div></div></div></li>';
+
+        	 	}
+        	 	else if (data[i]['roundtype'] == 'Recruite') {
+        	 		row1 += '<li class="li_round" id="round_'+k+'" class="ui-state-disabled" data-index="'+k+'" data-position="'+k+'"><div class="v_'+k+' ">';
+        	 		row1 += '<div class="header_vong_cd"><input type="hidden" name="round'+k+'[]" value="'+k+'" class="sorting"><div class=" col-xs-4 pull-left"><i class="fa fa-ellipsis-v dis_fa"></i> '+data[i]['roundname']+'</div><input type="hidden" name="round'+k+'[]" value="'+data[i]['roundname']+'" class="roundname "><div class="pull-right box_btn_cd"><button class="btn btn_cd" disabled><i class="fa fa-plus"></i></button><button class="btn btn_cd" disabled><i class="fa fa-pencil"></i></button></div></div>';
+					row1 += '<div class="body_vong_cd"><div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile">Loại vòng</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]"><option value="Recruite" selected="">Tuyển dụng</option></select></div><label for="text" class=" col-xs-2 label-profile">Thời hạn vòng</label><div class="col-xs-4  padding-lr0"><input type="text" name="round'+k+'[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>"></div></div>';			        		
+					row1 += '<div class="row form_campaign_1"><label for="text" class=" col-xs-2 label-profile">Phụ trách vòng</label><div class="col-xs-10  padding-lr0"><div class="col-xs-2 padding_le_ri_0" id="col_add_pt_'+k+'"><div class="col-xs-3 padding_le_ri_0"><img class="img_ql" src="<?php echo base_url() ?>public/image/bbye.jpg"></div><div class="col-xs-9 padding_le_ri_0"><a href="javascript:void(0)" class="add_pt" onclick="insertPT('+k+')"><p class="name_ql">Thêm phụ trách vòng</p></a></div></div><input type="hidden" id="manageround_'+k+'" name="round'+k+'[]" value=""></div></div></div></div></li>';
+        	 	}
+        	 	else{
+        	 		row1 += '<li class="li_round" id="round_'+k+'" data-index="'+k+'" data-position="'+k+'"><div class="v_'+k+'" >';
+					row1 += '<div class="header_vong_cd"><input type="hidden" name="round'+k+'[]" value="'+k+'" class="sorting"><div class=" col-xs-4 pull-left"><i class="fa fa-ellipsis-v handle"></i><span id="title_'+k+'"> '+data[i]['roundname']+'</span><input type="text" name="round'+k+'[]" value="'+data[i]['roundname']+'" class="roundname hide input_title_'+k+'"></div><div class="pull-right box_btn_cd"><button type="button" class="btn btn_cd btn_copy_'+k+'" onclick="copyRound('+k+')"><i class="fa fa-plus"></i></button><button type="button" class="btn btn_cd btn_delete_'+k+'" onclick="deleteRound('+k+')"><i class="fa fa-trash-o"></i></button><button type="button" class="btn btn_cd btn_edit_'+k+'" onclick="editTitle('+k+')"><i class="fa fa-pencil"></i></button></div></div>';	
+
+					row1 += '<div class="body_vong_cd"><div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile">Loại vòng</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]" id="select_type'+k+'"><option value="Profile" disabled="">Hồ sơ</option><option value="Filter">Sơ loại</option><option value="Contact">Tiếp cận</option><option value="Assessment">Trắc nghiệm</option><option value="Interview">Phỏng vấn</option><option value="Offer">Đề nghị</option><option value="Recruite" disabled="">Tuyển dụng</option></select></div><label for="text" class=" col-xs-2 label-profile">Thời hạn vòng</label><div class="col-xs-4  padding-lr0"><input type="text" name="round'+k+'[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>"></div></div>'; 
+
+					row1 += '<div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile">Phụ trách vòng</label><div class="col-xs-10  padding-lr0"><div class="col-xs-2 padding_le_ri_0" id="col_add_pt_'+k+'"><div class="col-xs-3 padding_le_ri_0"><img class="img_ql" src="<?php echo base_url() ?>public/image/bbye.jpg"></div><div class="col-xs-9 padding_le_ri_0"><a href="javascript:void(0)" class="add_pt" onclick="insertPT('+k+')"><p class="name_ql">Thêm phụ trách vòng</p></a></div></div><input type="hidden" id="manageround_'+k+'" name="round'+k+'[]" value=""></div></div>';       	
+								        		
+					row1 += '<div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round'+k+'[]" '+check1+'> Email Chuyển vòng</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]"><option value="0">Chọn mẫu mail thông báo</option>';
+						<?php foreach ($mailtemplate as $mail): ?>
+							if ( data[i]['transfmailtemp'] == '<?php echo $mail['mailprofileid'] ?>') { 
+								row1 += '<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>';
+							}else{
+								row1 += '<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>';
+							}
+						<?php endforeach ?>
+					row1 += '</select></div></div>';
+					
+					row1 += '<div class="row form_campaign_1"><label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round'+k+'[]" '+check2+'> Email loại</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]"><option value="0">Chọn mẫu mail thông báo</option>';
+						<?php foreach ($mailtemplate as $mail): ?>
+							if ( data[i]['discmailtemp'] == '<?php echo $mail['mailprofileid'] ?>') { 
+								row1 += '<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>';
+							}else{
+								row1 += '<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>';
+							}
+						<?php endforeach ?>
+					row1 += '</select></div></div></div>';	
+
+					if (data[i]['roundtype'] == 'Assessment') {
+						row1 += '<div class="body_vong_cd_1"><div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile">Giới hạn mẫu phiếu trắc nghiệm</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]">';
+						<?php foreach ($asmt_tn as $tn){ ?>
+							if ( data[i]['assessment'] == '<?php echo $tn['asmttemp'] ?>') { 
+								row1 += '<option value="<?php echo $tn['asmttemp'] ?>" selected><?php echo $tn['asmtname'] ?></option>';
+							}else{
+								row1 += '<option value="<?php echo $tn['asmttemp'] ?>"><?php echo $tn['asmtname'] ?></option>';
+							}
+						<?php } ?>
+						row1 += '</select></div></div>';
+
+						row1 += '<div class="row form_campaign_1"><label for="text" class=" col-xs-2 label-profile">Email thông báo</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]">';
+							<?php foreach ($mailtemplate as $mail): ?>
+								if ( data[i]['asmtmailtemp'] == '<?php echo $mail['mailprofileid'] ?>') { 
+									row1 += '<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>';
+								}else{
+									row1 += '<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>';
+								}
+							<?php endforeach ?>
+						row1 += '</select></div></div></div>';
+
+					}else if (data[i]['roundtype'] == 'Interview') {
+						row1 += '<div class="body_vong_cd_1"><div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile">Giới hạn mẫu phiếu phỏng vấn</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]">';
+							<?php foreach ($asmt_pv as $tn){ ?>
+								if ( data[i]['scorecard'] == '<?php echo $tn['asmttemp'] ?>') { 
+									row1 += '<option value="<?php echo $tn['asmttemp'] ?>" selected><?php echo $tn['asmtname'] ?></option>';
+								}else{
+									row1 += '<option value="<?php echo $tn['asmttemp'] ?>"><?php echo $tn['asmtname'] ?></option>';
+								}
+							<?php } ?>
+						row1 += '</select></div></div>';
+
+						row1 += '<div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile">Email thông báo Ứng viên</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]">';
+							<?php foreach ($mailtemplate as $mail): ?>
+								if ( data[i]['interviewmailtemp'] == '<?php echo $mail['mailprofileid'] ?>') { 
+									row1 += '<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>';
+								}else{
+									row1 += '<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>';
+								}
+							<?php endforeach ?>
+						row1 += '</select></div></div>';
+
+						row1 += '<div class="row form_campaign_1"><label for="text" class=" col-xs-2 label-profile">Email thông báo Người PV</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]">';
+							<?php foreach ($mailtemplate as $mail): ?>
+								if ( data[i]['invitemailtemp'] == '<?php echo $mail['mailprofileid'] ?>') { 
+									row1 += '<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>';
+								}else{
+									row1 += '<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>';
+								}
+							<?php endforeach ?>
+						row1 += '</select></div></div></div>';
+					}else if (data[i]['roundtype'] == 'Offer') {
+						row1 += '<div class="body_vong_cd_1"><div class="row form_campaign_1"><label for="text" class=" col-xs-2 label-profile">Email Đề nghị</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]">';
+							<?php foreach ($mailtemplate as $mail): ?>
+								if ( data[i]['letteroffermailtemp'] == '<?php echo $mail['mailprofileid'] ?>') { 
+									row1 += '<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>';
+								}else{
+									row1 += '<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>';
+								}
+							<?php endforeach ?>
+						row1 += '</select></div></div></div>';
+					}						        
+											        
+					row1 += '</div></li>';
+
+        	 	}
+
+            	$('#campaignid_v3').before(row1);	
+            	initializeSelect2($(".select2"));
+            	$('#select_type'+k+' option[value="'+data[i]['roundtype']+'"]').prop('selected', true);
+        	 	k++;
+        	}
+
+        	$('.thoihan').datetimepicker({
+		    	timepicker:false,
+		    	format:'d/m/Y',
+		    });
+			
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		.always(function() {
+			console.log("complete");
+		});
+		
+	}
 
 	$('#saveRound').click(function(event) {
 		var campaignid = $('#campaignid_v3').val();

@@ -27,17 +27,43 @@
           					</div>
           					<div class="col-md-9 padding_0">
           						<div class="body-blac5a"><?php echo $interview['name'] ?></div>
-          						<span class="body-blac5b">Chờ xác nhận</span>
+          						<?php if ($interview['status_asmt'] == 'C') {
+	      							if ($interview['optionid'] == '1') {
+	      								echo '<span class="colorsuccess fontArial show-view" >Đã xác nhận</span>';
+	      							}
+	      							else if($interview['optionid'] == '2'){
+	      								$date 		=  date_format(date_create($interview['ansdatetime']),"d/m/Y");
+	      								$from 		=  date_format(date_create($interview['ansdatetime']),"H:i");
+										$to 		=  date_format(date_create($interview['ansdatetime2']),"H:i");
+	      								echo '<span class="colorred fontArial show-view" >Tham dự vào ngày khác </span><span>'.$from.' - '.$to.' '.$date.'</span>';
+		      						}
+		      						else if($interview['optionid'] == '3'){
+	      								echo '<span class="colorred fontArial show-view" >Không tham dự </span>';
+		      						}
+	      						}else{
+		      							echo '<span class="colorgray fontArial show-view" >Chờ xác nhận </span>';
+		      					} ?>
+          						<!-- <span class="body-blac5b">Chờ xác nhận</span> -->
           					</div>
           				</div>
           				<?php foreach ($interviewer as $row): 
-          					if ($row['status'] == 'W') {
-      							$status = 'Chờ xác nhận';
-      						}else if($row['status'] == 'D'){
-      							$status = 'Không tham dự';
+          					if ($row['status_asmt'] == 'C') {
+      							if ($row['optionid'] == '1') {
+      								$status = '<span class="body-blac5b">Chờ xác nhận</div>';
+      							}
+      							else if($row['optionid'] == '2'){
+      								$date 		=  date_format(date_create($row['ansdatetime']),"d/m/Y");
+      								$from 		=  date_format(date_create($row['ansdatetime']),"H:i");
+									$to 		=  date_format(date_create($row['ansdatetime2']),"H:i");
+      								$status 	=  '<span class="colorred fontArial show-view" >Tham dự vào ngày khác </span><span>'.$from.' - '.$to.' '.$date.'</span>';
+	      						}
+	      						else if($row['optionid'] == '3'){
+      								$status 	= '<span class="colorred fontArial show-view" >Không tham dự </span>';
+	      						}
       						}else{
-      							$status = 'Đã xác nhận';
-      						}
+	      							$status 	= '<span class="colorgray fontArial show-view" >Chờ xác nhận </span>';
+	      					}
+          					
           				?>
           					<div class="col-md-3 padding_0 manage_pv ql" id="col_pt_<?php echo $row['interviewerid'] ?>" onclick="removeInterviewer(<?php echo $row['interviewerid'] ?>)">
 	          					<div class="col-md-3 padding_0">
@@ -46,7 +72,7 @@
 	          					</div>
 	          					<div class="col-md-9 padding_0">
 	          						<div class="body-blac5a"><?php echo $row['operatorname'] ?></div>
-	          						<span class="body-blac5b"><?php echo $status ?></span>
+	          						<?php echo $status ?>
 	          					</div>
 	          				</div>
           				<?php endforeach ?>
@@ -412,7 +438,8 @@
 	                        Tiêu đề:
 	                      </div>
 	                      <div class="col-xs-11">
-	                        <input class="kttext width_100 subjectmail" type="text"  name="subject" value="">
+	                        <textarea class="textarea_profile" id="subjectmail1" rows="1" name="subject" required="">
+                        	</textarea>
 	                      </div>
 	              </div>
 	              <div class="rowedit3">
@@ -437,6 +464,7 @@
 	              </div>
 	            </div>
 	        </div>
+	        <input  type="hidden" name="presender" id="presender1">
             <input type="hidden" name="interviewid"value="<?php echo $interview['interviewid'] ?>">
             <input type="hidden" name="campaignid"value="<?php echo $interview['campaignid'] ?>">
             <input type="hidden" name="roundid"value="<?php echo $interview['roundid'] ?>">
@@ -579,7 +607,7 @@
 	              	</div>
 	            </div>
             </div>
-            
+            <input  type="hidden" name="presender" id="presender2">
             <input type="hidden" name="interviewid" value="<?php echo $interview['interviewid'] ?>">
             <input type="hidden" name="campaignid" value="<?php echo $interview['campaignid'] ?>">
             <input type="hidden" name="roundid" value="<?php echo $interview['roundid'] ?>">
@@ -587,7 +615,7 @@
             <input type="hidden" name="interviewer" id="interviewerid_remove">
           </div>
           <div class="modal-footer modal_footer_cam">
-            <label class="share_chuyen"><input type="checkbox" name="isshare" value="Y"> Không chia sẻ nội dung này</label>
+            <label class="share_chuyen"><input type="checkbox" name="isshare" value="N"> Không chia sẻ nội dung này</label>
             <button type="button" class="btn btn_thoat btn_thoat1" data-dismiss="modal">Hủy</button>
             <button type="submit" class="btn btn_tt btn_tt1">Tiến hành</button>
           </div>
@@ -709,13 +737,14 @@
 	              </div>
 	            </div>
 	        </div>
+	        <input  type="hidden" name="presender" id="presender3">
             <input type="hidden" name="interviewid" value="<?php echo $interview['interviewid'] ?>">
             <input type="hidden" name="campaignid" value="<?php echo $interview['campaignid'] ?>">
             <input type="hidden" name="roundid" value="<?php echo $interview['roundid'] ?>">
             <input type="hidden" name="candidateid" value="<?php echo $interview['candidateid'] ?>">
           </div>
           <div class="modal-footer modal_footer_cam">
-            <label class="share_chuyen"><input type="checkbox" name="isshare" value="Y"> Không chia sẻ nội dung này</label>
+            <label class="share_chuyen"><input type="checkbox" name="isshare" value="N"> Không chia sẻ nội dung này</label>
             <button type="button" class="btn btn_thoat btn_thoat1" data-dismiss="modal">Hủy</button>
             <button type="submit" class="btn btn_tt btn_tt1" >Tiến hành</button>
           </div>
@@ -829,7 +858,8 @@
 	                        Tiêu đề:
 	                      </div>
 	                      <div class="col-xs-11">
-	                        <input class="kttext width_100 subjectmail" type="text"  name="subject" value="">
+	                        <textarea class="textarea_profile" id="subjectmail4" rows="1" name="subject" required="">
+	                        </textarea>
 	                      </div>
 	              </div>
 	              <div class="rowedit3">
@@ -853,6 +883,7 @@
 	              </div>
 	            </div>
 	        </div>
+	        <input  type="hidden" name="presender" id="presender4">
             <input type="hidden" name="interviewid" value="<?php echo $interview['interviewid'] ?>">
             <input type="hidden" name="campaignid" value="<?php echo $interview['campaignid'] ?>">
             <input type="hidden" name="roundid" value="<?php echo $interview['roundid'] ?>">

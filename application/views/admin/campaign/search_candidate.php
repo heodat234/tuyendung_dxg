@@ -7,17 +7,37 @@
     <section class="col-lg-9 col-md-9 connectedSortable padding-lr0">
     <div style="background-color: white; min-height: 100vh">
 			<div class="row rowedit">
-				<div class="col-md-6">	
-					<label class="header-content"><span class="color-ccc">Chọn: </span><span class="color-blue"><button id="checkAll" class="btn-none">Tất cả </button>|<button id="uncheckAll" class="btn-none"> Bỏ chọn</button></span> &nbsp; &nbsp; &nbsp; &nbsp;   <span class="color-ccc">Sắp xếp:</span><span class="color-blue"> Tiềm năng ></span></label>
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-8">	
+							<label class="header-content">
+								<span class="color-ccc">Chọn: </span><span class="color-blue"><button id="checkAll" class="btn-none">Tất cả </button>|<button id="uncheckAll" class="btn-none"> Bỏ chọn</button></span> &nbsp; &nbsp; &nbsp; &nbsp;   <span class="color-ccc">Sắp xếp:</span><span class="color-blue">
+								</span>
+							</label>
+						</div>
+						<div class="col-md-4">
+							<div class="btn-group header-content">
+							  <button type="button" class="btn-none color-blue dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="chonsx"><?php echo isset($checknemu['sort'])? $checknemu['sort'] : "Chọn sắp xếp.." ?></button>
+							  <ul class="dropdown-menu">
+							    <li><a href="#" onclick="sort_can(1)">Tiềm năng <span class="glyphicon glyphicon-chevron-down"></span></a></li>
+							    <li><a href="#" onclick="sort_can(2)">Kinh nghiệm <span class="glyphicon glyphicon-chevron-down"></span></a></li>
+							    <li><a href="#" onclick="sort_can(3)">Điểm <span class="glyphicon glyphicon-chevron-down"></span></a></li>
+							    <li><a href="#" onclick="sort_can(4)">Tuổi <span class="glyphicon glyphicon-chevron-up"></span></a></li>
+							    <li><a href="#" onclick="sort_can(5)">Bằng cấp <span class="glyphicon glyphicon-chevron-down"></span></a></li>
+							    <li><a href="#" onclick="sort_can(6)">Ngày cập nhật <span class="glyphicon glyphicon-chevron-down"></span></a></li>
+							  </ul>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="col-md-6 hovbtn">
 					<button type="button" class="np-icon btn_chuyen dropdown-toggle" id="btn_transfer"  disabled data-toggle="dropdown">Chuyển</button>
 		    		<ul class="dropdown-menu" role="menu">
-		                <li><a  onclick="transfer(1)">Chuyển vòng</a></li>
-		                <li><a  onclick="transfer(0)">Loại hồ sơ</a></li>
+		                <li><a  onclick="transfer(1,'<?php echo $recflow['transferemail'] ?>', <?php echo $recflow['transfmailtemp'] ?>)">Chuyển vòng</a></li>
+		                <!-- <li><a  onclick="transfer(0,'<?php echo $recflow['discardemail'] ?>', <?php echo $recflow['discmailtemp'] ?>)">Loại hồ sơ</a></li> -->
 		      		</ul>
 					<button type="button" class="btn-icon-header"><i class="fa fa-print color-ccc" ></i></button>
-					<button type="button" class="btn-icon-header margin-r7" ><i class="fa fa-envelope-o color-ccc" ></i></button>
+					<button type="button" class="btn-icon-header margin-r7" id="btn_sendMail" onclick="sendMail()" disabled ><i class="fa fa-envelope-o color-ccc" ></i></button>
 					<div class=""> 
 						<button type="button" class="btn-icon-header margin-r7" id="starbtn" data-toggle="dropdown" disabled><i class="fa fa-star color-ccc"></i></button>
 						<div class="dropdown-menu star-pos">
@@ -59,7 +79,7 @@
 		<form id="form_candidate">	
 			<input type="hidden" name="id" id="campaignid" value="<?php echo $campaignid ?>">
  			<input type="hidden" name="round" id="roundid" value="<?php echo $roundid ?>">
-			<div class="row rowedit pad-t5 candidate-load scroll-full">
+			<div class="row rowedit pad-t5 candidate-load scroll-full" style="height: 87vh">
 				<?php
 
 				 for($i = 0; $i < count($candidate); $i++)
@@ -71,12 +91,12 @@
 						<table class="margin-t5 margin-b5">
 							<tr>
 								<td class="td-cot1">
-									<input class="checkcandidate" type="checkbox" name="check[]" value="<?php echo $candidate[$i]['candidateid']?>" onclick="checkbox()">
+									<input class="checkcandidate" type="checkbox" name="check[]" value="<?php echo $candidate[$i]['candidateid']?>" onclick="checkbox_can1()">
 								</td>
 								<td class="td-cot2">
 									<img src="<?php echo base_url()?>public/image/<?php echo $candidate[$i]['imagelink']?>" class="frameimage" width="70px" height="70px">
 									<label class="label-td pad-t3" ><?php echo round($candidate[$i]['rate'])?> điểm</label>
-									<label class="label-td pad-t1" >3 chiến dịch</label>
+									<label class="label-td pad-t1" ><?php echo $candidate[$i]['count_campaign']?> chiến dịch</label>
 									<label class="margin-t-3">
 										<i class="fa fa-bell<?php echo ($candidate[$i]['unsubcribe'] == 'Y')? "-slash" : "";?> icon-label pad-l2"></i>
 										<i class="fa fa-user icon-label"></i>
@@ -117,7 +137,10 @@
 									<?php if($candidate[$i]['position'] != '') {?>
 									<label class="tuyendung-label1 color-black"><?php echo $candidate[$i]['position']?></label>
 									<?php } ?>
-									<label class="tuyendung-label2">Tuyển dụng, đào tạo</label>
+									
+									<?php if($candidate[$i]['tags'] != '') {?>
+										<label class="tuyendung-label2"><?php echo $candidate[$i]['tags'];?></label>
+									<?php } ?>
 									<label class="tuyendung-label3">
 										<?php echo ($candidate[$i]['gender'] == "M")? "Nam" : "Nữ"?>, <?php echo getAge($candidate[$i]['dateofbirth']);?> tuổi, <?php echo ($candidate[$i]['height'] == 0)? "" : $candidate[$i]['height']."cm, ";?><?php echo ($candidate[$i]['weight'] == 0)? "" : $candidate[$i]['weight']."kg, ";?><?php if($candidate[$i]['yearexperirence'] != null){    
 							                  echo ($candidate[$i]['yearexperirence'] == 0)? "kinh nghiệm dưới 1 năm, " : $candidate[$i]['yearexperirence']." năm kinh nghiệm, ";
@@ -132,8 +155,7 @@
 							              	  else echo $candidate[$i]['software']."+".($candidate[$i]['countsoftware']-1).", ";
 							                  ?>...
 									</label>
-
-									<span class="highr">#HighR</span>
+									<span class="highr"><?php echo $candidate[$i]['tagsrandom']; ?></span>
 								</td>
 							</tr>
 						</table>
@@ -144,7 +166,11 @@
 			
 			</div>
 		</form>
-			<!-- <button type="button" class="btn-themhoso" data-toggle="modal" data-target="#insertProfile"> Thêm Hồ Sơ</button> -->
+			<div class="paginate text-center" style="margin-top: 8px">
+				<div class="pagination-page">
+					<?php echo isset($phantrang)? $phantrang : '' ?>
+				</div>
+			</div>
 		</div>    	
 		
 	</section>
@@ -163,11 +189,13 @@
 	      	$('#starbtn').removeAttr('disabled');
 	      	$('#blockbtn').removeAttr('disabled');
 	      	$('#btn_transfer').prop('disabled', false);	
+	      	$('#btn_sendMail').prop('disabled', false);	
 	 	 } else {
 	     	$('.checkcandidate').prop('checked', false);
 	     	$('#starbtn').attr('disabled', 'disabled');
 	     	$('#blockbtn').attr('disabled', 'disabled');
 	     	$('#btn_transfer').prop('disabled', true);	
+	     	$('#btn_sendMail').prop('disabled', true);	
 	 	 }       
 		});
 		$("#uncheckAll").click(function(){
@@ -176,15 +204,17 @@
 	      	$('#starbtn').attr('disabled','disabled');
 	    	$('#blockbtn').attr('disabled','disabled');  
 	    	$('#btn_transfer').prop('disabled', true);	
+	    	$('#btn_sendMail').prop('disabled', true);	
 	 	 } else {
 	     	$('.checkcandidate').prop('checked', true);
 	     	$('#starbtn').removeAttr('disabled');
 	     	$('#blockbtn').removeAttr('disabled');
 	     	$('#btn_transfer').prop('disabled',false);
+	     	$('#btn_sendMail').prop('disabled', false);	
 	 	 }       
 		});
  	});
- 	function checkbox() {
+ 	function checkbox_can1() {
 		var gallery = document.querySelectorAll('.checkcandidate');
 		var count = 0;
 		gallery.forEach(function(item) {
@@ -192,6 +222,7 @@
 				$('#starbtn').removeAttr('disabled');
 				$('#blockbtn').removeAttr('disabled');
 				$('#btn_transfer').removeAttr('disabled');
+				$('#btn_sendMail').removeAttr('disabled');
 				count = 1;
 			}
 		  
@@ -200,6 +231,7 @@
 			$('#starbtn').attr('disabled',true);
 			$('#blockbtn').attr('disabled',true);
 			$('#btn_transfer').attr('disabled', 'disabled');
+			$('#btn_sendMail').attr('disabled', 'disabled');
 		}	
 	}
 
@@ -267,7 +299,7 @@
 		});
 	}
 
-	function transfer(type)
+	function transfer(type, checkmail, mailtemp)
 	{
 		var list_candidate = JSON.parse($('#list_candidate').text()) ;
 		parent.$('#body_chuyen').empty();
@@ -308,19 +340,30 @@
 				}
 			}
 			if (type == 1) {
+				if (checkmail == 'Y') {
+					parent.$('#check_mail1').removeClass('hide');
+					parent.$('#inputcheckmail_1').prop('checked',true);
+				}
+				parent.$('#mailid1').val(mailtemp).change();
 				parent.$('#email_to_tran').val(to_mail);
 				parent.$('#email_cc_tran').val('<?php echo $manageround ?>');
 				parent.$('#campaignid_tran').val(campaignid);
+				parent.$('#roundid_old').val(roundid);
 				parent.$('#body_chuyen').append(row);
 				parent.$('.select_chuyen').append(option);
 				parent.$('.select_chuyen').find('option [value="'+new_round+'"]').attr('selected', true);
 				parent.$('#transferHS').modal('show');
 			}else{
+				if (checkmail == 'Y') {
+					parent.$('#check_mail2').removeClass('hide');
+					parent.$('#inputcheckmail_2').prop('checked',true);
+				}
+				parent.$('#mailid2').val(mailtemp).change();
 				parent.$('#email_to_dis').val(to_mail);
 				parent.$('#email_cc_dis').val('<?php echo $manageround ?>');
 				parent.$('#campaignid_dis').val(campaignid);
 				parent.$('#body_loai').append(row);
-				parent.$('#roundid').val(roundid);
+				parent.$('#roundid_dis').val(roundid);
 				parent.$('.select_loai').append(option);
 				parent.$('.select_loai').find('option [value="'+roundid+'"]').attr('selected', true);
 				parent.$('.select_loai').attr('disabled', 'true');
@@ -330,5 +373,30 @@
 		.fail(function() {
 			console.log("error");
 		});		
+	}
+	function sendMail() {
+		var list_candidate = JSON.parse($('#list_candidate').text()) ;
+		parent.$('#email_to').val();
+		var form = $('#form_candidate').serializeArray();
+		var campaignid = form[0].value;
+		var roundid = form[1].value;
+		var email = candidateid = '';
+		for (var i = 2; i < form.length; i++) {
+			for(var j =0;j < list_candidate.length; j++){
+				if (form[i].value == list_candidate[j]['candidateid']) {
+		            if (email == '') {
+		            	email += list_candidate[j]['email'];
+		            }else{
+		            	email += ', '+list_candidate[j]['email'];
+		            }
+		        }
+		    }
+		    candidateid += form[i]['value']+ ',';
+		}
+		parent.$('#candidateid_mail').val(candidateid);
+		parent.$('#campaignid_mail').val(campaignid);
+		parent.$('#roundid_mail').val(roundid);
+		parent.$('#email_to').val(email);
+		parent.$('#modalMail').modal('show');
 	}
 </script>

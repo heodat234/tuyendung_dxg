@@ -11,7 +11,7 @@ class Login_model extends CI_Model{
     } 
     //kiểm tra thông tin đăng nhập thường
     function a_fCheckUser( $username, $pass ){
-    	$sql = "SELECT * FROM operator where (( email = '$username' OR operatorname = '$username') and password ='$pass')";
+    	$sql = "SELECT * FROM operator where (( email = '$username' OR displayname = '$username') and password ='$pass' and candidateid = 0)";
             $query = $this->db->query($sql)->result_array();
     	if(count($query) >0){
     		return $query;

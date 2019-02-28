@@ -37,6 +37,11 @@ class Campaign_model extends CI_Model{
         $a_User =   $this->db->where($match)
                             ->update($table,$data);
     }
+    public function delete_row($table,$match)
+    {
+        $a_User =   $this->db->where($match)
+                            ->delete($table);
+    }
     function select_row_option($select,$where,$orwhere,$table,$join,$limit,$order_by,$like,$or_like){
         $this->db->select($select);
         $this->db->from($table);
@@ -83,5 +88,16 @@ class Campaign_model extends CI_Model{
             }
     }
    
+   public function select_sp($sql)
+    {
+
+        $query = $this->db->query($sql);
+        
+            if (!$query) {
+                return $this->db->error();
+            }else{
+                return $query;
+            }
+    }
 }
 ?>

@@ -40,7 +40,7 @@ $dataEmail[0]['presender'] = "Tài khoản đang đăng nhập";
 		            <div id="box_header_2">
 		            	<a href="<?php echo base_url()?>admin/email" class="btn btn-box-tool" data-toggle="tooltip" title="" data-original-title="Previous"><i class="fa fa-chevron-left"></i> Quay lại</a>
 		            </div>
-		            <form method="post" action="
+		            <form method="post" enctype="multipart/form-data" action="
 
 		            <?php 
 		            if($group == 0)
@@ -68,8 +68,8 @@ $dataEmail[0]['presender'] = "Tài khoản đang đăng nhập";
 								            <label for="text" class="width20 col-xs-3 label-profile">Trạng thái áp dụng</label>
 								            <div class="col-xs-4 padding-lr0">
 												<select class="seletext js-example-basic-single" name="status" required="" id="select_type" >
-													<option value="0">Đang áp dụng</option>
-													<option value="1">Hết thời hạn</option>
+													<option value="W">Đang áp dụng</option>
+													<option value="C">Hết thời hạn</option>
 
 												</select>
 								            </div>
@@ -80,6 +80,7 @@ $dataEmail[0]['presender'] = "Tài khoản đang đăng nhập";
 												<select class="seletext js-example-basic-single" name="profiletype" required="" id="select_type1" onchange="changeTypeEmail(this)" >
 													<option value="0">Nghiệp vụ</option>
 													<option value="1">Hệ thống</option>
+													<option value="2">Tin tức</option>
 
 												</select>
 								            </div>
@@ -108,7 +109,7 @@ $dataEmail[0]['presender'] = "Tài khoản đang đăng nhập";
 												</select>
 								            </div>
 								        </div>
-								        <div class="width100 row rowedit h-auto padding_bot_15">
+								        <!-- <div class="width100 row rowedit h-auto padding_bot_15">
 								            <label for="text" class="width20 col-xs-3 label-profile">Người nhận</label>
 								            <div class="col-xs-4 padding-lr0">
 												<select class="seletext js-example-basic-single" name="prereceiver" required="" id="select_type3" >
@@ -134,30 +135,34 @@ $dataEmail[0]['presender'] = "Tài khoản đang đăng nhập";
 													<option value="1"></option>
 												</select>
 								            </div>
-								        </div>
+								        </div> -->
 								        <p data-toggle="modal" data-target="#insertSubject" class="plus-button" style="margin-left: 15px" id="clickPlus"><i class="fa fa-plus" aria-hidden="true"></i> Thêm trường dữ liệu tiêu đề</p>
 								        <div class="width100 row rowedit h-auto padding_bot_15">
 								            <label for="text" class="width20 col-xs-3 label-profile">Tiêu đề</label>
 								            <div class="col-xs-4 padding-lr0">
-												<input class="kttext" required="" type="text" id="presubject" placeholder="" name="presubject" value="<?php echo $dataEmail[0]['presubject'] ?>" style="width: 100%">
+												<textarea class="kttext" required="" type="text" id="presubject" placeholder="" name="presubject"   style="width: 100%" rows="2"><?php echo $dataEmail[0]['presubject'] ?></textarea>
 								            </div>
 								        </div>
 								        <p data-toggle="modal" data-target="#insertUser" class="plus-button" style="margin-left: 15px" id="clickPlus"><i class="fa fa-plus" aria-hidden="true"></i> Thêm trường dữ liệu nội dung</p>
 								        <div class="width100 row rowedit h-auto padding_bot_15">
 								            <label for="text" class="width20 col-xs-3 label-profile">Nội dung</label>
 								            <div class="col-xs-6 padding-lr0">
-												<textarea id="prebody" name="prebody" style="width: 100%;" rows="10" required=""><?php echo isset($news[0]['body'])? $news[0]['body']: ''; ?></textarea>
+												<textarea id="prebody" name="prebody" style="width: 100%;" rows="10" required=""></textarea>
 								            </div>
 								        </div>
 
 								        <div class="width100 row rowedit h-auto padding_bot_15">
-								            
-											<div class="col-xs-3 padding-lr0">
-												<label style="color: #5fade0; float: right; cursor: pointer;" class="filebutton">
-												<i class="fa fa-paperclip" aria-hidden="true"></i> Đính kèm
-												<span><input type="file" style="display: none;" id="myfile"></span>
-												</label>
-								            </div>
+								        	<label for="text" class="width20 col-xs-3 label-profile"></label>
+											<div class="width80 col-xs-9 padding-lr0 filename_label">
+						                      <div class="col-md-3">
+						                        <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach[]" multiple="" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
+						                      </div>
+						                    </div>
+						                    <?php if (isset($dataEmail[0]['preattach']) && $dataEmail[0]['preattach'] != '') {
+						                     $attach = json_decode($dataEmail[0]['preattach'],true);
+						                    foreach ($attach as $key1) { ?>
+						                     	<div class="col-md-3 dom_file"><a class="fontstyle label1" href="#"><?php echo $key1 ?></a></div>
+						                    <?php }} ?>
 								        </div>
 
 							    	</div>
@@ -166,8 +171,7 @@ $dataEmail[0]['presender'] = "Tài khoản đang đăng nhập";
 						</div>
 						<div class="box_btn">
 						<div class="pull-right">
-							<a href="http://recruit.tavicosoft.com/admin/campaign/main" class="btn btn_thoat">Thoát</a>
-							<button type="submit" id="saveRound" class="btn btn_tt">Lưu/ Tiếp theo</button>
+							<button type="submit" id="saveRound" class="btn btn_tt">Lưu</button>
 						</div>
 					</div>
 					</form>
@@ -191,7 +195,7 @@ color: white;"><span aria-hidden="true">&times;</span></button>
       <div class="modal-body">
         <p id="titleDatasource">Nguồn dữ liệu: Nghiệp vụ chiến dịch</p>
         <div class="contentDatasourceSubject">
-        <a class="suggest-field" onclick="getFieldSubject(this)">Ứng viên</a><a class="suggest-field" onclick="getFieldSubject(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getFieldSubject(this)">Tên</a><a class="suggest-field" onclick="getFieldSubject(this)">Vị trí tuyển dụng</a><a class="suggest-field" onclick="getFieldSubject(this)">Prefix</a><a class="suggest-field" onclick="getFieldSubject(this)">Link phiếu trắc nghiệm</a>
+        <a class="suggest-field" onclick="getFieldSubject(this)">Tên Ứng viên</a><a class="suggest-field" onclick="getFieldSubject(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getFieldSubject(this)">Tên</a><a class="suggest-field" onclick="getFieldSubject(this)">Vị trí</a><a class="suggest-field" onclick="getFieldSubject(this)">Vòng tuyển dụng</a>
     	</div>
       </div>
     </div><!-- /.modal-content -->
@@ -211,7 +215,7 @@ color: white;"><span aria-hidden="true">&times;</span></button>
       <div class="modal-body">
         <p id="titleDatasource">Nguồn dữ liệu: Nghiệp vụ chiến dịch</p>
         <div class="contentDatasource">
-        <a class="suggest-field" onclick="getField(this)">Ứng viên</a><a class="suggest-field" onclick="getField(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getField(this)">Tên</a><a class="suggest-field" onclick="getField(this)">Vị trí tuyển dụng</a><a class="suggest-field" onclick="getField(this)">Prefix</a><a class="suggest-field" onclick="getField(this)">Link phiếu trắc nghiệm</a>
+        <a class="suggest-field" onclick="getField(this)">Tên Ứng viên</a><a class="suggest-field" onclick="getField(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getField(this)">Tên</a><a class="suggest-field" onclick="getField(this)">Vị trí</a><a class="suggest-field" onclick="getField(this)">Vòng tuyển dụng</a><a class="suggest-field" onclick="getField(this)">Link phiếu trắc nghiệm</a><a class="suggest-field" onclick="getField(this)">Link phiếu mời tham dự phỏng vấn</a><a class="suggest-field" onclick="getField(this)">Link phiếu đánh giá</a><a class="suggest-field" onclick="getField(this)">Ngày giờ phỏng vấn</a><a class="suggest-field" onclick="getField(this)">Link thư mời nhận việc</a><a class="suggest-field" onclick="getField(this)">Ngày nhận việc</a><a class="suggest-field" onclick="getField(this)">Ghi chú</a>
     	</div>
       </div>
     </div><!-- /.modal-content -->
@@ -223,9 +227,6 @@ color: white;"><span aria-hidden="true">&times;</span></button>
 	<?php echo $dataEmail[0]['prebody'] ?>
 </div>
 
-<div class="content-CK1" hidden="true">
-	<?php echo $dataEmail[0]['presubject'] ?>
-</div>
 <style type="text/css">
 	.btn_tk{
 		background: #f6f6f6;
@@ -253,22 +254,28 @@ color: white;"><span aria-hidden="true">&times;</span></button>
 	}
 </style>
 <script type="text/javascript">
+	$(document).ready(function(){
+      $('.browsebutton1 :file').change(function(e){
+          $('#my-file-selector1').val();
+          $(".dom_file").remove();
+          var row = '';
+          for(var i = 0; i< e.target.files.length; i++){
+            var fileName = e.target.files[i].name;
+            row += '<div class="col-md-3 dom_file"><a class="fontstyle label1" href="#">'+fileName+'</a></div>';
+          }
+          $(".filename_label").append(row);
+      });
+  	});  
 	$(document).ready(function() {
 	    $('#select_type1').select2({ width: '100%' });
 	    $('#select_type2').select2({ width: '100%' });
-	    $('#select_type3').select2({ width: '100%' });
-	    $('#select_type4').select2({ width: '100%' });
-	    $('#select_type5').select2({ width: '100%' });
 	    $('#select_type').select2({ width: '100%' });
 	    var checkGroup = '<?php echo $group ;?>';
 	    if(checkGroup != '0')
 	    {
-	    	$('#select_type').val(<?php echo $dataEmail[0]['status'] ?>).trigger('change');
+	    	$('#select_type').val('<?php echo $dataEmail[0]['status'] ?>').trigger('change');
 	    	$('#select_type1').val(<?php echo $dataEmail[0]['profiletype'] ?>).trigger('change');
 	    	$('#select_type2').val(<?php echo $dataEmail[0]['datasource'] ?>).trigger('change');
-	    	$('#select_type3').val(<?php echo $dataEmail[0]['prereceiver'] ?>).trigger('change');
-	    	$('#select_type4').val(<?php echo $dataEmail[0]['precc'] ?>).trigger('change');
-	    	$('#select_type5').val(<?php echo $dataEmail[0]['prebcc'] ?>).trigger('change');
 	    }
 	    
 	    var dateNow = new Date();
@@ -277,23 +284,25 @@ color: white;"><span aria-hidden="true">&times;</span></button>
 	    	format:'d/m/Y',
 	    });
 	    CKEDITOR.replace('prebody',{
-	    	allowedContent: true,
-	        disableAutoInline: true,
+	        disableAutoInline: false,
 	        toolbarStartupExpanded : false,
-	        toolbarCanCollapse: true});
+	        toolbarCanCollapse: true,
 
-	    CKEDITOR.replace('presubject',{
-	    	allowedContent: true,
-	        disableAutoInline: true,
-	        toolbarStartupExpanded : false,
-	        toolbarCanCollapse: true});
+	        filebrowserBrowseUrl: '<?php echo base_url('public/ckfinder/ckfinder.html') ?>',
+			filebrowserUploadUrl: '<?php echo base_url('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files') ?>'
+	    //     filebrowserUploadUrl: "<?php echo base_url('admin/test/uploadCK') ?>",
+		   // filebrowserUploadMethod : 'form'
+	    });
+
+	    // CKEDITOR.replace('presubject',{
+	    // 	allowedContent: true,
+	    //     disableAutoInline: true,
+	    //     toolbarStartupExpanded : false,
+	    //     toolbarCanCollapse: true});
 
 		var setdata = $('.content-CK').html();
+	    CKEDITOR.instances['prebody'].setData(setdata);
 
-	    	CKEDITOR.instances['prebody'].setData(setdata);
-	    	var setdata1 = $('.content-CK1').html();
-
-	    	CKEDITOR.instances['presubject'].setData(setdata1);
 	});
 	function selectDatasouce(thiss) {
 		var value = thiss.value;
@@ -301,13 +310,13 @@ color: white;"><span aria-hidden="true">&times;</span></button>
 		$('#titleDatasource').text('Nguồn dữ liệu: Nghiệp vụ '+textt);
 		if(value == 1)
 		{
-			$('.contentDatasource').html('<a class="suggest-field" onclick="getField(this)">Ứng viên</a><a class="suggest-field" onclick="getField(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getField(this)">Tên</a><a class="suggest-field" onclick="getField(this)">Vị trí tuyển dụng</a><a class="suggest-field" onclick="getField(this)">Prefix</a><a class="suggest-field" onclick="getField(this)">Link phiếu trắc nghiệm</a><a class="suggest-field" onclick="getField(this)">Vòng</a>');
-			$('.contentDatasourceSubject').html('<a class="suggest-field" onclick="getField(this)">Ứng viên</a><a class="suggest-field" onclick="getField(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getField(this)">Tên</a><a class="suggest-field" onclick="getField(this)">Vị trí tuyển dụng</a><a class="suggest-field" onclick="getField(this)">Prefix</a><a class="suggest-field" onclick="getField(this)">Link phiếu trắc nghiệm</a><a class="suggest-field" onclick="getField(this)">Vòng</a>');
+			$('.contentDatasource').html('<a class="suggest-field" onclick="getField(this)">Tên Ứng viên</a><a class="suggest-field" onclick="getField(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getField(this)">Tên</a><a class="suggest-field" onclick="getField(this)">Ghi chú</a><a class="suggest-field" onclick="getField(this)">Mật khẩu mới</a>');
+			$('.contentDatasourceSubject').html('<a class="suggest-field" onclick="getFieldSubject(this)">Tên Ứng viên</a><a class="suggest-field" onclick="getFieldSubject(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getFieldSubject(this)">Tên</a><a class="suggest-field" onclick="getFieldSubject(this)">Ghi chú</a>');
 			
 		}
 		else{
-			$('.contentDatasource').html('<a class="suggest-field" onclick="getField(this)">Ứng viên</a><a class="suggest-field" onclick="getField(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getField(this)">Tên</a><a class="suggest-field" onclick="getField(this)">Vị trí tuyển dụng</a><a class="suggest-field" onclick="getField(this)">Prefix</a><a class="suggest-field" onclick="getField(this)">Link phiếu trắc nghiệm</a>');
-			$('.contentDatasourceSubject').html('<a class="suggest-field" onclick="getFieldSubject(this)">Ứng viên</a><a class="suggest-field" onclick="getFieldSubject(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getFieldSubject(this)">Tên</a><a class="suggest-field" onclick="getFieldSubject(this)">Vị trí tuyển dụng</a><a class="suggest-field" onclick="getFieldSubject(this)">Prefix</a><a class="suggest-field" onclick="getFieldSubject(this)">Link phiếu trắc nghiệm</a><a class="suggest-field" onclick="getFieldSubject(this)">Vòng</a>');
+			$('.contentDatasource').html('<a class="suggest-field" onclick="getField(this)">Tên Ứng viên</a><a class="suggest-field" onclick="getField(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getField(this)">Tên</a><a class="suggest-field" onclick="getField(this)">Vị trí</a><a class="suggest-field" onclick="getField(this)">Vòng tuyển dụng</a><a class="suggest-field" onclick="getField(this)">Link phiếu trắc nghiệm</a><a class="suggest-field" onclick="getField(this)">Link phiếu mời tham dự phỏng vấn</a><a class="suggest-field" onclick="getField(this)">Link phiếu đánh giá</a><a class="suggest-field" onclick="getField(this)">Ngày giờ phỏng vấn</a><a class="suggest-field" onclick="getField(this)">Link thư mời nhận việc</a><a class="suggest-field" onclick="getField(this)">Ngày nhận việc</a><a class="suggest-field" onclick="getField(this)">Ghi chú</a>');
+			$('.contentDatasourceSubject').html('<a class="suggest-field" onclick="getFieldSubject(this)">Tên Ứng viên</a><a class="suggest-field" onclick="getFieldSubject(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getFieldSubject(this)">Tên</a><a class="suggest-field" onclick="getFieldSubject(this)">Vị trí</a><a class="suggest-field" onclick="getFieldSubject(this)">Vòng tuyển dụng</a><a class="suggest-field" onclick="getFieldSubject(this)">Link phiếu trắc nghiệm</a><a class="suggest-field" onclick="getFieldSubject(this)">Link phiếu mời tham dự phỏng vấn</a><a class="suggest-field" onclick="getFieldSubject(this)">Link phiếu đánh giá</a><a class="suggest-field" onclick="getFieldSubject(this)">Link thư mời nhận việc</a><a class="suggest-field" onclick="getFieldSubject(this)">Ghi chú</a>');
 		}
 	}
 	function changeTypeEmail(argument) {
@@ -318,7 +327,7 @@ color: white;"><span aria-hidden="true">&times;</span></button>
 			vall 	= 'Tài khoản đang đăng nhập';
 		}
 		else{
-			vall 	= '<?php echo $mailSystem[0]['email'] ?>';
+			vall 	= 'Tài khoản hệ thống';
 		}
 		$('#presender').val(vall);
 	}
@@ -336,8 +345,9 @@ color: white;"><span aria-hidden="true">&times;</span></button>
 		$('#insertUser').modal('toggle');
 	}
 	function getFieldSubject(id) {
-		var value = ' <span style="color:#3498db;">['+id.text+']&nbsp;</span> ';
-		CKEDITOR.instances['presubject'].insertHtml(value);
+		var value = '['+id.text+']';
+		insertAtCaret('presubject',value);
+		// CKEDITOR.instances['presubject'].insertHtml(value);
 		$('#insertSubject').modal('toggle');
 	}
 

@@ -7,9 +7,11 @@
 	    	format:'d/m/Y'
 	    });
 	    CKEDITOR.replace('body',{
+	    	
 	    	allowedContent: true,
 	        disableAutoInline: true,
 	        toolbarStartupExpanded : false,
 	        toolbarCanCollapse: true});
+
 	});
 </script>

@@ -79,14 +79,14 @@
 								        <div class="row form_campaign">
 								            <label for="text" class=" col-xs-2 label-profile">Địa điểm làm việc</label>
 								            <div class="col-xs-4  padding-lr0">
-								             	<input type="text" name="department" placeholder="Nhập phòng ban làm việc" class="textbox">
+								             	<input type="text" name="location" placeholder="Nhập địa điểm làm việc" class="textbox">
 								            </div>
 								            <label for="text" class="col-xs-offset-1  col-xs-2 label-profile">Hiển thị</label>
 								            <div class="col-xs-2 padding-lr0">
 								             	<select class="textbox" name="showtype" required="">
 								             		<option value="O">Công khai</option>
 								             		<option value="I">Nội bộ</option>
-								             		<option value="p">Bảo mật</option>
+								             		<option value="P">Bảo mật</option>
 								             	</select>
 								            </div>   
 								        </div>

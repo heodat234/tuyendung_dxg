@@ -8,7 +8,7 @@ class login extends CI_Controller {
 		parent::__construct();
 		$this->load->helper('url');
 		$this->load->library('session');
-		$this->load->model(array('admin/Login_model'));
+		$this->load->model(array('admin/Login_model','admin/Mail_model'));
 	}
 	public function index()
 	{
@@ -43,6 +43,15 @@ class login extends CI_Controller {
                 
 			}
 			$this->session->set_userdata('user_admin', $a_UserChecking[0]);
+			// $sess_data = array(
+			//        'id' => $a_UserChecking[0]['operatorid'],
+			//        'fullname' => $a_UserChecking[0]['operatorname'],
+			//        'KCFINDER' => array(
+			//               'disabled' => false, // Bật kcfinder cho phép upload (mặc định = true;)                                                   
+			//               'uploadURL' => base_url().'public/kcfinder/upload/images/'
+			//         ) 
+			// );
+			// $this->session->set_userdata($sess_data);
 			echo json_encode($a_UserChecking);
 		}else{
 			echo "1";
@@ -55,6 +64,8 @@ class login extends CI_Controller {
 	public function logout($value='')
 	{
 		$this->session->unset_userdata('user_admin');
+				session_destroy();
+
 		// $cookiename	=	"siteAuth";
 		// setcookie($cookiename, 'user='."", time() - 3600);	// Unset cookie of user	// Unset session of user
 		redirect(base_url('login.html'));
@@ -67,20 +78,41 @@ class login extends CI_Controller {
 		$new_pass = random_string('alnum',8);
 		$data['password'] = md5($new_pass);
 		$this->Login_model->UpdateData('operator', array('email' => $mail),$data);
-		//cau hinh email va ten nguoi guioperator
-        $this->email->from('thanhhung23495@gmail.com', 'Tuyển dụng Đất Xanh');
-		//cau hinh nguoi nhan
-		$this->email->to($mail);
-		$this->email->subject('Lấy lại mật khẩu');
-		$this->email->message('Bấm vào <a href="'.base_url().'">đây</a> để đăng nhập bằng mật khẩu bên dưới và đổi mật khẩu mới cho tài khoản của bạn.<br>
-			Mật khẩu mới: <b>'.$new_pass.'</b><br>');
-		if ( $this->email->send())
-		{
-			echo json_encode(1);		
+
+
+		$mailtemplate = $this->Mail_model->select('mailprofile',array('mailprofileid' => 3));
+		if(isset($mailtemplate[0])){
+			$subject 			= $mailtemplate[0]['presubject'];
+			$body 				= $mailtemplate[0]['prebody'];
+			$mail["attachment"] = $mailtemplate[0]['preattach'];
+			$presender 			= $mailtemplate[0]['presender'];
+			$mail["cc"] 		= $mailtemplate[0]['cc'];
+			$mail["bcc"] 		= $mailtemplate[0]['bcc'];
 		}else{
-			var_dump('thất bại');
-			var_dump($this->email->print_debugger());
+			$subject			= $body = $mail["attachment"] = $mail["cc"] = $mail["bcc"] = $presender = '';
 		}
+		if ($presender != 'usersession') {
+			$arrayName1 = array('operatorname' => 'mailsystem' );
+			$mailSystem = $this->Mail_model->select('operator',$arrayName1);
+			if ($mailSystem[0]['mcssl'] == '1') {
+        		$mail['mcsmtp']	= 'ssl://'.$mailSystem[0]['mcsmtp'];
+        	}else{
+        		$mail['mcsmtp']	= $mailSystem[0]['mcsmtp'];
+        	}
+        	$mail['mcuser']	= $mailSystem[0]['mcuser'];
+        	$mail['mcpass']	= base64_decode($mailSystem[0]['mcpass']);
+        	$mail['mcport']	= $mailSystem[0]['mcport'];
+		}
+		
+		$chuoi_tim 				= array('[Mật khẩu mới]');
+		$chuoi_thay_the 		= array($data['password']);
+		$mail['emailsubject'] 	= str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($subject));
+		$mail['emailbody'] 		= str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($body));
+		$mail['toemail'] 		= $a_UserInfo['email'];
+		$this->Mail_model->sendMail($mail);
+		
+		echo json_encode(1);		
+		
 	}
 
 	public function checkPassword()
@@ -127,12 +159,12 @@ class login extends CI_Controller {
 		$a_UserInfo['roleid'] 		= 1;
 		$a_UserInfo['idcard'] 		= $frm['cmnd'];
 		$a_UserInfo['password']		= md5($frm['pass']);
-		$a_UserInfo['operatorname'] = $frm['firstname'];
+		$a_UserInfo['operatorname'] = $frm['lastname'];
 		$data['email'] = $frm['email'];
 		$data['idcard'] = $frm['cmnd'];
 		$data['firstname'] = $frm['firstname'];
 		$data['lastname'] = $frm['lastname'];
-		$data['name'] = $frm['lastname']." ".$frm['firstname'];
+		$data['name'] = $frm['firstname']." ".$frm['lastname'];
 		$data['gender'] = $frm['gender'];
 		$data['dateofbirth'] =  date("Y-m-d", strtotime($frm['birthday'] ));
 
@@ -149,19 +181,39 @@ class login extends CI_Controller {
 			$this->Login_model->insertUser( $a_UserInfo );
 			$this->session->set_userdata('user', $a_UserInfo);
 
-			$this->email->from('thanhhung23495@gmail.com', 'Tuyển dụng Đất Xanh');
-			//cau hinh nguoi nhan
-			$this->email->to($frm['email']);
-			$this->email->subject('Đăng kí tài khoản thành công');
-			$this->email->message('Cảm ơn bạn đã đăng ký tài khoản tại Đất Xanh.<br>');
-			
-			if ( $this->email->send())
-			{
-				echo json_encode($a_UserInfo);		
+			$mailtemplate = $this->Mail_model->select('mailprofile',array('mailprofileid' => 3));
+			if(isset($mailtemplate[0])){
+				$subject 			= $mailtemplate[0]['presubject'];
+				$body 				= $mailtemplate[0]['prebody'];
+				$mail["attachment"] = $mailtemplate[0]['preattach'];
+				$presender 			= $mailtemplate[0]['presender'];
+				$mail["cc"] 		= $mailtemplate[0]['cc'];
+				$mail["bcc"] 		= $mailtemplate[0]['bcc'];
 			}else{
-				var_dump('thất bại');
-				var_dump($this->email->print_debugger());
+				$subject			= $body = $mail["attachment"] = $mail["cc"] = $mail["bcc"] = $presender = '';
 			}
+			if ($presender != 'usersession') {
+				$arrayName1 = array('operatorname' => 'mailsystem' );
+				$mailSystem = $this->Mail_model->select('operator',$arrayName1);
+				if ($mailSystem[0]['mcssl'] == '1') {
+	        		$mail['mcsmtp']	= 'ssl://'.$mailSystem[0]['mcsmtp'];
+	        	}else{
+	        		$mail['mcsmtp']	= $mailSystem[0]['mcsmtp'];
+	        	}
+	        	$mail['mcuser']	= $mailSystem[0]['mcuser'];
+	        	$mail['mcpass']	= base64_decode($mailSystem[0]['mcpass']);
+	        	$mail['mcport']	= $mailSystem[0]['mcport'];
+			}
+			
+			$chuoi_tim 				= array('[Tên Ứng viên]','[Tên]');
+			$chuoi_thay_the 		= array($data['name'],$data['lastname']);
+			$mail['emailsubject'] 	= str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($subject));
+			$mail['emailbody'] 		= str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($body));
+			$mail['toemail'] 		= $a_UserInfo['email'];
+			$this->Mail_model->sendMail($mail);
+
+
+			echo json_encode($a_UserInfo);		
 			
 			
 		}

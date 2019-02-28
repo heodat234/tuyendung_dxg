@@ -1,7 +1,7 @@
 
 	
  <?php $d = 0;
-         if($candidate['introduction'] != "") $d++;
+         if($candidate['introduction'] != "" || count($tags) > 0) $d++;
          if($candidate['firstname'] !== "") $d++;
          if($address == true) $d++;
          if($family == true) $d++;
@@ -27,15 +27,6 @@
 		<p>Ứng viên tải Biểu mẫu đăng kí <a href="/Data/Sites/1/media/tuyen-dung/p.ns-qt01-bm004-bang-du-lieu-ung-vien.doc">&gt;&gt; tại đây &lt;&lt;,</a>&nbsp;điền đầy đủ thông tin, gởi về địa chỉ email:&nbsp;<a href="mailto:tuyendung@datxanh.com.vn"><span>tuyendung@datxanh.com.vn</span></a></p>
 		<p>Mọi thắc mắc Liên hệ trực tiếp Bộ phận Tuyển dụng: <br>
 		ĐT: 028. 6252 5252 (Ext: 5015)</p>
-		<p><strong>Ms Thủy - CV Tuyển dụng</strong><br>
-			- Mail: <a href="mailto:thuyltt1@datxanh.com.vn">thuyltt1@datxanh.com.vn</a><br>
-		- ĐT: 0914.191.982</p>
-		<p><strong>Ms Chi - CV Tuyển dụng</strong><br>
-			- Mail: <a href="mailto:chictk@datxanh.com.vn">chictk@datxanh.com.vn</a><br>
-		- ĐT: 0972.353.579</p>
-		<p><strong>Mr Lâm- CV Tuyển dụng</strong><br>
-			- Mail: <a href="mailto:lamlt@datxanh.com.vn">lamlt@datxanh.com.vn</a><br>
-		- ĐT: 0907.864.133</p>
 	</div>
 </div>
 </div>

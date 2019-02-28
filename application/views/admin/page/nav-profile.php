@@ -1,60 +1,61 @@
  <div style="background-color: white; height: 100vh;overflow: hidden;">
  	
- 			<label class="np-header">
+ 			<div class="np-header">
  				<span style="color: #5fade0"><a href="<?php echo base_url()?>admin/handling/index/1"><i class="fa fa-angle-left font-16"></i> Quay Lại</a></span>
  				&nbsp; &nbsp; &nbsp;
- 				<span class="color-ccc">Chọn: </span> 
- 				<span class="color-blue"><button id="checkAll" class="btn-none">Tất cả </button>|<button id="uncheckAll" class="btn-none"> Bỏ chọn</button></span>
+
  				<div class="floatright"> 
-	 				<span class="color-ccc">Sắp xếp:</span>
-	 				<span class="color-blue"> Tiềm năng <i class="fa fa-angle-right font-16"></i></span>
+	 				<span class="color-ccc">Chọn: </span><span class="color-blue"><button id="checkAll" class="btn-none">Tất cả </button></span>|<span class="color-blue"><button id="uncheckAll" class="btn-none"> Bỏ chọn</button></span>
  				</div>
- 			</label>
+ 			</div>
  		
  	<div class="margin-t5 dash-horizontal"></div>
  	<div class="row rowedit">
  		<div class="col-md-6">	
- 			<label class="demhs"><?php echo count($candidate); ?> Hồ sơ</label>
+ 			<label class="demhs"><?php echo $total_rows; ?> Hồ sơ</label>
  		</div>
  		<div class="col-md-6 hovbtn">
  			<button type="button" class="btn-icon-header"><i class="fa fa-print color-ccc" ></i></button>
-					<button type="button" class="btn-icon-header margin-r7" ><i class="fa fa-envelope-o color-ccc" ></i></button>
-					<div class=""> 
-						<button type="button" class="btn-icon-header margin-r7" id="starbtn" data-toggle="dropdown" disabled><i class="fa fa-star color-ccc"></i></button>
-						<div class="dropdown-menu star-pos-pro">
-							<a type="button" onclick="talent(0)" class="btn-none">
-							<span class="fa-stack fa-1x" title="Ứng viên không tiềm năng">
-							  <i class="fa fa-star color-gray fa-stack-2x star-icon1"></i>
-							  <span class="fa fa-stack-1x color-white star-text"> </span>
-							</span>
-							</a>
-							<a type="button" onclick="talent(1)" class="btn-none"><span class="fa-stack fa-1x" title="Ứng viên tiềm năng mức 1">
-							  <i class="fa fa-star color-orange fa-stack-2x star-icon1" ></i>
-							  <span class="fa fa-stack-1x color-white star-text">1</span>
-							</span></a>
-							<a type="button" onclick="talent(2)" class="btn-none"><span class="fa-stack fa-1x" title="Ứng viên tiềm năng mức 2">
-							  <i class="fa fa-star color-orange fa-stack-2x star-icon1"></i>
-							  <span class="fa fa-stack-1x color-white star-text">2</span>
-							</span></a>
-							<a type="button" onclick="talent(3)" class="btn-none">
-								<span class="fa-stack fa-1x" title="Ứng viên tiềm năng mức 3">
-							  <i class="fa fa-star color-orange fa-stack-2x star-icon1" ></i>
-							  <span class="fa fa-stack-1x color-white star-text" >3</span>
-							</span></a>
-					    </div>
-					</div>
-					<div class="">
-						<button type="button" class="btn-icon-header margin-r7" id="blockbtn" data-toggle="dropdown" disabled> <i class="fa fa-check-circle-o color-ccc"></i>
-						</button>
-						<div class="dropdown-menu star-pos1-pro">
-							<a type="button" onclick="block('')" class="btn-none"><i class="fa fa-check-circle-o color-green size-icon" style="padding-right: 5px"></i></a>
-							<a type="button" onclick="block('Y')" class="btn-none"><i class="fa fa-ban color-red size-icon" ></i></a>
-					    </div>
-					</div>
+			<button type="button" class="btn-icon-header margin-r7" id="btn_sendMail" onclick="sendMail()" disabled="" ><i class="fa fa-envelope-o color-ccc" ></i></button>
+			<div class=""> 
+				<button type="button" class="btn-icon-header margin-r7" id="starbtn" data-toggle="dropdown" disabled><i class="fa fa-star color-ccc"></i></button>
+				<div class="dropdown-menu star-pos-pro">
+					<a type="button" onclick="talent(0)" class="btn-none">
+					<span class="fa-stack fa-1x" title="Ứng viên không tiềm năng">
+					  <i class="fa fa-star color-gray fa-stack-2x star-icon1"></i>
+					  <span class="fa fa-stack-1x color-white star-text"> </span>
+					</span>
+					</a>
+					<a type="button" onclick="talent(1)" class="btn-none"><span class="fa-stack fa-1x" title="Ứng viên tiềm năng mức 1">
+					  <i class="fa fa-star color-orange fa-stack-2x star-icon1" ></i>
+					  <span class="fa fa-stack-1x color-white star-text">1</span>
+					</span></a>
+					<a type="button" onclick="talent(2)" class="btn-none"><span class="fa-stack fa-1x" title="Ứng viên tiềm năng mức 2">
+					  <i class="fa fa-star color-orange fa-stack-2x star-icon1"></i>
+					  <span class="fa fa-stack-1x color-white star-text">2</span>
+					</span></a>
+					<a type="button" onclick="talent(3)" class="btn-none">
+						<span class="fa-stack fa-1x" title="Ứng viên tiềm năng mức 3">
+					  <i class="fa fa-star color-orange fa-stack-2x star-icon1" ></i>
+					  <span class="fa fa-stack-1x color-white star-text" >3</span>
+					</span></a>
+			    </div>
+			</div>
+			<div class="">
+				<button type="button" class="btn-icon-header margin-r7" id="blockbtn" data-toggle="dropdown" disabled> <i class="fa fa-check-circle-o color-ccc"></i>
+				</button>
+				<div class="dropdown-menu star-pos1-pro">
+					<a type="button" onclick="block('')" class="btn-none"><i class="fa fa-check-circle-o color-green size-icon" style="padding-right: 5px"></i></a>
+					<a type="button" onclick="block('Y')" class="btn-none"><i class="fa fa-ban color-red size-icon" ></i></a>
+			    </div>
+			</div>
+			<?php if (isset($checkTrung) && $checkTrung == '1'): ?>
+				<button type="button" class="btn-icon-header margin-r7" id="btn-merge" onclick="modalMerge()" disabled><i class="fa fa-magic color-ccc" ></i></button>
+			<?php endif ?>
  		</div>
  	</div>
  	<form id="form_candidate">	
- 		<div class="row rowedit scrollbars">
+ 		<div class="row rowedit scrollbars" style="height: 85vh">
  				<?php
 				 for($i = 0; $i < count($candidate); $i++)
 				{
@@ -65,12 +66,12 @@
 						<table class="margin-t5 margin-b5">
 							<tr>
 								<td class="td-cot1">
-									<input class="checkcandidate" type="checkbox" name="check[]" value="<?php echo $candidate[$i]['candidateid']?>" onclick="checkbox()">
+									<input class="checkcandidate" type="checkbox" name="check[]" value="<?php echo $candidate[$i]['candidateid']?>" onclick="checkbox_1()">
 								</td>
 								<td class="td-cot2">
 									<img src="<?php echo base_url()?>public/image/<?php echo $candidate[$i]['imagelink']?>" class="frameimage" width="70px" height="70px">
-									<label class="label-td pad-t3" ><?php echo round($candidate[$i]['rate'])?> điểm</label>
-									<label class="label-td pad-t1" >3 chiến dịch</label>
+									<label class="label-td pad-t3 width100"><?php echo round($candidate[$i]['rate'])?> điểm</label>
+									<label class="label-td pad-t1 width100"><?php echo $candidate[$i]['count_campaign']?> chiến dịch</label>
 									<label class="margin-t-3">
 										<i class="fa fa-bell<?php echo ($candidate[$i]['unsubcribe'] == 'Y')? "-slash" : "";?> icon-label pad-l2"></i>
 										<i class="fa fa-user icon-label"></i>
@@ -111,7 +112,9 @@
 									<?php if($candidate[$i]['position'] != '') {?>
 									<label class="tuyendung-label1 color-black"><?php echo $candidate[$i]['position']?></label>
 									<?php } ?>
-									<label class="tuyendung-label2">Tuyển dụng, đào tạo</label>
+									<?php if($candidate[$i]['tags'] != '') {?>
+									<label class="tuyendung-label2"><?php echo $candidate[$i]['tags'];?></label>
+									<?php } ?>
 									<label class="tuyendung-label3">
 										<?php echo ($candidate[$i]['gender'] == "M")? "Nam" : "Nữ"?>, <?php echo getAge($candidate[$i]['dateofbirth']);?> tuổi, <?php echo ($candidate[$i]['height'] == 0)? "" : $candidate[$i]['height']."cm, ";?><?php echo ($candidate[$i]['weight'] == 0)? "" : $candidate[$i]['weight']."kg, ";?><?php if($candidate[$i]['yearexperirence'] != null){    
 							                  echo ($candidate[$i]['yearexperirence'] == 0)? "kinh nghiệm dưới 1 năm, " : $candidate[$i]['yearexperirence']." năm kinh nghiệm, ";
@@ -127,7 +130,7 @@
 							                  ?>...
 									</label>
 
-									<span class="highr">#HighR</span>
+									<span class="highr"><?php echo $candidate[$i]['tagsrandom']?></span>
 								</td>
 							</tr>
 						</table>
@@ -135,9 +138,16 @@
 					</div>
 				</a>
 				<?php } ?>
-			</div>	
+			</div>
+			<div class="paginate text-center" style="margin-top: 8px">
+				<div class="pagination-page">
+					<?php echo isset($phantrang)? $phantrang : '' ?>
+				</div>
+			</div>
 		</form>
 </div>
+
+<div class="hide" id="list_candidate"><?php echo ($candidate != '')? json_encode($candidate) :'' ?> </div>
 <style type="text/css">
 	div.active{
     background: rgba(114,175,210,.1);
@@ -154,36 +164,39 @@
 	}
 	$(document).ready(function(){
  		$("#checkAll").click(function(){
-	 	 if (! $('.checkcandidate').is(':checked')) {
 	      	$('.checkcandidate').prop('checked',true);
 	      	$('#starbtn').removeAttr('disabled');
 	      	$('#blockbtn').removeAttr('disabled');
-	 	 } else {
-	     	$('.checkcandidate').prop('checked', false);
-	     	$('#starbtn').attr('disabled', 'disabled');
-	     	$('#blockbtn').attr('disabled', 'disabled');
-	 	 }       
+	      	$('#btn_sendMail').removeAttr('disabled');
+	      	$('#btn-merge').removeAttr('disabled');
+	 	       
 		});
 		$("#uncheckAll").click(function(){
-	 	 if (! $('.checkcandidate').is(':checked')) {
 	      	$('.checkcandidate').prop('checked',false);
 	      	$('#starbtn').attr('disabled','disabled');
-	    	$('#blockbtn').attr('disabled','disabled');  	
-	 	 } else {
-	     	$('.checkcandidate').prop('checked', true);
-	     	$('#starbtn').removeAttr('disabled');
-	     	$('#blockbtn').removeAttr('disabled');
-	 	 }       
+	    	$('#blockbtn').attr('disabled','disabled');
+	    	$('#btn_sendMail').attr('disabled', 'disabled');  
+	    	$('#btn-merge').attr('disabled','disabled');	
+	 	       
+		});
+		$("#chk_trung").click(function(){
+			if ($('#chk_trung').is(':checked')) {
+				$('#btn-merge').show();
+			}else{
+				$('#btn-merge').hide();
+			}
 		});
  	});
 
- 	function checkbox() {
+ 	function checkbox_1() {
 		var gallery = document.querySelectorAll('.checkcandidate');
 		var count = 0;
 		gallery.forEach(function(item) {
 			if ($(item).prop('checked')) {
 				$('#starbtn').removeAttr('disabled');
 				$('#blockbtn').removeAttr('disabled');
+				$('#btn_sendMail').removeAttr('disabled');
+				$('#btn-merge').removeAttr('disabled');
 				count = 1;
 			}
 		  
@@ -191,6 +204,8 @@
 		if(count == 0){
 			$('#starbtn').attr('disabled',true);
 			$('#blockbtn').attr('disabled',true);
+			$('#btn_sendMail').attr('disabled',true);
+			$('#btn-merge').attr('disabled',true);
 		}	
 	}
 
@@ -286,5 +301,56 @@
 		.always(function() {
 			console.log("complete");
 		});
+	}
+
+	function sendMail() {
+		var list_candidate = JSON.parse($('#list_candidate').text()) ;
+		$('#email_to').val();
+		var form = $('#form_candidate').serializeArray();
+		var email = candidateid = '';
+		for (var i = 0; i < form.length; i++) {
+			for(var j =0;j < list_candidate.length; j++){
+				if (form[i].value == list_candidate[j]['candidateid']) {
+		            if (email == '') {
+		            	email += list_candidate[j]['email'];
+		            }else{
+		            	email += ', '+list_candidate[j]['email'];
+		            }
+		        }
+		    }
+		    candidateid += form[i]['value']+ ',';
+		}
+		$('#candidateid_mail').val(candidateid);
+		$('#email_to').val(email);
+		$('#modalMail').modal('show');
+	}
+
+	function modalMerge() {
+		var list_candidate = JSON.parse($('#list_candidate').text()) ;
+		var form = $('#form_candidate').serializeArray();
+		var row = '';
+		var k =0;
+		for (var i = 0; i < form.length; i++) {
+			for(var j =0;j < list_candidate.length; j++){
+				if (form[i].value == list_candidate[j]['candidateid']) {
+		            id = list_candidate[j]['candidateid'];
+		            name = list_candidate[j]['name'];
+		            image = list_candidate[j]['imagelink'];
+		            if (k == 0) {
+			            row += '<div class="col-xs-4 candidate_chuyen" style="height: 130px"><div><img src="<?php echo base_url() ?>public/image/'+image+'" class="img_chuyen"></div><label>'+name+'</label><div id="check_'+id+'"><input type="radio" value="'+id+'" name="checkMerge[]" onclick="changeHsChinh('+id+')" checked></div><div class="title_check" style="color: #999999">Hồ sơ chính</div></div><input type="hidden" name="id[]" value="'+id+'">';
+			            k =1;
+			        }else{
+			        	row += '<div class="col-xs-4 candidate_chuyen" style="height: 130px"><div><img src="<?php echo base_url() ?>public/image/'+image+'" class="img_chuyen"></div><label>'+name+'</label><div id="check_'+id+'"><input type="radio" value="'+id+'" name="checkMerge[]" onclick="changeHsChinh('+id+')"></div></div><input type="hidden" name="id[]" value="'+id+'">';
+			        }
+		        }
+				
+			}
+		}
+		$('#body_chuyen_ghep').empty().append(row);
+		$('#modalMerge').modal('show');
+	}
+	function changeHsChinh(id) {
+		$('.title_check').remove();
+		$('#check_'+id).after('<div class="title_check" style="color: #999999">Hồ sơ chính</div>');
 	}
 </script>

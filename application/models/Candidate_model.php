@@ -88,4 +88,57 @@ class Candidate_model extends CI_Model{
         $query = $this->db->get($table)->first_row('array');
             return $query;
     }
+    public function selectFirstRowsOrderBy($table,$where,$order_by)
+    {
+        $this->db->select()->where($where);
+        $this->db->order_by($order_by,"desc");
+        $query = $this->db->get($table)->first_row('array');
+            return $query;
+    }
+    public function select_sql($sql='')
+    {
+        $query = $this->db->query($sql);
+        
+            if (!$query) {
+                return $this->db->error();
+            }else{
+                return $query->result_array();
+            }
+    }
+    public function selectBySelect($select,$table,$where)
+    {
+        $this->db->select($select)->where($where);
+        $query = $this->db->get($table)->result_array();
+            return $query;
+    }
+    public function select_tags_byId($id)
+    {
+        $this->db->select();
+        $this->db->from('tagtransaction');
+        $this->db->join('tagprofile','tagprofile.tagid = tagtransaction.tagid', 'LEFT');
+        $this->db->where('tagtransaction.tablename','candidate');
+        $this->db->where('tagtransaction.categoryid','position');
+        $this->db->where('tagtransaction.recordid',$id);
+        return $this->db->get()->result_array();  
+    }
+    public function select_sugg_tag($select,$where)
+    {
+        $this->db->select($select);
+        $this->db->from('tagtransaction');
+        $this->db->join('tagprofile','tagprofile.tagid = tagtransaction.tagid', 'LEFT');
+        $this->db->where($where);
+        $this->db->group_by($select);
+        return $this->db->get()->result_array();
+    }
+    public function delete_real($table, $where)
+    {
+        $this->db->where($where)->delete($table);
+    }
+    public function checktagsprofile($match)
+    {
+        $this->db->select('tagid');
+        $this->db->from('tagprofile');
+        $this->db->where($match);
+        return $this->db->get()->row_array();
+    }
 }

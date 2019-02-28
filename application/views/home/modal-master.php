@@ -81,40 +81,40 @@
                <h3 class="color-blue">Đăng ký tài khoản</h3>
                <div class="alert alert-danger hide" id="err-sign-in"></div>
               <div class="form-group row kcform1">
-                <label for="staticEmail" class="col-sm-4 col-form-label">Email</label>
+                <label for="staticEmail" class="col-sm-4 col-form-label">Email <span class="color_red">*</span></label>
                 <div class="col-sm-8">
                
                   <input class="kttext" type="email" placeholder="" name="email" required>
                 </div>
               </div>
               <div class="form-group row kcform1">
-                <label for="inputPassword" class="col-sm-4 col-form-label">Số CMND/CCCD</label>
+                <label for="inputPassword" class="col-sm-4 col-form-label">Số CMND/CCCD <span class="color_red">*</span></label>
                 <div class="col-sm-8">
-                  <input class="kttext" type="text" placeholder="" maxlength="10" name="cmnd" id="cmnd" required>
+                  <input class="kttext" type="text" placeholder="" name="cmnd" id="cmnd" required>
                   
                 </div>
               </div>
               <div class="form-group row kcform1">
-                <label for="inputPassword" class="col-sm-4 col-form-label">Mật khẩu</label>
+                <label for="inputPassword" class="col-sm-4 col-form-label">Mật khẩu <span class="color_red">*</span></label>
                 <div class="col-sm-8">
                   <input type="password" class="kttextl" minlength  placeholder="" name="pass" id="pass" required>
                 </div>
               </div>
               <div class="form-group row kcform1">
-                <label for="inputPassword" class="col-sm-4 col-form-label">Xác nhận mật khẩu</label>
+                <label for="inputPassword" class="col-sm-4 col-form-label">Xác nhận mật khẩu <span class="color_red">*</span></label>
                 <div class="col-sm-8">
                    <input type="password" class="kttext" minlength placeholder="" name="repass" required>
                 </div>
               </div>
               <div class="form-group row kcform1">
-                <label for="inputPassword" class="col-sm-4 col-form-label">Tên</label>
+                <label for="inputPassword" class="col-sm-4 col-form-label">Tên <span class="color_red">*</span></label>
                 <div class="col-sm-8">
                   <input class="kttext" type="text" placeholder="" name="firstname" required>
                   
                 </div>
               </div>
               <div class="form-group row kcform1">
-                <label for="inputPassword" class="col-sm-4 col-form-label">Họ và tên đệm</label>
+                <label for="inputPassword" class="col-sm-4 col-form-label">Họ và tên đệm <span class="color_red">*</span></label>
                 <div class="col-sm-8">
                   <input class="kttext" type="text" placeholder="" name="lastname" required>
                 </div>
@@ -141,8 +141,11 @@
               <div class="form-group row kcform1">
                 <label for="inputPassword" class="col-sm-4 col-form-label">Vị trí mong muốn</label>
                 <div class="col-sm-8">
-                  <textarea class="form-control off-resize" rows="2" name="position"></textarea>
-                  <button type="submit" class="btn btn-login" id="btn_sign_in" >Đăng Ký
+                   <div id="the-basics">
+                    <input id="typeahead" type="text" data-role="tagsinput" >
+                  </div>
+                  <input type="hidden" name="tags" id="tags">
+                  <button type="submit" class="btn btn-login" id="btn_sign_in" ><i></i>Đăng Ký
                 </button>
                 </div>
               </div>
@@ -201,3 +204,8 @@
         </div>
       </div>
     </div>
+<style type="text/css">
+  .color_red{
+    color: red;
+  }
+</style>

@@ -7,21 +7,21 @@ class Login extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 		$this->load->helper(array('url','string','security','cookie'));
-		$this->load->model(array('Login_model'));
+		$this->load->model(array('Login_model','admin/Mail_model'));
 		$this->load->library(array('form_validation','session'));
 		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
-		$config = array(
-		    'protocol'  =>  'smtp',
-		    'smtp_host' =>  'ssl://smtp.googlemail.com',
-		    'smtp_port' =>  465,
-		    'smtp_user' =>  'thanhhung23495@gmail.com',
-		    'smtp_pass' =>  'Heodat1323',
-		    'mailtype'  =>  'html', 
-		    'charset'   =>  'utf-8',
-		);
-		$this->load->library('email');
-		$this->email->initialize($config);
-		$this->email->set_newline("\r\n");
+		// $config = array(
+		//     'protocol'  =>  'smtp',
+		//     'smtp_host' =>  'ssl://smtp.googlemail.com',
+		//     'smtp_port' =>  465,
+		//     'smtp_user' =>  'thanhhung23495@gmail.com',
+		//     'smtp_pass' =>  'Heodat1323',
+		//     'mailtype'  =>  'html', 
+		//     'charset'   =>  'utf-8',
+		// );
+		// $this->load->library('email');
+		// $this->email->initialize($config);
+		// $this->email->set_newline("\r\n");
 		
 		
 
@@ -97,19 +97,52 @@ class Login extends CI_Controller {
 		$data['password'] = md5($new_pass);
 		$this->Login_model->UpdateData('operator', array('email' => $mail),$data);
 		//cau hinh email va ten nguoi guioperator
-        $this->email->from('thanhhung23495@gmail.com', 'Tuyển dụng Đất Xanh');
-		//cau hinh nguoi nhan
-		$this->email->to($mail);
-		$this->email->subject('Lấy lại mật khẩu');
-		$this->email->message('Bấm vào <a href="'.base_url().'">đây</a> để đăng nhập bằng mật khẩu bên dưới và đổi mật khẩu mới cho tài khoản của bạn.<br>
-			Mật khẩu mới: <b>'.$new_pass.'</b><br>');
-		if ( $this->email->send())
-		{
-			echo json_encode(1);		
+
+		$mailtemplate = $this->Mail_model->select('mailprofile',array('mailprofileid' => 2));
+		if(isset($mailtemplate[0])){
+			$subject 			= $mailtemplate[0]['presubject'];
+			$body 				= $mailtemplate[0]['prebody'];
+			$mail["attachment"] = $mailtemplate[0]['preattach'];
+			$presender 			= $mailtemplate[0]['presender'];
+			$mail["cc"] 		= $mailtemplate[0]['cc'];
+			$mail["bcc"] 		= $mailtemplate[0]['bcc'];
 		}else{
-			var_dump('thất bại');
-			var_dump($this->email->print_debugger());
+			$subject			= $body = $mail["attachment"] = $mail["cc"] = $mail["bcc"] = $presender = '';
 		}
+		if ($presender != 'usersession') {
+			$arrayName1 = array('operatorname' => 'mailsystem' );
+			$mailSystem = $this->Mail_model->select('operator',$arrayName1);
+			if ($mailSystem[0]['mcssl'] == '1') {
+        		$mail['mcsmtp']	= 'ssl://'.$mailSystem[0]['mcsmtp'];
+        	}else{
+        		$mail['mcsmtp']	= $mailSystem[0]['mcsmtp'];
+        	}
+        	$mail['mcuser']	= $mailSystem[0]['mcuser'];
+        	$mail['mcpass']	= base64_decode($mailSystem[0]['mcpass']);
+        	$mail['mcport']	= $mailSystem[0]['mcport'];
+		}
+		
+		$chuoi_tim 				= array('[Mật khẩu mới]');
+		$chuoi_thay_the 		= array($data['password']);
+		$mail['emailsubject'] 	= str_replace($chuoi_tim,$chuoi_thay_the, $subject);
+		$mail['emailbody'] 		= str_replace($chuoi_tim,$chuoi_thay_the, $body);
+		$mail['toemail'] 		= $a_UserInfo['email'];
+		$this->Mail_model->sendMail($mail);
+		
+		echo json_encode(1);
+  //       $this->email->from('thanhhung23495@gmail.com', 'Tuyển dụng Đất Xanh');
+		// //cau hinh nguoi nhan
+		// $this->email->to($mail);
+		// $this->email->subject('Lấy lại mật khẩu');
+		// $this->email->message('Bấm vào <a href="'.base_url().'">đây</a> để đăng nhập bằng mật khẩu bên dưới và đổi mật khẩu mới cho tài khoản của bạn.<br>
+		// 	Mật khẩu mới: <b>'.$new_pass.'</b><br>');
+		// if ( $this->email->send())
+		// {
+		// 	echo json_encode(1);		
+		// }else{
+		// 	var_dump('thất bại');
+		// 	var_dump($this->email->print_debugger());
+		// }
 	}
 
 	public function checkPassword()
@@ -165,7 +198,7 @@ class Login extends CI_Controller {
 		$data['gender'] = $frm['gender'];
 		$data['dateofbirth'] =  date("Y-m-d", strtotime($frm['birthday'] ));
 		$data['profilesrc'] = "Web portal";
-
+		$tag['tags'] = $frm['tags'];
 		if ($this->Login_model->checkMail( $a_UserInfo['email'] )) {	
 			echo json_encode('-1');
 		}
@@ -175,27 +208,80 @@ class Login extends CI_Controller {
 		}
 		else{
 			$this->Login_model->InsertData("candidate",$data);
-			$a_UserInfo['candidateid'] = $this->Login_model->Set_idcandite()['candidateid'];
-			$this->Login_model->insertUser( $a_UserInfo );
+			$a_UserInfo['candidateid'] 	= $this->Login_model->Set_idcandite()['candidateid'];
+			$a_UserInfo['operatorid'] 	= $this->Login_model->insertUser( $a_UserInfo );
 			$this->session->set_userdata('user', $a_UserInfo);
+			$arr_tags = explode(',', $tag['tags']);
+			$this->Addtags($arr_tags,$a_UserInfo['candidateid']);
 
-			$this->email->from('thanhhung23495@gmail.com', 'Tuyển dụng Đất Xanh');
-			//cau hinh nguoi nhan
-			$this->email->to($frm['email']);
-			$this->email->subject('Đăng kí tài khoản thành công');
-			$this->email->message('Cảm ơn bạn đã đăng ký tài khoản tại Đất Xanh.<br>');
-			
-			if ( $this->email->send())
-			{
-				echo json_encode($a_UserInfo);		
+			$mailtemplate = $this->Mail_model->select('mailprofile',array('mailprofileid' => 1));
+			if(isset($mailtemplate[0])){
+				$subject 			= $mailtemplate[0]['presubject'];
+				$body 				= $mailtemplate[0]['prebody'];
+				$mail["attachment"] = $mailtemplate[0]['preattach'];
+				$presender 			= $mailtemplate[0]['presender'];
+				// $mail["cc"] 		= $mailtemplate[0]['cc'];
+				// $mail["bcc"] 		= $mailtemplate[0]['bcc'];
 			}else{
-				var_dump('thất bại');
-				var_dump($this->email->print_debugger());
+				$subject			= $body = $mail["attachment"] = $mail["cc"] = $mail["bcc"] = $presender = '';
+			}
+			if ($presender != 'usersession') {
+				$arrayName1 = array('operatorname' => 'mailsystem' );
+				$mailSystem = $this->Mail_model->select('operator',$arrayName1);
+				if ($mailSystem[0]['mcssl'] == '1') {
+	        		$mail['mcsmtp']	= 'ssl://'.$mailSystem[0]['mcsmtp'];
+	        	}else{
+	        		$mail['mcsmtp']	= $mailSystem[0]['mcsmtp'];
+	        	}
+	        	$mail['mcuser']	= $mailSystem[0]['mcuser'];
+	        	$mail['mcpass']	= base64_decode($mailSystem[0]['mcpass']);
+	        	$mail['mcport']	= $mailSystem[0]['mcport'];
 			}
 			
+			$chuoi_tim 				= array('[Tên Ứng viên]','[Tên]');
+			$chuoi_thay_the 		= array($data['name'],$data['lastname']);
+			$mail['emailsubject'] 	= str_replace($chuoi_tim,$chuoi_thay_the, $subject);
+			$mail['emailbody'] 		= str_replace($chuoi_tim,$chuoi_thay_the, $body);
+			$mail['toemail'] 		= $a_UserInfo['email'];
+			$this->Mail_model->sendMail($mail);
+
+			// $this->email->from('thanhhung23495@gmail.com', 'Tuyển dụng Đất Xanh');
+			// //cau hinh nguoi nhan
+			// $this->email->to($frm['email']);
+			// $this->email->subject('Đăng kí tài khoản thành công');
+			// $this->email->message('Cảm ơn bạn đã đăng ký tài khoản tại Đất Xanh.<br>');
 			
+			// if ( $this->email->send())
+			// {
+				echo json_encode($a_UserInfo);		
+			// }else{
+			// 	var_dump('thất bại');
+			// 	var_dump($this->email->print_debugger());
+			// }	
 		}
-		
+	}
+	public function Addtags($tags,$candidateid)
+	{
+		foreach ($tags as $key => $value) {
+			$row['data'] = $this->Login_model->checktagsprofile(array('title' =>  $value));
+			if(!is_array($row['data']))
+			{	
+				$data1['title'] = trim($value);
+				$data2['tagid'] = $this->Login_model->InsertData("tagprofile",$data1);
+				$data2['tablename'] = "candidate";
+				$data2['recordid'] = $this->session->userdata('user')['candidateid'];
+				$data2['categoryid'] = "candidateid"; 
+				$this->Login_model->InsertData("tagtransaction",$data2);
+			}
+			else
+			{
+				$data2['tagid'] = $row['data']['tagid'];
+				$data2['tablename'] = "candidate";
+				$data2['recordid'] = $this->session->userdata('user')['candidateid'];
+				$data2['categoryid'] = "candidateid"; 
+				$this->Login_model->InsertData("tagtransaction",$data2);
+			}		
+		}
 	}
 
 	

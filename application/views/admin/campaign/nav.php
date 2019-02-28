@@ -3,18 +3,19 @@
         
         <div id="menu1" class="tab-pane fade in active" >
             <div class="search-div">
-              <input type="text" class="search-input" id="text_search" required placeholder="Nhập nội dung tìm kiếm" onkeyup="searchname()">
+              <input type="text" class="search-input" id="text_search" required placeholder="Nhập nội dung tìm kiếm">
                 <a type="button" onclick="searchname()" class="btn-none btn_search"><i class="fa fa-search search-icon" ></i></a>
               </input>
             </div>
             <div class="dash-horizontal"></div>
 
             <div class="checkbox label-check">
-              <label><input type="checkbox" id="check_filter_1" onchange="loadfilter('<?php echo $campaignid ?>')" checked="true">Hồ sơ theo tiêu chí Chiến dịch (<?php echo $total_candidate; ?>)</label> 
+              <label><input type="checkbox" id="check_filter_1" onchange="loadfilter('<?php echo $campaignid ?>',this.value)" >Hồ sơ theo tiêu chí Chiến dịch </label> 
               <label><input type="checkbox" id="check_filter" onchange="filter(this.value)" checked="true">Chọn tất cả hồ sơ (<?php echo $total_candidate; ?>)</label> 
-              <label><input type="checkbox" id="check_filter_2" onchange="filter(this.value)" checked="true">Hồ sơ ứng tuyển từ Web Portal(<?php echo $total_candidate; ?>)</label> 
+              <label><input type="checkbox" id="check_filter_2" onchange="filterApply('<?php echo $campaignid ?>',this.value)" >Hồ sơ ứng tuyển từ Web Portal</label> 
+              <label><input type="checkbox" id="check_filter_3" onchange="filterNotRecruit(this.value,'<?php echo $campaignid ?>','<?php echo $roundid ?>')" >Hồ sơ chưa tuyển dụng</label> 
             </div>
-
+            
             <div class="side-menu scroll-auto">
                 <nav class="navbar navbar-default white border0" role="navigation">
                     <div class="side-menu-container">
@@ -29,18 +30,25 @@
                                    </div>
                                    <div class="checkbox div-label-check width100" >
                                        <label style="width: 50%"><input type="checkbox" id="chk_diem" onchange="filter()" >Điểm hồ sơ</label> 
-                                       <input type="text" name="" class="div-input" style="margin-right: 10px" placeholder="Từ" id="diem_tu" value="" onkeyup="filter()">
-                                       <input type="text" name="" class="div-input" placeholder="Đến" id="diem_den" value="" onkeyup="filter()">
+                                       <input type="text" name="" class="div-input" style="margin-right: 10px" placeholder="Từ" id="diem_tu" value="" >
+                                       <input type="text" name="" class="div-input" placeholder="Đến" id="diem_den" value="" >
                                    </div>
                                    <div class="checkbox div-label-check" >
-                                       <label><input type="checkbox" value="" id="chk_tiemnang" onchange="filter()" >Hồ sơ tiềm năng </label> 
-                                   </div>
+                                     <label style="width: 50%"><input type="checkbox" value="" id="chk_tiemnang" onchange="filter()"  >Hồ sơ tiềm năng </label> 
+                                     <input type="text" name="" class="div-input tiemnang" style="margin-right: 10px" placeholder="Từ" id="tiemnang_tu" value="" >
+                                     <input type="text" name="" class="div-input tiemnang" placeholder="Đến" id="tiemnang_den" value="" >
+                                    </div>
                                    <div class="checkbox div-label-check" >
                                        <label><input type="checkbox" value="" id="chk_chan" onchange="filter()" >Hồ sơ bị chặn </label> 
                                    </div>
                                    <div class="checkbox div-label-check" >
+                                     <label style="width: 50%"><input type="checkbox" value="" id="chk_lastupdate" onchange="filter()"  >Ngày cập nhật </label> 
+                                     <input type="text" name="" class="div-input tiemnang thoigian" style="margin-right: 10px" placeholder="Từ" id="update_tu" value="" >
+                                     <input type="text" name="" class="div-input tiemnang thoigian" placeholder="Đến" id="update_den" value="" >
+                                    </div>
+                                   <!-- <div class="checkbox div-label-check" >
                                        <label><input type="checkbox" value="">Hồ sơ có lịch sử tương tác (6)</label> 
-                                   </div>
+                                   </div> -->
                                 </div>
                             </li>
 
@@ -65,11 +73,19 @@
 
                            <li  id="dropdown" class="li-nemu white">
                                 <a data-toggle="collapse" href="#dropdown-lvl3" class="nav-list-hs weight600 gray-nav">
-                                    Vị trí <span class="fa fa-angle-right floatright"></span>
-                                </a>
-                                <div id="dropdown-lvl3" class="panel-collapse collapse white">
-                                    
-                                </div>
+                                  Vị trí <span class="fa fa-angle-right floatright"></span>
+                              </a>
+                              <div id="dropdown-lvl3" class="panel-collapse collapse white">
+                                   <?php 
+                                   for ($x=0; $x < count($tag); $x++) { 
+                                    ?>
+                                    <div class="checkbox div-label-check">
+                                             <label><input type="checkbox" id="<?php echo 'tag'.$x?>" onchange="filter()" value="<?php echo $tag[$x]['tagid']?>" ><?php echo $tag[$x]['title']; ?></label> 
+                                         </div>
+                                   <?php
+                                   } ?>
+                                   <input type="hidden" id="counttag" value="<?php echo count($tag) ?>">
+                              </div>
                             </li>
 
                         <li  id="dropdown" class="li-nemu white" >
@@ -78,13 +94,13 @@
                             </a>
                             <div id="dropdown-lvl4" class="panel-collapse collapse white ">
                                 <div class="checkbox div-label-check width100 middle" >
-                                       <label style="width: 50%"><input type="checkbox" id="chk_thunhapht" onchange="filter()">Thu nhập hiện tại</label><input type="text" name="" class="div-input" style="margin-right: 10px; margin-left: 7px" placeholder="Từ" id="tn_httu" value="" onkeyup="filter()">
-                                       <input type="text" name="" class="div-input" placeholder="Đến" id="tn_htden" value="" onkeyup="filter()">
+                                       <label style="width: 50%"><input type="checkbox" id="chk_thunhapht" onchange="filter()">Thu nhập hiện tại</label><input type="text" name="" class="div-input" style="margin-right: 10px; margin-left: 7px" placeholder="Từ" id="tn_httu" value="" >
+                                       <input type="text" name="" class="div-input" placeholder="Đến" id="tn_htden" value="" >
                                    </div>
                                    <div class="checkbox div-label-check width100 middle" >
                                        <label style="width: 50%"><input type="checkbox" id="chk_thunhapmm" onchange="filter()" >Thu nhập mong muốn</label> 
-                                       <input type="text" id="tn_mmtu" class="div-input" style="margin-right: 10px; margin-left: 7px" placeholder="Từ" value="" onkeyup="filter()">
-                                       <input type="text" id="tn_mmden" class="div-input" placeholder="Đến" value="" onkeyup="filter()">
+                                       <input type="text" id="tn_mmtu" class="div-input" style="margin-right: 10px; margin-left: 7px" placeholder="Từ" value="" >
+                                       <input type="text" id="tn_mmden" class="div-input" placeholder="Đến" value="" >
                                    </div>
                             </div>
                         </li>
@@ -99,8 +115,8 @@
                            </div>
                            <div class="checkbox div-label-check width100 middle" >
                                <label><input type="checkbox" id="chk_cokm" onchange="kinhnghiem(this)" value="D" >Đã có kinh nghiệm</label>
-                               <input type="text" name="" class="div-input" style="margin-right: 10px; margin-left: 7px" placeholder="Từ" id="kinhnghiem_tu" maxlength="2" value="" onkeyup="filter()">
-                                <input type="text" name="" class="div-input" placeholder="Đến" maxlength="2" id="kinhnghiem_den" value="" onkeyup="filter()"> 
+                               <input type="text" name="" class="div-input" style="margin-right: 10px; margin-left: 7px" placeholder="Từ" id="kinhnghiem_tu" maxlength="2" value="" >
+                                <input type="text" name="" class="div-input" placeholder="Đến" maxlength="2" id="kinhnghiem_den" value="" > 
                            </div>
                         </div>
                     </li>
@@ -163,8 +179,8 @@
                       <div id="dropdown-lvl9" class="panel-collapse collapse white">
                         <div class="checkbox div-label-check width100" >
                           <label style="width: 50%"><input type="checkbox" id="chk_tuoi" onchange="filter()" >Tuổi</label> 
-                          <input type="text" name="" class="div-input" id="tuoi-tu" maxlength="2" style="margin-right: 10px" placeholder="Từ" value="" onkeyup="filter()">
-                          <input type="text" name="" class="div-input" id="tuoi-den" maxlength="2" placeholder="Đến" value="" onkeyup="filter()">
+                          <input type="text" name="" class="div-input" id="tuoi-tu" maxlength="2" style="margin-right: 10px" placeholder="Từ" value="" >
+                          <input type="text" name="" class="div-input" id="tuoi-den" maxlength="2" placeholder="Đến" value="" >
                         </div>
                         <div class="checkbox div-label-check" >
                           <label><input type="checkbox" value="M" id="chk_nam" onchange="gioitinh(this)" >Nam</label> 
@@ -174,13 +190,13 @@
                         </div>
                         <div class="checkbox div-label-check width100" >
                           <label style="width: 50%"><input type="checkbox" id="chk_chieucao" onchange="filter()" >Chiều cao (Cm)</label> 
-                          <input type="text" name="" class="div-input" style="margin-right: 10px" maxlength="3" id="caotu" placeholder="Từ" value="" onkeyup="filter()">
-                          <input type="text" name="" class="div-input" placeholder="Đến" maxlength="3" id="caoden" value="" onkeyup="filter()">
+                          <input type="text" name="" class="div-input" style="margin-right: 10px" maxlength="3" id="caotu" placeholder="Từ" value="" >
+                          <input type="text" name="" class="div-input" placeholder="Đến" maxlength="3" id="caoden" value="" >
                         </div>
                         <div class="checkbox div-label-check width100" >
                           <label style="width: 50%"><input type="checkbox" id="chk_cannang" onchange="filter()" >Cân nặng (Kg)</label> 
-                          <input type="text" name="" class="div-input" maxlength="3" style="margin-right: 10px" placeholder="Từ" id="nangtu" value="" onkeyup="filter()">
-                          <input type="text" name="" class="div-input" maxlength="3" placeholder="Đến" id="nangden" value="" onkeyup="filter()">
+                          <input type="text" name="" class="div-input" maxlength="3" style="margin-right: 10px" placeholder="Từ" id="nangtu" value="" >
+                          <input type="text" name="" class="div-input" maxlength="3" placeholder="Đến" id="nangden" value="" >
                         </div>
                         <div class="checkbox div-label-check width100" >
                           <label style="width: 50%"><input type="checkbox" id="chk_noisinh" onchange="filter()" >Nơi Sinh</label> 
@@ -193,7 +209,7 @@
                         </div>
                         <div class="checkbox div-label-check width100" style="margin-top: 5px;">
                           <label style="width: 50%"><input type="checkbox" id="chk_dantoc" onchange="filter()" >Dân tộc</label> 
-                          <input type="text" name="" class="div-input2"  placeholder="" id="dantoc-ad" value="" onkeyup="filter()">
+                          <input type="text" name="" class="div-input2"  placeholder="" id="dantoc-ad" value="" >
                         </div>
                         <div class="checkbox div-label-check width100" >
                           <label style="width: 50%"><input type="checkbox" id="chk_quoctich" onchange="filter()" >Quốc tịch</label> 
@@ -222,7 +238,7 @@
                         </div>
                         <div class="checkbox div-label-check width100 disabled" id="quanhuyen-nav11" >
                           <label style="width: 50%"><input type="checkbox" onchange="filter()" id="quanhuyen-nav12" disabled >Quận huyện đang sống</label> 
-                          <select class="js-example-basic-single" name="quanhuyen" style="width: 100%" id="quanhuyen-nav" required onchange="filter()">
+                          <select class="js-example-basic-single floatright" name="quanhuyen" id="quanhuyen-nav" required onchange="filter()">
                             <option value="0" id="chonqh-nav1" >Chọn quận huyện</option>
                           </select>
                         </div>
@@ -246,7 +262,15 @@
                          Tags <span class="fa fa-angle-right floatright"></span>    
                      </a>
                      <div id="dropdown-lvl11" class="panel-collapse collapse white">
-                        
+                         <?php 
+                           for ($x=0; $x < count($tagrandom); $x++) { 
+                            ?>
+                            <div class="checkbox div-label-check">
+                                     <label><input type="checkbox" id="<?php echo 'tagr'.$x?>" onchange="filter()" value="<?php echo $tagrandom[$x]['tagid']?>" ><?php echo $tagrandom[$x]['title']; ?></label> 
+                                 </div>
+                           <?php
+                           } ?>
+                         <input type="hidden" id="counttagrandom" value="<?php echo count($tagrandom) ?>">
                     </div>
                 </li>
               </ul>
@@ -276,6 +300,35 @@
         $(".btn_search").trigger('click'); 
     }
   });
+  $('.thoigian').datetimepicker({
+    timepicker:false,
+    format:'d-m-Y',
+  });
+    function sort_can(obj)
+    {
+      switch(obj)
+      {
+          case 1: {
+              $('#chonsx').html('Tiềm năng <span class="glyphicon glyphicon-chevron-down"></span>');
+              break; }
+          case 2: {
+              $('#chonsx').html('Kinh nghiệm <span class="glyphicon glyphicon-chevron-down"></span>');
+              break; }
+          case 3: {
+              $('#chonsx').html('Điểm <span class="glyphicon glyphicon-chevron-down"></span>');
+              break; }
+          case 4: {
+              $('#chonsx').html('Tuổi <span class="glyphicon glyphicon-chevron-up"></span>');
+              break; }
+          case 5: {
+              $('#chonsx').html('Bằng cấp <span class="glyphicon glyphicon-chevron-down"></span>');
+              break; }
+          case 6: {
+              $('#chonsx').html('Ngày cập nhật <span class="glyphicon glyphicon-chevron-down"></span>');
+              break; }
+      }
+        filter();
+    }
     function gioitinh(obj)
     {
         var value = obj.value;
@@ -376,15 +429,18 @@
     
     function filter(check = '')
     {
+      if ($('#check_filter').is(':checked')){
+        check = 'on';
+      }
       if(check == 'on'){
         if ($(':checkbox').is(':checked')){
-          $(':checkbox').prop('checked', false);
+          $('#check_filter_1').prop('checked', false);
+          $('#check_filter_2').prop('checked', false);
+          $('#check_filter_3').prop('checked', false);
           $('#check_filter').prop('checked', true);
         }
-      }else{
-        $('#check_filter').prop('checked', false);
       }
-      var value = {'gender' : '','placeofbirth' : '' , 'agefrom': '' , 'ageto' : '', 'heightto' : '', 'heightfrom': '',  'weightto' : '', 'weightfrom': '' , 'ethnic' : '', 'nationality' : '' , 'cityori' : '' , 'citycurr' : '' , 'district' : '' , 'currbenefitto' : '' , 'currbenefitfrom' : '' , 'desbenefitto' : '' , 'desbenefitfrom' : '' , 'experfrom' : '' , 'experto' : '', 'knowledge' : '' , 'language' : '' , 'software' : '' , 'profilesrc' : '', 'maritalstatus' : '' , 'istalent' : '' ,  'blocked' : '' , 'rateto' : '' , 'ratefrom' : '' };
+      var value = {'gender' : '','placeofbirth' : '' , 'agefrom': '' , 'ageto' : '', 'heightto' : '', 'heightfrom': '',  'weightto' : '', 'weightfrom': '' , 'ethnic' : '', 'nationality' : '' , 'cityori' : '' , 'citycurr' : '' , 'district' : '' , 'currbenefitto' : '' , 'currbenefitfrom' : '' , 'desbenefitto' : '' , 'desbenefitfrom' : '' , 'experfrom' : '' , 'experto' : '', 'knowledge' : '' , 'language' : '' , 'software' : '' , 'profilesrc' : '', 'maritalstatus' : '' , 'talentfrom' : '' , 'talentto' : '' , 'updatefrom' : '' , 'updateto' : '' ,  'blocked' : '' , 'rateto' : '' , 'ratefrom' : '' , 'tag' : '' , 'tagrandom' : '', 'sort' : ''};
        if($('#chk_chuacogd').is(':checked'))
        {
           value['maritalstatus'] = 'S'; 
@@ -577,9 +633,47 @@
             value['profilesrc'] += $('#src'+i).val()+'/';
          }
        }
+       for(var i = 0; i < $('#counttag').val() ; i++ )
+       {
+          if($('#tag'+i).is(':checked'))
+         {
+            value['tag'] += $('#tag'+i).val()+'/';
+         }
+       }
+      for(var i = 0; i < $('#counttagrandom').val() ; i++ )
+       {
+          if($('#tagr'+i).is(':checked'))
+         {
+            value['tagrandom'] += $('#tagr'+i).val()+'/';
+         }
+       }
+       // if($('#chk_tiemnang').is(':checked'))
+       // {
+       //    value['istalent'] = 'T';
+       // }
        if($('#chk_tiemnang').is(':checked'))
        {
-          value['istalent'] = 'T';
+          if(($('#tiemnang_tu').val() == '') && ($('#tiemnang_den').val() == ''))
+          {
+            $( "#chk_tiemnang").prop('checked', false); 
+          }
+          else
+          {
+            value['talentfrom']   = $('#tiemnang_tu').val();
+            value['talentto']     = $('#tiemnang_den').val();
+          }
+       }
+       if($('#chk_lastupdate').is(':checked'))
+       {
+          if(($('#update_tu').val() == '') && ($('#update_den').val() == ''))
+          {
+            $( "#chk_lastupdate").prop('checked', false); 
+          }
+          else
+          {
+            value['updatefrom']   = $('#update_tu').val();
+            value['updateto']     = $('#update_den').val();
+          }
        }
        if($('#chk_chan').is(':checked'))
        {
@@ -597,71 +691,85 @@
             value['rateto'] = $('#diem_den').val();
           }
        }
+      if($('#chonsx').text() != "Chọn sắp xếp..")
+      {  
+        value['sort'] = $('#chonsx').text();
+      }
       $('.candidate-load').empty();
         $.ajax({
           url: '<?php echo base_url()?>admin/handling/filter_candidate',
           type: 'POST',
           dataType: 'JSON',
-          data: value,
+          data: {value:value, check_all:check},
         })
         .done(function(data) {
+          $('.demhs').text(data['total_rows'] +' Hồ sơ');  
              for(var i in data)
              {
-               var gt = "";
-              if(data[i]['gender'] == "M") gt = "Nam"; else gt = "Nữ"; 
-              
-              var chieucao = "";
-              if(data[i]['height'] == 0) chieucao = ""; else chieucao = data[i]['height']+"cm, ";
+              if (typeof data[i] === 'object') {
+                var gt = "";
+                if(data[i]['gender'] == "M") gt = "Nam"; else gt = "Nữ"; 
+                
+                var chieucao = "";
+                if(data[i]['height'] == 0) chieucao = ""; else chieucao = data[i]['height']+"cm, ";
 
-              var cannang = "";
-              if(data[i]['weight'] == 0) cannang = ""; else cannang = data[i]['weight']+"kg, ";
-              var kinhnghiem = "";
-              
-              var bangcap = "";
-              if(data[i]['certificate'] == "") bangcap = ""; else bangcap = data[i]['certificate']+", ";
-              var ngonngu = "";
-              if(data[i]['countlanguage'] == 0)
-              { ngonngu = ""; }
-              else if(data[i]['countlanguage'] == 1) 
-              { ngonngu = data[i]['language']+", "; }
-              else ngonngu = data[i]['language']+"+"+(data[i]['countlanguage']-1)+", ";
-              var phanmem = "";
-              if(data[i]['countsoftware'] == 0) phanmem = "";
-              else if(data[i]['countsoftware'] == 1) phanmem = data[i]['software']+", ";
-              else phanmem = data[i]['software']+"+"+(data[i]['countsoftware']-1)+", "; 
-              var star = '';
-              if(data[i]['istalent'] == 0) {
-              star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-gray fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9"></span></span>'; 
-               } else {
-              star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-orange fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9">'+data[i]['istalent'] +'</span></span>';
-              }
-              var dss = ''; 
-              if(data[i]['blocked'] == 'Y') { dss ='<div class="col-md-3 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; }
-              else {
-                dss = '<div class="col-md-4 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; 
-              }
-              var bb = '';
-               if(data[i]['blocked'] == 'Y') { bb = '<i class="fa fa-ban color-red " ></i>'; }
-               var bell = '';
-              if(data[i]['unsubcribe'] == 'Y') bell = "-slash";
-              var vt = '';
-              if(data[i]['position'] != '') {
-                  vt = '<label class="tuyendung-label1 color-black">'+data[i]['position']+'</label>';
-              }
-              var hm = '<a href="<?php echo base_url()?>admin/handling/profile/'+data[i]['candidateid']+'" class="hover-profile load-remove">';
-              hm+= '<div class="col-md-6 profile dash-horizontal pad-l0 pad-r5 min-h152"><table class="margin-t5 margin-b5"><tr><td class="td-cot1"><input class="checkcandidate" type="checkbox" value="'+data[i]['candidateid']+'" name="check[]" onclick="checkbox()"></td><td class="td-cot2">';
-              hm+= '<img src="<?php echo base_url()?>public/image/'+data[i]['imagelink']+'" class="frameimage" width="70px" height="70px">';
+                var cannang = "";
+                if(data[i]['weight'] == 0) cannang = ""; else cannang = data[i]['weight']+"kg, ";
+                var kinhnghiem = "";
+                
+                var bangcap = "";
+                if(data[i]['certificate'] == "") bangcap = ""; else bangcap = data[i]['certificate']+", ";
+                var ngonngu = "";
+                if(data[i]['countlanguage'] == 0)
+                { ngonngu = ""; }
+                else if(data[i]['countlanguage'] == 1) 
+                { ngonngu = data[i]['language']+", "; }
+                else ngonngu = data[i]['language']+"+"+(data[i]['countlanguage']-1)+", ";
+                var phanmem = "";
+                if(data[i]['countsoftware'] == 0) phanmem = "";
+                else if(data[i]['countsoftware'] == 1) phanmem = data[i]['software']+", ";
+                else phanmem = data[i]['software']+"+"+(data[i]['countsoftware']-1)+", "; 
+                var star = '';
+                if(data[i]['istalent'] == 0) {
+                star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-gray fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9"></span></span>'; 
+                 } else {
+                star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-orange fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9">'+data[i]['istalent'] +'</span></span>';
+                }
+                var dss = ''; 
+                if(data[i]['blocked'] == 'Y') { dss ='<div class="col-md-3 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; }
+                else {
+                  dss = '<div class="col-md-4 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; 
+                }
+                var bb = '';
+                 if(data[i]['blocked'] == 'Y') { bb = '<i class="fa fa-ban color-red " ></i>'; }
+                 var bell = '';
+                if(data[i]['unsubcribe'] == 'Y') bell = "-slash";
+                var vt = '';
+                if(data[i]['position'] != '') {
+                    vt = '<label class="tuyendung-label1 color-black">'+data[i]['position']+'</label>';
+                }
+                var tag = '';
+                if(data[i]['tags'] != '')
+                {
+                  tag = '<label class="tuyendung-label2">'+data[i]['tags']+'</label>';
+                }
+                var recruite = '';
+                if (data[i]['recruite'] > 0) {
+                  recruite = '<i class="fa fa-flag color-flag-recruite" ></i>';
+                }
+                var hm = '<a href="<?php echo base_url()?>admin/campaign/profile/'+data[i]['candidateid']+'/1/<?php echo $campaignid?>/<?php echo $roundid ?>/<?php echo $type ?>" class="hover-profile load-remove">';
+                hm+= '<div class="col-md-6 profile dash-horizontal pad-l0 pad-r5 min-h152"><table class="margin-t5 margin-b5"><tr><td class="td-cot1"><input class="checkcandidate" type="checkbox" value="'+data[i]['candidateid']+'" name="check[]" onclick="checkbox_can1()"></td><td class="td-cot2">';
+                hm+= '<img src="<?php echo base_url()?>public/image/'+data[i]['imagelink']+'" class="frameimage" width="70px" height="70px">';
 
-              hm+= '<label class="label-td pad-t3" >'+Math.round(data[i]['rate'])+' điểm</label><label class="label-td pad-t1" >3 mẩu thư</label><label class="margin-t-3"><i class="fa fa-bell'+bell+' icon-label pad-l2"></i><i class="fa fa-user icon-label"></i><i class="fa fa-clock-o icon-de" ></i></label></td><td class="td-cot3"><div class="row width100 margin-l0" ><div class="col-md-7 padding-lr0">';
-              hm+= '<label class="label-name color-black">'+data[i]['name']+'</label>';
-              hm+= '</div>'+dss+'<span class="webportal">'+data[i]['profilesrc']+'</span></div><div id="talent'+data[i]['candidateid']+'" class="col-md-1 padding-lr0 ">'+star+'</div><div class="col-md-1 padding-lr0 icon-block" id="block'+data[i]['candidateid']+'">'+bb+'</div></div>'+vt+'<label class="tuyendung-label2">Tuyển dụng, đào tạo</label><label class="tuyendung-label3">';
+                hm+= '<label class="label-td pad-t3" >'+Math.round(data[i]['rate'])+' điểm</label><label class="label-td pad-t1" >'+data[i]['count_campaign']+' chiến dịch</label><label class="margin-t-3"><i class="fa fa-bell'+bell+' icon-label pad-l2"></i><i class="fa fa-user icon-label"></i><i class="fa fa-clock-o icon-de" ></i></label></td><td class="td-cot3"><div class="row width100 margin-l0" ><div class="col-md-7 padding-lr0">';
+                hm+= '<label class="label-name color-black">'+data[i]['name']+' '+recruite+'</label>';
+                hm+= '</div>'+dss+'<span class="webportal">'+data[i]['profilesrc']+'</span></div><div id="talent'+data[i]['candidateid']+'" class="col-md-1 padding-lr0 ">'+star+'</div><div class="col-md-1 padding-lr0 icon-block" id="block'+data[i]['candidateid']+'">'+bb+'</div></div>'+vt+tag+'<label class="tuyendung-label3">';
 
-              hm+= ''+gt+', '+data[i]['dateofbirth2']+' tuổi, '+chieucao+''+cannang+''+data[i]['kinhnghiem']+''+data[i]['thunhap']+''+bangcap+''+ngonngu+''+phanmem+'...';
-              hm+= '</label> <span class="highr">#HighR</span></td></tr> </table></div></a>';
-               
-              $('.candidate-load').append(hm);
-              // console.log(data.length);
-              $('.demhs').text(data.length +' Hồ sơ');
+                hm+= ''+gt+', '+data[i]['dateofbirth2']+' tuổi, '+chieucao+''+cannang+''+data[i]['kinhnghiem']+''+data[i]['thunhap']+''+bangcap+''+ngonngu+''+phanmem+'...';
+                hm+= '</label> <span class="highr">'+data[i]['tagsrandom']+'</span></td></tr> </table></div></a>';
+                 
+                $('.candidate-load').append(hm);
+              }
              }
 
           })
@@ -829,6 +937,9 @@
   }
   function searchname()
   {
+    if ($(':checkbox').is(':checked')){
+      $(':checkbox').prop('checked', false);
+    }
     var name1 = $('#text_search').val();
     $('.candidate-load').empty();
     $.ajax({
@@ -838,64 +949,75 @@
       data: {name: name1},
     })
     .done(function(data) {
-      
+      $('.demhs').text(data['total_rows'] +' Hồ sơ'); 
       for(var i in data)
-           {
-            var gt = "";
-            if(data[i]['gender'] == "M") gt = "Nam"; else gt = "Nữ"; 
-            
-            var chieucao = "";
-            if(data[i]['height'] == 0) chieucao = ""; else chieucao = data[i]['height']+"cm, ";
+      {
+        if (typeof data[i] === 'object') {
+          var gt = "";
+          if(data[i]['gender'] == "M") gt = "Nam"; else gt = "Nữ"; 
+          
+          var chieucao = "";
+          if(data[i]['height'] == 0) chieucao = ""; else chieucao = data[i]['height']+"cm, ";
 
-            var cannang = "";
-            if(data[i]['weight'] == 0) cannang = ""; else cannang = data[i]['weight']+"kg, ";
-            var kinhnghiem = "";
-            
-            var bangcap = "";
-            if(data[i]['certificate'] == "") bangcap = ""; else bangcap = data[i]['certificate']+", ";
-            var ngonngu = "";
-            if(data[i]['countlanguage'] == 0)
-            { ngonngu = ""; }
-            else if(data[i]['countlanguage'] == 1) 
-            { ngonngu = data[i]['language']+", "; }
-            else ngonngu = data[i]['language']+"+"+(data[i]['countlanguage']-1)+", ";
-            var phanmem = "";
-            if(data[i]['countsoftware'] == 0) phanmem = "";
-            else if(data[i]['countsoftware'] == 1) phanmem = data[i]['software']+", ";
-            else phanmem = data[i]['software']+"+"+(data[i]['countsoftware']-1)+", "; 
-            var star = '';
-            if(data[i]['istalent'] == 0) {
-            star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-gray fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9"></span></span>'; 
-             } else {
-            star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-orange fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9">'+data[i]['istalent'] +'</span></span>';
-            }
-            var dss = ''; 
-            if(data[i]['blocked'] == 'Y') { dss ='<div class="col-md-3 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; }
-            else {
-              dss = '<div class="col-md-4 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; 
-            }
-            var bb = '';
-             if(data[i]['blocked'] == 'Y') { bb = '<i class="fa fa-ban color-red " ></i>'; }
-             var bell = '';
-            if(data[i]['unsubcribe'] == 'Y') bell = "-slash";
-            var vt = '';
-            if(data[i]['position'] != '') {
-                vt = '<label class="tuyendung-label1 color-black">'+data[i]['position']+'</label>';
-            }
-            var hm = '<a href="<?php echo base_url()?>admin/handling/profile/'+data[i]['candidateid']+'" class="hover-profile load-remove">';
-            hm+= '<div class="col-md-6 profile dash-horizontal pad-l0 pad-r5 min-h152"><table class="margin-t5 margin-b5"><tr><td class="td-cot1"><input class="checkcandidate" type="checkbox" value="'+data[i]['candidateid']+'" name="check[]" onclick="checkbox()"></td><td class="td-cot2">';
-            hm+= '<img src="<?php echo base_url()?>public/image/'+data[i]['imagelink']+'" class="frameimage" width="70px" height="70px">';
+          var cannang = "";
+          if(data[i]['weight'] == 0) cannang = ""; else cannang = data[i]['weight']+"kg, ";
+          var kinhnghiem = "";
+          
+          var bangcap = "";
+          if(data[i]['certificate'] == "") bangcap = ""; else bangcap = data[i]['certificate']+", ";
+          var ngonngu = "";
+          if(data[i]['countlanguage'] == 0)
+          { ngonngu = ""; }
+          else if(data[i]['countlanguage'] == 1) 
+          { ngonngu = data[i]['language']+", "; }
+          else ngonngu = data[i]['language']+"+"+(data[i]['countlanguage']-1)+", ";
+          var phanmem = "";
+          if(data[i]['countsoftware'] == 0) phanmem = "";
+          else if(data[i]['countsoftware'] == 1) phanmem = data[i]['software']+", ";
+          else phanmem = data[i]['software']+"+"+(data[i]['countsoftware']-1)+", "; 
+          var star = '';
+          if(data[i]['istalent'] == 0) {
+          star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-gray fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9"></span></span>'; 
+           } else {
+          star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-orange fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9">'+data[i]['istalent'] +'</span></span>';
+          }
+          var dss = ''; 
+          if(data[i]['blocked'] == 'Y') { dss ='<div class="col-md-3 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; }
+          else {
+            dss = '<div class="col-md-4 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; 
+          }
+          var bb = '';
+           if(data[i]['blocked'] == 'Y') { bb = '<i class="fa fa-ban color-red " ></i>'; }
+           var bell = '';
+          if(data[i]['unsubcribe'] == 'Y') bell = "-slash";
+          var vt = '';
+          if(data[i]['position'] != '') {
+              vt = '<label class="tuyendung-label1 color-black">'+data[i]['position']+'</label>';
+          }
+          var tag = '';
+          if(data[i]['tags'] != '')
+          {
+            tag = '<label class="tuyendung-label2">'+data[i]['tags']+'</label>';
+          }
+          var recruite = '';
+          if (data[i]['recruite'] > 0) {
+            recruite = '<i class="fa fa-flag color-flag-recruite" ></i>';
+          }
 
-            hm+= '<label class="label-td pad-t3" >'+Math.round(data[i]['rate'])+' điểm</label><label class="label-td pad-t1" >3 mẩu thư</label><label class="margin-t-3"><i class="fa fa-bell'+bell+' icon-label pad-l2"></i><i class="fa fa-user icon-label"></i><i class="fa fa-clock-o icon-de" ></i></label></td><td class="td-cot3"><div class="row width100 margin-l0" ><div class="col-md-7 padding-lr0">';
-            hm+= '<label class="label-name color-black">'+data[i]['name']+'</label>';
-            hm+= '</div>'+dss+'<span class="webportal">'+data[i]['profilesrc']+'</span></div><div id="talent'+data[i]['candidateid']+'" class="col-md-1 padding-lr0 ">'+star+'</div><div class="col-md-1 padding-lr0 icon-block" id="block'+data[i]['candidateid']+'">'+bb+'</div></div>'+vt+'<label class="tuyendung-label2">Tuyển dụng, đào tạo</label><label class="tuyendung-label3">';
+          var hm = '<a href="<?php echo base_url()?>admin/campaign/profile/'+data[i]['candidateid']+'/1/<?php echo $campaignid?>/<?php echo $roundid ?>/<?php echo $type ?>" class="hover-profile load-remove">';
+          hm+= '<div class="col-md-6 profile dash-horizontal pad-l0 pad-r5 min-h152"><table class="margin-t5 margin-b5"><tr><td class="td-cot1"><input class="checkcandidate" type="checkbox" value="'+data[i]['candidateid']+'" name="check[]" onclick="checkbox_can1()"></td><td class="td-cot2">';
+          hm+= '<img src="<?php echo base_url()?>public/image/'+data[i]['imagelink']+'" class="frameimage" width="70px" height="70px">';
 
-            hm+= ''+gt+', '+data[i]['dateofbirth2']+' tuổi, '+chieucao+''+cannang+''+data[i]['kinhnghiem']+''+data[i]['thunhap']+''+bangcap+''+ngonngu+''+phanmem+'...';
-            hm+= '</label> <span class="highr">#HighR</span></td></tr> </table></div></a>';
-             
-            $('.candidate-load').append(hm);
-           }
-           $('.demhs').text(data.length +' Hồ sơ');             
+          hm+= '<label class="label-td pad-t3" >'+Math.round(data[i]['rate'])+' điểm</label><label class="label-td pad-t1" >'+data[i]['count_campaign']+' chiến dịch</label><label class="margin-t-3"><i class="fa fa-bell'+bell+' icon-label pad-l2"></i><i class="fa fa-user icon-label"></i><i class="fa fa-clock-o icon-de" ></i></label></td><td class="td-cot3"><div class="row width100 margin-l0" ><div class="col-md-7 padding-lr0">';
+          hm+= '<label class="label-name color-black">'+data[i]['name']+' '+recruite+'</label>';
+          hm+= '</div>'+dss+'<span class="webportal">'+data[i]['profilesrc']+'</span></div><div id="talent'+data[i]['candidateid']+'" class="col-md-1 padding-lr0 ">'+star+'</div><div class="col-md-1 padding-lr0 icon-block" id="block'+data[i]['candidateid']+'">'+bb+'</div></div>'+vt+tag+'<label class="tuyendung-label3">';
+
+          hm+= ''+gt+', '+data[i]['dateofbirth2']+' tuổi, '+chieucao+''+cannang+''+data[i]['kinhnghiem']+''+data[i]['thunhap']+''+bangcap+''+ngonngu+''+phanmem+'...';
+          hm+= '</label> <span class="highr">'+data[i]['tagsrandom']+'</span></td></tr> </table></div></a>';
+           
+          $('.candidate-load').append(hm);
+        }
+      }
     })
     .fail(function() {
       console.log("error");
@@ -906,10 +1028,17 @@
     
   }
 
-  function loadfilter(obj)
+  function loadfilter(obj,check)
     {
       var id = obj;
-    
+      if(check == 'on'){
+        if ($(':checkbox').is(':checked')){
+          $(':checkbox').prop('checked', false);
+          $('#check_filter_1').prop('checked', true);
+        }
+      }else{
+        $('#check_filter_1').prop('checked', false);
+      }
         $.ajax({
           url: '<?php echo base_url()?>admin/campaign/loadfilter',
           type: 'POST',
@@ -957,10 +1086,21 @@
            $("#chk_chuacogd").prop("checked",false);
            $("#chk_cogd").prop("checked",false);
            $("#chk_tiemnang").prop("checked",false);
+           $('#tiemnang_tu').val("");
+           $('#tiemnang_den').val("");
+           $("#chk_lastupdate").prop("checked",false);
            $("#chk_chan").prop("checked",false);
            $("#chk_diem").prop("checked",false);
            $('#diem_tu').val("");
            $('#diem_den').val("");
+           for(var i = 0; i < $('#counttagrandom').val() ; i++ )
+           {
+                $('#tagr'+i).prop("checked",false);
+           }
+           for(var i = 0; i < $('#counttag').val() ; i++ )
+           {
+                $('#tag'+i).prop("checked",false);
+           }
            for(var i = 0; i < $('#countprofile').val() ; i++ )
            {
                 $('#src'+i).prop("checked",false);
@@ -979,6 +1119,7 @@
            }
            $('#dropdown-lvl1').removeClass('in');
            $('#dropdown-lvl2').removeClass('in');
+           $('#dropdown-lvl3').removeClass('in');
            $('#dropdown-lvl4').removeClass('in');
            $('#dropdown-lvl5').removeClass('in');
            $('#dropdown-lvl6').removeClass('in');
@@ -986,6 +1127,7 @@
            $('#dropdown-lvl8').removeClass('in');
            $('#dropdown-lvl9').removeClass('in');
            $('#dropdown-lvl10').removeClass('in');
+           $('#dropdown-lvl11').removeClass('in');
            for(var i in data)
            {
               if(data[i]['fieldname'] == 'desirebenefit') 
@@ -1158,6 +1300,30 @@
                 $('#select2-quanhuyen-nav-container').text($( "#quanhuyen-nav option:selected" ).text());
                 continue;
               }
+              if(data[i]['fieldname'] == 'tag')
+              {
+                for(var ii = 0; ii < $('#counttag').val() ; ii++ )
+                {
+                  if(data[i]['filterfrom'] == $('#tag'+ii).val())
+                  {
+                    $('#tag'+ii).prop("checked",true);
+                  }
+                }
+                $('#dropdown-lvl3').addClass('in');
+                continue;
+              }
+              if(data[i]['fieldname'] == 'tagrandom')
+              {
+                for(var ii = 0; ii < $('#counttagrandom').val() ; ii++ )
+                {
+                  if(data[i]['filterfrom'] == $('#tagr'+ii).val())
+                  {
+                    $('#tagr'+ii).prop("checked",true);
+                  }
+                }
+                $('#dropdown-lvl11').addClass('in');
+                continue;
+              }
               if(data[i]['fieldname'] == 'profilesrc')
               {
                 for(var ii = 0; ii < $('#countprofile').val() ; ii++ )
@@ -1183,6 +1349,8 @@
               if(data[i]['fieldname'] == 'istalent') 
               {
                 $("#chk_tiemnang").prop("checked",true);
+                $('#tiemnang_tu').val(data[i]['filterfrom']);
+                $('#tiemnang_den').val(data[i]['filterto']);
                 $('#dropdown-lvl1').addClass('in');
                 continue;
               }
@@ -1195,8 +1363,16 @@
               if(data[i]['fieldname'] == 'rate') 
               {
                 $("#chk_diem").prop("checked",true);
-                $('#diemtu').val(data[i]['filterfrom']);
-                $('#diemden').val(data[i]['filterto']);
+                $('#diem_tu').val(data[i]['filterfrom']);
+                $('#diem_den').val(data[i]['filterto']);
+                $('#dropdown-lvl1').addClass('in');
+                continue;
+              }
+              if(data[i]['fieldname'] == 'lastupdate') 
+              {
+                $("#chk_lastupdate").prop("checked",true);
+                $('#update_tu').val(data[i]['filterfrom']);
+                $('#update_den').val(data[i]['filterto']);
                 $('#dropdown-lvl1').addClass('in');
                 continue;
               }
@@ -1210,4 +1386,195 @@
           console.log("complete");
         });
     }
+  function filterApply(campaignid,check) {
+    if(check == 'on'){
+      if ($(':checkbox').is(':checked')){
+        $(':checkbox').prop('checked', false);
+        $('#check_filter_2').prop('checked', true);
+      }
+    }else{
+      $('#check_filter_2').prop('checked', false);
+    }
+    $('.candidate-load').empty();
+    $.ajax({
+      url: '<?php echo base_url()?>admin/campaign/filterApply',
+      type: 'POST',
+      dataType: 'json',
+      data: {campaignid: campaignid},
+    })
+    .done(function(data) {
+      for(var i in data)
+      {
+        var gt = "";
+        if(data[i]['gender'] == "M") gt = "Nam"; else gt = "Nữ"; 
+        
+        var chieucao = "";
+        if(data[i]['height'] == 0) chieucao = ""; else chieucao = data[i]['height']+"cm, ";
+
+        var cannang = "";
+        if(data[i]['weight'] == 0) cannang = ""; else cannang = data[i]['weight']+"kg, ";
+        var kinhnghiem = "";
+        
+        var bangcap = "";
+        if(data[i]['certificate'] == "") bangcap = ""; else bangcap = data[i]['certificate']+", ";
+        var ngonngu = "";
+        if(data[i]['countlanguage'] == 0)
+        { ngonngu = ""; }
+        else if(data[i]['countlanguage'] == 1) 
+        { ngonngu = data[i]['language']+", "; }
+        else ngonngu = data[i]['language']+"+"+(data[i]['countlanguage']-1)+", ";
+        var phanmem = "";
+        if(data[i]['countsoftware'] == 0) phanmem = "";
+        else if(data[i]['countsoftware'] == 1) phanmem = data[i]['software']+", ";
+        else phanmem = data[i]['software']+"+"+(data[i]['countsoftware']-1)+", "; 
+        var star = '';
+        if(data[i]['istalent'] == 0) {
+        star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-gray fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9"></span></span>'; 
+         } else {
+        star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-orange fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9">'+data[i]['istalent'] +'</span></span>';
+        }
+        var dss = ''; 
+        if(data[i]['blocked'] == 'Y') { dss ='<div class="col-md-3 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; }
+        else {
+          dss = '<div class="col-md-4 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; 
+        }
+        var bb = '';
+         if(data[i]['blocked'] == 'Y') { bb = '<i class="fa fa-ban color-red " ></i>'; }
+         var bell = '';
+        if(data[i]['unsubcribe'] == 'Y') bell = "-slash";
+        var vt = '';
+        var tag = '';
+        if(data[i]['tags'] != '')
+        {
+          tag = '<label class="tuyendung-label2">'+data[i]['tags']+'</label>';
+        }
+        if(data[i]['position'] != '') {
+            vt = '<label class="tuyendung-label1 color-black">'+data[i]['position']+'</label>';
+        }
+        var recruite = '';
+        if (data[i]['recruite'] > 0) {
+          recruite = '<i class="fa fa-flag color-flag-recruite" ></i>';
+        }
+        var hm = '<a href="<?php echo base_url()?>admin/campaign/profile/'+data[i]['candidateid']+'/1/<?php echo $campaignid?>/<?php echo $roundid ?>/<?php echo $type ?>" class="hover-profile load-remove">';
+        hm+= '<div class="col-md-6 profile dash-horizontal pad-l0 pad-r5 min-h152"><table class="margin-t5 margin-b5"><tr><td class="td-cot1"><input class="checkcandidate" type="checkbox" value="'+data[i]['candidateid']+'" name="check[]" onclick="checkbox_can1()"></td><td class="td-cot2">';
+        hm+= '<img src="<?php echo base_url()?>public/image/'+data[i]['imagelink']+'" class="frameimage" width="70px" height="70px">';
+
+        hm+= '<label class="label-td pad-t3" >'+Math.round(data[i]['rate'])+' điểm</label><label class="label-td pad-t1" >'+data[i]['count_campaign']+' chiến dịch</label><label class="margin-t-3"><i class="fa fa-bell'+bell+' icon-label pad-l2"></i><i class="fa fa-user icon-label"></i><i class="fa fa-clock-o icon-de" ></i></label></td><td class="td-cot3"><div class="row width100 margin-l0" ><div class="col-md-7 padding-lr0">';
+        hm+= '<label class="label-name color-black">'+data[i]['name']+' '+recruite+'</label>';
+        hm+= '</div>'+dss+'<span class="webportal">'+data[i]['profilesrc']+'</span></div><div id="talent'+data[i]['candidateid']+'" class="col-md-1 padding-lr0 ">'+star+'</div><div class="col-md-1 padding-lr0 icon-block" id="block'+data[i]['candidateid']+'">'+bb+'</div></div>'+vt+tag+'<label class="tuyendung-label3">';
+
+        hm+= ''+gt+', '+data[i]['dateofbirth2']+' tuổi, '+chieucao+''+cannang+''+data[i]['kinhnghiem']+''+data[i]['thunhap']+''+bangcap+''+ngonngu+''+phanmem+'...';
+        hm+= '</label> <span class="highr">'+data[i]['tagsrandom']+'</span></td></tr> </table></div></a>';
+         
+        $('.candidate-load').append(hm);
+      }
+      $('.demhs').text(data.length +' Hồ sơ');   
+    })
+    .fail(function() {
+      console.log("error");
+    });
+    
+  }
+
+  $(document).ready(function() {
+    var checkRecruit = '<?php echo isset($checkRecruit)?$checkRecruit : '-1' ?>';
+    if(checkRecruit == '1'){
+      if ($(':checkbox').is(':checked')){
+        $(':checkbox').prop('checked', false);
+        $('#check_filter_3').prop('checked', true);
+      }
+    }
+  });
+  function filterNotRecruit(check,campaignid,roundid) {
+    if(check == 'on'){
+      if ($(':checkbox').is(':checked')){
+        $(':checkbox').prop('checked', false);
+        $('#check_filter_3').prop('checked', true);
+      }
+    }else{
+      $('#check_filter_3').prop('checked', false);
+    }
+    $('.candidate-load').empty();
+    $.ajax({
+      url: '<?php echo base_url()?>admin/campaign/filterRecruit/1/'+campaignid+'/'+roundid,
+      type: 'POST',
+      dataType: 'json',
+      data: {},
+    })
+    .done(function(data) {
+      $('.demhs').text(data['total_rows'] +' Hồ sơ');  
+      $('.pagination-page').empty().html(data['phantrang']);  
+      for(var i in data)
+      {
+        if (typeof data[i] === 'object') {
+          var gt = "";
+          if(data[i]['gender'] == "M") gt = "Nam"; else gt = "Nữ"; 
+          
+          var chieucao = "";
+          if(data[i]['height'] == 0) chieucao = ""; else chieucao = data[i]['height']+"cm, ";
+
+          var cannang = "";
+          if(data[i]['weight'] == 0) cannang = ""; else cannang = data[i]['weight']+"kg, ";
+          var kinhnghiem = "";
+          
+          var bangcap = "";
+          if(data[i]['certificate'] == "") bangcap = ""; else bangcap = data[i]['certificate']+", ";
+          var ngonngu = "";
+          if(data[i]['countlanguage'] == 0)
+          { ngonngu = ""; }
+          else if(data[i]['countlanguage'] == 1) 
+          { ngonngu = data[i]['language']+", "; }
+          else ngonngu = data[i]['language']+"+"+(data[i]['countlanguage']-1)+", ";
+          var phanmem = "";
+          if(data[i]['countsoftware'] == 0) phanmem = "";
+          else if(data[i]['countsoftware'] == 1) phanmem = data[i]['software']+", ";
+          else phanmem = data[i]['software']+"+"+(data[i]['countsoftware']-1)+", "; 
+          var star = '';
+          if(data[i]['istalent'] == 0) {
+          star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-gray fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9"></span></span>'; 
+           } else {
+          star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-orange fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9">'+data[i]['istalent'] +'</span></span>';
+          }
+          var dss = ''; 
+          if(data[i]['blocked'] == 'Y') { dss ='<div class="col-md-3 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; }
+          else {
+            dss = '<div class="col-md-4 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; 
+          }
+          var bb = '';
+           if(data[i]['blocked'] == 'Y') { bb = '<i class="fa fa-ban color-red " ></i>'; }
+           var bell = '';
+          if(data[i]['unsubcribe'] == 'Y') bell = "-slash";
+          var vt = '';
+          if(data[i]['position'] != '') {
+              vt = '<label class="tuyendung-label1 color-black">'+data[i]['position']+'</label>';
+          }
+          var tag = '';
+            if(data[i]['tags'] != '')
+            {
+              tag = '<label class="tuyendung-label2">'+data[i]['tags']+'</label>';
+            }
+          var recruite = '';
+          if (data[i]['recruite'] > 0) {
+            recruite = '<i class="fa fa-flag color-flag-recruite" ></i>';
+          }
+          var hm = '<a href="<?php echo base_url()?>admin/handling/profile/'+data[i]['candidateid']+'" class="hover-profile load-remove">';
+            hm+= '<div class="col-md-6 profile dash-horizontal pad-l0 pad-r5 min-h152"><table class="margin-t5 margin-b5"><tr><td class="td-cot1"><input class="checkcandidate" type="checkbox" value="'+data[i]['candidateid']+'" name="check[]" onclick="checkbox()"></td><td class="td-cot2">';
+            hm+= '<img src="<?php echo base_url()?>public/image/'+data[i]['imagelink']+'" class="frameimage" width="70px" height="70px">';
+
+            hm+= '<label class="label-td pad-t3" >'+Math.round(data[i]['rate'])+' điểm</label><label class="label-td pad-t1" >'+data[i]['count_campaign']+' chiến dịch</label><label class="margin-t-3"><i class="fa fa-bell'+bell+' icon-label pad-l2"></i><i class="fa fa-user icon-label"></i><i class="fa fa-clock-o icon-de" ></i></label></td><td class="td-cot3"><div class="row width100 margin-l0" ><div class="col-md-7 padding-lr0">';
+            hm+= '<label class="label-name color-black">'+data[i]['name']+' '+recruite+'</label>';
+            hm+= '</div>'+dss+'<span class="webportal">'+data[i]['profilesrc']+'</span></div><div id="talent'+data[i]['candidateid']+'" class="col-md-1 padding-lr0 ">'+star+'</div><div class="col-md-1 padding-lr0 icon-block" id="block'+data[i]['candidateid']+'">'+bb+'</div></div>'+vt+tag+'<label class="tuyendung-label3">';
+
+            hm+= ''+gt+', '+data[i]['dateofbirth2']+' tuổi, '+chieucao+''+cannang+''+data[i]['kinhnghiem']+''+data[i]['thunhap']+''+bangcap+''+ngonngu+''+phanmem+'...';
+            hm+= '</label> <span class="highr">'+data[i]['tagsrandom']+'</span></td></tr> </table></div></a>';
+             
+            $('.candidate-load').append(hm);
+        }
+      }  
+    })
+    .fail(function() {
+      console.log("error");
+    });
+    
+  }
 </script>

@@ -113,5 +113,20 @@ class Data_model extends CI_Model{
             return $query->result_array();
         }
     }
+
+    public function merge_data($match,$data,$table)
+    {
+        $category = $match['category'];
+        $code = $match['code'];
+        $query = "SELECT COUNT(*) AS count from codedictionary WHERE category = '$category' AND code ='$code' ";
+        $result = $this->db->query($query)->result_array();
+        if (isset($result[0]) && $result[0]['count'] >0) {
+            $this->db->where($match)->update($table,$data);
+            return 'true';
+        }else{
+            $this->db->insert($table,$data);
+            return $this->insert_id();
+        }
+    }
 }
 ?>
