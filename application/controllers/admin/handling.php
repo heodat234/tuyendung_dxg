@@ -17,9 +17,12 @@ class Handling extends CI_Controller {
 		$this->load->model(array('admin/Candidate_model','admin/total_model','admin/Data_model','admin/Campaign_model','M_auth'));
 		$ac_data['hoso'] = 'active';
 
-        $o_data['mailtemplate'] = $this->Campaign_model->select("mailprofileid,profilename,datasource,presender,presubject,prebody,preattach",'mailprofile',array('profiletype' => '0','status' => 'W'),'');
+        $o_data['mailtemplate'] = $this->Campaign_model->select("mailprofileid,profilename",'mailprofile',array('profiletype' => '0','status' => 'W'),'');
         $o_data['operator']     = $this->Campaign_model->select("operatorid,operatorname,email",'operator',array('hidden' => 1),'');
         $o_data['asmt_pv']      = $this->Campaign_model->select("asmttemp,asmtname",'asmtheader',array('asmtstatus' => 'W','asmttype' => '1'),'');
+        // echo "<pre>";
+        // print_r($o_data);
+        // echo "</pre>"; exit;
         $this->data['modal_campaign']      = $this->load->view('admin/campaign/modal_campaign',$o_data,true);
 		$this->data['header']              = $this->load->view('admin/home/header',null,true);
 	    $this->data['menu']                = $this->load->view('admin/home/menu',$ac_data,true);
@@ -102,7 +105,7 @@ class Handling extends CI_Controller {
         }else{
             $this->data['temp'] = $this->load->view('admin/page/content',$data1,true);
         }
-		
+		// $this->data['temp'] = $this->load->view('admin/page/test',null,true);
 		$this->load->view('admin/home/master',$this->data);
 	}
 	public function profile($id = '',$start = '1',$tabActive = '1')

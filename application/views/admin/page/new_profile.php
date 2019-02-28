@@ -2015,9 +2015,10 @@
 	    cb(matches);
 	  };
 	};
-
-	var states = jQuery.parseJSON($('#sstag').text());
-	// console.log(states);
+	var temp = $('#sstag').text();
+	var states = $.parseJSON(temp);
+	console.log(temp);
+	console.log(states);
 
 	$('#typeahead').tagsinput({
 	    typeaheadjs: {

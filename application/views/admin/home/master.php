@@ -5,7 +5,6 @@ if($this->session->has_userdata('user_admin')) {
 <html>
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Tuyển dụng Admin</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/bootstrap.min.css">
@@ -13,12 +12,12 @@ if($this->session->has_userdata('user_admin')) {
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/ionicons.min.css">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/AdminLTE.min.css">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/_all-skins.min.css">
-  <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/bootstrap-datepicker.min.css">
-  <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/daterangepicker.css">
+  <!-- <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/bootstrap-datepicker.min.css"> -->
+  <!-- <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/daterangepicker.css"> -->
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/bootstrap3-wysihtml5.min.css">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/bootstrap3-wysihtml5.min.css">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/bootstrap-multiselect.css">
-  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/mycss.css">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/mycss2.css">
@@ -30,19 +29,19 @@ if($this->session->has_userdata('user_admin')) {
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/fullcalendar.min.css">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/app.css">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/bootstrap-tagsinput.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>public/datetimepicker-master/jquery.datetimepicker.css">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="<?php echo base_url()?>public/admin/js/bootstrap-multiselect.js"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-  <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>public/datetimepicker-master/jquery.datetimepicker.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
-    <script src="<?php echo base_url()?>public/admin/js/bootstrap-tagsinput.js"></script>
-    <script src="<?php echo base_url()?>public/admin/js/typeahead.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
-    <script src="<?php echo base_url()?>public/datetimepicker-master/build/jquery.datetimepicker.full.min.js"></script>
-    <script src="<?php echo base_url()?>public/admin/js/jquery.number.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+  <script src="<?php echo base_url()?>public/admin/js/bootstrap-tagsinput.js"></script>
+  <script src="<?php echo base_url()?>public/admin/js/typeahead.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
+  <script src="<?php echo base_url()?>public/datetimepicker-master/build/jquery.datetimepicker.full.min.js"></script>
+  <script src="<?php echo base_url()?>public/admin/js/jquery.number.js"></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
   <div class="wrapper">
@@ -53,12 +52,12 @@ if($this->session->has_userdata('user_admin')) {
     <div class="control-sidebar-bg"></div>
   </div>
   <script src="<?php echo base_url()?>public/admin/js/jquery-ui.min.js"></script>
-  <script src="<?php echo base_url()?>public/admin/js/bootstrap-multiselect.js"></script>
+  <!-- <script src="<?php echo base_url()?>public/admin/js/bootstrap-multiselect.js"></script> -->
   <script>
     $.widget.bridge('uibutton', $.ui.button);
   </script>
   <script src="<?php echo base_url()?>public/admin/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="<?php echo base_url()?>public/ckeditor/ckeditor.js"></script>
+  <script src="<?php echo base_url()?>public/ckeditor/ckeditor.js"></script>
   <script src="<?php echo base_url()?>public/admin/js/moment.min.js"></script>
   <script src="<?php echo base_url()?>public/admin/js/daterangepicker.js"></script>
   <script src="<?php echo base_url()?>public/admin/js/bootstrap-datepicker.min.js"></script>

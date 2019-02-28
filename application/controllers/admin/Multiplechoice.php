@@ -750,7 +750,7 @@ class Multiplechoice extends CI_Controller {
 	{
 		$join[1] = array('table'=> 'document','match' =>'tb.operatorid = document.referencekey');
 	    $o_data['operator'] = $this->Data_model->select_row_option('tb.operatorname,tb.operatorid,tb.email, document.filename',array('tb.hidden' => 1),'','operator tb',$join,'','','','');
-        $o_data['mailtemplate'] = $this->Campaign_model->select("mailprofileid,profilename,datasource,presubject,prebody,preattach",'mailprofile',array('profiletype' => '0'),'');
+        $o_data['mailtemplate'] = $this->Campaign_model->select("mailprofileid,profilename",'mailprofile',array('profiletype' => '0'),'');
         $o_data['asmt_pv'] = $data['asmt_pv']     = $this->Campaign_model->select("asmttemp,asmtname",'asmtheader',array('asmtstatus' => 'W','asmttype' => '1'),'');
 
 		$sql = "SELECT a.*, 

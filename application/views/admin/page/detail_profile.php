@@ -2517,8 +2517,9 @@
 	    		 comb_qh_px_2(get3,get4,<?php echo $candidate_noibo['candidateid'] ?>);
 	    	}
 
-	    	var states = jQuery.parseJSON($('#sstag').text());
-	    	console.log(states);
+	    	var temp = $('#sstag').text();
+			var states = $.parseJSON(temp);
+	    	// console.log(states);
 			$('#typeahead').tagsinput({
 			    typeaheadjs: {
 			    name: 'states',

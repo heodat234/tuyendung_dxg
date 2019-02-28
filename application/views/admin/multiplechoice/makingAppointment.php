@@ -151,7 +151,7 @@
 						<div class="title_ques"><?php echo($sec['sectionname'])?></div>
 						<?php if(isset($sec['question'])&&!empty($sec['question'])) foreach ($sec['question'] as $ques) {?>
 						<div class="question_as">
-							<label><?php echo($ques['question'])?></label>
+							<label><?php echo($ques['questioncontent'])?></label>
 							<?php if($ques['questiontype']=='scores'){?>
 							<div class="answer_as">
 								<div class="col-md-3">

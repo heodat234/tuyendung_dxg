@@ -14,7 +14,7 @@ class Campaign extends CI_Controller {
 		$ac_data['tuyendung'] 	= 'active';
 		$ac_data['campaign'] 	= 'active';
 
-		$o_data['mailtemplate'] = $this->Campaign_model->select("mailprofileid,profilename,datasource,presender,presubject,prebody,preattach",'mailprofile',array('profiletype' => '0', 'status' => 'W'),'');
+		$o_data['mailtemplate'] = $this->Campaign_model->select("mailprofileid,profilename",'mailprofile',array('profiletype' => '0', 'status' => 'W'),'');
 		$join[1] = array('table'=> 'document','match' =>'tb.operatorid = document.referencekey');
 		$o_data['operator'] 	= $this->Data_model->select_row_option('tb.operatorname,tb.operatorid,tb.email, document.filename',array('status' => 'W','candidateid' => 0),'','operator tb',$join,'','','','');
 		$o_data['asmt_pv'] 		= $this->Campaign_model->select("asmttemp,asmtname",'asmtheader',array('asmtstatus' => 'W','asmttype' => '1'),'');

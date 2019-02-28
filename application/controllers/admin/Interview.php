@@ -54,7 +54,7 @@ class Interview extends CI_Controller {
 	{
 		$join[1] = array('table'=> 'document','match' =>'tb.operatorid = document.referencekey');
 	    $o_data['operator'] = $this->Data_model->select_row_option('tb.operatorname,tb.operatorid,tb.email, document.filename',array('status' => 'W','candidateid' => 0),'','operator tb',$join,'','','','');
-        $o_data['mailtemplate'] = $this->Campaign_model->select("mailprofileid,profilename,datasource,presubject,prebody,preattach",'mailprofile',array('profiletype' => '0'),'');
+        $o_data['mailtemplate'] = $this->Campaign_model->select("mailprofileid,profilename",'mailprofile',array('profiletype' => '0'),'');
         $o_data['asmt_pv']      = $this->Campaign_model->select("asmttemp,asmtname",'asmtheader',array('asmtstatus' => 'W','asmttype' => '1'),'');
 
 		$sql = "SELECT a.*, b.name, b.email, b.imagelink,c.position, d.status as status_asmt, e.optionid, e.ansdatetime, e.ansdatetime2 FROM interview a  LEFT JOIN candidate b ON a.candidateid = b.candidateid  LEFT JOIN reccampaign c ON a.campaignid = c.campaignid LEFT JOIN assessment d ON a.inv_asmtid = d.asmtid LEFT JOIN asmtanswer e ON a.inv_asmtid = e.asmtid WHERE a.interviewid = $interviewid";

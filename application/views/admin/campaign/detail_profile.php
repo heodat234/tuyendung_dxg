@@ -1,5 +1,4 @@
 <?php if ($id != ''): 
-	// var_dump($candidate_noibo);exit;
 	$candidateid = ($candidate['candidateid'] != '')? $candidate['candidateid'] : $candidate_noibo['candidateid'];
 ?>
 	<form id="form_checkone">	
@@ -2583,7 +2582,63 @@
 	    		 	}
 	    		 }}else{ echo '';}
 ?>">
-
+<?php if ($id != '') { 
+	foreach ($candidate_con as $key => $value){ ?>
+	<input type="hidden" id="getqh1_<?php echo $value['candidateid'] ?>" value="<?php
+	    		 for($i = 0; $i < count($canaddress_con[$key]); $i++)
+	    		 {
+	    		 	if($canaddress_con[$key][$i]['addtype'] == "PREMANENT")
+	    		 	{
+	    		 		echo $canaddress_con[$key][$i]['district'];
+	    		 	}
+	    		 }
+	?>">
+	<input type="hidden" id="getpx1_<?php echo $value['candidateid'] ?>" value="<?php
+		    		 for($i = 0; $i < count($canaddress_con[$key]); $i++)
+		    		 {
+		    		 	if($canaddress_con[$key][$i]['addtype'] == "PREMANENT")
+		    		 	{
+		    		 		echo $canaddress_con[$key][$i]['ward'];
+		    		 	}
+		    		 }
+	?>">
+	<input type="hidden" id="addressno1_<?php echo $value['candidateid'] ?>" value="<?php
+		    		 for($i = 0; $i < count($canaddress_con[$key]); $i++)
+		    		 {
+		    		 	if($canaddress_con[$key][$i]['addtype'] == "PREMANENT")
+		    		 	{
+		    		 		echo $canaddress_con[$key][$i]['addressno'];
+		    		 	}
+		    		 }
+	?>">
+	<input type="hidden" id="getqh2_<?php echo $value['candidateid'] ?>" value="<?php
+		    		 for($i = 0; $i < count($canaddress_con[$key]); $i++)
+		    		 {
+		    		 	if($canaddress_con[$key][$i]['addtype'] == "CONTACT")
+		    		 	{
+		    		 		echo $canaddress_con[$key][$i]['district'];
+		    		 	}
+		    		 }
+	?>">
+	<input type="hidden" id="getpx2_<?php echo $value['candidateid'] ?>" value="<?php
+		    		 for($i = 0; $i < count($canaddress_con[$key]); $i++)
+		    		 {
+		    		 	if($canaddress_con[$key][$i]['addtype'] == "CONTACT")
+		    		 	{
+		    		 		echo $canaddress_con[$key][$i]['ward'];
+		    		 	}
+		    		 }
+	?>">
+	<input type="hidden" id="addressno2_<?php echo $value['candidateid'] ?>" value="<?php
+		    		 for($i = 0; $i < count($canaddress_con[$key]); $i++)
+		    		 {
+		    		 	if($canaddress_con[$key][$i]['addtype'] == "PREMANENT")
+		    		 	{
+		    		 		echo $canaddress_con[$key][$i]['addressno'];
+		    		 	}
+		    		 }
+	?>">
+<?php } } ?>
 <style type="text/css">
 	.color-forward {
 		color: #A0BA82;
@@ -2658,7 +2713,7 @@
         
     });
 	$(document).ready(function(){
-		
+		<?php if ($id != '') { ?>
 	    	if($('#city1').val() != '0')
 	    	{
 	    		 var city1 = $('#city1').val();
@@ -2676,7 +2731,8 @@
 	    		 comb_qh_px_2(get3,get4,<?php echo $candidate_noibo['candidateid'] ?>);
 	    	}
 
-	    	var states = JSON.parse($('#sstag').text());
+	    	var temp = $('#sstag').text();
+			var states = $.parseJSON(temp);
 
 			$('#typeahead').tagsinput({
 			    typeaheadjs: {
@@ -2715,7 +2771,7 @@
 				});
 
 				
-	    	<?php } ?>
+	    	<?php } } ?>
 	   	
 	});
 	function comb_tp_qh_1(obj,get,candidateid)
