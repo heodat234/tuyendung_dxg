@@ -110,6 +110,7 @@ class Handling extends CI_Controller {
 	}
 	public function profile($id = '',$start = '1',$tabActive = '1')
 	{
+
 		$where = $this->session->userdata('filter');
         $temp0         = $this->session->userdata('filterRecruit');
         $where        = isset($temp0)? $where.' '.$temp0 : $where;
@@ -143,7 +144,6 @@ class Handling extends CI_Controller {
             $data2['candidate']             = $this->Candidate_model->list_filter($join,$where,$start,$config['per_page'],$order);
         }
         $data2['total_rows']            = $config['total_rows'];
-
 		$this->data1['nav']               = $this->load->view('admin/page/nav-profile',$data2,true);
 		$this->data1['id']                = $id;
         $this->data1['tabActive']         = $tabActive;
@@ -162,12 +162,19 @@ class Handling extends CI_Controller {
         $join[0]    = array('table'=> 'operator','match' =>'tb.createdby = operator.operatorid');
         $join[1]    = array('table'=> 'document','match' =>'tb.createdby = document.referencekey');
         $orderby    = array('colname'=>'tb.createddate','typesort'=>'desc');
-        $history_cmt        = $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename',array('tb.candidateid'=>$id),'','cancomment tb',$join,'',$orderby,'','');
-        $history_profile    = $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename',array('tb.candidateid'=>$id),'','profilehistory tb',$join,'',$orderby,'','');
+        $sql                = "SELECT tb.*, operator.operatorname, document.filename FROM cancomment tb LEFT JOIN operator ON tb.createdby = operator.operatorid LEFT JOIN document ON tb.createdby = document.referencekey AND document.tablename = 'operator'  WHERE tb.candidateid = $id ORDER BY tb.createddate DESC";
+        $history_cmt        = $this->Campaign_model->select_sql($sql);
+        // $history_cmt        = $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename',array('tb.candidateid'=>$id),'','cancomment tb',$join,'',$orderby,'','');
+        $sql                = "SELECT tb.*, operator.operatorname, document.filename FROM profilehistory tb LEFT JOIN operator ON tb.createdby = operator.operatorid LEFT JOIN document ON tb.createdby = document.referencekey AND document.tablename = 'operator'  WHERE tb.candidateid = $id ORDER BY tb.createddate DESC";
+        $history_profile        = $this->Campaign_model->select_sql($sql);
+        // $history_profile    = $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename',array('tb.candidateid'=>$id),'','profilehistory tb',$join,'',$orderby,'','');
         //mail
-        $history_profile1   = $this->Data_model->select_row_option('tb.emailsubject,tb.mailid, tb.createddate, tb.isshare, operator.operatorname, document.filename',array('tb.toemail'=>$mail),'','mailtable tb',$join,'',$orderby,'','');
-        $this->data2['history'] = array_merge($history_cmt, $history_profile, $history_profile1);
+        // $sql                = "SELECT tb.emailsubject,tb.mailid, tb.createddate, tb.isshare, operator.operatorname, document.filename, document.subject  FROM mailtable tb LEFT JOIN operator ON tb.createdby = operator.operatorid  JOIN document ON tb.createdby = document.referencekey  WHERE tb.toemail = $mail ORDER BY tb.createddate DESC";
+        // $history_profile1        = $this->Campaign_model->select_sql($sql);
+        $history_profile1   = $this->Data_model->select_row_option('tb.emailsubject,tb.mailid, tb.createddate, tb.isshare, operator.operatorname, document.filename,document.subject',array('tb.toemail'=>$mail),'','mailtable tb',$join,'',$orderby,'','');
 
+        $this->data2['history'] = array_merge($history_cmt, $history_profile, $history_profile1);
+        // var_dump($history_profile1);exit;
         function cmp($a, $b) {
             if ($a['createddate'] == $b['createddate']) {
                 return 0;

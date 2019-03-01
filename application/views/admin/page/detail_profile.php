@@ -2259,10 +2259,11 @@
 	    <div id="collapse2" class="panel-collapse collapse in">
 	      <div class="panel-body pad0">
 	      	<table class="width100">
-	      		<?php foreach ($history as $row) { 
+	      		<?php 
+	      		 foreach ($history as $row) { 
 	      			$share = $rate = $comment = '';
 	      			$createddate  = date_format(date_create($row['createddate']),"d/m/Y - H:i");
-	      			if ($row['filename'] == '') {
+	      			if ($row['filename'] == '' || (isset($row['subject']) && $row['subject'] == 'File CV')) {
 	      				$image = 'bbye.jpg';
 	      			}else{
 	      				$image = $row['filename'];
@@ -2517,8 +2518,7 @@
 	    		 comb_qh_px_2(get3,get4,<?php echo $candidate_noibo['candidateid'] ?>);
 	    	}
 
-	    	var temp = $('#sstag').text();
-			var states = $.parseJSON(temp);
+	    	var states = ["<?php echo implode('","',$ss_tags); ?>"];
 	    	// console.log(states);
 			$('#typeahead').tagsinput({
 			    typeaheadjs: {

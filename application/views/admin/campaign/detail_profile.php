@@ -2522,9 +2522,7 @@
 	<!-- ket thuc 3 tab -->
 </div>
 <?php endif ?>
-<div class="hide" id="sstag">
-	<?php echo json_encode($ss_tags) ?>
-</div>
+
 <?php if ($id != ''): ?>
 	
 <?php endif ?>
@@ -2731,8 +2729,7 @@
 	    		 comb_qh_px_2(get3,get4,<?php echo $candidate_noibo['candidateid'] ?>);
 	    	}
 
-	    	var temp = $('#sstag').text();
-			var states = $.parseJSON(temp);
+	    	var states = ["<?php echo implode('","',$ss_tags); ?>"];
 
 			$('#typeahead').tagsinput({
 			    typeaheadjs: {

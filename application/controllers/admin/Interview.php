@@ -383,11 +383,11 @@ class Interview extends CI_Controller {
                 if (isset($user[0])) {
                     $lastname   = $user[0]['lastname'];
                     $name       = $user[0]['name'];
-                    $link       = '<a href="'.base_url().'admin/interview/invitationcard/'.$interviewid[$j].'/'.$row.'" >Lịch phỏng vấn - '.$name.'</a>';
+                    $link       = '<a href="'.base_url().'admin/interview/invitationcard/'.$interviewid[$j].'/'.$row.'" >Lịch '.$roundname.' - '.$name.'</a>';
                 }else{
                     $lastname   = 'Bạn';
                     $name       = 'Bạn';
-                    $link       = '<a href="'.base_url().'admin/interview/invitationcard/0/" >Lịch phỏng vấn - '.$name.'</a>';
+                    $link       = '<a href="'.base_url().'admin/interview/invitationcard/0/" >Lịch '.$roundname.' - '.$name.'</a>';
                 }
                 $link1 = '<a href="'.base_url().'admin/multiplechoice/interview_question/'.$interviewid[$j].'/'.$row.'" >Phiếu '.$roundname.' - '.$key[1].'</a>';
 
@@ -449,11 +449,11 @@ class Interview extends CI_Controller {
             if (isset($user[0])) {
                 $lastname   = $user[0]['lastname'];
                 $name       = $user[0]['name'];
-                $link       = '<a href="'.base_url().'admin/interview/invitationcard/'.$interviewid[$c].'/" >Lịch phỏng vấn V1 - '.$name.'</a>';
+                $link       = '<a href="'.base_url().'admin/interview/invitationcard/'.$interviewid[$c].'/" >Lịch '.$roundname.' - '.$name.'</a>';
             }else{
                 $lastname   = 'Bạn';
                 $name       = 'Bạn';
-                $link       = '<a href="'.base_url().'admin/interview/invitationcard/0/" >Lịch phỏng vấn V1 - '.$name.'</a>';
+                $link       = '<a href="'.base_url().'admin/interview/invitationcard/0/" >Lịch '.$roundname.' - '.$name.'</a>';
             }
             $chuoi_tim      = array('[Tên Ứng viên]','[Vòng tuyển dụng]','[Tên]','[Link phiếu mời tham dự phỏng vấn]','[Ghi chú]','[Vị trí]');
             $chuoi_thay_the = array($name,$roundname,$lastname,$link,$notes[$c],$position);
@@ -585,11 +585,11 @@ class Interview extends CI_Controller {
                 if (isset($user[0])) {
                     $lastname   = $user[0]['lastname'];
                     $name       = $user[0]['name'];
-                    $link       = '<a href="'.base_url().'admin/interview/invitationcard/'.$frm['interviewid'].'/" >Lịch phỏng vấn V1 - '.$name.'</a>';
+                    $link       = '<a href="'.base_url().'admin/interview/invitationcard/'.$frm['interviewid'].'/" >Lịch '.$roundname.' - '.$name.'</a>';
                 }else{
                     $lastname   = 'Bạn';
                     $name       = 'Bạn';
-                    $link       = '<a href="'.base_url().'admin/interview/invitationcard/0/" >Lịch phỏng vấn V1 - '.$name.'</a>';
+                    $link       = '<a href="'.base_url().'admin/interview/invitationcard/0/" >Lịch '.$roundname.' - '.$name.'</a>';
                 }
                 $link1 = '<a href="'.base_url().'admin/multiplechoice/interview_question/'.$frm['interviewid'].'/'.$interviewerid.'" >Phiếu '.$roundname.' - '.$name.'</a>';
 

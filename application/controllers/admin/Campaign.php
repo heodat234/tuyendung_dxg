@@ -546,8 +546,8 @@ class Campaign extends CI_Controller {
 	        uasort($this->data2['history'], 'cmp');
 	       
 	       //   echo "<pre>";
-        // print_r($history_profile3);
-        // echo "</pre>";exit;
+        	// print_r($history_profile3);
+        	// echo "</pre>";exit;
 
 
 	        $manageround				= $this->data2['recflow']['manageround'];
