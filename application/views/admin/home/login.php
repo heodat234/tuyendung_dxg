@@ -5,6 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Tuyển dụng Admin | Log in</title>
   <!-- Tell the browser to be responsive to screen width -->
+  <link rel="shortcut icon"  href="<?php echo base_url()?>public/image/favicon.ico"/>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
   <link rel="stylesheet" href="<?php base_url() ?>public/admin/css/bootstrap.min.css">
@@ -40,9 +41,9 @@
       </div>
       <div class="row">
         <div class="col-xs-8">
-          <div class="checkbox icheck">
+          <div class="checkbox ">
             <label>
-              <input type="checkbox" name="luumatkhau" value="1" <?php echo isset($_COOKIE['email'])? "checked" : "";?>> Remember Me
+              <input type="checkbox" name="luumatkhau" value="1"  <?php echo isset($_COOKIE['email_admin'])? "checked" : "";?>> Remember Me
             </label>
           </div>
         </div>
@@ -79,13 +80,13 @@
     }
 
   });
-  $(function () {
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_square-blue',
-      radioClass: 'iradio_square-blue',
-      increaseArea: '20%' /* optional */
-    });
-  });
+  // $(function () {
+  //   $('input').iCheck({
+  //     checkboxClass: 'icheckbox_square-blue',
+  //     radioClass: 'iradio_square-blue',
+  //     increaseArea: '20%' /* optional */
+  //   });
+  // });
   $('#btn_login').click(function(event) {
     $.ajax({
       url:'<?php echo base_url() ?>admin/login/loginUser',

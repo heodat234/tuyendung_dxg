@@ -2356,7 +2356,7 @@
 	      			}
       			}
       			if (isset($row['asmtid'])) {
-      				$fa 			= '<a onclick="loadAssessment('.$row['asmtid'].')"><i class="fa fa-file-text-o star-icon1"></i></a>';
+      				$fa 			= '<a onclick="loadAssessment('.$row['asmtid'].')" target="_blank"><i class="fa fa-file-text-o star-icon1"></i></a>';
       				$type 			= ' Tạo phiếu trắc nghiệm - '.$createddate;
       				$comment 		= '<div>'.$row['asmtname'].' Cấu trúc: '.$row['count_section'].' phần - '.$row['count_question'].' câu - Trộn tạo thành '.$row['shuffleqty'].' câu</div>';
       				if ($row['status'] == 'W') {
@@ -2389,8 +2389,8 @@
 					$nam 			=  date_format(date_create($row['intdate']),"Y");
 					$from 			=  date_format(date_create($row['timefrom']),"H:i");
 					$to 			=  date_format(date_create($row['timeto']),"H:i");
-					$fa 			= '<a onclick="loadAppointment('.$row['interviewid'].')"><i class="fa fa-calendar star-icon1"></i></a>';
-					$type 			= ' Tạo lịch hẹn phỏng vấn - '.$createddate;
+					$fa 			= '<a onclick="loadAppointment('.$row['interviewid'].')" target="_blank"><i class="fa fa-calendar star-icon1"></i></a>';
+					$type 			= ' Tạo lịch hẹn '.$row['roundname'].' - '.$createddate;
 					$comment 		= $thu.', '.$ngay.' Tháng '.$thang.' Năm '.$nam.'<br>'.$row['location'];
 					if (!empty($row['interviewer'])) {
       					$interviewer 		= '<div class="row">';
@@ -2435,7 +2435,7 @@
       				}
       			}
       			else if (isset($row['offerid'])) {
-      				$fa 			= '<a onclick="loadOffer('.$row['offerid'].')"><i class="fa fa-file-text-o star-icon1"></i></a>';
+      				$fa 			= '<a onclick="loadOffer('.$row['offerid'].')" target="_blank"><i class="fa fa-file-text-o star-icon1"></i></a>';
       				$type 			= ' Tạo đề nghị - '.$createddate;
       				if ($row['status'] == 'C' && $row['optionid'] == '1') {
 	      				$comment 	= '<div class="color-sign-in">Trạng thái: Phản hồi - Đồng ý</div>';
@@ -3145,7 +3145,7 @@
 	}
 
 	function loadAssessment(asmtid) {
-		parent.parent.location.href ='<?php echo base_url() ?>admin/multiplechoice/pageAssessment/'+asmtid+'/0';
+		window.open('<?php echo base_url() ?>admin/multiplechoice/pageAssessment/'+asmtid+'/0');
 	}
 	function createAppointment(scorecard, mailtemp1, mailtemp2) {
 		parent.parent.$('.body_taopv').remove();
@@ -3187,7 +3187,7 @@
 		parent.parent.$('#createAppointment').modal('show');
 	}
 	function loadAppointment(interviewid) {
-		parent.parent.location.href ='<?php echo base_url() ?>admin/multiplechoice/makingAppointment/'+interviewid;
+		window.open('<?php echo base_url() ?>admin/multiplechoice/makingAppointment/'+interviewid);
 	}
 
 
@@ -3269,7 +3269,7 @@
 		parent.parent.$('#createOffer').modal('show');
 	}
 	function loadOffer(offerid) {
-		parent.parent.location.href ='<?php echo base_url() ?>admin/offer/offer/'+offerid+'/10';
+		window.open('<?php echo base_url() ?>admin/offer/offer/'+offerid+'/10');
 	}
 
 	function sendMail() {

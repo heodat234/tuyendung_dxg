@@ -6,9 +6,10 @@ if($this->session->has_userdata('user_admin')) {
 <head>
   <meta charset="utf-8">
   <title>Tuyển dụng Admin</title>
+  <link rel="shortcut icon"  href="<?php echo base_url()?>public/image/favicon.ico"/>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/bootstrap.min.css">
-  <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/font-awesome.css">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/ionicons.min.css">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/AdminLTE.min.css">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/_all-skins.min.css">
@@ -17,7 +18,6 @@ if($this->session->has_userdata('user_admin')) {
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/bootstrap3-wysihtml5.min.css">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/bootstrap3-wysihtml5.min.css">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/bootstrap-multiselect.css">
-  <!-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/mycss.css">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/mycss2.css">
@@ -52,7 +52,6 @@ if($this->session->has_userdata('user_admin')) {
     <div class="control-sidebar-bg"></div>
   </div>
   <script src="<?php echo base_url()?>public/admin/js/jquery-ui.min.js"></script>
-  <!-- <script src="<?php echo base_url()?>public/admin/js/bootstrap-multiselect.js"></script> -->
   <script>
     $.widget.bridge('uibutton', $.ui.button);
   </script>

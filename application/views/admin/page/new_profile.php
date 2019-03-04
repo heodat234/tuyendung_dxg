@@ -2015,10 +2015,7 @@
 	    cb(matches);
 	  };
 	};
-	// var temp = $('#sstag').text();
 	var states = ["<?php echo implode('","',$ss_tags); ?>"];
-	// console.log(temp);
-	// console.log(states);
 
 	$('#typeahead').tagsinput({
 	    typeaheadjs: {
@@ -2034,7 +2031,6 @@
 
 	});
 
-
 	  
 	$('#typeahead').on('itemRemoved', function(event) {
 	  $('#tags').val($('#typeahead').val());
@@ -2046,9 +2042,7 @@
         }
     $(this).number( true );
     }).on('keypress', '.so',function(e){
-        // if ($(this).val() == 0)
-        //   $(this).val('');
-        // $(this).number( true );
+       
         if(!$.isNumeric(String.fromCharCode(e.which))) e.preventDefault();
     }).on('paste', '.so', function(e){    
         var cb = e.originalEvent.clipboardData || window.clipboardData;      

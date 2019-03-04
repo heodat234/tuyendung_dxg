@@ -43,7 +43,7 @@ class Handling extends CI_Controller {
 		
 		if($quaylai == '')
 		{
-			$where = 'AND candidate.hidden = 1';
+			$where = 'AND candidate.hidden = 1 AND candidate.mergewith = 0';
 			$this->session->set_userdata('filter', $where);
 		}
 		$where        = $this->session->userdata('filter');

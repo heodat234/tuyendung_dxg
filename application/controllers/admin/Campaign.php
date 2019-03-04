@@ -91,7 +91,7 @@ class Campaign extends CI_Controller {
 	
 	public function total_round($campaignid='',$roundid='',$type ='')
 	{
-		$sql = "SELECT COUNT(tt.candidateid) as count FROM profilehistory tt INNER JOIN (SELECT candidateid, MAX(createddate) AS MaxDateTime FROM profilehistory WHERE campaignid = '$campaignid' AND actiontype != 'Recruite'  GROUP BY candidateid) groupedtt ON tt.candidateid = groupedtt.candidateid AND tt.createddate = groupedtt.MaxDateTime WHERE tt.roundid = '$roundid' AND tt.actiontype = '$type'  ";
+		$sql = "SELECT COUNT(tt.candidateid) as count FROM profilehistory tt INNER JOIN (SELECT candidateid, MAX(createddate) AS MaxDateTime FROM profilehistory WHERE campaignid = '$campaignid' AND actiontype != 'Recruite'  GROUP BY candidateid) groupedtt ON tt.candidateid = groupedtt.candidateid AND tt.createddate = groupedtt.MaxDateTime LEFT JOIN candidate c ON tt.candidateid = c.candidateid WHERE tt.roundid = '$roundid' AND tt.actiontype = '$type' AND c.mergewith = 0 ";
 			$result = $this->Campaign_model->select_sql($sql);
 			return $result[0]['count'];
 	}
@@ -99,7 +99,7 @@ class Campaign extends CI_Controller {
 
 	public function main(){
 		$from = '';
-		$where = 'AND candidate.hidden = 1';
+		$where = 'AND candidate.hidden = 1 AND candidate.mergewith = 0';
 		$day = date('Y-m-d H:i:s');
 		$operatorid = $this->sess['operatorid'];
 		$sql = "SELECT DISTINCT a.*
@@ -218,7 +218,7 @@ class Campaign extends CI_Controller {
 			$c_data['bien'] 			= $roundid;
 
 			$from 			= '';
-			$where 			= 'AND candidate.hidden = 1';
+			$where 			= 'AND candidate.hidden = 1 AND candidate.mergewith = 0';
 			$c_data['round_main'][0]['count_round'] 		= $this->Candidate_model->count_round_hs($from,$where,$campaignid)[0]['count'];
 			for ($j=1; $j < count($c_data['round_main']); $j++) { 
 				$c_data['round_main'][$j]['count_round'] 	= $this->total_round($campaignid,$c_data['round_main'][$j]['roundid'],'Transfer');
@@ -290,7 +290,7 @@ class Campaign extends CI_Controller {
 		$c_data['round_main'] 		=	$this->Data_model->selectTable('recflow',$match);
 
 		$from 		= '';
-		$where 		= 'AND candidate.hidden = 1';
+		$where 		= 'AND candidate.hidden = 1 AND candidate.mergewith = 0';
 		$c_data['round_main'][0]['count_round'] = $this->Candidate_model->count_round_hs($from,$where,$campaignid)[0]['count'];
 		for ($j=1; $j < count($c_data['round_main']); $j++) { 
 			$c_data['round_main'][$j]['count_round'] = $this->total_round($campaignid,$c_data['round_main'][$j]['roundid'],'Transfer');
@@ -339,7 +339,7 @@ class Campaign extends CI_Controller {
 	{
 		$join 						= '';
 		$temp         				= $this->session->userdata('filterRecruit');
-        $where        				= isset($temp)? $temp : "AND candidate.hidden = 1";
+        $where        				= isset($temp)? $temp : "AND candidate.hidden = 1 AND candidate.mergewith = 0";
 		$this->session->set_userdata('filter', $where);
 
 		$match 						= array('campaignid' => $campaignid, 'roundid' => $roundid);
@@ -410,7 +410,7 @@ class Campaign extends CI_Controller {
 			$join = '';
 			if (!empty($candidate)) {
 				$id = $candidate[0]['candidateid'];
-				$where = 'AND candidate.candidateid IN ( ';
+				$where = 'AND mergewith = 0 AND candidate.candidateid IN ( ';
 				for ($i=0; $i < count($candidate); $i++) { 
 					if ($i == count($candidate)-1) {
 						$where .= $candidate[$i]['candidateid']; 
@@ -520,7 +520,8 @@ class Campaign extends CI_Controller {
 	        unset($join[3]);
 
 	        // history interview
-	        $history_profile4 	= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','interview tb',$join,'',$orderby1,'','');
+	        $join[3] 			= array('table'=> 'recflow','match' =>'tb.roundid = recflow.roundid');
+	        $history_profile4 	= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate,recflow.roundname',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','interview tb',$join,'',$orderby1,'','');
 	        $orderby1 			= array('colname'=>'a.createddate','typesort'=>'desc');
 	        for ($i=0; $i < count($history_profile4); $i++) { 
 	        	$join1[0] 		= array('table'=> 'operator b','match' =>'a.interviewer = b.operatorid');

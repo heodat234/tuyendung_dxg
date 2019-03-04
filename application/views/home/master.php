@@ -5,6 +5,7 @@
     	 Chính Sách Nhân Sự - Đất Xanh Group - Tập đoàn Bất Động Sản Đất Xanh 
       </title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="shortcut icon"  href="<?php echo base_url()?>public/image/favicon.ico"/>
     <meta name="description" content="
     1. Đào tạo và phát triển
     Đào tạo và phát triển là phương châm của Đất Xanh nhằm giúp đội ngũ nhân sự phát huy tối đa tiềm năng và định hướng nghề nghiệp," />
@@ -17,7 +18,8 @@
    
     <link rel='stylesheet' type='text/css' href='<?php echo base_url()?>public/css/mycss.css' />
     <link rel='stylesheet' type='text/css' href='<?php echo base_url()?>public/css/app.min.css' />
-      
+    <link rel='stylesheet' type='text/css' href='<?php echo base_url()?>public/css/bootstrap-tagsinput.css' />
+    <link rel='stylesheet' type='text/css' href='<?php echo base_url()?>public/css/app.css' />  
       <!-- <link rel='shortcut icon' href='/Data/Sites/1/skins/default/favicon.ico' /> -->
     <script src="<?php echo base_url()?>public/js/jquery.min.js" type="text/javascript" ></script>
      <!-- <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.min.js"></script> -->
@@ -35,6 +37,8 @@
     <script src="<?php echo base_url()?>public/js/dist/jquery.validate.js"></script>
     <script src="<?php echo base_url()?>public/js/dist/jquery.validate.min.js"></script>
     <script src="<?php echo base_url()?>public/js/dist/validation.js"></script>
+    <script src="<?php echo base_url()?>public/js/bootstrap-tagsinput.js"></script>
+   <script src="<?php echo base_url()?>public/js/typeahead.js"></script>  
   </head>
   <body id="ctl00_Body" class="canhcam vi-vn">
     <div id="loading" style="display:none">
@@ -58,6 +62,9 @@
                       <li itemscope itemtype='http://data-vocabulary.org/Breadcrumb'><a href='<?php echo base_url() ?>' class='itemcrumb' itemprop='url'><span itemprop='title'>Phát triển con người</span></a></li>
 
                       <li itemscope itemtype='http://data-vocabulary.org/Breadcrumb'><a href='http://www.datxanh.vn/phat-trien-con-nguoi/chinh-sach-nhan-su' class='itemcrumb active' itemprop='url'><span itemprop='title'>
+                        <div class="hide" id="sstag">
+                        <?php echo json_encode($tag) ?>
+                      </div>
                       <?php if($this->uri->segment(1) != null)
                               {
                                 if($this->uri->segment(1) == "handling")

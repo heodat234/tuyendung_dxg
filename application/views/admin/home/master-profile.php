@@ -1,6 +1,8 @@
 <?php 
 if($this->session->has_userdata('user_admin')) {
 ?>
+<title>Tuyển dụng Đất Xanh</title>
+<link rel="shortcut icon"  href="<?php echo base_url()?>public/image/favicon.ico"/>
 <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/bootstrap.min.css">
 <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/font-awesome.css">
 <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/ionicons.min.css">
@@ -28,6 +30,7 @@ if($this->session->has_userdata('user_admin')) {
   <script src="<?php echo base_url()?>public/admin/js/typeahead.js"></script>
   <script src="<?php echo base_url()?>public/admin/js/jquery-jvectormap-1.2.2.min.js"></script>
   <script src="<?php echo base_url()?>public/admin/js/jquery-jvectormap-world-mill-en.js"></script>
+  <script src="<?php echo base_url()?>public/admin/js/jquery.sparkline.js"></script>
   <script src="<?php echo base_url()?>public/admin/js/morris.js"></script>
       <?php echo isset($temp)? $temp: "" ;?>
 <?php 

@@ -627,15 +627,7 @@ class Multiplechoice extends CI_Controller {
 		$join[0] 			= array('table'=> 'operator','match' =>'tb.createdby = operator.operatorid');
         $join[1] 			= array('table'=> 'document','match' =>"tb.createdby = document.referencekey AND document.tablename = 'operator' ");
         $orderby 			= array('colname'=>'tb.createddate','typesort'=>'desc');
-        $history_cmt 		= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename',array('tb.candidateid'=>$id),'','cancomment tb',$join,'',$orderby,'','');
-
-        $type 				= array('Talent','Nottalent','Trust','Block');
-        $history_profile1 	= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename',array('tb.candidateid'=>$id, 'tb.campaignid' => 0),'','profilehistory tb',$join,'',$orderby,'','');
-        $history_profile2 	= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','profilehistory tb',$join,'',$orderby,'','');
-
-        //mail
-        $history_profile6 	= $this->Data_model->select_row_option('tb.emailsubject,tb.mailid, tb.createddate, tb.isshare, operator.operatorname, document.filename',array('tb.toemail'=>$mail),'','mailtable tb',$join,'',$orderby,'','');
-
+       
         //history assessment
         $join[2] 			= array('table'=> 'operator c','match' =>'tb.updatedby = c.operatorid');
         $join[3] 			= array('table'=> 'asmtheader d','match' =>'tb.asmttemp = d.asmttemp');
@@ -665,7 +657,8 @@ class Multiplechoice extends CI_Controller {
         unset($join[3]);
 
         // history interview
-        $history_profile4 	= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','interview tb',$join,'',$orderby1,'','');
+        $join[3] 			= array('table'=> 'recflow','match' =>'tb.roundid = recflow.roundid');
+        $history_profile4 	= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate,recflow.roundname',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','interview tb',$join,'',$orderby1,'','');
         $orderby1 			= array('colname'=>'a.createddate','typesort'=>'desc');
         for ($i=0; $i < count($history_profile4); $i++) { 
         	$join1[0] 		= array('table'=> 'operator b','match' =>'a.interviewer = b.operatorid');
@@ -675,13 +668,8 @@ class Multiplechoice extends CI_Controller {
         	$history_profile4[$i]['interviewer'] = $this->Data_model->select_row_option('a.interviewer, a.inv_asmtid, a.scr_asmtid, d.status, b.operatorname, c.filename, e.optionid, e.ansdatetime, e.ansdatetime2',array('a.interviewid'=>$history_profile4[$i]['interviewid']),'','interviewer a',$join1,'',$orderby1,'','');
         }
 
-        // history offer
-        $join[3] 			= array('table'=> 'assessment d','match' =>'tb.off_asmtid = d.asmtid');
-        $join[4] 			= array('table'=> 'asmtanswer e','match' =>'tb.off_asmtid = e.asmtid');
-        $history_profile5 	= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate,d.status, e.optionid, e.anstext',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','offer tb',$join,'',$orderby,'','');
 
-
-        $this->data2['history'] = array_merge($history_cmt, $history_profile1, $history_profile2,$history_profile3,$history_profile4,$history_profile5, $history_profile6);
+        $this->data2['history'] = array_merge($history_profile3,$history_profile4);
         function cmp($a, $b) {
             if ($a['createddate'] == $b['createddate']) {
                 return 0;
@@ -722,6 +710,28 @@ class Multiplechoice extends CI_Controller {
         $this->data2['language_noibo']      = $this->Candidate_model->selectTableByIds('canlanguage',$id_mergewith);
         $this->data2['software_noibo']      = $this->Candidate_model->selectTableByIds('cansoftware',$id_mergewith);
         $this->data2['document_noibo']      = $this->Candidate_model->first_row('document',array('referencekey'=>$id_mergewith,'tablename' => 'candidate'),'filename,url','');
+
+        //hồ sơ con khác
+        if ($id == -1) {
+           $id = $id_mergewith;
+        }
+        $this->data2['candidate_con']     = $this->Campaign_model->select_sql("SELECT * FROM candidate WHERE mergewith = $id AND candidateid NOT IN ($id_mergewith)");
+        foreach ($this->data2['candidate_con'] as $key => $value) {
+            $id_con                             = $value['candidateid'];
+            $this->data2['address_con'][$key]    = $this->Candidate_model->selectTableByIds('canaddress',$id_con);
+            $this->data2['family_con'][$key]        = $this->Candidate_model->selectTableByIds('cansocial',$id_con);
+            $this->data2['experience_con'][$key]    = $this->Candidate_model->selectTableByIds('canexperience',$id_con);
+            $this->data2['reference_con'][$key]     = $this->Candidate_model->selectTableByIds('canreference',$id_con);
+            $this->data2['knowledge_con'][$key]     = $this->Candidate_model->selectTableByIds('canknowledge',$id_con);
+            $this->data2['language_con'][$key]      = $this->Candidate_model->selectTableByIds('canlanguage',$id_con);
+            $this->data2['software_con'][$key]      = $this->Candidate_model->selectTableByIds('cansoftware',$id_con);
+            $this->data2['document_con'][$key]      = $this->Candidate_model->first_row('document',array('referencekey'=>$id_con,'tablename' => 'candidate'),'filename,url','lastupdate');
+            $vt1                                    = $this->Candidate_model->selectTableGroupBy('position,company','canexperience',$id_con,'dateto');
+            $this->data2['tags_con'][$key]          = $this->Candidate_model->join_tag($id_con);
+            $this->data2['tagstrandom_con'][$key]   = $this->Candidate_model->join_tag_random($id_con);
+            $this->data2['vt_con'][$key]            = $vt1['position'].' - '.$vt1['company'];
+            
+        }
 
 		//for interview question
 		$sql = "SELECT a.scr_asmtid as asmtid, b.asmttemp

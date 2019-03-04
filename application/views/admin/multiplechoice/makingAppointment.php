@@ -155,10 +155,11 @@
 							<?php if($ques['questiontype']=='scores'){?>
 							<div class="answer_as">
 								<div class="col-md-3">
-									<input type="textbox" required="" name="question[<?php echo($ques['questionid'])?>][ansnumeric]" placeholder="Điểm số (<?php echo number_format($ques['scorefrom'])?>-><?php echo number_format($ques['scoreto'])?>)" value="<?php echo number_format($ques['ansnumeric'])?>">
+									<input type="textbox" required="" name="question[<?php echo($ques['questionid'])?>][ansnumeric]"  value="<?php echo number_format($ques['ansnumeric'])?>">
 								</div>
 								<div class="col-md-9">
-									<input type="textbox" class="width_100" name="question[<?php echo($ques['questionid'])?>][anstext]" placeholder="Nhận xét" value="<?php echo($ques['anstext'])?>">
+									<textarea name="question[<?php echo($ques['questionid'])?>][anstext]" class="width_100" rows="3" placeholder="dạng văn bản"><?php echo($ques['anstext'])?></textarea>
+									<!-- <input type="textbox" class="width_100" name="question[<?php echo($ques['questionid'])?>][anstext]" placeholder="Nhận xét" value="<?php echo($ques['anstext'])?>"> -->
 								</div>
 							</div>
 							<?php }elseif($ques['questiontype']=='text'){ ?>
