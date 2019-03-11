@@ -231,6 +231,29 @@ class Interview extends CI_Controller {
     	unset($frm['roundid']);
     	unset($frm['count']);
 
+        $ngay_tam = date('Y-m-d H:i:s',strtotime(str_replace('/', '-', $intdate)));
+        $thu = date_format(date_create($ngay_tam),"N");
+        if ($thu != 7) {
+            $temp = (int)$thu+1;
+            if ($temp == 2) {
+                $t = 'Hai';
+            }else if ($temp == 3) {
+                $t = 'Ba';
+            }else if ($temp == 4) {
+                $t = 'Tư';
+            }else if ($temp == 5) {
+                $t = 'Năm';
+            }else if ($temp == 6) {
+                $t = 'Sáu';
+            }else if ($temp == 7) {
+                $t = 'Bảy';
+            }
+            $thu = 'Thứ '.$t;
+        }else{
+            $thu = 'Chủ Nhật';
+        }
+        $ngaypv = $thu.' ngày '.$intdate;
+
     	$mail = array();
     	for ($k=1; $k <= 2 ; $k++) { 
             $a = $k+1;
@@ -275,6 +298,7 @@ class Interview extends CI_Controller {
 
         $interviewid            = array();
         $notes                  = array();
+        $arr_ngaypv             = array();
     	for ($j=1; $j <= $count; $j++) { 
     		$key = $frm['profile_'.$j];
 
@@ -310,6 +334,7 @@ class Interview extends CI_Controller {
             $interviewid[$j]        = $this->Data_model->insert('interview',$data);
 
             $notes[$j]              = $key[6];
+            $arr_ngaypv[$j]         = $ngaypv.' '.$key[3].' - '.$key[4];
     		//interviewer
     		$link1 = '';
     		$interviewer            = explode(',',$key[7]);
@@ -391,8 +416,8 @@ class Interview extends CI_Controller {
                 }
                 $link1 = '<a href="'.base_url().'admin/multiplechoice/interview_question/'.$interviewid[$j].'/'.$row.'" >Phiếu '.$roundname.' - '.$key[1].'</a>';
 
-                $chuoi_tim      = array('[Tuyển dụng viên]','[Tên Ứng viên]','[Vòng tuyển dụng]','[Tên]','[Link phiếu mời tham dự phỏng vấn]','[Ghi chú]','[Vị trí]','[Link phiếu đánh giá]');
-                $chuoi_thay_the         = array($operator['operatorname'],$name,$roundname,$lastname,$link,$key[6],$position,$link1);
+                $chuoi_tim      = array('[Tuyển dụng viên]','[Tên Ứng viên]','[Vòng tuyển dụng]','[Tên]','[Link phiếu mời tham dự phỏng vấn]','[Ghi chú]','[Vị trí]','[Link phiếu đánh giá]','[Ngày giờ phỏng vấn]');
+                $chuoi_thay_the         = array($operator['operatorname'],$name,$roundname,$lastname,$link,$key[6],$position,$link1,$arr_ngaypv[$j]);
                 $mail['emailsubject']   = str_replace($chuoi_tim,$chuoi_thay_the, $subject[2]);
                 $mail['emailbody']      = str_replace($chuoi_tim,$chuoi_thay_the, $body[2]);
                 $mail['toemail']        = $operator['email'];
@@ -455,8 +480,8 @@ class Interview extends CI_Controller {
                 $name       = 'Bạn';
                 $link       = '<a href="'.base_url().'admin/interview/invitationcard/0/" >Lịch '.$roundname.' - '.$name.'</a>';
             }
-            $chuoi_tim      = array('[Tên Ứng viên]','[Vòng tuyển dụng]','[Tên]','[Link phiếu mời tham dự phỏng vấn]','[Ghi chú]','[Vị trí]');
-            $chuoi_thay_the = array($name,$roundname,$lastname,$link,$notes[$c],$position);
+            $chuoi_tim      = array('[Tên Ứng viên]','[Vòng tuyển dụng]','[Tên]','[Link phiếu mời tham dự phỏng vấn]','[Ghi chú]','[Vị trí]','[Ngày giờ phỏng vấn]');
+            $chuoi_thay_the = array($name,$roundname,$lastname,$link,$notes[$c],$position,isset($arr_ngaypv[$c]) ? $arr_ngaypv[$c] : $arr_ngaypv[$c-1]);
             $mail_in['emailsubject']   = str_replace($chuoi_tim,$chuoi_thay_the, $subject[1]);
             $mail_in['emailbody']      = str_replace($chuoi_tim,$chuoi_thay_the, $body[1]);
             $mail_in['toemail']        = $to[1];
