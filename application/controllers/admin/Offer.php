@@ -379,8 +379,21 @@ class Offer extends CI_Controller {
             LEFT JOIN canaddress ON a.candidateid = canaddress.candidateid 
             LEFT JOIN operator b ON a.createdby = b.operatorid 
             WHERE a.offerid = $id ";
-        $result         = $this->Campaign_model->select_sql($sql)[0];
-
+        $result         = $this->Campaign_model->select_sql($sql);
+        if (count($result) > 1) {
+            if ($result[0]['address'] == "") {
+                $result = $result[1];
+            }else{
+                $result = $result[0];
+            }
+        }else{
+            $result = $result[0];
+        }
+        
+        // echo "<pre>";
+        // print_r($result);
+        // echo "</pre>";
+        // exit;
         $category       = $this->Campaign_model->select("category,code,description",'codedictionary',array('status' => 'W'),'');
         $trainer = $reportto = $level = $grade = $ps = $department = '';
         foreach ($category as $row) {
@@ -421,19 +434,25 @@ class Offer extends CI_Controller {
         }else{
             $docx->set('prefix', 'Anh' );
         }
+        if ($result['address'] == '') {
+            $docx->set('diachi', '');
+        }else{
+            $docx->set('diachi', $result['address']);
+        }
+        
         $docx->set('ngay', $ngay );
         $docx->set('thang', $thang );
         $docx->set('nam', $nam );
-        $docx->set('ten', $result['name'] );
-        $docx->set('diachi', $result['address']);
+        $docx->set('ten', ($result['name'] == '')? '' : $result['name'] );
+        
         $docx->set('ngaysinh', date_format(date_create($result['dateofbirth']),"d/m/Y"));
-        $docx->set('noisinh', $result['placeofbirth']);
-        $docx->set('cmnd', $result['idcard']);
+        $docx->set('noisinh', ($result['placeofbirth'] == '')? '' : $result['placeofbirth']);
+        $docx->set('cmnd', ($result['idcard'] == '')? '' : $result['idcard']);
         $docx->set('ngaycap', date_format(date_create($result['dateofissue']),"d/m/Y"));
-        $docx->set('noicap', $result['placeofissue']);
+        $docx->set('noicap', ($result['placeofissue'] == '')? '' : $result['placeofissue']);
         $docx->set('dienthoai', trim($result['telephone'],','));
         $docx->set('vitri', $ps);
-        $docx->set('diachi', $result['location']);
+        // $docx->set('diachi', $result['location']);
         if ($result['contracttype'] == 'Toàn thời gian') {
             $docx->set('t', 'x');
             $docx->set('b', '');
@@ -445,12 +464,12 @@ class Offer extends CI_Controller {
         $docx->set('thuviec', (int)$result['duration'].' Tháng ('.date_format(date_create($result['fromdate']),"d/m/Y").' - '.date_format(date_create($result['todate']),"d/m/Y").')');
         $docx->set('nguoihd', $trainer);
         $docx->set('baocaocho', $reportto);
-        $docx->set('luongthuviec', number_format((int)$result['tempbenefit']).' đồng/ tháng (Gross)');
-        $docx->set('luongchinhthuc', number_format((int)$result['officialbenefit']).' đồng/ tháng (Gross)');
+        $docx->set('luongthuviec', number_format((int)$result['tempbenefit']));
+        $docx->set('luongchinhthuc', number_format((int)$result['officialbenefit']));
         $docx->set('cap', $level);
-        $docx->set('bac', $result['grade']);
-        $docx->set('phucapantrua', number_format((int)$result['avalue0']).' đồng/ tháng');
-        $docx->set('phucapdt', number_format((int)$result['avalue1']).' đồng/ tháng');
+        $docx->set('bac', ($result['grade'] == '')? '' : $result['grade']);
+        $docx->set('phucapantrua', number_format((int)$result['avalue0']));
+        $docx->set('phucapdt', number_format((int)$result['avalue1']));
 
 
 

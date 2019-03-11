@@ -1220,23 +1220,23 @@ class Handling extends CI_Controller {
         $temp0 = explode(',', $data0['address']);
         $arr0 = array();
         for ($i=0; $i < count($temp0); $i++) { 
-            $temp0[$i] = preg_replace('/\s+/', '', $temp0[$i]);
+            // $temp0[$i] = preg_replace('/\s+/', '', $temp0[$i]);
             if ($temp0[$i] != "") {
-                array_push($arr0, $temp0[$i]);
+                array_push($arr0, trim($temp0[$i]));
             }
         }
-        $data0['address'] = implode(',', $arr0);
+        $data0['address'] = implode(', ', $arr0);
         
         $data1['address'] = $frm['addressno'][1].", ".$frm['street'][1].", ".$namepx1.", ".$nameqh1.", ".$namecity1;
         $temp1 = explode(',', $data1['address']);
         $arr1 = array();
         for ($i=0; $i < count($temp1); $i++) { 
-            $temp1[$i] = preg_replace('/\s+/', '', $temp1[$i]);
+            // $temp1[$i] = preg_replace('/\s+/', '', $temp1[$i]);
             if ($temp1[$i] != "") {
-                array_push($arr1, $temp1[$i]);
+                array_push($arr1, trim($temp1[$i]));
             }
         }
-        $data1['address'] = implode(',', $arr1);
+        $data1['address'] = implode(', ', $arr1);
         if ($frm['add'][0] == 'PREMANENT' || $frm['add'][1] == 'PREMANENT') {
             $match =  array('candidateid' => $frm['candidateid'], 'addtype' => "PREMANENT");
             $data0['lastupdate'] = $this->day;
@@ -1964,23 +1964,23 @@ class Handling extends CI_Controller {
         $temp0 = explode(',', $data0['address']);
         $arr0 = array();
         for ($i=0; $i < count($temp0); $i++) { 
-            $temp0[$i] = preg_replace('/\s+/', '', $temp0[$i]);
+            // $temp0[$i] = preg_replace('/\s+/', '', $temp0[$i]);
             if ($temp0[$i] != "") {
-                array_push($arr0, $temp0[$i]);
+                array_push($arr0, trim($temp0[$i]));
             }
         }
-        $data0['address'] = implode(',', $arr0);
+        $data0['address'] = implode(', ', $arr0);
         
         $data1['address'] = $frm['addressno2'].", ".$frm['street2'].", ".$namepx1.", ".$nameqh1.", ".$namecity1;
         $temp1 = explode(',', $data1['address']);
         $arr1 = array();
         for ($i=0; $i < count($temp1); $i++) { 
-            $temp1[$i] = preg_replace('/\s+/', '', $temp1[$i]);
+            // $temp1[$i] = preg_replace('/\s+/', '', $temp1[$i]);
             if ($temp1[$i] != "") {
-                array_push($arr1, $temp1[$i]);
+                array_push($arr1, trim($temp1[$i]));
             }
         }
-        $data1['address'] = implode(',', $arr1);
+        $data1['address'] = implode(', ', $arr1);
 
         if ($this->Candidate_model->count_row('canaddress',array('candidateid' => $id , 'addtype' => "PREMANENT")) > 0 ){
             $match =  array('candidateid' => $id, 'addtype' => "PREMANENT");

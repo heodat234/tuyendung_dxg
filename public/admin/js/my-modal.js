@@ -1,5 +1,5 @@
-var url = "https://tuyendung.datxanh.com.vn/admin/user/";
-var base_url = "https://tuyendung.datxanh.com.vn/";
+var url = $('#url').text()+'admin/user/';
+var base_url = $('#url').text();
 var modal = $('\
 	<div class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">\
     <div class="modal-dialog modal-60"  role="document" style="width:850px;">\

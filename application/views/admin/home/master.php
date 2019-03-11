@@ -55,6 +55,7 @@ if($this->session->has_userdata('user_admin')) {
   <script>
     $.widget.bridge('uibutton', $.ui.button);
   </script>
+  <<div class="hide" id="url"><?php echo base_url() ?></div>
   <script src="<?php echo base_url()?>public/admin/js/bootstrap.min.js"></script>
   <script src="<?php echo base_url()?>public/ckeditor/ckeditor.js"></script>
   <script src="<?php echo base_url()?>public/admin/js/moment.min.js"></script>

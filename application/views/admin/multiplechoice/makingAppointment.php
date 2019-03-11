@@ -178,40 +178,7 @@
                         <?php }}?>
                     </div>
 				</div>
-				<!-- <form id="form_ans">
-					<input type="hidden" name="interviewerid" value="<?php echo $interviewerid ?>">
-					<input type="hidden" name="interviewid" value="<?php echo $interviewid ?>">
-					<input type="hidden" name="asmtid" value="<?php echo(isset($asmtid)?$asmtid:'')?>">
-					<div class="row desc_as">
-						<label>Phiếu phỏng vấn</label>
-						
-					</div>
-					<?php if(isset($section)&&!empty($section)) foreach ($section as $sec) {?>
-					<div>
-						<div class="title_ques">A. <?php echo($sec['sectionname'])?></div>
-						<?php if(isset($sec['question'])&&!empty($sec['question'])) foreach ($sec['question'] as $ques) {?>
-						<div class="question_as">
-							<label>1.	<?php echo($ques['question'])?></label>
-							<?php if($ques['questiontype']=='scores'){?>
-							<div class="answer_as">
-								<div class="col-md-3">
-									<input type="textbox" required="" name="question[<?php echo($ques['questionid'])?>][ansnumeric]" placeholder="Điểm số (<?php echo number_format($ques['scorefrom'])?>-><?php echo number_format($ques['scoreto'])?>)" value="<?php echo number_format($ques['ansnumeric'])?>">
-								</div>
-								<div class="col-md-9">
-									<input type="textbox" class="width_100" name="question[<?php echo($ques['questionid'])?>][anstext]" placeholder="Nhận xét" value="<?php echo($ques['anstext'])?>">
-								</div>
-							</div>
-							<?php }elseif($ques['questiontype']=='text'){ ?>
-							<div class="answer_as">
-								<div class="col-md-12">
-									<textarea name="question[<?php echo($ques['questionid'])?>][anstext]" class="width_100" rows="4" placeholder="dạng văn bản"><?php echo($ques['anstext'])?></textarea>
-								</div>
-							</div>
-							<?php }?>
-						</div>
-						<?php }?>
-					</div>
-					<?php }?> -->
+				
 			</div>
 		</div>
 		<div class="footer_as hide">
