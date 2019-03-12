@@ -1067,8 +1067,8 @@ class Multiplechoice extends CI_Controller {
 		foreach ($manage as $key) {
 			$match 						= array('operatorid' => $key);
 			$operator 					= $this->Candidate_model->selectByWhere('operator',$match)[0];
-			$chuoi_tim 				= array('[Tên Ứng viên]','[Tên]','[Vị trí]','[Tuyển dụng viên]');
-			$chuoi_thay_the 		= array($name,$lastname,$position,$operator['operatorname']);
+			$chuoi_tim 				= array('[Tên Ứng viên]','[Tên]','[Vị trí]');
+			$chuoi_thay_the 		= array($name,$lastname,$position);
 			$mail['emailsubject'] 	= str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($subject));
 			$mail['emailbody'] 		= str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($body));
 			$mail['toemail'] 		= $operator['email'];

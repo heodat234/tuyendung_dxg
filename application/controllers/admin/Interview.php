@@ -339,7 +339,9 @@ class Interview extends CI_Controller {
     		$link1 = '';
     		$interviewer            = explode(',',$key[7]);
             $asmt_pv                = $frm['pv'];
+
             $f = 0;
+            $arr_to                 = explode(',',$to[2]);
     		foreach ($interviewer as $row) {
     			if ($row == '') {
     				continue;
@@ -938,6 +940,62 @@ class Interview extends CI_Controller {
             $data['ansdatetime2']   = date('Y-m-d H:i:s',strtotime(str_replace('/', '-', $timeto)));
         }
         $this->Data_model->insert('asmtanswer',$data);
+
+        $interviewerid = $frm['interviewerid'];
+        if ($interviewerid == '') {
+            $mailtemplate = $this->Mail_model->select('mailprofile',array('mailprofileid' => 14));
+        }else{
+            $mailtemplate = $this->Mail_model->select('mailprofile',array('mailprofileid' => 15));
+        }
+
+        //mail manage
+        // $mail = array();
+        // if(isset($mailtemplate[0])){
+        //     $subject            = $mailtemplate[0]['presubject'];
+        //     $body               = $mailtemplate[0]['prebody'];
+        //     $mail["attachment"] = $mailtemplate[0]['preattach'];
+        //     $presender          = $mailtemplate[0]['presender'];
+        // }else{
+        //     $subject            = $body = $mail["attachment"] = $mail["cc"] = $mail["bcc"] = $presender = '';
+        // }
+        // if ($presender != 'usersession') {
+        //     $arrayName1 = array('operatorname' => 'mailsystem' );
+        //     $mailSystem = $this->Mail_model->select('operator',$arrayName1);
+        //     $mail['mcsmtp'] = $mailSystem[0]['mcsmtp'];
+        //     $mail['mcuser'] = $mailSystem[0]['mcuser'];
+        //     $mail['mcpass'] = base64_decode($mailSystem[0]['mcpass']);
+        //     $mail['mcport'] = $mailSystem[0]['mcport'];
+        // }else{
+        //     echo json_encode(1);
+        // }
+        // $match                      = array('candidateid' => $frm['candidateid']);
+        // $candidate                  = $this->Candidate_model->selectByWhere('candidate',$match)[0];
+        // $lastname                   = $candidate['lastname'];
+        // $name                       = $candidate['name'];
+        // $match                      = array('campaignid' => $frm['campaignid']);
+        // $campaigns                  = $this->Candidate_model->selectByWhere('reccampaign',$match)[0];
+        // $position                   = $campaigns['position'];
+        // $temp                       = trim($campaigns['managecampaign'],',');
+        // $manage                     = explode(',', $temp);
+        // foreach ($manage as $key) {
+        //     $match                      = array('operatorid' => $key);
+        //     $operator                   = $this->Candidate_model->selectByWhere('operator',$match)[0];
+        //     $chuoi_tim              = array('[Tên Ứng viên]','[Tên]','[Vị trí]');
+        //     $chuoi_thay_the         = array($name,$lastname,$position);
+        //     $mail['emailsubject']   = str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($subject));
+        //     $mail['emailbody']      = str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($body));
+        //     $mail['toemail']        = $operator['email'];
+        //     $this->Mail_model->sendMail($mail);
+
+        //     $mail1['fromemail']         = $mail['mcuser'];
+        //     $mail1['toemail']           = $operator['email'];
+        //     $mail1['emailbody']         = $mail['emailbody'];
+        //     $mail1['emailsubject']      = $mail['emailsubject'];
+        //     $mail1["attachment"]        = json_encode($mail["attachment"]);
+        //     $mail1['createdby']         = $this->session->userdata('user_admin')['operatorid'];
+        //     $this->Mail_model->insert('mailtable',$mail1);
+        // }
+
         echo json_encode(1);
 
     }
