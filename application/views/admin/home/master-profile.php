@@ -31,7 +31,6 @@ if($this->session->has_userdata('user_admin')) {
   <script src="<?php echo base_url()?>public/admin/js/jquery-jvectormap-1.2.2.min.js"></script>
   <script src="<?php echo base_url()?>public/admin/js/jquery-jvectormap-world-mill-en.js"></script>
   <script src="<?php echo base_url()?>public/admin/js/jquery.sparkline.js"></script>
-  <script src="<?php echo base_url()?>public/admin/js/morris.js"></script>
       <?php echo isset($temp)? $temp: "" ;?>
 <?php 
 }else{redirect(base_url('login.html'));}

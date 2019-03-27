@@ -20,7 +20,7 @@ class Offer extends CI_Controller {
         $config = array(
             'upload_path'   => $path,
             'allowed_types' => '*',
-            'overwrite'     => FALSE,                       
+            'overwrite'     => FALSE,
         );
 
         $this->load->library('upload', $config);
@@ -53,23 +53,23 @@ class Offer extends CI_Controller {
     }
 
 
-	
+
     public function offer($offerid = '', $check = '')
     {
         if ($offerid == '') {
             exit;
         }else{
             $sql = "SELECT a.*, candidate.name,candidate.email, candidate.idcard, candidate.dateofissue, candidate.placeofissue,candidate.dateofbirth,candidate.placeofbirth,candidate.telephone, reccampaign.position as position_campaign, canaddress.address, b.operatorname, c.filename, d.status,e.optionid, e.anstext, f.filename as avatar, g.letteroffermailtemp
-            FROM offer a 
-            LEFT JOIN candidate ON a.candidateid = candidate.candidateid  
-            LEFT JOIN reccampaign ON a.campaignid = reccampaign.campaignid 
-            LEFT JOIN canaddress ON a.candidateid = canaddress.candidateid 
-            LEFT JOIN operator b ON a.createdby = b.operatorid 
+            FROM offer a
+            LEFT JOIN candidate ON a.candidateid = candidate.candidateid
+            LEFT JOIN reccampaign ON a.campaignid = reccampaign.campaignid
+            LEFT JOIN canaddress ON a.candidateid = canaddress.candidateid
+            LEFT JOIN operator b ON a.createdby = b.operatorid
             LEFT JOIN document c ON a.createdby = c.referencekey AND c.tablename = 'operator'
-            LEFT JOIN assessment d ON a.off_asmtid = d.asmtid 
+            LEFT JOIN assessment d ON a.off_asmtid = d.asmtid
             LEFT JOIN asmtanswer e ON a.off_asmtid = e.asmtid
             LEFT JOIN document f ON a.candidateid = f.referencekey AND f.tablename = 'candidate'
-            LEFT JOIN recflow g ON a.campaignid = g.campaignid AND a.roundid = g.roundid 
+            LEFT JOIN recflow g ON a.campaignid = g.campaignid AND a.roundid = g.roundid
             WHERE a.offerid = $offerid ";
             $result         = $this->Campaign_model->select_sql($sql);
             $data['offer']  = $result[0];
@@ -84,7 +84,7 @@ class Offer extends CI_Controller {
         $data['category']   = $this->Campaign_model->select("category,code,description",'codedictionary',array('status' => 'W'),'');
         $this->_data['temp']                = $this->load->view('admin/multiplechoice/offer',$data,true);
         $this->_data['modal_campaign']      = $this->load->view('admin/campaign/modal_campaign',$o_data,true);
-        $this->load->view('admin/home/master-iframe',$this->_data); 
+        $this->load->view('admin/home/master-iframe',$this->_data);
     }
 
     public function saveOffer()
@@ -97,7 +97,7 @@ class Offer extends CI_Controller {
     	$position           = ($this->Campaign_model->select("position",'reccampaign',array('campaignid' => $campaignid),''))[0]['position'];
         $offer = array();
 
-    	for ($j=1; $j <= $count; $j++) { 
+    	for ($j=1; $j <= $count; $j++) {
     		$key = $frm['profile_'.$j];
             $date           = $this->toInt($key[3]).' Tháng ('.$key[4].' - '.$key[5].')';
 
@@ -232,7 +232,7 @@ class Offer extends CI_Controller {
     	$checkmail                 = $this->input->post('checkmail');
         if (isset($checkmail)) {
             $mail = array();
-        
+
             $toemail                = explode(',',$frm['to']);
             $subject                = html_entity_decode($frm['subject']);
             $mail['cc']             = $frm['cc'];
@@ -243,8 +243,8 @@ class Offer extends CI_Controller {
                 if($frm['preattach'] != '' && $frm['preattach'] != 'false' ){
                     $fileattach = array();
                     $temp = json_decode($frm['preattach'],true);
-                    for ($f=0; $f < count($temp); $f++) { 
-                        array_push($fileattach, base_url().'public/document/'.$temp[$f]); 
+                    for ($f=0; $f < count($temp); $f++) {
+                        array_push($fileattach, base_url().'public/document/'.$temp[$f]);
                     }
                 }
             }
@@ -373,11 +373,11 @@ class Offer extends CI_Controller {
         $docx = new DOCXTemplate('template.docx');
 
         $sql = "SELECT a.*, candidate.name,candidate.email, candidate.idcard, candidate.dateofissue, candidate.placeofissue,candidate.dateofbirth,candidate.placeofbirth,candidate.telephone, reccampaign.position as position_campaign, canaddress.address
-            FROM offer a 
-            LEFT JOIN candidate ON a.candidateid = candidate.candidateid  
-            LEFT JOIN reccampaign ON a.campaignid = reccampaign.campaignid 
-            LEFT JOIN canaddress ON a.candidateid = canaddress.candidateid 
-            LEFT JOIN operator b ON a.createdby = b.operatorid 
+            FROM offer a
+            LEFT JOIN candidate ON a.candidateid = candidate.candidateid
+            LEFT JOIN reccampaign ON a.campaignid = reccampaign.campaignid
+            LEFT JOIN canaddress ON a.candidateid = canaddress.candidateid
+            LEFT JOIN operator b ON a.createdby = b.operatorid
             WHERE a.offerid = $id ";
         $result         = $this->Campaign_model->select_sql($sql);
         if (count($result) > 1) {
@@ -389,7 +389,7 @@ class Offer extends CI_Controller {
         }else{
             $result = $result[0];
         }
-        
+
         // echo "<pre>";
         // print_r($result);
         // echo "</pre>";
@@ -439,12 +439,12 @@ class Offer extends CI_Controller {
         }else{
             $docx->set('diachi', $result['address']);
         }
-        
+
         $docx->set('ngay', $ngay );
         $docx->set('thang', $thang );
         $docx->set('nam', $nam );
         $docx->set('ten', ($result['name'] == '')? '' : $result['name'] );
-        
+
         $docx->set('ngaysinh', date_format(date_create($result['dateofbirth']),"d/m/Y"));
         $docx->set('noisinh', ($result['placeofbirth'] == '')? '' : $result['placeofbirth']);
         $docx->set('cmnd', ($result['idcard'] == '')? '' : $result['idcard']);
@@ -473,7 +473,7 @@ class Offer extends CI_Controller {
 
 
 
-        $docx->downloadAs('offer.docx'); 
+        $docx->downloadAs('offer.docx');
     }
     public function loadCategory()
     {
@@ -483,5 +483,5 @@ class Offer extends CI_Controller {
         echo json_encode($data);
     }
 }
- 
+
 ?>

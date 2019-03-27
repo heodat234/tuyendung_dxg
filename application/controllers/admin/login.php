@@ -15,7 +15,7 @@ class login extends CI_Controller {
 		$this->load->view('admin/home/login');
 	}
 
-	
+
 	public function loginUser()
 	{
 		$frm = $this->input->post();
@@ -23,7 +23,7 @@ class login extends CI_Controller {
 		$username = $frm['email'];
 		$password = md5($frm['password']);
 		$a_UserChecking = $this->Login_model->a_fCheckUser( $username, $password );
-		$autologin =	($this->input->post('luumatkhau') == '1') ? 1 : 0;	
+		$autologin =	($this->input->post('luumatkhau') == '1') ? 1 : 0;
 		if($a_UserChecking){
 			if($autologin == 1){
 				$cookie = array(
@@ -32,34 +32,59 @@ class login extends CI_Controller {
                     'expire' =>  3600*24*30,
                     'secure' => false
                 );
-                $this->input->set_cookie($cookie); 
+                $this->input->set_cookie($cookie);
                 $cookie1 = array(
                     'name'   => 'password_admin',
                     'value'  => $frm['password'],
                     'expire' =>  3600*24*30,
                     'secure' => false
                 );
-                $this->input->set_cookie($cookie1); 
-                
+                $this->input->set_cookie($cookie1);
+
 			}
 			$this->session->set_userdata('user_admin', $a_UserChecking[0]);
-			// $sess_data = array(
-			//        'id' => $a_UserChecking[0]['operatorid'],
-			//        'fullname' => $a_UserChecking[0]['operatorname'],
-			//        'KCFINDER' => array(
-			//               'disabled' => false, // Bật kcfinder cho phép upload (mặc định = true;)                                                   
-			//               'uploadURL' => base_url().'public/kcfinder/upload/images/'
-			//         ) 
-			// );
-			// $this->session->set_userdata($sess_data);
+
+			// // api tavico
+			// $curl = curl_init();
+
+			// curl_setopt_array($curl, array(
+			//   CURLOPT_URL => "https://demo.tavicosoft.com/DirectRouter/Index",
+			//   CURLOPT_RETURNTRANSFER => true,
+			//   CURLOPT_ENCODING => "",
+			//   CURLOPT_MAXREDIRS => 10,
+			//   CURLOPT_TIMEOUT => 30,
+			//   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			//   CURLOPT_CUSTOMREQUEST => "POST",
+			//   CURLOPT_POSTFIELDS => "{\n\t\"action\": \"ConnectDB\",\n\t\"method\": \"loginToken\",\n\t\"type\": \"rpc\",\n\t\"tid\": 1,\n\t\"data\":[\n\t\t\t{\n\t\t\t\t\"loginid\":\"CRM01\"\n\t\t\t}\n\t\t\t]\n}",
+			//   CURLOPT_HTTPHEADER => array(
+			//     "ClientId: ",
+			//     "Content-Type: application/json;charset=uft-8",
+			//     "SecurityKey: ",
+			//     "TvcToken: ",
+			//     "cache-control: no-cache"
+			//   ),
+			// ));
+
+			// $response = curl_exec($curl);
+			// $err = curl_error($curl);
+
+			// curl_close($curl);
+
+			// if ($err) {
+			//   echo "cURL Error #:" . $err;
+			// } else {
+			//   echo $response;
+			// }
+
+
 			echo json_encode($a_UserChecking);
 		}else{
 			echo "1";
 		}
 	}
 
-	
-	
+
+
 	//đăng xuất
 	public function logout($value='')
 	{
@@ -86,8 +111,8 @@ class login extends CI_Controller {
 			$body 				= $mailtemplate[0]['prebody'];
 			$mail["attachment"] = $mailtemplate[0]['preattach'];
 			$presender 			= $mailtemplate[0]['presender'];
-			$mail["cc"] 		= $mailtemplate[0]['cc'];
-			$mail["bcc"] 		= $mailtemplate[0]['bcc'];
+			$mail["cc"] 		= '';
+			$mail["bcc"] 		= '';
 		}else{
 			$subject			= $body = $mail["attachment"] = $mail["cc"] = $mail["bcc"] = $presender = '';
 		}
@@ -103,16 +128,16 @@ class login extends CI_Controller {
         	$mail['mcpass']	= base64_decode($mailSystem[0]['mcpass']);
         	$mail['mcport']	= $mailSystem[0]['mcport'];
 		}
-		
+
 		$chuoi_tim 				= array('[Mật khẩu mới]');
 		$chuoi_thay_the 		= array($data['password']);
 		$mail['emailsubject'] 	= str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($subject));
 		$mail['emailbody'] 		= str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($body));
 		$mail['toemail'] 		= $a_UserInfo['email'];
 		$this->Mail_model->sendMail($mail);
-		
-		echo json_encode(1);		
-		
+
+		echo json_encode(1);
+
 	}
 
 	public function checkPassword()
@@ -139,7 +164,7 @@ class login extends CI_Controller {
 	}
 	public function change_pass()
 	{
-		$frm = $this->input->post();	
+		$frm = $this->input->post();
 		$username = $this->session->userdata('user')['email'];
 		$password = md5($frm['passold']);
 		$a_UserChecking = $this->Login_model->a_fCheckUser( $username, $password );
@@ -150,11 +175,11 @@ class login extends CI_Controller {
 			echo "0";
 		}else{
 			echo "1";
-		} 
+		}
 	}
 	public function insertUser()
-	{	
-		$frm = $this->input->post();	
+	{
+		$frm = $this->input->post();
 		$a_UserInfo['email'] 		= $frm['email'];
 		$a_UserInfo['roleid'] 		= 1;
 		$a_UserInfo['idcard'] 		= $frm['cmnd'];
@@ -168,7 +193,7 @@ class login extends CI_Controller {
 		$data['gender'] = $frm['gender'];
 		$data['dateofbirth'] =  date("Y-m-d", strtotime($frm['birthday'] ));
 
-		if ($this->Login_model->checkMail( $a_UserInfo['email'] )) {	
+		if ($this->Login_model->checkMail( $a_UserInfo['email'] )) {
 			echo "-1";
 		}
 		else if($this->Login_model->checkID( $a_UserInfo['idcard'] ))
@@ -187,8 +212,8 @@ class login extends CI_Controller {
 				$body 				= $mailtemplate[0]['prebody'];
 				$mail["attachment"] = $mailtemplate[0]['preattach'];
 				$presender 			= $mailtemplate[0]['presender'];
-				$mail["cc"] 		= $mailtemplate[0]['cc'];
-				$mail["bcc"] 		= $mailtemplate[0]['bcc'];
+				$mail["cc"] 		= '';
+				$mail["bcc"] 		= '';
 			}else{
 				$subject			= $body = $mail["attachment"] = $mail["cc"] = $mail["bcc"] = $presender = '';
 			}
@@ -204,7 +229,7 @@ class login extends CI_Controller {
 	        	$mail['mcpass']	= base64_decode($mailSystem[0]['mcpass']);
 	        	$mail['mcport']	= $mailSystem[0]['mcport'];
 			}
-			
+
 			$chuoi_tim 				= array('[Tên Ứng viên]','[Tên]');
 			$chuoi_thay_the 		= array($data['name'],$data['lastname']);
 			$mail['emailsubject'] 	= str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($subject));
@@ -213,13 +238,13 @@ class login extends CI_Controller {
 			$this->Mail_model->sendMail($mail);
 
 
-			echo json_encode($a_UserInfo);		
-			
-			
+			echo json_encode($a_UserInfo);
+
+
 		}
-		
+
 	}
 
-	
+
 
 }

@@ -90,10 +90,11 @@
 		</div>
 		<div class="body_as">
 			<div class="row" style="margin-bottom: 15px" id="id_profileOffer">
-				<?php if ($check == 10): ?>
+				<?php if ($check == 10):
+                    $img = ($offer['filename'] != '')? $offer['filename'] : 'unknow.jpg' ; ?>
 					<div class="col-md-8 padding_0 manage_pv ql" id="col_pt_1">
       					<div class="col-md-1 padding_0">
-      						<img class="img-pv" src="<?php echo base_url().'public/image/'.$offer['filename'] ?>">
+      						<img class="img-pv" src="<?php echo base_url().'public/image/'.$img ?>">
       					</div>
       					<div class="col-md-11 padding_0">
       						<div class="body-blac5a"><?php echo $offer['operatorname'] ?><span style="color: #999999; margin-left: 10px"> Tạo đề nghị - <?php echo date_format(date_create($offer['createddate']),"d/m/Y")  ?></span></div>
@@ -116,7 +117,7 @@
       						<!-- <span class="body-blac5b">Chờ xác nhận</span> -->
       					</div>
       				</div>
-					<div class="col-md-3 btn_as"> 	
+					<div class="col-md-3 btn_as">
 						<button onclick="huyPhieu()" title="Hủy đề nghị"><i class="fa fa-trash-o fa-lg"></i></button>
 						<a class="btn" href="<?php echo base_url().'admin/offer/exportOffer/'.$offer['offerid'] ?>" title="Xuất file word"><i class="fa fa-file-word-o fa-lg"></i></a>
 						<button onclick="printOffer()" title="In mẫu"><i class="fa fa-print fa-lg" ></i></button>
@@ -128,7 +129,7 @@
 
 			</div>
 		</div>
-		<?php if ($check != 10){ 
+		<?php if ($check != 10){
 			if ($offer['status'] == 'C') {
 				echo '<div class="body_as"><div class="row"><div class="desc_as"><p class="color-sign-in">Bạn đã xác nhận thư mời.</p></div></div></div>';
 			}else if ($offer['status'] == 'D') {
@@ -244,7 +245,7 @@
 		.fail(function() {
 			console.log("error");
 		});
-		
+
 	});
 
 	function huyPhieu() {
@@ -267,7 +268,7 @@
 		.always(function() {
 			console.log("complete");
 		});
-		
+
 	});
 
 	$('#btn_Offer').click(function(event) {
@@ -280,14 +281,14 @@
 		var k 			= 1;
 
 		var name = '<?php echo $offer['name'] ?>';
-		var avatar = '<?php echo $offer['avatar'] ?>';
+		var avatar = '<?php echo ($offer['avatar'] != '')? $offer['avatar'] : 'unknow.jpg' ?>';
 		row += '<div class="body_cam col-xs-12 body_chuyen body_offer"><div class="row" style="margin-right: 0px">';
-        row += '<div class="col-md-3 box_profile_tn"><div class="profile_tn"><img src="<?php echo base_url() ?>public/image/'+avatar+'"><p class="guide-black">'+name+'</p><input type="hidden" name="profile_'+k+'[]" value="'+candidateid+'"><input type="hidden" name="profile_'+k+'[]" value="'+name+'"></div></div>';       
+        row += '<div class="col-md-3 box_profile_tn"><div class="profile_tn"><img src="<?php echo base_url() ?>public/image/'+avatar+'"><p class="guide-black">'+name+'</p><input type="hidden" name="profile_'+k+'[]" value="'+candidateid+'"><input type="hidden" name="profile_'+k+'[]" value="'+name+'"></div></div>';
         row += '<div class="col-md-9 border_left_ddd"><div class="row"><div class="col-md-3 "><span>Ngày nhận việc</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 datetimepicker" name="profile_'+k+'[]" value="<?php echo date_format(date_create($offer['startdate']),"d/m/Y") ?>"></div></div>';
-        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Thời gian thử việc</span></div><div class="col-md-9 padding_0"><div class="col-md-6 padding_0"><input type="text" class="so" name="profile_'+k+'[]" value="<?php echo (int)$offer['duration'] ?>"></div><div class="col-md-6"><input type="text"  name="" value="Tháng" readonly=""></div></div></div>';      
-        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Từ ngày</span></div><div class="col-md-9 padding_0"><div class="col-md-4 padding_0"><input type="text" class="datetimepicker" name="profile_'+k+'[]" value="<?php echo date_format(date_create($offer['fromdate']),"d/m/Y") ?>"></div><div class="col-md-2 padding_0"><span>Đến ngày</span></div><div class="col-md-4"><input class="datetimepicker" type="text" name="profile_'+k+'[]" value="<?php echo date_format(date_create($offer['todate']),"d/m/Y") ?>"></div></div></div>';    
-        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Địa điểm</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90"  name="profile_'+k+'[]" value="<?php echo $offer['location'] ?>"></div></div>';             
-        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Chế độ làm việc</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic select_workingtype" name="profile_'+k+'[]" required="" style="width: 90%"><option value="Toàn thời gian">Toàn thời gian</option><option value="Bán thời gian">Bán thời gian</option></select></div></div>';              
+        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Thời gian thử việc</span></div><div class="col-md-9 padding_0"><div class="col-md-6 padding_0"><input type="text" class="so" name="profile_'+k+'[]" value="<?php echo (int)$offer['duration'] ?>"></div><div class="col-md-6"><input type="text"  name="" value="Tháng" readonly=""></div></div></div>';
+        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Từ ngày</span></div><div class="col-md-9 padding_0"><div class="col-md-4 padding_0"><input type="text" class="datetimepicker" name="profile_'+k+'[]" value="<?php echo date_format(date_create($offer['fromdate']),"d/m/Y") ?>"></div><div class="col-md-2 padding_0"><span>Đến ngày</span></div><div class="col-md-4"><input class="datetimepicker" type="text" name="profile_'+k+'[]" value="<?php echo date_format(date_create($offer['todate']),"d/m/Y") ?>"></div></div></div>';
+        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Địa điểm</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90"  name="profile_'+k+'[]" value="<?php echo $offer['location'] ?>"></div></div>';
+        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Chế độ làm việc</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic select_workingtype" name="profile_'+k+'[]" required="" style="width: 90%"><option value="Toàn thời gian">Toàn thời gian</option><option value="Bán thời gian">Bán thời gian</option></select></div></div>';
         row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Người hướng dẫn</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_trainer"  name="profile_'+k+'[]" required="" style="width: 90%">';
         <?php foreach ($category as $key){
         	if ($key['category'] == 'POSITION') {
@@ -306,7 +307,7 @@
         			row += '<option value="<?php echo $key['code'] ?>"><?php echo $key['code'].' - '.$key['description'] ?></option>';
         <?php }}} ?>
         row += '</select></div></div>';
-        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Mức lương thử việc</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="<?php echo number_format((int)$offer['tempbenefit']) ?>"></div></div>';              
+        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Mức lương thử việc</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="<?php echo number_format((int)$offer['tempbenefit']) ?>"></div></div>';
         row += '<div class="row margin_top_15"><div class="col-md-3 " value="0"><span>Mức lương chính thức</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="<?php echo number_format((int)$offer['officialbenefit']) ?>"></div></div>';
         row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Cấp</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_level" name="profile_'+k+'[]"  required="" style="width: 90%">';
         <?php foreach ($category as $key){
@@ -316,8 +317,8 @@
         		<?php }else{ ?>
         			row += '<option value="<?php echo $key['code'] ?>"><?php echo $key['description'] ?></option>';
         <?php }}} ?>
-        row += '</select></div></div>';  
-        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Bậc</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90" name="profile_'+k+'[]" value="<?php echo $offer['grade'] ?>"></div></div>';   
+        row += '</select></div></div>';
+        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Bậc</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90" name="profile_'+k+'[]" value="<?php echo $offer['grade'] ?>"></div></div>';
         row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Chức vụ</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_position" name="profile_'+k+'[]" required="" style="width: 90%">';
         <?php foreach ($category as $key){
         	if ($key['category'] == 'POSITION') {
@@ -326,7 +327,7 @@
         		<?php }else{ ?>
         			row += '<option value="<?php echo $key['code'] ?>"><?php echo $key['description'] ?></option>';
         <?php }}} ?>
-        row += '</select></div></div>'; 
+        row += '</select></div></div>';
         row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phòng ban</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_department" name="profile_'+k+'[]" required="" style="width: 90%">';
         <?php foreach ($category as $key){
         	if ($key['category'] == 'DEPT') {
@@ -335,13 +336,13 @@
         		<?php }else{ ?>
         			row += '<option value="<?php echo $key['code'] ?>"><?php echo $key['code'].' - '.$key['description'] ?></option>';
         <?php }}} ?>
-        row += '</select></div></div>';    
-        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phụ cấp ăn trưa</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="<?php echo number_format((int)$offer['avalue0']) ?>"></div></div>';    
-        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phụ cấp điện thoại</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="<?php echo number_format((int)$offer['avalue1']) ?>"></div></div>';  
-        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Hỗ trợ xăng xe</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="<?php echo number_format((int)$offer['avalue2']) ?>"></div></div>';   
-        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Đi lại, điện thoại, xăng xe tài xế</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="<?php echo number_format((int)$offer['avalue3']) ?>"></div></div>';           
-        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phụ cấp khác</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="<?php echo number_format((int)$offer['avalue4']) ?>"></div></div></div></div></div>';           
-              
+        row += '</select></div></div>';
+        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phụ cấp ăn trưa</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="<?php echo number_format((int)$offer['avalue0']) ?>"></div></div>';
+        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phụ cấp điện thoại</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="<?php echo number_format((int)$offer['avalue1']) ?>"></div></div>';
+        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Hỗ trợ xăng xe</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="<?php echo number_format((int)$offer['avalue2']) ?>"></div></div>';
+        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Đi lại, điện thoại, xăng xe tài xế</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="<?php echo number_format((int)$offer['avalue3']) ?>"></div></div>';
+        row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phụ cấp khác</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="<?php echo number_format((int)$offer['avalue4']) ?>"></div></div></div></div></div>';
+
       	if (email == '') {
         	email += '<?php echo $offer['email'] ?>';
         }else{
@@ -363,19 +364,19 @@
 		loadCategoryOffer();
 		$('#createOffer').modal('show');
 	});
-	
+
 
 	function printOffer() {
 	    var restorepage = $('#letterOffer').html();
 		var printcontent = $('#letterOffer').clone();
-		printcontent.find('#id_profileOffer').remove(); 
-		printcontent.find('.footer_as').remove(); 
-		printcontent.find('#section_offer').removeClass('col-md-6').removeClass('col-md-offset-3').addClass('col-md-12'); 
+		printcontent.find('#id_profileOffer').remove();
+		printcontent.find('.footer_as').remove();
+		printcontent.find('#section_offer').removeClass('col-md-6').removeClass('col-md-offset-3').addClass('col-md-12');
 		$('body').empty().html(printcontent);
 		// $('#section_offer').printThis();
 		window.print();
 		// printJS({ printable: 'section_offer', type: 'html'})
-		setTimeout(function () { 
+		setTimeout(function () {
 			$('body').empty().html(restorepage);
 			location.reload();
 		}, 300);
@@ -383,6 +384,6 @@
 	function exportWord($offerid) {
 		location.href = '<?php echo base_url() ?>admin/offer/exportOffer/'+$offerid;
 	}
-	
+
 
 </script>

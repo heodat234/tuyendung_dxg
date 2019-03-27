@@ -32,7 +32,7 @@
 			<div class="row">
 				<div class="desc_as">
 					<label>Thời gian/ Địa điểm </label>
-					<?php 
+					<?php
 						$thu = date_format(date_create($interview['intdate']),"N");
 						if ($thu != 7) {
 							$temp = (int)$thu+1;
@@ -66,9 +66,9 @@
 						<p>Bạn đã xác nhận thư mời phỏng vấn. Vui lòng đến đúng thời gian phỏng vấn như trên.</p>
 					<?php }{ ?>
 						<form id="form_confirm">
-							<input type="hidden" name="interviewerid" value="<?php echo isset($interviewerid)? $interviewerid :''  ?>">
 							<input type="hidden" name="candidateid" value="<?php echo isset($interview['candidateid'])? $interview['candidateid'] :''  ?>">
-							<input type="hidden" name="campaignid" value="<?php echo isset($$interview['campaignid'])? $$interview['campaignid'] :''  ?>">
+                            <input type="hidden" name="campaignid" value="<?php echo isset($interview['campaignid'])? $interview['campaignid'] :''  ?>">
+							<input type="hidden" name="interviewerid" value="<?php echo isset($interviewerid)? $interviewerid :''  ?>">
 							<input type="hidden" name="inv_asmtid" value="<?php echo isset($inv_asmtid)? $inv_asmtid :''  ?>">
 							<div class="row margin_bottom_10">
 								<div class="col-md-1">
@@ -155,6 +155,6 @@
 		.fail(function() {
 			console.log("error");
 		});
-		
+
 	});
 </script>

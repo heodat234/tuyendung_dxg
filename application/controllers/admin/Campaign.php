@@ -488,8 +488,7 @@ class Campaign extends CI_Controller {
 	        $history_profile1 	= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename',array('tb.candidateid'=>$id, 'tb.campaignid' => 0),'','profilehistory tb',$join,'',$orderby,'','');
 	        $history_profile2 	= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','profilehistory tb',$join,'',$orderby,'','');
 
-	        //mail
-	        $history_profile6 	= $this->Data_model->select_row_option('tb.emailsubject,tb.mailid, tb.createddate, tb.isshare, operator.operatorname, document.filename',array('tb.toemail'=>$mail),'','mailtable tb',$join,'',$orderby,'','');
+	        
 
 	        //history assessment
 	        $join[2] 			= array('table'=> 'operator c','match' =>'tb.updatedby = c.operatorid');
@@ -530,14 +529,23 @@ class Campaign extends CI_Controller {
 	        	$join1[3] 		= array('table'=> 'asmtanswer e','match' =>'a.inv_asmtid = e.asmtid');
 	        	$history_profile4[$i]['interviewer'] = $this->Data_model->select_row_option('a.interviewer, a.inv_asmtid, a.scr_asmtid, d.status, b.operatorname, c.filename, e.optionid, e.ansdatetime, e.ansdatetime2',array('a.interviewid'=>$history_profile4[$i]['interviewid']),'','interviewer a',$join1,'',$orderby1,'','');
 	        }
-
 	        // history offer
 	        $join[3] 			= array('table'=> 'assessment d','match' =>'tb.off_asmtid = d.asmtid');
 	        $join[4] 			= array('table'=> 'asmtanswer e','match' =>'tb.off_asmtid = e.asmtid');
 	        $history_profile5 	= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate,d.status, e.optionid, e.anstext',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','offer tb',$join,'',$orderby,'','');
 
 
-	        $this->data2['history'] = array_merge($history_cmt, $history_profile1, $history_profile2,$history_profile3,$history_profile4,$history_profile5, $history_profile6);
+	        if ($mail != '') {
+	            //mail
+	            unset($join[2]);
+	            unset($join[3]);
+	            unset($join[4]);
+	        	$history_profile6 	= $this->Data_model->select_row_option('tb.emailsubject,tb.mailid, tb.createddate, tb.isshare, operator.operatorname, document.filename',array('tb.toemail'=>$mail),'','mailtable tb',$join,'',$orderby,'','');
+
+	            $this->data2['history'] = array_merge($history_cmt, $history_profile1, $history_profile2,$history_profile3,$history_profile4,$history_profile5, $history_profile6);
+	        }else{
+	            $this->data2['history'] = array_merge($history_cmt, $history_profile1, $history_profile2,$history_profile3,$history_profile4,$history_profile5);
+	        }
 	        function cmp($a, $b) {
 	            if ($a['createddate'] == $b['createddate']) {
 	                return 0;
@@ -619,7 +627,7 @@ class Campaign extends CI_Controller {
 	        if ($id == -1) {
 	           $id = $id_mergewith;
 	        }
-	        $this->data2['candidate_con']     = $this->Campaign_model->select_sql("SELECT * FROM candidate WHERE mergewith = $id AND candidateid NOT IN ($id_mergewith)");
+	        $this->data2['candidate_con']     = $this->Campaign_model->select_sql("SELECT * FROM candidate WHERE mergewith = $id AND candidateid NOT IN ($id)");
 	        foreach ($this->data2['candidate_con'] as $key => $value) {
 	            $id_con                             = $value['candidateid'];
 	            $this->data2['canaddress_con'][$key]    = $this->Candidate_model->selectTableByIds('canaddress',$id_con);

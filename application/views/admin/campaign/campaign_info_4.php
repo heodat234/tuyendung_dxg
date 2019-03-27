@@ -86,9 +86,19 @@
 	    	allowedContent: true,
 	        disableAutoInline: true,
 	        toolbarStartupExpanded : true,
-	        toolbarCanCollapse: true});
+	        toolbarCanCollapse: true,
+	        filebrowserBrowseUrl: '<?php echo base_url('public/ckfinder/ckfinder.html') ?>',
+          filebrowserUploadUrl: '<?php echo base_url('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files') ?>',
+          filebrowserImageBrowseUrl : '<?php echo base_url('public/ckfinder/ckfinder.html?type=Images') ?>',
+          filebrowserFlashBrowseUrl : '<?php echo base_url('public/ckfinder/ckfinder.html?type=Flash') ?>',
+          filebrowserImageUploadUrl : '<?php echo base_url('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images') ?>',
+          filebrowserFlashUploadUrl : '<?php echo base_url('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash') ?>'
+	    });
 	});
 	$('#btn_update_4').click(function(event) {
+		for (instance in CKEDITOR.instances) {
+	        CKEDITOR.instances[instance].updateElement();
+	    }
 		$.ajax({
 			url: '<?php echo base_url() ?>admin/campaign/updateRound4',
 			type: 'POST',

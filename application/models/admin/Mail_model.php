@@ -1,22 +1,22 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Mail_model extends CI_Model{
-	
+
 	function __construct(){
         parent::__construct();
         $this->load->database();
 
-    } 
+    }
     public function insert_id()
     {
         $query = 'SELECT SCOPE_IDENTITY() AS last_id';
- 
+
         $query = $this->db->query($query);
         $query = $query->row();
         return $query->last_id;
     }
 
     public function sendMail($data='')
-    {   
+    {
         $attach = '';
         // var_dump($data);exit;
         $config = array(
@@ -25,7 +25,7 @@ class Mail_model extends CI_Model{
             'smtp_port' =>  $data['mcport'],
             'smtp_user' =>  trim($data['mcuser']),
             'smtp_pass' =>  $data['mcpass'],
-            'mailtype'  =>  'html', 
+            'mailtype'  =>  'html',
             'charset'   =>  'utf-8',
             'smtp_crypto' => 'tls',
             // 'smtp_auto_tls' => true
@@ -33,7 +33,7 @@ class Mail_model extends CI_Model{
         $this->load->library('email');
         $this->email->initialize($config);
         $this->email->set_newline("\r\n");
-        
+
         //cau hinh email va ten nguoi gui
         $this->email->from($data['mcuser'], 'Đất xanh Group');
         //cau hinh nguoi nhan
@@ -43,13 +43,13 @@ class Mail_model extends CI_Model{
         $this->email->reply_to($data['mcuser'], 'Đất xanh Group');
         $this->email->cc(isset($data['cc'])? $data['cc'] : '');
         $this->email->bcc(isset($data['bcc'])? $data['bcc'] : '');
-         
+
         $this->email->subject($data['emailsubject']);
         $body = $data['emailbody'];
         $data_body['content'] = $data['emailbody'];
         // var_dump($body);exit;
         $this->email->message($this->load->view('admin/email/view_file', $data_body, TRUE));
-         
+
         //dinh kem file
         $attach = isset($data['attachment'])? $data['attachment']: '';
             if(is_array($attach) && !empty($attach)){
@@ -71,16 +71,16 @@ class Mail_model extends CI_Model{
 
             $subject = mb_encode_mimeheader($data['emailsubject']);
             $new_body = $this->load->view('admin/email/view_file', $data_body, TRUE);
-            
+
 
             $dmy = date("r", strtotime("now"));
             $boundary = "------=".md5(uniqid(rand()));
-            
+
             // $msgid = $this->generateMessageID();
             $msg = "From: ".trim($data['mcuser'])."\r\n";
             $msg .= "To: ".$data['toemail']."\r\n";
-            $msg .= "Cc: ".$data['cc']."\r\n";
-            $msg .= "Bcc: ".$data['bcc']."\r\n";
+            $msg .= "Cc: ".isset($data['cc'])? $data['cc'] : ''."\r\n";
+            $msg .= "Bcc: ".isset($data['cc'])? $data['cc'] : ''."\r\n";
             $msg .= "Date: $dmy\r\n";
             $msg .= "Subject: $subject\r\n";
             $msg .= "MIME-Version: 1.0\r\n";
@@ -111,7 +111,7 @@ class Mail_model extends CI_Model{
             return 1;
         }
         //The first line connects to your inbox over port 143
-        
+
         return 1;
     }
 

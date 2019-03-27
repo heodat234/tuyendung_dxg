@@ -1,5 +1,5 @@
 
-  
+
 
       var base = $('#base').text();
         $('#myModal1a').on('show.bs.modal', function (event) {
@@ -14,7 +14,7 @@
            defaultDate:'+1960/01/01',
            maxDate:'+1960/01/01'
         });
-        
+
         $('#btn_login').click(function(event) {
           $.ajax({
             url: base+'login/loginUser',
@@ -35,7 +35,7 @@
             }else{
               $('#err-login').text('Sai email hoặc mật khẩu. Vui lòng nhập lại!').removeClass('hide');
             }
-            
+
             // console.log(data);
           })
           .fail(function() {
@@ -44,7 +44,7 @@
           .always(function() {
             console.log("complete");
           });
-          
+
         });
         $("#sign-in").validate({
             rules: {
@@ -64,14 +64,14 @@
               },
               firstname: 'required',
               lastname: 'required',
-              
+
             },
             messages: {
               email: {
                 required: 'Vui lòng nhập vào địa chỉ email!',
                 email: 'Vui lòng nhập vào địa chỉ email!'
               },
-              cmnd: 'Vui lòng nhập vào CMND!', 
+              cmnd: 'Vui lòng nhập vào CMND!',
               pass: {
                 required: 'Vui lòng nhập mật khẩu!',
                 minlength: 'Nhập ít nhất 5 kí tự!'
@@ -90,6 +90,8 @@
 				//           $('.fade.in').css('opacity','0');
 				//           $("#loading").show();
 				//       });
+             $('#tags').val($('#typeahead').val());
+             $('#sign-in').find('i').addClass('fa fa-spin fa-spinner');
             $.ajax({
               url: base+'login/insertUser',
               type: 'POST',
@@ -118,7 +120,7 @@
                   $('#err-sign-in').text('Chứng minh nhân dân đã tồn tại. Vui lòng nhập lại!').removeClass('hide');
                 }
               }
-           
+
           })
           .fail(function() {
             console.log("error");
@@ -164,7 +166,7 @@
               $('#err-forgot').removeClass('hide');
               $('#err-forgot').text('Email này chưa được đăng ký!.');
              }
-           
+
           })
           .fail(function() {
             console.log("error");
@@ -209,19 +211,17 @@
               data: $('form#changepass').serialize(),
             })
             .done(function(data) {
-          
+
              if (data == '1' ) {
               $('#err-change').removeClass('hide');
               $('#err-change').text('Mật khẩu cũ không chính xác!.');
-             }   
+             }
              else
              {
-             
-               
               $('#err-change').addClass('hide');
               $('#myModalchangepass').modal('hide');
               alert("Đổi mật khẩu thành công!");
-             }  
+             }
           })
           .fail(function() {
             console.log("error");
@@ -234,10 +234,41 @@
           });
       });
       $('#form-login').keypress(function (e) {
-          if(e.keyCode=='13') 
+          if(e.keyCode=='13')
           $('#btn_login').click();
       });
-      $('#sign-in').keypress(function (e) {
-          if(e.keyCode=='13') 
+      $('#btn_sign_in').keypress(function (e) {
+          if(e.keyCode=='13')
           $('#btn_sign_in').click();
       });
+
+
+
+var substringMatcher = function(strs) {
+  return function findMatches(q, cb) {
+    var matches, substringRegex;
+
+    // an array that will be populated with substring matches
+    matches = [];
+
+    // regex used to determine if a string contains the substring `q`
+    substrRegex = new RegExp(q, 'i');
+
+    // iterate through the pool of strings and for any string that
+    // contains the substring `q`, add it to the `matches` array
+    $.each(strs, function(i, str) {
+      if (substrRegex.test(str)) {
+        matches.push(str);
+      }
+    });
+
+    cb(matches);
+  };
+};
+
+
+
+
+
+
+

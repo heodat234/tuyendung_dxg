@@ -1,11 +1,11 @@
 
-	
+
  <?php $d = 0;
-         if($candidate['introduction'] != "" || count($tags) > 0) $d++;
+         if($candidate['introduction'] != "" ) $d++;
          if($candidate['firstname'] !== "") $d++;
          if($address == true) $d++;
          if($family == true) $d++;
-         if($experience == true || $reference == true) $d++; 
+         if($experience == true || $reference == true) $d++;
          if($knowledge == true) $d++;
          if($language == true || $software == true) $d++;
       ?>
@@ -18,7 +18,7 @@
 				<li><a href="#" target="_self"><i class="fa fa-angle-right"></i> Qui định hồ sơ ứng tuyển</a></li>
 				<li class="<?php echo isset($hoso)? $hoso:'' ?> hide" id="hoso1"><a href="<?php echo base_url()?>hoso_canhan.html" target="_self"><i class="fa fa-angle-right"></i> Hồ sơ cá nhân (<?php echo $d?>/7)</a></li>
 				<li class="<?php echo isset($ls)? $ls:'' ?> hide" id="lichsu1"><a href="<?php echo base_url()?>lichsu_apply.html" target="_self"><i class="fa fa-angle-right"></i> Lịch sử ứng tuyển</a></li>
-				
+
 			</ul>
 		</nav>
 	</div>
@@ -38,6 +38,6 @@
  	 $('#hoso1').removeClass('hide');
       $('#lichsu1').removeClass('hide');
  </script>
-<?php 
+<?php
 } ?>
-	
+

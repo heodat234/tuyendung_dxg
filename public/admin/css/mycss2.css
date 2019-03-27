@@ -435,3 +435,10 @@ padding-right: 0px;
 		font-size: 13px;
 		font-weight: 400;
 	}
+	.webkit-box.active{
+		display: -webkit-box !important;
+	}
+	.webkit-box{
+		display: none !important;
+	}
+}

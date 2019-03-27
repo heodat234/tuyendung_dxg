@@ -312,8 +312,8 @@ color: white;"><span aria-hidden="true">&times;</span></button>
 		$('#titleDatasource').text('Nguồn dữ liệu: Nghiệp vụ '+textt);
 		if(value == 1)
 		{
-			$('.contentDatasource').html('<a class="suggest-field" onclick="getField(this)">Tên Ứng viên</a><a class="suggest-field" onclick="getField(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getField(this)">Tên</a><a class="suggest-field" onclick="getField(this)">Ghi chú</a><a class="suggest-field" onclick="getField(this)">Mật khẩu mới</a>');
-			$('.contentDatasourceSubject').html('<a class="suggest-field" onclick="getFieldSubject(this)">Tên Ứng viên</a><a class="suggest-field" onclick="getFieldSubject(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getFieldSubject(this)">Tên</a><a class="suggest-field" onclick="getFieldSubject(this)">Ghi chú</a>');
+			$('.contentDatasource').html('<a class="suggest-field" onclick="getField(this)">Tên Ứng viên</a><a class="suggest-field" onclick="getField(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getField(this)">Tên</a><a class="suggest-field" onclick="getField(this)">Ghi chú</a><a class="suggest-field" onclick="getField(this)">Mật khẩu mới</a><a class="suggest-field" onclick="getField(this)">Giới tính</a>');
+			$('.contentDatasourceSubject').html('<a class="suggest-field" onclick="getFieldSubject(this)">Tên Ứng viên</a><a class="suggest-field" onclick="getFieldSubject(this)">Tuyển dụng viên</a><a class="suggest-field" onclick="getFieldSubject(this)">Tên</a><a class="suggest-field" onclick="getFieldSubject(this)">Ghi chú</a><a class="suggest-field" onclick="getFieldSubject(this)">Giới tính</a>');
 			
 		}
 		else{

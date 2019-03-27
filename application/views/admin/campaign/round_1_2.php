@@ -65,6 +65,14 @@
  	$('#tab2').click(function(event) {
  		$('#frame_2').show();
  		$('#frame_1').hide();
- 	});
+  	});
+  	$('#tab_cam_1').click(function(event) {
+	    $('#list_manage').show();
+	    $('#box_detail').show();
+	  });
+	  $('#tab_cam_2').click(function(event) {
+	    $('#list_manage').hide();
+	    $('.boxbox-solid').hide();
+	  });
  </script>
  

@@ -35,7 +35,7 @@
 					<div class="panel-group" id="accordion">
 					  	<div class="panel panel-default border-rad0" >
 						    <div class="panel-heading b-blue rad-pad0">
-						    	<a data-toggle="collapse" data-parent="#accordion" href="#collapse1" onclick="rotate(1)">
+						    	<a data-toggle="collapse" data-parent="#accordion" href="#collapse1" >
 						       		<i class="fa fa-angle-right a-tabcs rotate rotate_1"></i>
 						       	</a>
 							    <ul class="nav nav-tabs ul-nav">
@@ -50,7 +50,7 @@
 						    <div id="collapse1" class="panel-collapse collapse in">
 						      	<div class="panel-body tab-collapse">
 							      	<div class="tab-content">
-							        	
+
 							        	<div id="total" class="tab-pane in active">
 							        		<div class="panel-group bor-mar-b0">
 												<div class="panel panel-default border-rad0">
@@ -70,14 +70,14 @@
 												            <label for="text" class="width20 col-xs-3 label-profile ">Giới thiệu</label>
 												            <div class="width80 col-xs-9 padding-lr0">
 												             <label class="fontArial colorgray labelcontent"><?php echo $candidate['introduction']?> </label>
-												             
+
 												            </div>
 												         </div>
 												     	 <div class="width100 row rowedit h-auto">
 												            <label for="text" class="width20 col-xs-3 label-profile ">Vị trí mong muốn</label>
 												            <div class="width80 col-xs-9 padding-lr0">
 												             <label class="fontArial colorcyan labelcontent" >Tuyển dụng </label>
-												             
+
 												            </div>
 												         </div>
 												          <div class="width100 row rowedit h-auto">
@@ -88,7 +88,7 @@
 												         </div>
 												          <div class="width100 row rowedit h-auto">
 												          		<label for="text" class="width20 col-xs-3 label-profile">Hồ sơ tải lên</label>
-											                    <div class="col-sm-8"> 
+											                    <div class="col-sm-8">
 											                      <?php if (isset($document) && !empty($document)){
 											                        $url = $document['url'];
 											                        $name = $document['filename'];
@@ -118,14 +118,14 @@
 												            <label for="text" class="width20 col-xs-3 label-profile">Họ tên</label>
 												            <div class="width80 col-xs-9 padding-lr0">
 												             <label class="fontArial colorgray labelcontent"><?php echo $candidate['name']?></label>
-												             
+
 												            </div>
 												         </div>
 
 												     	 <div class="width100 row rowedit h-auto">
 												            <label for="text" class="width20 col-xs-3 label-profile">Ngày sinh</label>
 												            <div class="width20 col-xs-3 padding-lr0">
-												             <label class="fontArial colorgray labelcontent" ><?php 
+												             <label class="fontArial colorgray labelcontent" ><?php
 												              echo date("d-m-Y", strtotime($candidate['dateofbirth'] )); ?></label>
 												            </div>
 												            <div class="width20 col-xs-6 padding-lr0">
@@ -141,7 +141,7 @@
 												            <div class="width80 col-xs-9 padding-lr0">
 												             <label class="fontArial colorgray labelcontent" ><?php echo $candidate['placeofbirth']?></label>
 												            </div>
-												            
+
 												         </div>
 												          <div class="width100 row rowedit h-auto">
 												            <label for="text" class="width20 col-xs-3 label-profile">Dân Tộc</label>
@@ -170,7 +170,7 @@
 												            </div>
 												            <label for="text" class="width20 col-xs-3 label-profile">Ngày cấp/ Nơi cấp</label>
 												            <div class="width20 col-xs-3 padding-lr0">
-												             <label class="fontArial colorgray labelcontent" ><?php 
+												             <label class="fontArial colorgray labelcontent" ><?php
 												             echo date("d-m-Y", strtotime($candidate['dateofissue'] ));
 												             ?></label>
 												            </div>
@@ -178,7 +178,7 @@
 												             <label class="fontArial colorgray labelcontent" ><?php echo $candidate['placeofissue']?></label>
 												            </div>
 												         </div>
-												        
+
 												  	  </div>
 												    </div>
 												    <!-- body ho so ca nhan 2-->
@@ -207,9 +207,9 @@
 													     	 <div class="width100 row rowedit h-auto">
 													             <label for="text" class="width20 col-xs-3 label-profile">Địa chỉ thường trú</label>
 													            <div class="width80 col-xs-9 padding-lr0">
-													             <label class="fontArial colorgray labelcontent"><?php 
+													             <label class="fontArial colorgray labelcontent"><?php
 													                  if($address != null)
-													                  { 
+													                  {
 													                      foreach ($address as $key ) {
 													                        if($key['addtype'] == "PREMANENT")
 													                        {
@@ -225,7 +225,7 @@
 													             <label for="text" class="width20 col-xs-3 label-profile">Địa chỉ liên hệ</label>
 													            <div class="width80 col-xs-9 padding-lr0">
 													             <label class="fontArial colorgray labelcontent" >
-													             	<?php 
+													             	<?php
 													                  if($address != null)
 													                  {
 													                      foreach ($address as $key ) {
@@ -250,7 +250,7 @@
 													             <label class="fontArial colorgray labelcontent" ><?php echo $candidate['emergencycontact'];?></label>
 													            </div>
 													         </div>
-													         
+
 													  	  </div>
 											    	</div>
 											    	<!-- body ho so ca nhan 3-->
@@ -269,16 +269,16 @@
 												    <!-- heading ho so ca nhan 4-->
 												    <div id="collapsetotal41" class="panel-collapse collapse tab_con_canhan in">
 												    	 <div class="panel-body" style="border: 0px">
-														      <table class="table table-striped table-bordered"> 
-														            <thead> 
-														              <tr class="fontstyle"> 
-														                <th id="th" width="30%">Họ và tên</th> 
-														                <th id="th" width="20%">Năm sinh</th> 
-														                <th id="th" width="20%">Quan hệ</th> 
+														      <table class="table table-striped table-bordered">
+														            <thead>
+														              <tr class="fontstyle">
+														                <th id="th" width="30%">Họ và tên</th>
+														                <th id="th" width="20%">Năm sinh</th>
+														                <th id="th" width="20%">Quan hệ</th>
 														                <th id="th" width="20%">Nghề nghiệp</th>
-														              </tr> 
-														            </thead> 
-														            <tbody class="fontstyle text-center"> 
+														              </tr>
+														            </thead>
+														            <tbody class="fontstyle text-center">
 														              <?php if($family != null) {
 														                $i = 0;
 														              foreach ($family as $key) { ?>
@@ -289,7 +289,7 @@
 														              <td><?php echo $key['career']?></td>
 														             </tr>
 														             <?php $i++;} } ?>
-														            </tbody> 
+														            </tbody>
 													          </table>
 											      		</div>
 												    </div>
@@ -309,22 +309,22 @@
 												    <!-- heading ho so ca nhan 5-->
 												    <div id="collapsetotal51" class="panel-collapse collapse tab_con_canhan in">
 												    	 <div class="panel-body" style="border: 0px">
-														      <table   class="table table-striped table-bordered" > 
-													            <thead class="fontstyle"> 
-													              <tr > 
-													                <th id="th" class="middle2" width="20%">Từ - Đến</th> 
-													                <th id="th" class="middle2" width="20%">Cty/ Địa chỉ/ ĐT</th> 
-													                <th id="th" width="13%">CV khi nghỉ</th> 
+														      <table   class="table table-striped table-bordered" >
+													            <thead class="fontstyle">
+													              <tr >
+													                <th id="th" class="middle2" width="20%">Từ - Đến</th>
+													                <th id="th" class="middle2" width="20%">Cty/ Địa chỉ/ ĐT</th>
+													                <th id="th" width="13%">CV khi nghỉ</th>
 													                <th id="th" width="17%">NV/ Trách nhiệm</th>
 													                 <th id="th" class="middle2" width="20%">Lý do nghỉ</th>
-													              </tr> 
-													            </thead> 
-													            <tbody class="fontstyle text-center"> 
-													             <?php if($experience != null) { 
+													              </tr>
+													            </thead>
+													            <tbody class="fontstyle text-center">
+													             <?php if($experience != null) {
 													              $i = 0;
 													              foreach ($experience as $key) { ?>
 													             <tr>
-													              
+
 													              <td><?php echo date("d-m-Y", strtotime($key['datefrom'])).' - '.date("d-m-Y", strtotime($key['dateto']))?></td>
 													              <td><?php echo $key['company']." / ".$key['address']." / ".$key['phone']?></td>
 													              <td><?php echo $key['position']?></td>
@@ -332,30 +332,30 @@
 													              <td><?php echo $key['quitreason']?></td>
 													             </tr>
 													             <?php $i++; } } ?>
-													            </tbody> 
+													            </tbody>
 													          </table>
 
-													          <table   class="table table-striped table-bordered" > 
-													            <thead> 
-													              <tr class="fontstyle"> 
-													                <th id="th" width="30%">Họ và tên</th> 
-													                <th id="th" width="15%">Chức vụ</th> 
-													                <th id="th" width="20%">Công ty</th> 
-													                <th id="th" width="25%">Liên hệ</th>				                  
-													              </tr> 
-													            </thead> 
-													            <tbody class="fontstyle text-center"> 
+													          <table   class="table table-striped table-bordered" >
+													            <thead>
+													              <tr class="fontstyle">
+													                <th id="th" width="30%">Họ và tên</th>
+													                <th id="th" width="15%">Chức vụ</th>
+													                <th id="th" width="20%">Công ty</th>
+													                <th id="th" width="25%">Liên hệ</th>
+													              </tr>
+													            </thead>
+													            <tbody class="fontstyle text-center">
 													             <?php if($reference != null) {
 													              $i = 0;
 													              foreach ($reference as $key) { ?>
-													             <tr>					               
+													             <tr>
 													              <td><?php echo $key['name']?></td>
 													              <td><?php echo $key['position']?></td>
 													              <td><?php echo $key['company']?></td>
 													              <td><?php echo $key['contactno']?></td>
 													             </tr>
 													             <?php $i++; } } ?>
-													            </tbody> 
+													            </tbody>
 													          </table>
 											      		</div>
 												    </div>
@@ -375,21 +375,21 @@
 												    <!-- heading ho so ca nhan 6-->
 												    <div id="collapsetotal61" class="panel-collapse collapse tab_con_canhan in">
 												    	 <div class="panel-body" style="border: 0px">
-														      <table   class="table table-striped table-bordered" > 
-													            <thead class="fontstyle"> 
-													              <tr > 
-													                <th id="th" width="20%">Từ - Đến</th> 
-													                <th id="th" width="20%">Trường</th> 
-													                <th id="th" width="15%">Nơi học</th> 
+														      <table   class="table table-striped table-bordered" >
+													            <thead class="fontstyle">
+													              <tr >
+													                <th id="th" width="20%">Từ - Đến</th>
+													                <th id="th" width="20%">Trường</th>
+													                <th id="th" width="15%">Nơi học</th>
 													                <th id="th" width="20%">Ngành học</th>
 													                 <th id="th" width="15%">Bằng cấp</th>
-													                 
-													              </tr> 
-													            </thead> 
-													            <tbody class="fontstyle text-center"> 
+
+													              </tr>
+													            </thead>
+													            <tbody class="fontstyle text-center">
 													              <?php if($knowledge != null) {
 													                $i = 0;
-													              foreach ($knowledge as $key) { 
+													              foreach ($knowledge as $key) {
 													                if($key['traintimetype'] != null)
 													                  { continue; } else {?>
 													             <tr>
@@ -400,24 +400,24 @@
 													              <td><?php echo $key['certificate']; if($key['highestcer'] == "Y") echo "(*)"; ?></td>
 													             </tr>
 													             <?php $i++; } } }?>
-													            </tbody> 
+													            </tbody>
 													          </table>
 
-													          <table   class="table table-striped table-bordered" > 
-													            <thead class="fontstyle"> 
-													              <tr> 
-													                <th id="th" width="20%">Từ - Đến</th> 
-													                <th id="th" width="25%">Cơ sở đạo tào</th> 
-													                <th id="th" width="13%">TG học</th> 
+													          <table   class="table table-striped table-bordered" >
+													            <thead class="fontstyle">
+													              <tr>
+													                <th id="th" width="20%">Từ - Đến</th>
+													                <th id="th" width="25%">Cơ sở đạo tào</th>
+													                <th id="th" width="13%">TG học</th>
 													                <th id="th" width="17%">Ngành học</th>
 													                 <th id="th" width="15%">Bằng cấp</th>
-													                
-													              </tr> 
-													            </thead> 
-													            <tbody class="fontstyle text-center"> 
+
+													              </tr>
+													            </thead>
+													            <tbody class="fontstyle text-center">
 													             <?php if($knowledge != null) {
 													               $i = 0;
-													              foreach ($knowledge as $key) { 
+													              foreach ($knowledge as $key) {
 													                if($key['traintimetype'] == null)
 													                  { continue; } else {?>
 													             <tr>
@@ -428,7 +428,7 @@
 													              <td><?php echo $key['certificate']?></td>
 													             </tr>
 													             <?php $i++; } } } ?>
-													            </tbody> 
+													            </tbody>
 													          </table>
 											      		</div>
 												    </div>
@@ -448,20 +448,20 @@
 												    <!-- heading ho so ca nhan 7-->
 												    <div id="collapsetotal71" class="panel-collapse collapse tab_con_canhan in">
 												    	 <div class="panel-body" style="border: 0px">
-														      <table class="table table-striped table-bordered" > 
-													            <thead class="fontstyle"> 
-													              <tr> 
-													                <th id="th" >Ngoại Ngữ</th> 
-													                <th id="th" >Nghe</th> 
-													                <th id="th" >Nói</th> 
+														      <table class="table table-striped table-bordered" >
+													            <thead class="fontstyle">
+													              <tr>
+													                <th id="th" >Ngoại Ngữ</th>
+													                <th id="th" >Nghe</th>
+													                <th id="th" >Nói</th>
 													                <th id="th" >Đọc</th>
 													                <th id="th" >Viết</th>
-													              </tr> 
-													            </thead> 
-													            <tbody class="fontstyle text-center"> 
+													              </tr>
+													            </thead>
+													            <tbody class="fontstyle text-center">
 													            <?php if($language != null) {
 													              $i = 0;
-													              foreach ($language as $key) { 
+													              foreach ($language as $key) {
 													                ?>
 													             <tr>
 													              <td><?php echo $key['language']?></td>
@@ -471,7 +471,7 @@
 													              <td><?php echo ($key['rate4'] !== "0")? $key['rate4']: ""; ?></td>
 													             </tr>
 													             <?php $i++; } } ?>
-													            </tbody> 
+													            </tbody>
 													          </table>
 											      		</div>
 												    </div>
@@ -491,24 +491,24 @@
 												    <!-- heading ho so ca nhan 8-->
 												    <div id="collapsetotal81" class="panel-collapse collapse tab_con_canhan in">
 												    	 <div class="panel-body" style="border: 0px">
-														     <table   class="table table-striped table-bordered" > 
-													            <thead class="fontstyle"> 
-													              <tr> 
-													                <th id="th" width="60%">Phần mềm</th> 
+														     <table   class="table table-striped table-bordered" >
+													            <thead class="fontstyle">
+													              <tr>
+													                <th id="th" width="60%">Phần mềm</th>
 													                <th id="th" width="30%">Trình độ</th>
-													              </tr> 
-													            </thead> 
-													            <tbody class="fontstyle text-center"> 
+													              </tr>
+													            </thead>
+													            <tbody class="fontstyle text-center">
 													             <?php if($software != null) {
 													              $i = 0;
-													              foreach ($software as $key) { 
+													              foreach ($software as $key) {
 													                ?>
 													             <tr>
 													              <td><?php echo $key['software']?></td>
 													              <td><?php echo ($key['rate1'] !== "0")? $key['rate1'] : ""; ?></td>
 													             </tr>
 													             <?php $i++; } } ?>
-													            </tbody> 
+													            </tbody>
 													          </table>
 											      		</div>
 												    </div>
@@ -538,14 +538,14 @@
 												            <label for="text" class="width20 col-xs-3 label-profile ">Giới thiệu</label>
 												            <div class="width80 col-xs-9 padding-lr0">
 												             <label class="fontArial colorgray labelcontent"><?php echo $candidate_noibo['introduction']?> </label>
-												             
+
 												            </div>
 												         </div>
 												     	 <div class="width100 row rowedit h-auto">
 												            <label for="text" class="width20 col-xs-3 label-profile ">Vị trí mong muốn</label>
 												            <div class="width80 col-xs-9 padding-lr0">
 												             <label class="fontArial colorcyan labelcontent" >Tuyển dụng </label>
-												             
+
 												            </div>
 												         </div>
 												          <div class="width100 row rowedit h-auto">
@@ -556,7 +556,7 @@
 												         </div>
 												          <div class="width100 row rowedit h-auto">
 												          		<label for="text" class="width20 col-xs-3 label-profile">Hồ sơ tải lên</label>
-											                    <div class="col-sm-8"> 
+											                    <div class="col-sm-8">
 											                      <?php if (isset($document_noibo) && !empty($document_noibo)){
 											                        $url = $document_noibo['url'];
 											                        $name = $document_noibo['filename'];
@@ -586,14 +586,14 @@
 												            <label for="text" class="width20 col-xs-3 label-profile">Họ tên</label>
 												            <div class="width80 col-xs-9 padding-lr0">
 												             <label class="fontArial colorgray labelcontent"><?php echo $candidate_noibo['name']?></label>
-												             
+
 												            </div>
 												         </div>
 
 												     	 <div class="width100 row rowedit h-auto">
 												            <label for="text" class="width20 col-xs-3 label-profile">Ngày sinh</label>
 												            <div class="width20 col-xs-3 padding-lr0">
-												             <label class="fontArial colorgray labelcontent" ><?php 
+												             <label class="fontArial colorgray labelcontent" ><?php
 												              echo date("d-m-Y", strtotime($candidate_noibo['dateofbirth'] )); ?></label>
 												            </div>
 												            <div class="width20 col-xs-6 padding-lr0">
@@ -609,7 +609,7 @@
 												            <div class="width80 col-xs-9 padding-lr0">
 												             <label class="fontArial colorgray labelcontent" ><?php echo $candidate_noibo['placeofbirth']?></label>
 												            </div>
-												            
+
 												         </div>
 												          <div class="width100 row rowedit h-auto">
 												            <label for="text" class="width20 col-xs-3 label-profile">Dân Tộc</label>
@@ -638,7 +638,7 @@
 												            </div>
 												            <label for="text" class="width20 col-xs-3 label-profile">Ngày cấp/ Nơi cấp</label>
 												            <div class="width20 col-xs-3 padding-lr0">
-												             <label class="fontArial colorgray labelcontent" ><?php 
+												             <label class="fontArial colorgray labelcontent" ><?php
 												             echo date("d-m-Y", strtotime($candidate_noibo['dateofissue'] ));
 												             ?></label>
 												            </div>
@@ -646,7 +646,7 @@
 												             <label class="fontArial colorgray labelcontent" ><?php echo $candidate_noibo['placeofissue']?></label>
 												            </div>
 												         </div>
-												        
+
 												  	  </div>
 												    </div>
 												    <!-- body ho so ca nhan 2-->
@@ -675,9 +675,9 @@
 													     	 <div class="width100 row rowedit h-auto">
 													             <label for="text" class="width20 col-xs-3 label-profile">Địa chỉ thường trú</label>
 													            <div class="width80 col-xs-9 padding-lr0">
-													             <label class="fontArial colorgray labelcontent"><?php 
+													             <label class="fontArial colorgray labelcontent"><?php
 													                  if($address_noibo != null)
-													                  { 
+													                  {
 													                      foreach ($address_noibo as $key ) {
 													                        if($key['addtype'] == "PREMANENT")
 													                        {
@@ -693,7 +693,7 @@
 													             <label for="text" class="width20 col-xs-3 label-profile">Địa chỉ liên hệ</label>
 													            <div class="width80 col-xs-9 padding-lr0">
 													             <label class="fontArial colorgray labelcontent" >
-													             	<?php 
+													             	<?php
 													                  if($address_noibo != null)
 													                  {
 													                      foreach ($address_noibo as $key ) {
@@ -718,7 +718,7 @@
 													             <label class="fontArial colorgray labelcontent" ><?php echo $candidate_noibo['emergencycontact'];?></label>
 													            </div>
 													         </div>
-													         
+
 													  	  </div>
 											    	</div>
 											    	<!-- body ho so ca nhan 3-->
@@ -737,16 +737,16 @@
 												    <!-- heading ho so ca nhan 4-->
 												    <div id="collapsetotal41" class="panel-collapse collapse tab_con_canhan in">
 												    	 <div class="panel-body" style="border: 0px">
-														      <table class="table table-striped table-bordered"> 
-														            <thead> 
-														              <tr class="fontstyle"> 
-														                <th id="th" width="30%">Họ và tên</th> 
-														                <th id="th" width="20%">Năm sinh</th> 
-														                <th id="th" width="20%">Quan hệ</th> 
+														      <table class="table table-striped table-bordered">
+														            <thead>
+														              <tr class="fontstyle">
+														                <th id="th" width="30%">Họ và tên</th>
+														                <th id="th" width="20%">Năm sinh</th>
+														                <th id="th" width="20%">Quan hệ</th>
 														                <th id="th" width="20%">Nghề nghiệp</th>
-														              </tr> 
-														            </thead> 
-														            <tbody class="fontstyle text-center"> 
+														              </tr>
+														            </thead>
+														            <tbody class="fontstyle text-center">
 														              <?php if($family_noibo != null) {
 														                $i = 0;
 														              foreach ($family_noibo as $key) { ?>
@@ -757,7 +757,7 @@
 														              <td><?php echo $key['career']?></td>
 														             </tr>
 														             <?php $i++;} } ?>
-														            </tbody> 
+														            </tbody>
 													          </table>
 											      		</div>
 												    </div>
@@ -777,22 +777,22 @@
 												    <!-- heading ho so ca nhan 5-->
 												    <div id="collapsetotal51" class="panel-collapse collapse tab_con_canhan in">
 												    	 <div class="panel-body" style="border: 0px">
-														      <table   class="table table-striped table-bordered" > 
-													            <thead class="fontstyle"> 
-													              <tr > 
-													                <th id="th" class="middle2" width="20%">Từ - Đến</th> 
-													                <th id="th" class="middle2" width="20%">Cty/ Địa chỉ/ ĐT</th> 
-													                <th id="th" width="13%">CV khi nghỉ</th> 
+														      <table   class="table table-striped table-bordered" >
+													            <thead class="fontstyle">
+													              <tr >
+													                <th id="th" class="middle2" width="20%">Từ - Đến</th>
+													                <th id="th" class="middle2" width="20%">Cty/ Địa chỉ/ ĐT</th>
+													                <th id="th" width="13%">CV khi nghỉ</th>
 													                <th id="th" width="17%">NV/ Trách nhiệm</th>
 													                 <th id="th" class="middle2" width="20%">Lý do nghỉ</th>
-													              </tr> 
-													            </thead> 
-													            <tbody class="fontstyle text-center"> 
-													             <?php if($experience_noibo != null) { 
+													              </tr>
+													            </thead>
+													            <tbody class="fontstyle text-center">
+													             <?php if($experience_noibo != null) {
 													              $i = 0;
 													              foreach ($experience_noibo as $key) { ?>
 													             <tr>
-													              
+
 													              <td><?php echo date("d-m-Y", strtotime($key['datefrom'])).' - '.date("d-m-Y", strtotime($key['dateto']))?></td>
 													              <td><?php echo $key['company']." / ".$key['address']." / ".$key['phone']?></td>
 													              <td><?php echo $key['position']?></td>
@@ -800,30 +800,30 @@
 													              <td><?php echo $key['quitreason']?></td>
 													             </tr>
 													             <?php $i++; } } ?>
-													            </tbody> 
+													            </tbody>
 													          </table>
 
-													          <table   class="table table-striped table-bordered" > 
-													            <thead> 
-													              <tr class="fontstyle"> 
-													                <th id="th" width="30%">Họ và tên</th> 
-													                <th id="th" width="15%">Chức vụ</th> 
-													                <th id="th" width="20%">Công ty</th> 
-													                <th id="th" width="25%">Liên hệ</th>				                  
-													              </tr> 
-													            </thead> 
-													            <tbody class="fontstyle text-center"> 
+													          <table   class="table table-striped table-bordered" >
+													            <thead>
+													              <tr class="fontstyle">
+													                <th id="th" width="30%">Họ và tên</th>
+													                <th id="th" width="15%">Chức vụ</th>
+													                <th id="th" width="20%">Công ty</th>
+													                <th id="th" width="25%">Liên hệ</th>
+													              </tr>
+													            </thead>
+													            <tbody class="fontstyle text-center">
 													             <?php if($reference_noibo != null) {
 													              $i = 0;
 													              foreach ($reference_noibo as $key) { ?>
-													             <tr>					               
+													             <tr>
 													              <td><?php echo $key['name']?></td>
 													              <td><?php echo $key['position']?></td>
 													              <td><?php echo $key['company']?></td>
 													              <td><?php echo $key['contactno']?></td>
 													             </tr>
 													             <?php $i++; } } ?>
-													            </tbody> 
+													            </tbody>
 													          </table>
 											      		</div>
 												    </div>
@@ -843,21 +843,21 @@
 												    <!-- heading ho so ca nhan 6-->
 												    <div id="collapsetotal61" class="panel-collapse collapse tab_con_canhan in">
 												    	 <div class="panel-body" style="border: 0px">
-														      <table   class="table table-striped table-bordered" > 
-													            <thead class="fontstyle"> 
-													              <tr > 
-													                <th id="th" width="20%">Từ - Đến</th> 
-													                <th id="th" width="20%">Trường</th> 
-													                <th id="th" width="15%">Nơi học</th> 
+														      <table   class="table table-striped table-bordered" >
+													            <thead class="fontstyle">
+													              <tr >
+													                <th id="th" width="20%">Từ - Đến</th>
+													                <th id="th" width="20%">Trường</th>
+													                <th id="th" width="15%">Nơi học</th>
 													                <th id="th" width="20%">Ngành học</th>
 													                 <th id="th" width="15%">Bằng cấp</th>
-													                 
-													              </tr> 
-													            </thead> 
-													            <tbody class="fontstyle text-center"> 
+
+													              </tr>
+													            </thead>
+													            <tbody class="fontstyle text-center">
 													              <?php if($knowledge_noibo != null) {
 													                $i = 0;
-													              foreach ($knowledge_noibo as $key) { 
+													              foreach ($knowledge_noibo as $key) {
 													                if($key['traintimetype'] != null)
 													                  { continue; } else {?>
 													             <tr>
@@ -868,24 +868,24 @@
 													              <td><?php echo $key['certificate']; if($key['highestcer'] == "Y") echo "(*)"; ?></td>
 													             </tr>
 													             <?php $i++; } } }?>
-													            </tbody> 
+													            </tbody>
 													          </table>
 
-													          <table   class="table table-striped table-bordered" > 
-													            <thead class="fontstyle"> 
-													              <tr> 
-													                <th id="th" width="20%">Từ - Đến</th> 
-													                <th id="th" width="25%">Cơ sở đạo tào</th> 
-													                <th id="th" width="13%">TG học</th> 
+													          <table   class="table table-striped table-bordered" >
+													            <thead class="fontstyle">
+													              <tr>
+													                <th id="th" width="20%">Từ - Đến</th>
+													                <th id="th" width="25%">Cơ sở đạo tào</th>
+													                <th id="th" width="13%">TG học</th>
 													                <th id="th" width="17%">Ngành học</th>
 													                 <th id="th" width="15%">Bằng cấp</th>
-													                
-													              </tr> 
-													            </thead> 
-													            <tbody class="fontstyle text-center"> 
+
+													              </tr>
+													            </thead>
+													            <tbody class="fontstyle text-center">
 													             <?php if($knowledge_noibo != null) {
 													               $i = 0;
-													              foreach ($knowledge_noibo as $key) { 
+													              foreach ($knowledge_noibo as $key) {
 													                if($key['traintimetype'] == null)
 													                  { continue; } else {?>
 													             <tr>
@@ -896,7 +896,7 @@
 													              <td><?php echo $key['certificate']?></td>
 													             </tr>
 													             <?php $i++; } } } ?>
-													            </tbody> 
+													            </tbody>
 													          </table>
 											      		</div>
 												    </div>
@@ -916,20 +916,20 @@
 												    <!-- heading ho so ca nhan 7-->
 												    <div id="collapsetotal71" class="panel-collapse collapse tab_con_canhan in">
 												    	 <div class="panel-body" style="border: 0px">
-														      <table class="table table-striped table-bordered" > 
-													            <thead class="fontstyle"> 
-													              <tr> 
-													                <th id="th" >Ngoại Ngữ</th> 
-													                <th id="th" >Nghe</th> 
-													                <th id="th" >Nói</th> 
+														      <table class="table table-striped table-bordered" >
+													            <thead class="fontstyle">
+													              <tr>
+													                <th id="th" >Ngoại Ngữ</th>
+													                <th id="th" >Nghe</th>
+													                <th id="th" >Nói</th>
 													                <th id="th" >Đọc</th>
 													                <th id="th" >Viết</th>
-													              </tr> 
-													            </thead> 
-													            <tbody class="fontstyle text-center"> 
+													              </tr>
+													            </thead>
+													            <tbody class="fontstyle text-center">
 													            <?php if($language_noibo != null) {
 													              $i = 0;
-													              foreach ($language_noibo as $key) { 
+													              foreach ($language_noibo as $key) {
 													                ?>
 													             <tr>
 													              <td><?php echo $key['language']?></td>
@@ -939,7 +939,7 @@
 													              <td><?php echo ($key['rate4'] !== "0")? $key['rate4']: ""; ?></td>
 													             </tr>
 													             <?php $i++; } } ?>
-													            </tbody> 
+													            </tbody>
 													          </table>
 											      		</div>
 												    </div>
@@ -959,24 +959,24 @@
 												    <!-- heading ho so ca nhan 8-->
 												    <div id="collapsetotal81" class="panel-collapse collapse tab_con_canhan in">
 												    	 <div class="panel-body" style="border: 0px">
-														     <table   class="table table-striped table-bordered" > 
-													            <thead class="fontstyle"> 
-													              <tr> 
-													                <th id="th" width="60%">Phần mềm</th> 
+														     <table   class="table table-striped table-bordered" >
+													            <thead class="fontstyle">
+													              <tr>
+													                <th id="th" width="60%">Phần mềm</th>
 													                <th id="th" width="30%">Trình độ</th>
-													              </tr> 
-													            </thead> 
-													            <tbody class="fontstyle text-center"> 
+													              </tr>
+													            </thead>
+													            <tbody class="fontstyle text-center">
 													             <?php if($software_noibo != null) {
 													              $i = 0;
-													              foreach ($software_noibo as $key) { 
+													              foreach ($software_noibo as $key) {
 													                ?>
 													             <tr>
 													              <td><?php echo $key['software']?></td>
 													              <td><?php echo ($key['rate1'] !== "0")? $key['rate1'] : ""; ?></td>
 													             </tr>
 													             <?php $i++; } } ?>
-													            </tbody> 
+													            </tbody>
 													          </table>
 											      		</div>
 												    </div>
@@ -1007,14 +1007,14 @@
 													            <label for="text" class="width20 col-xs-3 label-profile ">Giới thiệu</label>
 													            <div class="width80 col-xs-9 padding-lr0">
 													             <label class="fontArial colorgray labelcontent"><?php echo $value_con['introduction']?> </label>
-													             
+
 													            </div>
 													         </div>
 													     	 <div class="width100 row rowedit h-auto">
 													            <label for="text" class="width20 col-xs-3 label-profile ">Vị trí mong muốn</label>
 													            <div class="width80 col-xs-9 padding-lr0">
 													             <label class="fontArial colorcyan labelcontent" >Tuyển dụng </label>
-													             
+
 													            </div>
 													         </div>
 													          <div class="width100 row rowedit h-auto">
@@ -1025,7 +1025,7 @@
 													         </div>
 													          <div class="width100 row rowedit h-auto">
 													          		<label for="text" class="width20 col-xs-3 label-profile">Hồ sơ tải lên</label>
-												                    <div class="col-sm-8"> 
+												                    <div class="col-sm-8">
 												                      <?php if (isset($document_con[$key_con]) && !empty($document_con[$key_con])){
 												                        $url = $document_con[$key_con]['url'];
 												                        $name = $document_con[$key_con]['filename'];
@@ -1055,14 +1055,14 @@
 													            <label for="text" class="width20 col-xs-3 label-profile">Họ tên</label>
 													            <div class="width80 col-xs-9 padding-lr0">
 													             <label class="fontArial colorgray labelcontent"><?php echo $value_con['name']?></label>
-													             
+
 													            </div>
 													         </div>
 
 													     	 <div class="width100 row rowedit h-auto">
 													            <label for="text" class="width20 col-xs-3 label-profile">Ngày sinh</label>
 													            <div class="width20 col-xs-3 padding-lr0">
-													             <label class="fontArial colorgray labelcontent" ><?php 
+													             <label class="fontArial colorgray labelcontent" ><?php
 													              echo date("d-m-Y", strtotime($value_con['dateofbirth'] )); ?></label>
 													            </div>
 													            <div class="width20 col-xs-6 padding-lr0">
@@ -1078,7 +1078,7 @@
 													            <div class="width80 col-xs-9 padding-lr0">
 													             <label class="fontArial colorgray labelcontent" ><?php echo $value_con['placeofbirth']?></label>
 													            </div>
-													            
+
 													         </div>
 													          <div class="width100 row rowedit h-auto">
 													            <label for="text" class="width20 col-xs-3 label-profile">Dân Tộc</label>
@@ -1107,7 +1107,7 @@
 													            </div>
 													            <label for="text" class="width20 col-xs-3 label-profile">Ngày cấp/ Nơi cấp</label>
 													            <div class="width20 col-xs-3 padding-lr0">
-													             <label class="fontArial colorgray labelcontent" ><?php 
+													             <label class="fontArial colorgray labelcontent" ><?php
 													             echo date("d-m-Y", strtotime($value_con['dateofissue'] ));
 													             ?></label>
 													            </div>
@@ -1115,7 +1115,7 @@
 													             <label class="fontArial colorgray labelcontent" ><?php echo $value_con['placeofissue']?></label>
 													            </div>
 													         </div>
-													        
+
 													  	  </div>
 													    </div>
 													    <!-- body ho so ca nhan 2-->
@@ -1144,9 +1144,9 @@
 														     	 <div class="width100 row rowedit h-auto">
 														             <label for="text" class="width20 col-xs-3 label-profile">Địa chỉ thường trú</label>
 														            <div class="width80 col-xs-9 padding-lr0">
-														             <label class="fontArial colorgray labelcontent"><?php 
+														             <label class="fontArial colorgray labelcontent"><?php
 														                  if($address_con[$key_con] != null)
-														                  { 
+														                  {
 														                      foreach ($address_con[$key_con] as $key ) {
 														                        if($key['addtype'] == "PREMANENT")
 														                        {
@@ -1162,7 +1162,7 @@
 														             <label for="text" class="width20 col-xs-3 label-profile">Địa chỉ liên hệ</label>
 														            <div class="width80 col-xs-9 padding-lr0">
 														             <label class="fontArial colorgray labelcontent" >
-														             	<?php 
+														             	<?php
 														                  if($address_con[$key_con] != null)
 														                  {
 														                      foreach ($address_con[$key_con] as $key ) {
@@ -1187,7 +1187,7 @@
 														             <label class="fontArial colorgray labelcontent" ><?php echo $value_con['emergencycontact'];?></label>
 														            </div>
 														         </div>
-														         
+
 														  	  </div>
 												    	</div>
 												    	<!-- body ho so ca nhan 3-->
@@ -1206,16 +1206,16 @@
 													    <!-- heading ho so ca nhan 4-->
 													    <div id="collapsetotal41" class="panel-collapse collapse tab_con_canhan in">
 													    	 <div class="panel-body" style="border: 0px">
-															      <table class="table table-striped table-bordered"> 
-															            <thead> 
-															              <tr class="fontstyle"> 
-															                <th id="th" width="30%">Họ và tên</th> 
-															                <th id="th" width="20%">Năm sinh</th> 
-															                <th id="th" width="20%">Quan hệ</th> 
+															      <table class="table table-striped table-bordered">
+															            <thead>
+															              <tr class="fontstyle">
+															                <th id="th" width="30%">Họ và tên</th>
+															                <th id="th" width="20%">Năm sinh</th>
+															                <th id="th" width="20%">Quan hệ</th>
 															                <th id="th" width="20%">Nghề nghiệp</th>
-															              </tr> 
-															            </thead> 
-															            <tbody class="fontstyle text-center"> 
+															              </tr>
+															            </thead>
+															            <tbody class="fontstyle text-center">
 															              <?php if($family_con[$key_con] != null) {
 															                $i = 0;
 															              foreach ($family_con[$key_con] as $key) { ?>
@@ -1226,7 +1226,7 @@
 															              <td><?php echo $key['career']?></td>
 															             </tr>
 															             <?php $i++;} } ?>
-															            </tbody> 
+															            </tbody>
 														          </table>
 												      		</div>
 													    </div>
@@ -1246,22 +1246,22 @@
 													    <!-- heading ho so ca nhan 5-->
 													    <div id="collapsetotal51" class="panel-collapse collapse tab_con_canhan in">
 													    	 <div class="panel-body" style="border: 0px">
-															      <table   class="table table-striped table-bordered" > 
-														            <thead class="fontstyle"> 
-														              <tr > 
-														                <th id="th" class="middle2" width="20%">Từ - Đến</th> 
-														                <th id="th" class="middle2" width="20%">Cty/ Địa chỉ/ ĐT</th> 
-														                <th id="th" width="13%">CV khi nghỉ</th> 
+															      <table   class="table table-striped table-bordered" >
+														            <thead class="fontstyle">
+														              <tr >
+														                <th id="th" class="middle2" width="20%">Từ - Đến</th>
+														                <th id="th" class="middle2" width="20%">Cty/ Địa chỉ/ ĐT</th>
+														                <th id="th" width="13%">CV khi nghỉ</th>
 														                <th id="th" width="17%">NV/ Trách nhiệm</th>
 														                 <th id="th" class="middle2" width="20%">Lý do nghỉ</th>
-														              </tr> 
-														            </thead> 
-														            <tbody class="fontstyle text-center"> 
-														             <?php if($experience_con[$key_con] != null) { 
+														              </tr>
+														            </thead>
+														            <tbody class="fontstyle text-center">
+														             <?php if($experience_con[$key_con] != null) {
 														              $i = 0;
 														              foreach ($experience_con[$key_con] as $key) { ?>
 														             <tr>
-														              
+
 														              <td><?php echo date("d-m-Y", strtotime($key['datefrom'])).' - '.date("d-m-Y", strtotime($key['dateto']))?></td>
 														              <td><?php echo $key['company']." / ".$key['address']." / ".$key['phone']?></td>
 														              <td><?php echo $key['position']?></td>
@@ -1269,30 +1269,30 @@
 														              <td><?php echo $key['quitreason']?></td>
 														             </tr>
 														             <?php $i++; } } ?>
-														            </tbody> 
+														            </tbody>
 														          </table>
 
-														          <table   class="table table-striped table-bordered" > 
-														            <thead> 
-														              <tr class="fontstyle"> 
-														                <th id="th" width="30%">Họ và tên</th> 
-														                <th id="th" width="15%">Chức vụ</th> 
-														                <th id="th" width="20%">Công ty</th> 
-														                <th id="th" width="25%">Liên hệ</th>				                  
-														              </tr> 
-														            </thead> 
-														            <tbody class="fontstyle text-center"> 
+														          <table   class="table table-striped table-bordered" >
+														            <thead>
+														              <tr class="fontstyle">
+														                <th id="th" width="30%">Họ và tên</th>
+														                <th id="th" width="15%">Chức vụ</th>
+														                <th id="th" width="20%">Công ty</th>
+														                <th id="th" width="25%">Liên hệ</th>
+														              </tr>
+														            </thead>
+														            <tbody class="fontstyle text-center">
 														             <?php if($reference_con[$key_con] != null) {
 														              $i = 0;
 														              foreach ($reference_con[$key_con] as $key) { ?>
-														             <tr>					               
+														             <tr>
 														              <td><?php echo $key['name']?></td>
 														              <td><?php echo $key['position']?></td>
 														              <td><?php echo $key['company']?></td>
 														              <td><?php echo $key['contactno']?></td>
 														             </tr>
 														             <?php $i++; } } ?>
-														            </tbody> 
+														            </tbody>
 														          </table>
 												      		</div>
 													    </div>
@@ -1312,21 +1312,21 @@
 													    <!-- heading ho so ca nhan 6-->
 													    <div id="collapsetotal61" class="panel-collapse collapse tab_con_canhan in">
 													    	 <div class="panel-body" style="border: 0px">
-															      <table   class="table table-striped table-bordered" > 
-														            <thead class="fontstyle"> 
-														              <tr > 
-														                <th id="th" width="20%">Từ - Đến</th> 
-														                <th id="th" width="20%">Trường</th> 
-														                <th id="th" width="15%">Nơi học</th> 
+															      <table   class="table table-striped table-bordered" >
+														            <thead class="fontstyle">
+														              <tr >
+														                <th id="th" width="20%">Từ - Đến</th>
+														                <th id="th" width="20%">Trường</th>
+														                <th id="th" width="15%">Nơi học</th>
 														                <th id="th" width="20%">Ngành học</th>
 														                 <th id="th" width="15%">Bằng cấp</th>
-														                 
-														              </tr> 
-														            </thead> 
-														            <tbody class="fontstyle text-center"> 
+
+														              </tr>
+														            </thead>
+														            <tbody class="fontstyle text-center">
 														              <?php if($knowledge_con[$key_con] != null) {
 														                $i = 0;
-														              foreach ($knowledge_con[$key_con] as $key) { 
+														              foreach ($knowledge_con[$key_con] as $key) {
 														                if($key['traintimetype'] != null)
 														                  { continue; } else {?>
 														             <tr>
@@ -1337,24 +1337,24 @@
 														              <td><?php echo $key['certificate']; if($key['highestcer'] == "Y") echo "(*)"; ?></td>
 														             </tr>
 														             <?php $i++; } } }?>
-														            </tbody> 
+														            </tbody>
 														          </table>
 
-														          <table   class="table table-striped table-bordered" > 
-														            <thead class="fontstyle"> 
-														              <tr> 
-														                <th id="th" width="20%">Từ - Đến</th> 
-														                <th id="th" width="25%">Cơ sở đạo tào</th> 
-														                <th id="th" width="13%">TG học</th> 
+														          <table   class="table table-striped table-bordered" >
+														            <thead class="fontstyle">
+														              <tr>
+														                <th id="th" width="20%">Từ - Đến</th>
+														                <th id="th" width="25%">Cơ sở đạo tào</th>
+														                <th id="th" width="13%">TG học</th>
 														                <th id="th" width="17%">Ngành học</th>
 														                 <th id="th" width="15%">Bằng cấp</th>
-														                
-														              </tr> 
-														            </thead> 
-														            <tbody class="fontstyle text-center"> 
+
+														              </tr>
+														            </thead>
+														            <tbody class="fontstyle text-center">
 														             <?php if($knowledge_con[$key_con] != null) {
 														               $i = 0;
-														              foreach ($knowledge_con[$key_con] as $key) { 
+														              foreach ($knowledge_con[$key_con] as $key) {
 														                if($key['traintimetype'] == null)
 														                  { continue; } else {?>
 														             <tr>
@@ -1365,7 +1365,7 @@
 														              <td><?php echo $key['certificate']?></td>
 														             </tr>
 														             <?php $i++; } } } ?>
-														            </tbody> 
+														            </tbody>
 														          </table>
 												      		</div>
 													    </div>
@@ -1385,20 +1385,20 @@
 													    <!-- heading ho so ca nhan 7-->
 													    <div id="collapsetotal71" class="panel-collapse collapse tab_con_canhan in">
 													    	 <div class="panel-body" style="border: 0px">
-															      <table class="table table-striped table-bordered" > 
-														            <thead class="fontstyle"> 
-														              <tr> 
-														                <th id="th" >Ngoại Ngữ</th> 
-														                <th id="th" >Nghe</th> 
-														                <th id="th" >Nói</th> 
+															      <table class="table table-striped table-bordered" >
+														            <thead class="fontstyle">
+														              <tr>
+														                <th id="th" >Ngoại Ngữ</th>
+														                <th id="th" >Nghe</th>
+														                <th id="th" >Nói</th>
 														                <th id="th" >Đọc</th>
 														                <th id="th" >Viết</th>
-														              </tr> 
-														            </thead> 
-														            <tbody class="fontstyle text-center"> 
+														              </tr>
+														            </thead>
+														            <tbody class="fontstyle text-center">
 														            <?php if($language_con[$key_con] != null) {
 														              $i = 0;
-														              foreach ($language_con[$key_con] as $key) { 
+														              foreach ($language_con[$key_con] as $key) {
 														                ?>
 														             <tr>
 														              <td><?php echo $key['language']?></td>
@@ -1408,7 +1408,7 @@
 														              <td><?php echo ($key['rate4'] !== "0")? $key['rate4']: ""; ?></td>
 														             </tr>
 														             <?php $i++; } } ?>
-														            </tbody> 
+														            </tbody>
 														          </table>
 												      		</div>
 													    </div>
@@ -1428,24 +1428,24 @@
 													    <!-- heading ho so ca nhan 8-->
 													    <div id="collapsetotal81" class="panel-collapse collapse tab_con_canhan in">
 													    	 <div class="panel-body" style="border: 0px">
-															     <table   class="table table-striped table-bordered" > 
-														            <thead class="fontstyle"> 
-														              <tr> 
-														                <th id="th" width="60%">Phần mềm</th> 
+															     <table   class="table table-striped table-bordered" >
+														            <thead class="fontstyle">
+														              <tr>
+														                <th id="th" width="60%">Phần mềm</th>
 														                <th id="th" width="30%">Trình độ</th>
-														              </tr> 
-														            </thead> 
-														            <tbody class="fontstyle text-center"> 
+														              </tr>
+														            </thead>
+														            <tbody class="fontstyle text-center">
 														             <?php if($software_con[$key_con] != null) {
 														              $i = 0;
-														              foreach ($software_con[$key_con] as $key) { 
+														              foreach ($software_con[$key_con] as $key) {
 														                ?>
 														             <tr>
 														              <td><?php echo $key['software']?></td>
 														              <td><?php echo ($key['rate1'] !== "0")? $key['rate1'] : ""; ?></td>
 														             </tr>
 														             <?php $i++; } } ?>
-														            </tbody> 
+														            </tbody>
 														          </table>
 												      		</div>
 													    </div>
@@ -1463,8 +1463,8 @@
 					  	<!-- ket thuc tat ca tab 1 thong tin ung vien -->
 
 					  	<div class="panel panel-default border-rad0">
-						  	<a data-toggle="collapse" data-parent="#accordion" href="#collapse2" onclick="rotate(2)">
-							    <div class="panel-heading rad-pad0 b-blue"> 
+						  	<a data-toggle="collapse" data-parent="#accordion" href="#collapse2" >
+							    <div class="panel-heading rad-pad0 b-blue">
 							       <i class="fa fa-angle-right a-tabcs rotate rotate_2 "></i>
 							       <div class="ul-nav">
 							       	<label class="tittle-tab">
@@ -1476,8 +1476,8 @@
 						    <div id="collapse2" class="panel-collapse collapse in">
 						      <div class="panel-body pad0">
 						      	<table class="width100">
-						      		<?php 
-							      		 foreach ($history as $row) { 
+						      		<?php
+							      		 foreach ($history as $row) {
 							      			$share  = $comment = $icon = $interviewer = $display = '';
 							      			$createddate  = date_format(date_create($row['createddate']),"d/m/Y - H:i");
 							      			if ($row['filename'] == '') {
@@ -1494,7 +1494,7 @@
 							      			}else{
 							      				$display 	= 'hide';
 							      			}
-							      			
+
 							      			if (isset($row['asmtid'])) {
 							      				$fa 			= '<a onclick="loadAssessment('.$row['asmtid'].')" target="_blank"><i class="fa fa-file-text-o star-icon1"></i></a>';
 							      				$type 			= ' Tạo phiếu trắc nghiệm - '.$createddate;
@@ -1555,7 +1555,8 @@
 								      					if ($key['scr_asmtid'] != '0') {
 								      						$icon_h 		= ' <i class="fa fa-file-o"></i>';
 								      					}
-								      					$interviewer 	.= '<div class="col-xs-3"><img src="'.base_url().'public/image/'.$key['filename'].'"  class="img_profile">'.$key['operatorname'].$icon_h.$status.'</div>';
+                                                        $img_a = ($key['filename'] != '')? $key['filename'] : 'unknow.jpg';
+								      					$interviewer 	.= '<div class="col-xs-3"><img src="'.base_url().'public/image/'.$img_a.'"  class="img_profile">'.$key['operatorname'].$icon_h.$status.'</div>';
 								      				}
 								      				$interviewer 		.= '</div>';
 							      				}
@@ -1573,7 +1574,7 @@
 								      				$check 		= 1;
 							      				}
 							      			}
-							      			
+
 							      			if($check == 1){
 							      		?>
 						      			<tr class= "<?php echo $display ?> ">
@@ -1587,12 +1588,12 @@
 							      					<?php echo $comment ?>
 		      										<?php echo isset($interviewer) ? $interviewer : '' ?>
 							      				</div>
-							      				
+
 							      			</td>
 							      		</tr>
 						      		<?php  }} ?>
-						      		
-						      		
+
+
 						      	</table>
 						      </div>
 						    </div>
@@ -1603,9 +1604,11 @@
 					<input type="hidden" name="interviewerid" value="<?php echo $interviewerid ?>">
 					<input type="hidden" name="interviewid" value="<?php echo $interviewid ?>">
 					<input type="hidden" name="asmtid" value="<?php echo(isset($asmtid)?$asmtid:'')?>">
+                    <input type="hidden" name="candidateid" value="<?php echo(isset($interview['candidateid'])?$interview['candidateid']:'')?>">
+                    <input type="hidden" name="campaignid" value="<?php echo(isset($interview['campaignid'])?$interview['campaignid']:'')?>">
 					<div class="row desc_as">
 						<label>Phiếu phỏng vấn</label>
-						
+
 					</div>
 					<?php if(isset($section)&&!empty($section)) foreach ($section as $sec) {?>
 					<div>
@@ -1618,7 +1621,7 @@
 								<div class="col-md-3">
 									<!-- <input type="textbox" required="" name="question[<?php echo($ques['questionid'])?>][ansnumeric]" placeholder="Điểm số (<?php echo number_format($ques['scorefrom'])?>-><?php echo number_format($ques['scoreto'])?>)"> -->
 									<select name="question[<?php echo($ques['questionid'])?>][ansnumeric]" required="" class="select2 width_100">
-										<?php for ($i=number_format($ques['scorefrom']); $i <= number_format($ques['scoreto']); $i++) { 
+										<?php for ($i=number_format($ques['scorefrom']); $i <= number_format($ques['scoreto']); $i++) {
 											echo "<option>".$i."</option>";
 										} ?>
 									</select>
@@ -1651,8 +1654,8 @@
 </div>
 
 
-<div class="hide" id="operator_js"><?php echo json_encode($operator); ?></div>
-<div class="hide" id="interviewer_js"><?php echo json_encode($interviewer); ?></div>
+<!-- <div class="hide" id="operator_js"><?php echo json_encode($operator); ?></div>
+<div class="hide" id="interviewer_js"><?php echo json_encode($interviewer); ?></div> -->
 <style type="text/css">
 	.margin_le_ri{
 		margin-left: -20px;
@@ -1707,7 +1710,7 @@
 		height: 25px;
 	}
 	.tab_title{
-		text-align: left; 
+		text-align: left;
 	}
 	.tab_open{
 		text-align: right;
@@ -1742,7 +1745,6 @@
 			contentType: false,
           	cache: false,
           	processData:false,
-          	timeout: 3000
 		})
 		.done(function(e) {
 			console.log(e);
@@ -1764,5 +1766,5 @@
 	function loadAssessment(asmtid) {
 		window.open('<?php echo base_url() ?>admin/multiplechoice/pageAssessment/'+asmtid+'/0');
 	}
-	
+
 </script>

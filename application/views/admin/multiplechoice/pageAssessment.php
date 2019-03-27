@@ -1,8 +1,6 @@
 <div class="row">
 	<form id="form_ans"> 
 	<input type="hidden" name="asmtid" value="<?php echo($assessment['asmtid'])?>">
-	<input type="hidden" name="campaignid" value="<?php echo($assessment['campaignid'])?>">
-	<input type="hidden" name="candidateid" value="<?php echo($assessment['candidateid'])?>">
 	<section class="col-md-6 col-md-offset-3">
 		<div class="page_header">
 			<div class="logo_as" >

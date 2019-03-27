@@ -8,10 +8,10 @@ class Multiplechoice extends CI_Controller {
 		parent::__construct();
 		$this->load->helper(array('url','my_helper'));
 		$this->load->library('session');
-		$this->load->model(array('M_data','M_auth','admin/Campaign_model','admin/Data_model','admin/Candidate_model'));
+		$this->load->model(array('M_data','M_auth','admin/Campaign_model','admin/Data_model','admin/Candidate_model','admin/Mail_model'));
 
 		$this->table = 'asmtheader';
-		$this->sess  = $this->session->userdata('user_admin');  
+		$this->sess  = $this->session->userdata('user_admin');
 		$this->seg   = 6;
 
 		$_page['tuyendung']	        = 'active menu-open';
@@ -21,24 +21,24 @@ class Multiplechoice extends CI_Controller {
 	    $this->data['footer'] 		= $this->load->view('admin/home/footer',null,true);
 
 	}
-	
+
 	public function index(){
 
 		$_data = [];
 
-		$sql = "SELECT 
-					a.*, 
-					b.operatorname as createdby_name, 
-					c.operatorname as updatedby_name 
+		$sql = "SELECT
+					a.*,
+					b.operatorname as createdby_name,
+					c.operatorname as updatedby_name
 				FROM $this->table a
 				LEFT JOIN operator b ON a.createdby = b.operatorid
 				LEFT JOIN operator c ON a.updatedby = c.operatorid
 				ORDER BY a.lastupdate";
 
 		$_data['records'] = $this->M_data->select_sql($sql);
-		
+
 		if($this->M_auth->checkPermission($this->sess['groupid'],$this->seg)){
-			$this->data['script']   = $this->load->view('admin/multiplechoice/default/script', NULL, TRUE); 
+			$this->data['script']   = $this->load->view('admin/multiplechoice/default/script', NULL, TRUE);
 			$this->data['temp'] 	= $this->load->view('admin/multiplechoice/default/page',$_data,true);
 		}else{
 			$this->data['temp'] 	= $this->load->view('admin/error/404',null,true);
@@ -50,7 +50,7 @@ class Multiplechoice extends CI_Controller {
 	public function create(){
 
 		$_data = [];
-		$this->data['script']   = $this->load->view('admin/multiplechoice/create/script', $_data, TRUE); 
+		$this->data['script']   = $this->load->view('admin/multiplechoice/create/script', $_data, TRUE);
 		$this->data['temp'] 	= $this->load->view('admin/multiplechoice/create/page', $_data, true);
 
 		$this->load->view('admin/home/master',$this->data);
@@ -143,17 +143,17 @@ class Multiplechoice extends CI_Controller {
 	}
 
 	public function detail($asmttemp='',$active='2')
-	{		
+	{
 		$_data = [];
 
-		$sql = "SELECT 
-					a.*, 
-					b.operatorname as createdby_name, 
-					c.operatorname as updatedby_name 
+		$sql = "SELECT
+					a.*,
+					b.operatorname as createdby_name,
+					c.operatorname as updatedby_name
 				FROM $this->table a
 				LEFT JOIN operator b ON a.createdby = b.operatorid
 				LEFT JOIN operator c ON a.updatedby = c.operatorid
-				WHERE a.asmttemp = '$asmttemp' 
+				WHERE a.asmttemp = '$asmttemp'
 				ORDER BY a.lastupdate";
 
 		$_data['asmt'] = $this->M_data->select_sql($sql);
@@ -163,9 +163,9 @@ class Multiplechoice extends CI_Controller {
 			exit;
 		}
 
-		$sql = "SELECT 
-					a.*, 
-					b.operatorname as createdby_name,  
+		$sql = "SELECT
+					a.*,
+					b.operatorname as createdby_name,
 					c.operatorname as updatedby_name,
 					d.operatorname as candidate_name
 				FROM assessment a
@@ -177,9 +177,9 @@ class Multiplechoice extends CI_Controller {
 
 		$_data['asmt_w'] = $this->M_data->select_sql($sql);
 
-		$sql = "SELECT 
-					a.*, 
-					b.operatorname as createdby_name,  
+		$sql = "SELECT
+					a.*,
+					b.operatorname as createdby_name,
 					c.operatorname as updatedby_name,
 					d.operatorname as candidate_name
 				FROM assessment a
@@ -191,7 +191,7 @@ class Multiplechoice extends CI_Controller {
 
 		$_data['asmt_c'] = $this->M_data->select_sql($sql);
 
-		$sql = "SELECT 
+		$sql = "SELECT
 				a.questionid,
 				a.asmttemp,
 				a.section,
@@ -206,17 +206,17 @@ class Multiplechoice extends CI_Controller {
 				a.scorefrom,
 				a.scoreto,
 				a.used,
-				b.operatorname as createdby_name_q, 
+				b.operatorname as createdby_name_q,
 				c.operatorname as updatedby_name_q,
 				d.url as image,
 				d.recordid as imageid
 			FROM asmtquestion a
 			LEFT JOIN operator b ON a.createdby = b.operatorid
 			LEFT JOIN operator c ON a.updatedby = c.operatorid
-			LEFT JOIN document d ON a.imageid = d.recordid 
-			WHERE a.asmttemp = '$asmttemp' 
+			LEFT JOIN document d ON a.imageid = d.recordid
+			WHERE a.asmttemp = '$asmttemp'
 			ORDER BY a.section";
-		
+
 		$ques = $this->M_data->select_sql($sql);
 		$section = [];
 
@@ -225,7 +225,7 @@ class Multiplechoice extends CI_Controller {
 			$count = 0;
 			foreach ($ques as $key => $value) {
 				if ($_sec!=$value['section']){
-					$_sec = $value['section']; 
+					$_sec = $value['section'];
 					$count = 0;
 				}
 				$section[$_sec]['sectionname'] = $value['sectionname'];
@@ -237,7 +237,7 @@ class Multiplechoice extends CI_Controller {
 					a.answercontent,
 					a.score,
 					a.isright,
-					b.operatorname as createdby_name, 
+					b.operatorname as createdby_name,
 					c.operatorname as updatedby_name,
 					d.url as image,
 					d.recordid as imageid
@@ -245,7 +245,7 @@ class Multiplechoice extends CI_Controller {
 				LEFT JOIN operator b ON a.createdby = b.operatorid
 				LEFT JOIN operator c ON a.updatedby = c.operatorid
 				LEFT JOIN document d ON a.imageid = d.recordid
-				WHERE a.questionid = '$questionid' 
+				WHERE a.questionid = '$questionid'
 				ORDER BY a.lastupdate";
 				$section[$_sec]['question'][$count]['answer'] = $this->M_data->select_sql($sql);
 				$count++;
@@ -265,8 +265,8 @@ class Multiplechoice extends CI_Controller {
 		}else if ($active == '3') {
 			$_data['active3'] = 'active';
 		}
-		
-		$this->data['script']   = $this->load->view('admin/multiplechoice/edit/script', NULL, TRUE); 
+
+		$this->data['script']   = $this->load->view('admin/multiplechoice/edit/script', NULL, TRUE);
 		$this->data['temp'] 	= $this->load->view('admin/multiplechoice/edit/page',$_data,true);
 
 		$this->load->view('admin/home/master',$this->data);
@@ -304,11 +304,11 @@ class Multiplechoice extends CI_Controller {
 		$s = $post['section'];
 		$ques['asmttemp'] = (int)$post['asmttemp'];
 		// var_dump($s);
-		for ($i=0; $i < count($s); $i++) { 
+		for ($i=0; $i < count($s); $i++) {
 			$ques['section'] 			= $i;
 			$ques['sectionname'] 		= isset($s[$i]['sectionname'])?$s[$i]['sectionname']:'';
 			$q 				 			= isset($s[$i]['question'])?$s[$i]['question']:[];
-			if(!empty($q))for ($j=0; $j < count($q); $j++) { 
+			if(!empty($q))for ($j=0; $j < count($q); $j++) {
 				$ques['sorting']        = $j+1;
 				$ques['questioncontent']= isset($q[$j]['question'])?$q[$j]['question']:'';
 				$ques['questiontype'] 	= isset($q[$j]['questiontype'])?$q[$j]['questiontype']:'';
@@ -338,7 +338,7 @@ class Multiplechoice extends CI_Controller {
 				$a = isset($q[$j]['answer'])?$q[$j]['answer']:[];
 				// var_dump($a);
 				$ans['questionid'] = $q_id;
-				if(!empty($a)&&$q_id!='')for ($k=0; $k < count($a); $k++) { 
+				if(!empty($a)&&$q_id!='')for ($k=0; $k < count($a); $k++) {
 					$ans['answercontent'] 	= $a[$k]['answercontent'];
 					$ans['score'] 			= (int)$a[$k]['score'];
 					$ans['isright'] 		= isset($a[$k]['isright'])?1:0;
@@ -433,22 +433,22 @@ class Multiplechoice extends CI_Controller {
 	public function pageAssessment($asmtid = 0, $check = 1){
 		if ($asmtid != 0) {
 			$sql = "
-				SELECT 
+				SELECT
 					a.asmtid,
 					a.asmttemp,
 					a.duedate,
 					a.campaignid,
 					a.candidateid,
-					a.status, 
-					b.name as can_name, 
+					a.status,
+					b.name as can_name,
 					b.email as can_email,
 					c.timelimit,
 					c.note,
 					c.asmtname
 
-				FROM assessment a  
-				LEFT OUTER JOIN candidate b ON a.candidateid = b.candidateid  
-				LEFT OUTER JOIN asmtheader c ON a.asmttemp = c.asmttemp 
+				FROM assessment a
+				LEFT OUTER JOIN candidate b ON a.candidateid = b.candidateid
+				LEFT OUTER JOIN asmtheader c ON a.asmttemp = c.asmttemp
 				WHERE a.asmtid = '$asmtid'";
 
 			$result = $this->M_data->select_sql($sql);
@@ -461,9 +461,9 @@ class Multiplechoice extends CI_Controller {
 
 		$asmttemp = $result[0]['asmttemp'];
 		$data['genq'] = $this->generated_quest($asmtid,$asmttemp);
-		for ($i=0; $i < count($data['genq']); $i++) { 
+		for ($i=0; $i < count($data['genq']); $i++) {
 			if (isset($data['genq'][$i]['question']) && count($data['genq'][$i]['question']) > 0 ) {
-				for ($j=0; $j < count($data['genq'][$i]['question']); $j++) { 
+				for ($j=0; $j < count($data['genq'][$i]['question']); $j++) {
 					$data['genq'][$i]['question'][$j]['questioncontent'] = nl2br($data['genq'][$i]['question'][$j]['questioncontent']);
 				}
 			}
@@ -474,7 +474,7 @@ class Multiplechoice extends CI_Controller {
 
 		$this->_data['temp'] = $this->load->view('admin/multiplechoice/pageAssessment',$data,true);
 
-		$this->load->view('admin/home/master-iframe',$this->_data);	
+		$this->load->view('admin/home/master-iframe',$this->_data);
 	}
 
 	public function gen_quest(){
@@ -568,7 +568,7 @@ class Multiplechoice extends CI_Controller {
 			// exit;
 			$resp['data'] = $section1;
 			$resp['success'] = true;
-			
+
 			$resp['message'] = "success.";
 
 			$timelimit = isset($asmt[0]['timelimit'])?$asmt[0]['timelimit']: 0;
@@ -586,14 +586,14 @@ class Multiplechoice extends CI_Controller {
 	public function interview_question($interviewid, $interviewerid='')
 	{
         if ($interviewid != 0) {
-            $sql = "SELECT tt.*, 
-            			candidate.name, 
-            			candidate.email, 
+            $sql = "SELECT tt.*,
+            			candidate.name,
+            			candidate.email,
             			candidate.imagelink,
-            			reccampaign.position 
-            		FROM interview tt  
-            		LEFT JOIN candidate ON tt.candidateid = candidate.candidateid  
-            		LEFT JOIN reccampaign ON tt.campaignid = reccampaign.campaignid 
+            			reccampaign.position
+            		FROM interview tt
+            		LEFT JOIN candidate ON tt.candidateid = candidate.candidateid
+            		LEFT JOIN reccampaign ON tt.campaignid = reccampaign.campaignid
             		WHERE tt.interviewid = $interviewid";
 
             $result = $this->Campaign_model->select_sql($sql);
@@ -629,13 +629,13 @@ class Multiplechoice extends CI_Controller {
 		$join[0] 			= array('table'=> 'operator','match' =>'tb.createdby = operator.operatorid');
         $join[1] 			= array('table'=> 'document','match' =>"tb.createdby = document.referencekey AND document.tablename = 'operator' ");
         $orderby 			= array('colname'=>'tb.createddate','typesort'=>'desc');
-       
+
         //history assessment
         $join[2] 			= array('table'=> 'operator c','match' =>'tb.updatedby = c.operatorid');
         $join[3] 			= array('table'=> 'asmtheader d','match' =>'tb.asmttemp = d.asmttemp');
         $orderby1 			= array('colname'=>'tb.lastupdate','typesort'=>'desc');
         $history_profile3 	= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate, d.asmtname, d.shuffleqty, d.targetscore',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid,'sysform !=' => 'N'),'','assessment tb',$join,'',$orderby1,'','');
-        for ($j=0; $j < count($history_profile3) ; $j++) { 
+        for ($j=0; $j < count($history_profile3) ; $j++) {
         	$asmttemp = $history_profile3[$j]['asmttemp'];
         	$asmtid = $history_profile3[$j]['asmtid'];
         	$sql = "SELECT COUNT(DISTINCT section) as count_section, count(questionid) as count_question FROM asmtquestion WHERE asmttemp = '$asmttemp'";
@@ -662,7 +662,7 @@ class Multiplechoice extends CI_Controller {
         $join[3] 			= array('table'=> 'recflow','match' =>'tb.roundid = recflow.roundid');
         $history_profile4 	= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate,recflow.roundname',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','interview tb',$join,'',$orderby1,'','');
         $orderby1 			= array('colname'=>'a.createddate','typesort'=>'desc');
-        for ($i=0; $i < count($history_profile4); $i++) { 
+        for ($i=0; $i < count($history_profile4); $i++) {
         	$join1[0] 		= array('table'=> 'operator b','match' =>'a.interviewer = b.operatorid');
         	$join1[1] 		= array('table'=> 'document c','match' =>"a.interviewer = c.referencekey AND c.tablename = 'operator' ");
         	$join1[2] 		= array('table'=> 'assessment d','match' =>'a.inv_asmtid = d.asmtid');
@@ -703,7 +703,7 @@ class Multiplechoice extends CI_Controller {
 		$this->data2['software'] 	= $this->Candidate_model->selectTableByIds('cansoftware',$id);
 
 		//noibo
-        
+
         $this->data2['address_noibo']    = $this->Candidate_model->selectTableByIds('canaddress',$id_mergewith);
         $this->data2['family_noibo']        = $this->Candidate_model->selectTableByIds('cansocial',$id_mergewith);
         $this->data2['experience_noibo']    = $this->Candidate_model->selectTableByIds('canexperience',$id_mergewith);
@@ -732,7 +732,7 @@ class Multiplechoice extends CI_Controller {
             $this->data2['tags_con'][$key]          = $this->Candidate_model->join_tag($id_con);
             $this->data2['tagstrandom_con'][$key]   = $this->Candidate_model->join_tag_random($id_con);
             $this->data2['vt_con'][$key]            = $vt1['position'].' - '.$vt1['company'];
-            
+
         }
 
 		//for interview question
@@ -751,11 +751,14 @@ class Multiplechoice extends CI_Controller {
 			$this->data2['section'] = !empty($section)?$section:[];
 			$this->data2['asmtid'] = $asmt[0]['asmtid'];
 			$this->save_genquest($asmt[0]['asmtid'],$section);
-			// var_dump($this->data2['section']);	
+			// var_dump($this->data2['section']);
 		}
-
+        // echo "<pre>";
+        // print_r($this->data2);
+        // echo "</pre>";
+        // exit;
 		$this->_data['temp'] = $this->load->view('admin/multiplechoice/interview_question',$this->data2,true);
-		$this->load->view('admin/home/master-iframe',$this->_data);	
+		$this->load->view('admin/home/master-iframe',$this->_data);
 	}
 
 	public function makingAppointment($interviewid)
@@ -765,19 +768,19 @@ class Multiplechoice extends CI_Controller {
         $o_data['mailtemplate'] = $this->Campaign_model->select("mailprofileid,profilename",'mailprofile',array('profiletype' => '0'),'');
         $o_data['asmt_pv'] = $data['asmt_pv']     = $this->Campaign_model->select("asmttemp,asmtname",'asmtheader',array('asmtstatus' => 'W','asmttype' => '1'),'');
 
-		$sql = "SELECT a.*, 
-					b.name, 
-					b.email, 
+		$sql = "SELECT a.*,
+					b.name,
+					b.email,
 					b.imagelink,
-					c.position, 
-					d.status as status_asmt, 
-					e.optionid, e.ansdatetime, 
-					e.ansdatetime2 
-				FROM interview a  
-				LEFT JOIN candidate b ON a.candidateid = b.candidateid  
-				LEFT JOIN reccampaign c ON a.campaignid = c.campaignid 
-				LEFT JOIN assessment d ON a.inv_asmtid = d.asmtid 
-				LEFT JOIN asmtanswer e ON a.inv_asmtid = e.asmtid 
+					c.position,
+					d.status as status_asmt,
+					e.optionid, e.ansdatetime,
+					e.ansdatetime2
+				FROM interview a
+				LEFT JOIN candidate b ON a.candidateid = b.candidateid
+				LEFT JOIN reccampaign c ON a.campaignid = c.campaignid
+				LEFT JOIN assessment d ON a.inv_asmtid = d.asmtid
+				LEFT JOIN asmtanswer e ON a.inv_asmtid = e.asmtid
 				WHERE a.interviewid = $interviewid";
 
 		$result = $this->Campaign_model->select_sql($sql);
@@ -790,7 +793,7 @@ class Multiplechoice extends CI_Controller {
 
     	$data['interviewer'] = $this->Data_model->select_row_option('a.interviewerid,a.inv_asmtid,a.scr_asmtid, b.operatorname,b.email, c.filename, d.status as status_asmt, e.optionid, e.ansdatetime, e.ansdatetime2 ',array('a.interviewid'=>$interviewid),'','interviewer a',$join1,'','','','');
 
-    	for ($i=0; $i < count($data['interviewer']); $i++) { 
+    	for ($i=0; $i < count($data['interviewer']); $i++) {
     		$interviewerid = $data['interviewer'][$i]['interviewerid'];
     		// echo $interviewerid;
     		//for interview question
@@ -811,7 +814,7 @@ class Multiplechoice extends CI_Controller {
 				$data['interviewer_current'][$i]['section'] = !empty($section)?$section:[];
 				$data['interviewer_current'][$i]['asmtid'] = $asmt[0]['asmtid'];
 				$this->save_genquest($asmt[0]['asmtid'],$section);
-				// var_dump($this->data2['section']);	
+				// var_dump($this->data2['section']);
 			}
     	}
     	$data['operator'] = $o_data['operator'];
@@ -820,11 +823,11 @@ class Multiplechoice extends CI_Controller {
 
     	$this->_data['modal_campaign'] 	= $this->load->view('admin/campaign/modal_campaign',$o_data,true);
 		$this->_data['temp'] = $this->load->view('admin/multiplechoice/makingAppointment',$data,true);
-		$this->load->view('admin/home/master-iframe',$this->_data);	
+		$this->load->view('admin/home/master-iframe',$this->_data);
 	}
 
 	private function get_asmt_question($asmtid,$asmttemp){
-		$sql = "SELECT 
+		$sql = "SELECT
 				a.questionid,
 				a.asmttemp,
 				a.section,
@@ -840,7 +843,7 @@ class Multiplechoice extends CI_Controller {
 				a.scoreto,
 				a.used,
 				f.createddate,
-				b.operatorname as createdby_name_q, 
+				b.operatorname as createdby_name_q,
 				c.operatorname as updatedby_name_q,
 				d.url as image,
 				d.recordid as imageid,
@@ -850,11 +853,11 @@ class Multiplechoice extends CI_Controller {
 			LEFT JOIN assessment f ON a.asmttemp = f.asmttemp and f.asmtid = '$asmtid'
 			LEFT JOIN operator b ON a.createdby = b.operatorid
 			LEFT JOIN operator c ON a.updatedby = c.operatorid
-			LEFT JOIN document d ON a.imageid = d.recordid 
+			LEFT JOIN document d ON a.imageid = d.recordid
 			LEFT OUTER JOIN asmtanswer e ON a.questionid = e.questionid and f.asmtid = e.asmtid
-			WHERE a.asmttemp = '$asmttemp' 
+			WHERE a.asmttemp = '$asmttemp'
 			ORDER BY a.section";
-		
+
 		$ques = $this->M_data->select_sql($sql);
 		// echo "<pre>";
 		// 	print_r($ques);
@@ -876,7 +879,7 @@ class Multiplechoice extends CI_Controller {
 					a.answercontent,
 					a.score,
 					a.isright,
-					b.operatorname as createdby_name, 
+					b.operatorname as createdby_name,
 					c.operatorname as updatedby_name,
 					d.url as image,
 					d.recordid as imageid
@@ -884,7 +887,7 @@ class Multiplechoice extends CI_Controller {
 				LEFT JOIN operator b ON a.createdby = b.operatorid
 				LEFT JOIN operator c ON a.updatedby = c.operatorid
 				LEFT JOIN document d ON a.imageid = d.recordid
-				WHERE a.questionid = '$questionid' 
+				WHERE a.questionid = '$questionid'
 				ORDER BY a.lastupdate";
 				$section[$_sec]['question'][$count]['answer'] = $this->M_data->select_sql($sql);
 				$count++;
@@ -911,7 +914,7 @@ class Multiplechoice extends CI_Controller {
 				a.scoreto,
 				a.used,
 				f.createddate,
-				b.operatorname as createdby_name_q, 
+				b.operatorname as createdby_name_q,
 				c.operatorname as updatedby_name_q,
 				d.url as image,
 				d.recordid as imageid,
@@ -922,11 +925,11 @@ class Multiplechoice extends CI_Controller {
 			JOIN genquest f ON a.questionid = f.questionid AND f.asmtid='$asmtid'
 			LEFT JOIN operator b ON a.createdby = b.operatorid
 			LEFT JOIN operator c ON a.updatedby = c.operatorid
-			LEFT JOIN document d ON a.imageid = d.recordid 
+			LEFT JOIN document d ON a.imageid = d.recordid
 			LEFT OUTER JOIN asmtanswer e ON a.questionid = e.questionid and f.asmtid = e.asmtid
-			WHERE a.asmttemp = '$asmttemp' 
+			WHERE a.asmttemp = '$asmttemp'
 			ORDER BY f.genid";
-		
+
 		$ques = $this->M_data->select_sql($sql);
 		// var_dump($ques);
 		$section = [];
@@ -945,7 +948,7 @@ class Multiplechoice extends CI_Controller {
 					a.answercontent,
 					a.score,
 					a.isright,
-					b.operatorname as createdby_name, 
+					b.operatorname as createdby_name,
 					c.operatorname as updatedby_name,
 					d.url as image,
 					d.recordid as imageid
@@ -953,7 +956,7 @@ class Multiplechoice extends CI_Controller {
 				LEFT JOIN operator b ON a.createdby = b.operatorid
 				LEFT JOIN operator c ON a.updatedby = c.operatorid
 				LEFT JOIN document d ON a.imageid = d.recordid
-				WHERE a.questionid = '$questionid' 
+				WHERE a.questionid = '$questionid'
 				ORDER BY a.lastupdate";
 				$section[$_sec]['question'][$count]['answer'] = $this->M_data->select_sql($sql);
 				$count++;
@@ -962,7 +965,7 @@ class Multiplechoice extends CI_Controller {
 
 		return $section;
 	}
-	
+
 	private function save_genquest($asmtid,$section){
 		if (!$asmtid) {
 			return false;
@@ -975,7 +978,7 @@ class Multiplechoice extends CI_Controller {
 				$data['questionid'] = $value['questionid'];
 				// $data['updatedby']  = $this->sess['operatorid'];
 				$rs[] = array('id'=>$data['questionid'],'result'=>$this->M_data->merge_data(array('asmtid'=>$asmtid,'questionid'=>$data['questionid']),$data,'genquest'));
-				continue;	
+				continue;
 			}
 		}
 		return $rs;
@@ -1032,7 +1035,7 @@ class Multiplechoice extends CI_Controller {
 		$resp['success'] = true;
 		$resp['message'] = "success";
 
-		//mail candidate
+		//mail manage
 		$mail = array();
 		$mailtemplate = $this->Mail_model->select('mailprofile',array('mailprofileid' => 13));
 		if(isset($mailtemplate[0])){
@@ -1040,8 +1043,8 @@ class Multiplechoice extends CI_Controller {
 			$body 				= $mailtemplate[0]['prebody'];
 			$mail["attachment"] = $mailtemplate[0]['preattach'];
 			$presender 			= $mailtemplate[0]['presender'];
-			// $mail["cc"] 		= $mailtemplate[0]['cc'];
-			// $mail["bcc"] 		= $mailtemplate[0]['bcc'];
+			$mail["cc"] 		= '';
+			$mail["bcc"] 		= '';
 		}else{
 			$subject			= $body = $mail["attachment"] = $mail["cc"] = $mail["bcc"] = $presender = '';
 		}
@@ -1089,7 +1092,7 @@ class Multiplechoice extends CI_Controller {
 	{
 		$name 					= $this->input->post('name');
 		$asmttemp 				= $this->input->post('asmttemp');
-		$sql = "SELECT 
+		$sql = "SELECT
 				a.questionid,
 				a.asmttemp,
 				a.section,
@@ -1104,17 +1107,17 @@ class Multiplechoice extends CI_Controller {
 				a.scorefrom,
 				a.scoreto,
 				a.used,
-				b.operatorname as createdby_name_q, 
+				b.operatorname as createdby_name_q,
 				c.operatorname as updatedby_name_q,
 				d.url as image,
 				d.recordid as imageid
 			FROM asmtquestion a
 			LEFT JOIN operator b ON a.createdby = b.operatorid
 			LEFT JOIN operator c ON a.updatedby = c.operatorid
-			LEFT JOIN document d ON a.imageid = d.recordid 
+			LEFT JOIN document d ON a.imageid = d.recordid
 			WHERE a.asmttemp = '$asmttemp' AND lower(a.questioncontent) LIKE lower(N'%$name%')
 			ORDER BY a.section";
-		
+
 		$ques = $this->M_data->select_sql($sql);
 		$section = [];
 
@@ -1123,7 +1126,7 @@ class Multiplechoice extends CI_Controller {
 			$count = 0;
 			foreach ($ques as $key => $value) {
 				if ($_sec!=$value['section']){
-					$_sec = $value['section']; 
+					$_sec = $value['section'];
 					$count = 0;
 				}
 				$section[$_sec]['sectionname'] = $value['sectionname'];
@@ -1135,7 +1138,7 @@ class Multiplechoice extends CI_Controller {
 					a.answercontent,
 					a.score,
 					a.isright,
-					b.operatorname as createdby_name, 
+					b.operatorname as createdby_name,
 					c.operatorname as updatedby_name,
 					d.url as image,
 					d.recordid as imageid
@@ -1143,7 +1146,7 @@ class Multiplechoice extends CI_Controller {
 				LEFT JOIN operator b ON a.createdby = b.operatorid
 				LEFT JOIN operator c ON a.updatedby = c.operatorid
 				LEFT JOIN document d ON a.imageid = d.recordid
-				WHERE a.questionid = '$questionid' 
+				WHERE a.questionid = '$questionid'
 				ORDER BY a.lastupdate";
 				$section[$_sec]['question'][$count]['answer'] = $this->M_data->select_sql($sql);
 				$count++;
@@ -1151,14 +1154,14 @@ class Multiplechoice extends CI_Controller {
 		}
 		echo json_encode($section);
 	}
-	
+
 	public function searchNameAssessment()
 	{
 		$name = $this->input->post('name');
-		$sql = "SELECT 
-					a.*, 
-					b.operatorname as createdby_name, 
-					c.operatorname as updatedby_name 
+		$sql = "SELECT
+					a.*,
+					b.operatorname as createdby_name,
+					c.operatorname as updatedby_name
 				FROM $this->table a
 				LEFT JOIN operator b ON a.createdby = b.operatorid
 				LEFT JOIN operator c ON a.updatedby = c.operatorid

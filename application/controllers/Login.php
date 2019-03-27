@@ -10,31 +10,12 @@ class Login extends CI_Controller {
 		$this->load->model(array('Login_model','admin/Mail_model'));
 		$this->load->library(array('form_validation','session'));
 		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
-		// $config = array(
-		//     'protocol'  =>  'smtp',
-		//     'smtp_host' =>  'ssl://smtp.googlemail.com',
-		//     'smtp_port' =>  465,
-		//     'smtp_user' =>  'thanhhung23495@gmail.com',
-		//     'smtp_pass' =>  'Heodat1323',
-		//     'mailtype'  =>  'html', 
-		//     'charset'   =>  'utf-8',
-		// );
-		// $this->load->library('email');
-		// $this->email->initialize($config);
-		// $this->email->set_newline("\r\n");
-		
-		
-
-		// $this->_data['html_header'] = $this->load->view('home/header', NULL, TRUE);  
-		
-        
-        
 	}
 	public function index($value='')
 	{
 		phpinfo();
 	}
-	
+
 	//đăng nhập thường
 	public function loginUser()
 	{
@@ -43,28 +24,24 @@ class Login extends CI_Controller {
 		$username = $frm['email'];
 		$password = md5($frm['password']);
 		$a_UserChecking = $this->Login_model->a_fCheckUser( $username, $password );
-		$autologin =	($this->input->post('luumatkhau') == '1') ? 1 : 0;	
+		$autologin =	($this->input->post('luumatkhau') == '1') ? 1 : 0;
 		if($a_UserChecking){
 			if($autologin == 1){
-				// $cookie_name	=	'siteAuth';
-				// $cookie_time	=	3600*24*30; // 30 days.
-				// setcookie('ci-session', 'user='."", time() - 3600);	// Unset cookie of user
-				// setcookie($cookie_name, 'user='.$a_UserChecking[0]['email'].'&password='.$a_UserChecking[0]['password'], time() + $cookie_time);
 				$cookie = array(
                     'name'   => 'email',
                     'value'  => $a_UserChecking[0]['email'],
                     'expire' =>  3600*24*30,
                     'secure' => false
                 );
-                $this->input->set_cookie($cookie); 
+                $this->input->set_cookie($cookie);
                 $cookie1 = array(
                     'name'   => 'password',
                     'value'  => $frm['password'],
                     'expire' =>  3600*24*30,
                     'secure' => false
                 );
-                $this->input->set_cookie($cookie1); 
-                
+                $this->input->set_cookie($cookie1);
+
 			}
 			$this->session->set_userdata('user', $a_UserChecking[0]);
 			echo json_encode($a_UserChecking);
@@ -73,15 +50,13 @@ class Login extends CI_Controller {
 		}
 	}
 
-	
-	
+
+
 	//đăng xuất
 	public function logout($value='')
 	{
 		$this->session->unset_userdata('user');
 		$this->cache->clean();
-		// $cookiename	=	"siteAuth";
-		// setcookie($cookiename, 'user='."", time() - 3600);	// Unset cookie of user	// Unset session of user
 		redirect(base_url(''));
 	}
 
@@ -100,12 +75,12 @@ class Login extends CI_Controller {
 
 		$mailtemplate = $this->Mail_model->select('mailprofile',array('mailprofileid' => 2));
 		if(isset($mailtemplate[0])){
-			$subject 			= $mailtemplate[0]['presubject'];
-			$body 				= $mailtemplate[0]['prebody'];
+			$subject 			= html_entity_decode($mailtemplate[0]['presubject']);
+			$body 				= html_entity_decode($mailtemplate[0]['prebody']);
 			$mail["attachment"] = $mailtemplate[0]['preattach'];
 			$presender 			= $mailtemplate[0]['presender'];
-			$mail["cc"] 		= $mailtemplate[0]['cc'];
-			$mail["bcc"] 		= $mailtemplate[0]['bcc'];
+			$mail["cc"] 		= '';
+			$mail["bcc"] 		= '';
 		}else{
 			$subject			= $body = $mail["attachment"] = $mail["cc"] = $mail["bcc"] = $presender = '';
 		}
@@ -121,28 +96,15 @@ class Login extends CI_Controller {
         	$mail['mcpass']	= base64_decode($mailSystem[0]['mcpass']);
         	$mail['mcport']	= $mailSystem[0]['mcport'];
 		}
-		
+
 		$chuoi_tim 				= array('[Mật khẩu mới]');
 		$chuoi_thay_the 		= array($data['password']);
 		$mail['emailsubject'] 	= str_replace($chuoi_tim,$chuoi_thay_the, $subject);
 		$mail['emailbody'] 		= str_replace($chuoi_tim,$chuoi_thay_the, $body);
 		$mail['toemail'] 		= $a_UserInfo['email'];
 		$this->Mail_model->sendMail($mail);
-		
+
 		echo json_encode(1);
-  //       $this->email->from('thanhhung23495@gmail.com', 'Tuyển dụng Đất Xanh');
-		// //cau hinh nguoi nhan
-		// $this->email->to($mail);
-		// $this->email->subject('Lấy lại mật khẩu');
-		// $this->email->message('Bấm vào <a href="'.base_url().'">đây</a> để đăng nhập bằng mật khẩu bên dưới và đổi mật khẩu mới cho tài khoản của bạn.<br>
-		// 	Mật khẩu mới: <b>'.$new_pass.'</b><br>');
-		// if ( $this->email->send())
-		// {
-		// 	echo json_encode(1);		
-		// }else{
-		// 	var_dump('thất bại');
-		// 	var_dump($this->email->print_debugger());
-		// }
 	}
 
 	public function checkPassword()
@@ -160,7 +122,6 @@ class Login extends CI_Controller {
 
 	public function editPassword()
 	{
-		// var_dump($this->input->post());
 		$data['password'] = md5($this->input->post('new_pass'));
 		$data['id'] = $this->input->post('id');
 		$this->Login_model->editPassword($data);
@@ -169,7 +130,7 @@ class Login extends CI_Controller {
 	}
 	public function change_pass()
 	{
-		$frm = $this->input->post();	
+		$frm = $this->input->post();
 		$username = $this->session->userdata('user')['email'];
 		$password = md5($frm['passold']);
 		$a_UserChecking = $this->Login_model->a_fCheckUser( $username, $password );
@@ -180,11 +141,11 @@ class Login extends CI_Controller {
 			echo "0";
 		}else{
 			echo "1";
-		} 
+		}
 	}
 	public function insertUser()
-	{	
-		$frm = $this->input->post();	
+	{
+		$frm = $this->input->post();
 		$a_UserInfo['email'] 		= $frm['email'];
 		$a_UserInfo['roleid'] 		= 1;
 		$a_UserInfo['idcard'] 		= $frm['cmnd'];
@@ -194,12 +155,12 @@ class Login extends CI_Controller {
 		$data['idcard'] = $frm['cmnd'];
 		$data['firstname'] = $frm['firstname'];
 		$data['lastname'] = $frm['lastname'];
-		$data['name'] = $frm['lastname']." ".$frm['firstname'];
+		$data['name'] = trim($frm['lastname'])." ".trim($frm['firstname']);
 		$data['gender'] = $frm['gender'];
 		$data['dateofbirth'] =  date("Y-m-d", strtotime($frm['birthday'] ));
 		$data['profilesrc'] = "Web portal";
 		$tag['tags'] = $frm['tags'];
-		if ($this->Login_model->checkMail( $a_UserInfo['email'] )) {	
+		if ($this->Login_model->checkMail( $a_UserInfo['email'] )) {
 			echo json_encode('-1');
 		}
 		else if($this->Login_model->checkID( $a_UserInfo['idcard'] ))
@@ -216,12 +177,12 @@ class Login extends CI_Controller {
 
 			$mailtemplate = $this->Mail_model->select('mailprofile',array('mailprofileid' => 1));
 			if(isset($mailtemplate[0])){
-				$subject 			= $mailtemplate[0]['presubject'];
-				$body 				= $mailtemplate[0]['prebody'];
+				$subject 			= html_entity_decode($mailtemplate[0]['presubject']);
+				$body 				= html_entity_decode($mailtemplate[0]['prebody']);
 				$mail["attachment"] = $mailtemplate[0]['preattach'];
 				$presender 			= $mailtemplate[0]['presender'];
-				// $mail["cc"] 		= $mailtemplate[0]['cc'];
-				// $mail["bcc"] 		= $mailtemplate[0]['bcc'];
+				$mail["cc"] 		= '';
+				$mail["bcc"] 		= '';
 			}else{
 				$subject			= $body = $mail["attachment"] = $mail["cc"] = $mail["bcc"] = $presender = '';
 			}
@@ -237,27 +198,17 @@ class Login extends CI_Controller {
 	        	$mail['mcpass']	= base64_decode($mailSystem[0]['mcpass']);
 	        	$mail['mcport']	= $mailSystem[0]['mcport'];
 			}
-			
-			$chuoi_tim 				= array('[Tên Ứng viên]','[Tên]');
-			$chuoi_thay_the 		= array($data['name'],$data['lastname']);
+
+            $gioitinh = ($data['gender'] == 'M')? 'Anh' : 'Chị';
+			$chuoi_tim 				= array('[Tên Ứng viên]','[Tên]','[Giới tính]');
+			$chuoi_thay_the 		= array($data['name'],$data['firstname'],$gioitinh);
 			$mail['emailsubject'] 	= str_replace($chuoi_tim,$chuoi_thay_the, $subject);
 			$mail['emailbody'] 		= str_replace($chuoi_tim,$chuoi_thay_the, $body);
 			$mail['toemail'] 		= $a_UserInfo['email'];
+
 			$this->Mail_model->sendMail($mail);
 
-			// $this->email->from('thanhhung23495@gmail.com', 'Tuyển dụng Đất Xanh');
-			// //cau hinh nguoi nhan
-			// $this->email->to($frm['email']);
-			// $this->email->subject('Đăng kí tài khoản thành công');
-			// $this->email->message('Cảm ơn bạn đã đăng ký tài khoản tại Đất Xanh.<br>');
-			
-			// if ( $this->email->send())
-			// {
-				echo json_encode($a_UserInfo);		
-			// }else{
-			// 	var_dump('thất bại');
-			// 	var_dump($this->email->print_debugger());
-			// }	
+			echo json_encode($a_UserInfo);
 		}
 	}
 	public function Addtags($tags,$candidateid)
@@ -265,12 +216,12 @@ class Login extends CI_Controller {
 		foreach ($tags as $key => $value) {
 			$row['data'] = $this->Login_model->checktagsprofile(array('title' =>  $value));
 			if(!is_array($row['data']))
-			{	
+			{
 				$data1['title'] = trim($value);
 				$data2['tagid'] = $this->Login_model->InsertData("tagprofile",$data1);
 				$data2['tablename'] = "candidate";
 				$data2['recordid'] = $this->session->userdata('user')['candidateid'];
-				$data2['categoryid'] = "candidateid"; 
+				$data2['categoryid'] = "candidateid";
 				$this->Login_model->InsertData("tagtransaction",$data2);
 			}
 			else
@@ -278,15 +229,10 @@ class Login extends CI_Controller {
 				$data2['tagid'] = $row['data']['tagid'];
 				$data2['tablename'] = "candidate";
 				$data2['recordid'] = $this->session->userdata('user')['candidateid'];
-				$data2['categoryid'] = "candidateid"; 
+				$data2['categoryid'] = "candidateid";
 				$this->Login_model->InsertData("tagtransaction",$data2);
-			}		
+			}
 		}
 	}
 
-	
-
-
-
-	
 }

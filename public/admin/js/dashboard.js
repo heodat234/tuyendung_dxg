@@ -46,7 +46,7 @@ $(function () {
   });
 
   /* jQueryKnob */
-  $('.knob').knob();
+  // $('.knob').knob();
 
   // jvectormap data
   var visitorsData = {

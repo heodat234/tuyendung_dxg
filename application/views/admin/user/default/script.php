@@ -6,11 +6,7 @@
 	    	timepicker:false,
 	    	format:'d/m/Y',
 	    });
-	    CKEDITOR.replace('content',{
-	    	allowedContent: true,
-	        disableAutoInline: true,
-	        toolbarStartupExpanded : false,
-	        toolbarCanCollapse: true});
+	    
 	});
 	function rotate(id) {
 		for (var i = 1; i <= 9; i++) {

@@ -164,16 +164,16 @@ class Handling extends CI_Controller {
         $orderby    = array('colname'=>'tb.createddate','typesort'=>'desc');
         $sql                = "SELECT tb.*, operator.operatorname, document.filename FROM cancomment tb LEFT JOIN operator ON tb.createdby = operator.operatorid LEFT JOIN document ON tb.createdby = document.referencekey AND document.tablename = 'operator'  WHERE tb.candidateid = $id ORDER BY tb.createddate DESC";
         $history_cmt        = $this->Campaign_model->select_sql($sql);
-        // $history_cmt        = $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename',array('tb.candidateid'=>$id),'','cancomment tb',$join,'',$orderby,'','');
         $sql                = "SELECT tb.*, operator.operatorname, document.filename FROM profilehistory tb LEFT JOIN operator ON tb.createdby = operator.operatorid LEFT JOIN document ON tb.createdby = document.referencekey AND document.tablename = 'operator'  WHERE tb.candidateid = $id ORDER BY tb.createddate DESC";
         $history_profile        = $this->Campaign_model->select_sql($sql);
-        // $history_profile    = $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename',array('tb.candidateid'=>$id),'','profilehistory tb',$join,'',$orderby,'','');
         //mail
-        // $sql                = "SELECT tb.emailsubject,tb.mailid, tb.createddate, tb.isshare, operator.operatorname, document.filename, document.subject  FROM mailtable tb LEFT JOIN operator ON tb.createdby = operator.operatorid  JOIN document ON tb.createdby = document.referencekey  WHERE tb.toemail = $mail ORDER BY tb.createddate DESC";
-        // $history_profile1        = $this->Campaign_model->select_sql($sql);
-        $history_profile1   = $this->Data_model->select_row_option('tb.emailsubject,tb.mailid, tb.createddate, tb.isshare, operator.operatorname, document.filename,document.subject',array('tb.toemail'=>$mail),'','mailtable tb',$join,'',$orderby,'','');
+        if ($mail != '') {
+            $history_profile1   = $this->Data_model->select_row_option('tb.emailsubject,tb.mailid, tb.createddate, tb.isshare, operator.operatorname, document.filename,document.subject',array('tb.toemail'=>$mail),'','mailtable tb',$join,'',$orderby,'','');
 
-        $this->data2['history'] = array_merge($history_cmt, $history_profile, $history_profile1);
+            $this->data2['history'] = array_merge($history_cmt, $history_profile, $history_profile1);
+        }else{
+            $this->data2['history'] = array_merge($history_cmt, $history_profile);
+        }
         // var_dump($history_profile1);exit;
         function cmp($a, $b) {
             if ($a['createddate'] == $b['createddate']) {
@@ -182,9 +182,7 @@ class Handling extends CI_Controller {
             return ($a['createddate'] < $b['createddate']) ? 1 : -1;
         }
         uasort($this->data2['history'], 'cmp');
-        // echo "<pre>";
-        // print_r($this->data2['history']);
-        // echo "</pre>";exit;
+        
         if($profilesrc == 'Nội bộ'|| $profilesrc == 'Web Admin'){
             $this->data2['candidate_noibo']     = $this->Candidate_model->first_row('candidate',array('candidateid' => $id, ),'','');
             $id                                 = -1;
@@ -241,12 +239,12 @@ class Handling extends CI_Controller {
             $this->data2['knowledge_noibo']     = $this->Candidate_model->selectTableByIds('canknowledge',$id_mergewith);
             $this->data2['language_noibo']      = $this->Candidate_model->selectTableByIds('canlanguage',$id_mergewith);
             $this->data2['software_noibo']      = $this->Candidate_model->selectTableByIds('cansoftware',$id_mergewith);
-            $this->data2['document_noibo']      = $this->Candidate_model->first_row('document',array('referencekey'=>$id_mergewith,'tablename' => 'candidate'),'filename,url','lastupdate');
+            $this->data2['document_noibo']      = $this->Candidate_model->first_row('document',array('referencekey'=>$id_mergewith,'tablename' => 'candidate','subject' => 'File CV'),'filename,url','lastupdate');
             $vt1                                = $this->Candidate_model->selectTableGroupBy('position,company','canexperience',$id_mergewith,'dateto');
             $this->data2['tags_noibo']          = $this->Candidate_model->join_tag($id_mergewith);
             $this->data2['tagstrandom_noibo']   = $this->Candidate_model->join_tag_random($id_mergewith);
             $this->data2['vt_noibo']            = $vt1['position'].' - '.$vt1['company'];
-
+            // var_dump($this->data2['document_noibo']);exit;
             if ($id_mergewith != Null) {
                 $sql0 = "SELECT DISTINCT a.lastupdate as a, b.lastupdate as b, c.lastupdate as c, d.lastupdate as d, f.lastupdate as f, g.lastupdate as g, h.lastupdate as h, j.lastupdate as j,e.lastupdate as e 
                 FROM candidate a 
@@ -271,7 +269,7 @@ class Handling extends CI_Controller {
         if ($id == -1) {
            $id = $id_mergewith;
         }
-        $this->data2['candidate_con']     = $this->Campaign_model->select_sql("SELECT * FROM candidate WHERE mergewith = $id AND candidateid NOT IN ($id_mergewith)");
+        $this->data2['candidate_con']     = $this->Campaign_model->select_sql("SELECT * FROM candidate WHERE mergewith = $id AND candidateid NOT IN ($id)");
         foreach ($this->data2['candidate_con'] as $key => $value) {
             $id_con                             = $value['candidateid'];
             $this->data2['canaddress_con'][$key]    = $this->Candidate_model->selectTableByIds('canaddress',$id_con);
@@ -997,7 +995,6 @@ class Handling extends CI_Controller {
         $frm['telephone']   = $frm['phone1'].','.$frm['phone2'];
         unset($frm['phone1']);
         unset($frm['phone2']);
-        // var_dump($frm);exit;
         if ($frm['candidateid'] == '0') {
             unset($frm['candidateid']);
             $id = $this->Data_model->insert('candidate',$frm);
@@ -1036,13 +1033,13 @@ class Handling extends CI_Controller {
         }
         $arr_tags2 = explode(',', $tag['tagsrandom']);
         foreach ($arr_tags2 as $key => $value) {
+            if(trim($value) == "")
+            {
+                continue;
+            }
             $row['data'] = $this->Candidate_model->checktagsprofile(array('title' =>  trim($value)));
             if(!is_array($row['data']))
             {   
-                if(trim($value) == "")
-                {
-                    continue;
-                }
                 $data1['title'] = trim($value);
                 $data2['tagid'] = $this->Candidate_model->InsertData("tagprofile",$data1);
                 $data2['tablename'] = "candidate";
@@ -1622,28 +1619,21 @@ class Handling extends CI_Controller {
             $data['name']           = $frm['firstname']." ".$frm['lastname'];
             $data['profilesrc']     = $frm['profilesrc'];
             $data['snid']           = $frm['snid'];
-            // if ($this->Candidate_model->checkMail( $frm['email'] )) {    
-            //     echo '<script type="text/javascript">alert("Email đãng tồn tại!");</script>';
-            // }
-            // else if($this->Candidate_model->checkID( $frm['idcard'] ))
-            // {
-                //   
-            // }
-            // else
-            // {
+           
                 
                 $candidateid = $this->Data_model->insert('candidate',$data);
                 $this->Candidate_model->delete_real('tagtransaction',array('tablename' => 'candidate', 'recordid' => $candidateid));
                 $tag['tags'] = $frm['tags'];
                 $arr_tags = explode(',', $tag['tags']);
                 foreach ($arr_tags as $key => $value) {
+                    if(trim($value) == "")
+                    {
+                        continue;
+                    }
                     $row['data'] = $this->Candidate_model->checktagsprofile(array('title' =>  trim($value)));
                     if(!is_array($row['data']))
                     {   
-                        if(trim($value) == "")
-                        {
-                            continue;
-                        }
+                        
                         $data1['title'] = trim($value);
                         $data2['tagid'] = $this->Candidate_model->InsertData("tagprofile",$data1);
                         $data2['tablename'] = "candidate";
@@ -1664,13 +1654,14 @@ class Handling extends CI_Controller {
                 $tags_rd['rd'] = $frm['tagsrandom'];
                 $arr_tags2 = explode(',', $tags_rd['rd']);
                 foreach ($arr_tags2 as $key => $value) {
-                    $row['data'] = $this->Candidate_model->checktagsprofile(array('title' =>  trim($value)));
-                    if(!is_array($row['data']))
-                    {   
-                        if(trim($value) == "")
+                    if(trim($value) == "")
                         {
                             continue;
                         }
+                    $row['data'] = $this->Candidate_model->checktagsprofile(array('title' =>  trim($value)));
+                    if(!is_array($row['data']))
+                    {   
+                        
                         $data1['title'] = trim($value);
                         $data2['tagid'] = $this->Candidate_model->InsertData("tagprofile",$data1);
                         $data2['tablename'] = "candidate";

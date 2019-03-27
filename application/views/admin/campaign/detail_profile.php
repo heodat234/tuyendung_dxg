@@ -2415,7 +2415,12 @@
 	      					if ($key['scr_asmtid'] != '0') {
 	      						$icon_h 		= ' <i class="fa fa-file-o"></i>';
 	      					}
-	      					$interviewer 	.= '<div class="col-xs-3"><img src="'.base_url().'public/image/'.$key['filename'].'"  class="img_profile">'.$key['operatorname'].$icon_h.$status.'</div>';
+	      					if ($key['filename'] == '') {
+	      						$image_inv = 'unknow.jpg'; 
+	      					}else{
+	      						$image_inv = $key['filename'];
+	      					}
+	      					$interviewer 	.= '<div class="col-xs-3"><img src="'.base_url().'public/image/'.$image_inv.'"  class="img_profile">'.$key['operatorname'].$icon_h.$status.'</div>';
 	      				}
 	      				$interviewer 		.= '</div>';
       				}

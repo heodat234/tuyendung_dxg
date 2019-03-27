@@ -23,7 +23,7 @@
 					<div class="col-md-12">
 						<div class="col-md-3 padding_0 manage_pv ql" id="col_pt_0">
           					<div class="col-md-3 padding_0">
-          						<img class="img-pv" src="<?php echo base_url().'public/image/'.$interview['imagelink'] ?>">
+          						<img class="img-pv" src="<?php echo base_url().'public/image/'.$img_a = ($interview['imagelink']!='')? $interview['imagelink'] : 'unknow.jpg'; ?>">
           					</div>
           					<div class="col-md-9 padding_0">
           						<div class="body-blac5a"><?php echo $interview['name'] ?></div>
@@ -46,7 +46,7 @@
           						<!-- <span class="body-blac5b">Chờ xác nhận</span> -->
           					</div>
           				</div>
-          				<?php foreach ($interviewer as $row): 
+          				<?php foreach ($interviewer as $row):
           					if ($row['status_asmt'] == 'C') {
       							if ($row['optionid'] == '1') {
       								$status = '<span class="body-blac5b">Chờ xác nhận</div>';
@@ -66,7 +66,7 @@
           				?>
           					<div class="col-md-3 padding_0 manage_pv ql" id="col_pt_<?php echo $row['interviewerid'] ?>" onclick="removeInterviewer(<?php echo $row['interviewerid'] ?>)">
 	          					<div class="col-md-3 padding_0">
-	          						<img class="img-pv" src="<?php echo base_url().'public/image/'.$row['filename'] ?>">
+	          						<img class="img-pv" src="<?php echo base_url().'public/image/'.$img_b =($row['filename'] != '')? $row['filename'] : 'unknow.jpg'; ?>">
 	          						<div class="del_ql"><i class="fa fa-minus-circle fa-lg"></i></div>
 	          					</div>
 	          					<div class="col-md-9 padding_0">
@@ -75,7 +75,7 @@
 	          					</div>
 	          				</div>
           				<?php endforeach ?>
-						
+
           				<div class="col-md-3 padding_0 manage_pv ql">
           					<div class="col-md-3 padding_0">
           						<img class="img-pv" src="<?php echo base_url() ?>public/image/bbye.jpg">
@@ -90,7 +90,7 @@
 					<div class="row desc_as location_time">
 						<label>Thời gian/ Địa điểm</label>
 						<div class="margin_left_15">
-							<?php 
+							<?php
 								$thu = date_format(date_create($interview['intdate']),"N");
 								if ($thu != 7) {
 									$temp = (int)$thu+1;
@@ -122,7 +122,7 @@
 				<div class="row desc_as">
 					<label>Phiếu phỏng vấn</label>
 					<div class="col-md-12">
-						
+
           				<div class="pull-right hide">
           					<div class="btn_as">
 								<button onclick="changeAssessment()"><i class="fa fa-pencil fa-lg"></i></button>
@@ -134,18 +134,18 @@
 						foreach ($interviewer_current as $key => $value) {?>
                             <li>
                             	<a href="#tab<?php echo($key)?>" data-toggle="tab">
-                            		<img class="img-pv" src="<?php echo base_url('public/image/'.$value['current'][0]['filename'])?>"> <?php echo($value['current'][0]['operatorname'])?>
-                            		
+                            		<img class="img-pv" src="<?php echo base_url('public/image/'.$img_c =($value['current'][0]['filename']!='')?$value['current'][0]['filename'] : 'unknow.jpg' )?>"> <?php echo($value['current'][0]['operatorname'])?>
+
                             	</a>
                             </li>
-                    
+
                         <?php }}?>
                         </ul>
                     <div class="tab-content">
                     	<?php if($interviewer_current&&!empty($interviewer_current)){
 						foreach ($interviewer_current as $key => $value) {?>
 							<div class="tab-pane fade" id="tab<?php echo($key)?>">
-								
+
 					<?php if(isset($value['section'])&&!empty($value['section'])) foreach ($value['section'] as $sec) {?>
 					<div>
 						<div class="title_ques"><?php echo($sec['sectionname'])?></div>
@@ -174,11 +174,44 @@
 					</div>
 					<?php }?>
 							</div>
-                            
+
                         <?php }}?>
                     </div>
 				</div>
-				
+				<!-- <form id="form_ans">
+					<input type="hidden" name="interviewerid" value="<?php echo $interviewerid ?>">
+					<input type="hidden" name="interviewid" value="<?php echo $interviewid ?>">
+					<input type="hidden" name="asmtid" value="<?php echo(isset($asmtid)?$asmtid:'')?>">
+					<div class="row desc_as">
+						<label>Phiếu phỏng vấn</label>
+
+					</div>
+					<?php if(isset($section)&&!empty($section)) foreach ($section as $sec) {?>
+					<div>
+						<div class="title_ques">A. <?php echo($sec['sectionname'])?></div>
+						<?php if(isset($sec['question'])&&!empty($sec['question'])) foreach ($sec['question'] as $ques) {?>
+						<div class="question_as">
+							<label>1.	<?php echo($ques['question'])?></label>
+							<?php if($ques['questiontype']=='scores'){?>
+							<div class="answer_as">
+								<div class="col-md-3">
+									<input type="textbox" required="" name="question[<?php echo($ques['questionid'])?>][ansnumeric]" placeholder="Điểm số (<?php echo number_format($ques['scorefrom'])?>-><?php echo number_format($ques['scoreto'])?>)" value="<?php echo number_format($ques['ansnumeric'])?>">
+								</div>
+								<div class="col-md-9">
+									<input type="textbox" class="width_100" name="question[<?php echo($ques['questionid'])?>][anstext]" placeholder="Nhận xét" value="<?php echo($ques['anstext'])?>">
+								</div>
+							</div>
+							<?php }elseif($ques['questiontype']=='text'){ ?>
+							<div class="answer_as">
+								<div class="col-md-12">
+									<textarea name="question[<?php echo($ques['questionid'])?>][anstext]" class="width_100" rows="4" placeholder="dạng văn bản"><?php echo($ques['anstext'])?></textarea>
+								</div>
+							</div>
+							<?php }?>
+						</div>
+						<?php }?>
+					</div>
+					<?php }?> -->
 			</div>
 		</div>
 		<div class="footer_as hide">
@@ -213,7 +246,7 @@
               	<div class="rowedit3">
                     <p class="titleAppoint">Người phỏng vấn</p>
                       <div class="col-xs-12 padding_0">
-                          
+
                         <div class="col-md-3 padding_0 manage_pv ql" id="col_add_pt">
                             <div class="col-md-3 padding_0">
                               <img class="img-pv" src="<?php echo base_url() ?>public/image/bbye.jpg">
@@ -342,7 +375,7 @@
                   <div class="profile_tn">
                   </div>
                 </div>
-                <div class="col-md-9 border_left_ddd loca_2">                    
+                <div class="col-md-9 border_left_ddd loca_2">
                 </div>
               </div>
             </div>
@@ -436,7 +469,7 @@
 	                        Nội dung:
 	                      </div>
 	                      <div class="col-xs-11">
-	                        <textarea name="body11" class="textarea_profile editor" rows="3" required="">
+	                        <textarea name="body17" class="textarea_profile editor" rows="3" required="">
 	                        </textarea>
 	                      </div>
 	                </div>
@@ -487,7 +520,7 @@
                   </div>
                 </div>
                 <div class="col-md-9 border_left_ddd loca_2">
-                    
+
                 </div>
               </div>
             </div>
@@ -567,7 +600,7 @@
 	                        Nội dung:
 	                      </div>
 	                      <div class="col-xs-11">
-	                        <textarea name="body3" class="textarea_profile editor" rows="3" required="">
+	                        <textarea name="body15" class="textarea_profile editor" rows="3" required="">
 	                        </textarea>
 	                      </div>
 	              </div>
@@ -616,7 +649,7 @@
                   </div>
                 </div>
                 <div class="col-md-9 border_left_ddd loca_2" >
-                    
+
                 </div>
               </div>
             </div>
@@ -714,7 +747,7 @@
 	                        Nội dung:
 	                      </div>
 	                      <div class="col-xs-11">
-	                        <textarea name="body4" class="textarea_profile editor" rows="3" required=""></textarea>
+	                        <textarea name="body16" class="textarea_profile editor" rows="3" required=""></textarea>
 	                      </div>
 	              </div>
 	              <div class="rowedit2">
@@ -843,7 +876,7 @@
 		$('.nav-tabs li:first').addClass('active');
 		$('.tab-content .tab-pane:first').addClass('in active');
 	});
-	 
+
 	function addInterviewer(interviewid) {
 		$('.profile_tn').html('<img src="http://recruit.tavicosoft.com/public/image/<?php echo $interview['imagelink'] ?>" ><p class="guide-black"><?php echo $interview['name'] ?></p>');
 		var loca = $('.location_time').contents().clone();
@@ -895,12 +928,12 @@
 	    var operator = $('#operator_js').text();
 	    operator = (JSON.parse(operator));
 	    for(var j in operator ){
-	      if (id == operator[j]['operatorid']) { 
+	      if (id == operator[j]['operatorid']) {
 	        var temp = operator[j]['email'];
 	        var listmail = $('#email_to_pv').val();
 	        listmail1 = listmail.replace(temp+',', '');
 	        $('#email_to_pv').val(listmail1);
-	      } 
+	      }
 	    }
 	}
 	$('#savePT1').click(function(event) {
@@ -912,11 +945,11 @@
 	    var email = $('#email_to_pv').val();
 	    for(var i in data){
 	      if (data[i].value == '')
-	      { 
+	      {
 	        continue;
 	      }
 	      for(var j in operator ){
-	        if (data[i].value == operator[j]['operatorid']) { 
+	        if (data[i].value == operator[j]['operatorid']) {
 	          row ='<div class="col-md-12" id="col_pt1_'+data[i].value+'" style="margin-bottom:5px"><div class="col-md-6 padding_0 manage_pv ql">';
 	          row += '<div class="col-md-3 padding_0" onclick="subColPV1('+data[i].value+')""><img class="img-pv" src="<?php echo base_url().'public/image/' ?>'+operator[j]['filename']+'"><div class="del_ql"><i class="fa fa-minus-circle fa-lg"></i></div></div>';
 	          row += '<span class="body-blac5a" padding_0 style="font-size:16px;">'+operator[j]['operatorname']+'</span></div>';
@@ -924,15 +957,15 @@
 	            <?php foreach ($asmt_pv as $key): ?>
 	               row += '<option value="<?php echo $key['asmttemp'] ?>"><?php echo $key['asmtname'] ?></option>';
 	            <?php endforeach ?>
-	            row += '</select></div></div>'; 
+	            row += '</select></div></div>';
 	          $('#col_add_pt').before(row);
 
 	          var temp = operator[j]['email'];
 	            email += temp+', ';
-	          
-	        } 
+
+	        }
 	      }
-	      str += data[i].value + ',';                     
+	      str += data[i].value + ',';
 	    }
 	    $('#email_to_pv').val(email);
 	    var manageround = $('#managePV').val();
@@ -942,7 +975,7 @@
 	      manageround = str;
 	    }
 	    $('#managePV').val(manageround);
-	    $('#insertPV1').modal('hide');    
+	    $('#insertPV1').modal('hide');
 	});
 
 	function cancelAppointment(argument) {
@@ -965,12 +998,12 @@
 			interviewer += '<div class="col-md-9 padding_0"><div class="body-blac5a">'+inter[i]['operatorname']+'</div></div></div>';
 
 		}
-        interviewer += '</div>';   
+        interviewer += '</div>';
         $('#cc_cancle_pv').val(email_cc);
-        $('.loca_2').append(interviewer);  
+        $('.loca_2').append(interviewer);
 
         $('#my-file-selector1').val();
-        $(".dom_file").remove();    
+        $(".dom_file").remove();
 		$('#cancelAppointment').modal('show');
 	}
 	function removeInterviewer(interviewerid) {
@@ -998,10 +1031,10 @@
 			interviewer += '<div class="col-md-9 padding_0"><div class="body-blac5a">'+inter[i]['operatorname']+'</div></div></div>';
 
 		}
-        interviewer += '</div>';   
+        interviewer += '</div>';
         $('#to_pv_2').val(email_to);
         $('#cc_pv_2').val(email_cc);
-        $('.loca_2').append(interviewer);      
+        $('.loca_2').append(interviewer);
    		$('#interviewerid_remove').val(interviewerid);
 
    		$('#my-file-selector1').val();
@@ -1027,14 +1060,14 @@
 			interviewer += '<div class="col-md-9 padding_0"><div class="body-blac5a">'+inter[i]['operatorname']+'</div></div></div>';
 
 		}
-        interviewer += '</div>';   
+        interviewer += '</div>';
         // $('#to_pv_2').val(email_to);
         // $('#cc_pv_2').val(email_cc);
-        $('.loca_2').append(interviewer);   
+        $('.loca_2').append(interviewer);
 
         $('#my-file-selector1').val();
-        $(".dom_file").remove();   
+        $(".dom_file").remove();
 		parent.$('#changeAssessment').modal('show');
 	}
-	
+
 </script>

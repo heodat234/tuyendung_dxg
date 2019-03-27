@@ -14,7 +14,6 @@ if($this->session->has_userdata('user_admin')) {
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/AdminLTE.min.css">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/_all-skins.min.css">
   <!-- <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/bootstrap-datepicker.min.css"> -->
-  <!-- <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/daterangepicker.css"> -->
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/bootstrap3-wysihtml5.min.css">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/bootstrap3-wysihtml5.min.css">
   <link rel="stylesheet" href="<?php echo base_url()?>public/admin/css/bootstrap-multiselect.css">
@@ -42,6 +41,7 @@ if($this->session->has_userdata('user_admin')) {
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
   <script src="<?php echo base_url()?>public/datetimepicker-master/build/jquery.datetimepicker.full.min.js"></script>
   <script src="<?php echo base_url()?>public/admin/js/jquery.number.js"></script>
+  <script src="<?php echo base_url()?>public/admin/js/morris.js"></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
   <div class="wrapper">
@@ -55,7 +55,7 @@ if($this->session->has_userdata('user_admin')) {
   <script>
     $.widget.bridge('uibutton', $.ui.button);
   </script>
-  <<div class="hide" id="url"><?php echo base_url() ?></div>
+  <div class="hide" id="url"><?php echo base_url() ?></div>
   <script src="<?php echo base_url()?>public/admin/js/bootstrap.min.js"></script>
   <script src="<?php echo base_url()?>public/ckeditor/ckeditor.js"></script>
   <script src="<?php echo base_url()?>public/admin/js/moment.min.js"></script>
@@ -64,18 +64,20 @@ if($this->session->has_userdata('user_admin')) {
   <script src="<?php echo base_url()?>public/admin/js/bootstrap3-wysihtml5.all.min.js"></script>
   <script src="<?php echo base_url()?>public/admin/js/jquery.slimscroll.min.js"></script>
   <script src="<?php echo base_url()?>public/admin/js/adminlte.min.js"></script>
-  <script src="<?php echo base_url()?>public/admin/js/dashboard.js"></script>
+  <!-- <script src="<?php echo base_url()?>public/admin/js/dashboard.js"></script> -->
   <script src="<?php echo base_url()?>public/admin/js/demo.js"></script>
   <script src="<?php echo base_url()?>public/admin/js/my-modal.js"></script>
   <script src="<?php echo base_url()?>public/admin/js/fullcalendar.min.js"></script>
-  <script src="<?php echo base_url()?>public/admin/js/gcal.js"></script>
+  <!-- <script src="<?php echo base_url()?>public/admin/js/gcal.js"></script> -->
   <script src="<?php echo base_url()?>public/admin/js/jquery-jvectormap-1.2.2.min.js"></script>
   <script src="<?php echo base_url()?>public/admin/js/jquery-jvectormap-world-mill-en.js"></script>
   <script src="<?php echo base_url()?>public/admin/js/jquery.sparkline.js"></script>
-  <script src="<?php echo base_url()?>public/admin/js/morris.js"></script>
+  
 
   <?php echo isset($script)? $script: ""; ?>
   <?php echo isset($modal_campaign)? $modal_campaign: ""; ?>
+
+  <div style="display: none">Designed by Lê Thanh Hưng</div>
 </body>
 </html>
 <?php 

@@ -1,6 +1,6 @@
  <header class="main-header">
     <!-- Logo -->
-    <a href="index2.html" class="logo" style="background-color: #5FA2DD">
+    <a href="<?php echo base_url() ?>admin" class="logo" style="background-color: #5FA2DD">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><img src="<?php echo base_url()?>public/image/logoheader.png" class="sizelogo-header margin-l12"></span>
       <!-- logo for regular state and mobile devices -->

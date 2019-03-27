@@ -9,9 +9,10 @@
 	    CKEDITOR.replace('body',{
 	    	
 	    	allowedContent: true,
+	    	pasteFilter: 'plain-text',
 	        // disableAutoInline: true,
-	        toolbarStartupExpanded : false,
-	        toolbarCanCollapse: true,
+	        // toolbarStartupExpanded : false,
+	        // toolbarCanCollapse: true,
 	        filebrowserBrowseUrl: '<?php echo base_url('public/ckfinder/ckfinder.html') ?>',
 			filebrowserUploadUrl: '<?php echo base_url('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files') ?>',
 	    	filebrowserImageBrowseUrl : '<?php echo base_url('public/ckfinder/ckfinder.html?type=Images') ?>',

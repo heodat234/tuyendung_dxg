@@ -13,47 +13,7 @@
 			</label>
 		</div>
 		<div class="col-md-6 col-xs-6 hov-btn-ad">
-			<!-- <button type="button" class="btn-icon-header" ><i class="fa fa-print color-ccc" ></i></button>
-			<button type="button" class="btn-icon-header margin-r7" ><i class="fa fa-envelope-o color-ccc" ></i></button> -->
-			<!-- <div class=""> 
-				<button type="button" class="btn-icon-header margin-r7" id="starbtn" data-toggle="dropdown" >
-					<span class="fa-stack fa-1x fixicon">
-						<?php if (!isset($candidate['istalent'])){ ?>
-							<i class="fa fa-star color-ccc fa-stack-2x star-icon" id="iconstar_profile"></i>
-						<?php }else{ ?>
-							<i class="fa fa-star <?php echo ($candidate['istalent'] == '0')? "color-gray" : "color-orange";?> fa-stack-2x star-icon" id="iconstar_profile"></i>
-							<span class="fa fa-stack-1x color-white star-texta" id="textstar_profile"><?php echo ($candidate['istalent'] == 0)? "": $candidate['istalent'];?></span>
-						<?php } ?>
-					</span></button>
-					<div class="dropdown-menu star-pos2">
-						<a type="button" onclick="talent_detail(0)" class="btn-none"><span class="fa-stack fa-1x" title="Ứng viên không tiềm năng">
-							<i class="fa fa-star color-gray fa-stack-2x star-icon"></i>
-							<span class="fa fa-stack-1x color-white star-text"></span>
-						</span>
-					</a>
-					<a type="button" onclick="talent_detail(1)" class="btn-none"><span class="fa-stack fa-1x" title="Ứng viên tiềm năng mức 1">
-						<i class="fa fa-star color-orange fa-stack-2x star-icon" ></i>
-						<span class="fa fa-stack-1x color-white star-text">1</span>
-					</span></a>
-					<a type="button" onclick="talent_detail(2)" class="btn-none"><span class="fa-stack fa-1x" title="Ứng viên tiềm năng mức 2">
-						<i class="fa fa-star color-orange fa-stack-2x star-icon"></i>
-						<span class="fa fa-stack-1x color-white star-text">2</span>
-					</span></a>
-					<a type="button" onclick="talent_detail(3)" class="btn-none"><span class="fa-stack fa-1x" title="Ứng viên tiềm năng mức 3">
-						<i class="fa fa-star color-orange fa-stack-2x star-icon" ></i>
-						<span class="fa fa-stack-1x color-white star-text" >3</span>
-					</span></a>
-				</div>
-			</div>
-			<button type="button" class="btn-icon-header margin-r7" onclick="changeblock(this)" value="<?php echo isset($candidate['blocked'])? $candidate['blocked'] : '';?>" id="checkchange">
-				<?php if (!isset($candidate['blocked'])){ ?>
-					<i class="fa fa-check-circle-o size-icon color-ccc"></i>
-				<?php }else if($candidate['blocked'] == 'Y') { ?> 
-					<i class="fa fa-ban color-red size-icon" ></i>
-				<?php } else { ?>
-					<i class="fa fa-check-circle-o color-green size-icon"></i> 
-				<?php } ?>
-			</button> -->
+
 		</div>
 	</div>
 	<div class="margin-t4 dash-horizontal"  ></div>
@@ -69,26 +29,27 @@
 			<label class="can-name"><?php echo isset($candidate['name'])? $candidate['name'] : 'New Profile'; ?></label>
 			<label class="cv-old"><?php echo isset($candidate['position'])? $candidate['position'] : ''; ?></label>
 			<label class="tag-lb">
-			<?php 
+			<?php
 			if(isset($tags))
 			{
 				$aa = array();
 					foreach ($tags as $key) {
 						array_push($aa, $key['title']);
 					}
-				
+
 					echo implode(", ", $aa);
 			}
 				?></label>
 			<span class="highR">
-			<?php 
+			<?php
 				if(isset($tagstrandom))
 				{
 					$aaa = array();
+					// var_dump($tagstrandom);exit;
 						foreach ($tagstrandom as $key) {
 							array_push($aaa, "#".$key['title']);
 						}
-					
+
 						echo implode(", ", $aaa);
 				}
 			?>
@@ -98,7 +59,7 @@
 			<label class="diem">0 điểm</label>
 			<label class="mau3">0 chiến dịch</label>
 			<br><br>
-			<span class="webportal"><?php echo isset($candidate['profilesrc'])? $candidate['profilesrc'] : 'Web Admin'; ?></span>							
+			<span class="webportal"><?php echo isset($candidate['profilesrc'])? $candidate['profilesrc'] : 'Web Admin'; ?></span>
 		</div>
 	</div>
 	<div style="height: 20px"></div>
@@ -137,7 +98,7 @@
 													<label for="text" class="col-xs-3 width20 col-xs-3 label-profile">Email</label>
 													<div class="col-xs-3 width30 padding-lr0">
 														<input type="email" id="email" name="email" class="textbox" value="<?php echo isset($can_detail['email'])? $can_detail['email'] : ''; ?>">
-													</div>   
+													</div>
 												</div>
 												<br><br>
 												<div class="width100">
@@ -148,12 +109,12 @@
 													<label for="text" class="col-xs-3 width20 col-xs-3 label-profile">CMND/ ID</label>
 													<div class="col-xs-3 width30 padding-lr0">
 														<input type="text" class="so textbox" id="idcard" name="idcard" class="textbox" maxlength="" value="<?php echo isset($can_detail['idcard'])? $can_detail['idcard'] : ''; ?>">
-													</div>   
+													</div>
 												</div>
 												<br><br>
 												<div class="width100">
 													<label for="text" class="width20 col-xs-3 label-profile">Số điện thoại</label>
-													<?php 
+													<?php
 													if (isset($can_detail['telephone'])) {
 														$pizza  = $can_detail['telephone'];
 									                    $pieces = explode(",", $pizza);
@@ -167,9 +128,9 @@
 													<label for="text" class="col-xs-3 width20 col-xs-3 label-profile"></label>
 													<div class="col-xs-3 width30 padding-lr0">
 														<input type="text" name="phone2" class="textbox so" maxlength="10" id="phone2" placeholder="Số thứ 2" value="<?php echo $p2 ?>">
-													</div>   
+													</div>
 												</div>
-												
+
 												<br><br>
 												<div class="width100">
 													<label for="text" class="width20 col-xs-3 label-profile">Nguồn hồ sơ</label>
@@ -185,14 +146,14 @@
 														$('#profilesrc_id option[value="<?php echo $can_detail['profilesrc'] ?>"]').prop('selected', true);
 													</script>
 												<?php endif ?>
-												
+
 												<br><br>
 												<div class="width100">
 													<label for="text" class="width20 col-xs-3 label-profile">Vị trí phù hợp</label>
 													<div class="col-xs-9 width80 padding-lr0">
 														<div id="the-basics" style="font-size: 15px">
 									                    <input id="typeahead" type="text" data-role="tagsinput" value="
-									                    <?php 
+									                    <?php
 									                    if(isset($tags)){
 									                    for($i=0; $i < count($tags) ; $i++)
 									                          {
@@ -226,7 +187,7 @@
 													<label for="text" class="width20 col-xs-3 label-profile">Tag</label>
 													<div class="col-xs-9 width80 padding-lr0">
 														<input name="tagsrandom" type="text" data-role="tagsinput" value="
-															<?php 
+															<?php
 															if(isset($tagstrandom)){
 																for($i=0; $i < count($tagstrandom) ; $i++)
 											                          {
@@ -257,12 +218,12 @@
 										                        <i class="fa fa-download"></i> Tải lên
 										                    </label>
 									                    </div>
-									                    <div class="col-sm-10"> 
+									                    <div class="col-sm-10">
 									                      <?php if (isset($document) && !empty($document)){
 									                        $url = $document['url'];
 									                        $name = $document['filename'];
 									                      }else{$url =''; $name = '';}?>
-									                        <a id="label1"  class="fontstyle"  href="<?php echo $url; ?>"><?php echo $name; ?></a>   
+									                        <a id="label1"  class="fontstyle"  href="<?php echo $url; ?>"><?php echo $name; ?></a>
 									                    </div>
 													</div>
 												</div>
@@ -290,9 +251,9 @@
 														<input type="text" name="dateofbirth" id="ngaysinh123" class="textbox2" value="<?php echo isset($can_detail['dateofbirth'])? date_format(date_create($can_detail['dateofbirth']),"d/m/Y") : '' ?>">
 													</div>
 													<div class="col-xs-1 width5 padding-lr0"></div>
-													<?php if (isset($can_detail['gender'])){ 
+													<?php if (isset($can_detail['gender'])){
 														if($can_detail['gender'] == 'M'){ $gender_M = 'checked'; $gender_F ='';}
-														else { $gender_F = 'checked'; $gender_M ='';}; 
+														else { $gender_F = 'checked'; $gender_M ='';};
 													}else{ $gender_M  = $gender_F = '';}
 													?>
 													<label class="radio-inline">
@@ -312,7 +273,7 @@
 																<option value="<?php echo $key['name'] ?>" <?php if(isset($can_detail['placeofbirth']) && $key['name'] == $can_detail['placeofbirth']) echo "selected";?> ><?php echo $key['name'] ?></option>
 															<?php } ?>
 														</select>
-													</div> 
+													</div>
 												</div>
 												<br><br>
 												<div class="width100">
@@ -360,7 +321,7 @@
 																<option value="<?php echo $key['name'] ?>" <?php if(isset($can_detail['placeofissue']) && $key['name'] == $can_detail['placeofissue']) echo "selected";?> ><?php echo $key['name'] ?></option>
 															<?php } ?>
 														</select>
-													</div> 
+													</div>
 												</div>
 												<input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" id="candidateid_1">
 												<button type="button" class="btn-luu-nav floatright margin-t35" id="save_can_1"> Lưu</button>
@@ -406,7 +367,7 @@
 														<div class="h10-w-auto"></div>
 
 														<select class="textbox2 js-example-basic-single" name="ward[]" id="phuongxa8-ad" style="width: 100%" >
-															<option value="0" id="chonpx-ad1" >Chọn phường xã</option>				                
+															<option value="0" id="chonpx-ad1" >Chọn phường xã</option>
 														</select>
 														<div class="h10-w-auto"></div>
 
@@ -444,13 +405,13 @@
 													</div>
 												</div>
 
-												
+
 
 
 												<div class="width100" style="float: left;">
 													<label for="text" class="width20 col-xs-3 label-profile margin-t10" >Liên lạc khẩn cấp</label>
 													<div class="col-xs-3 width30 padding-lr0">
-														<input type="text" name="emergencycontact" class="textbox2 margin-t10 so" maxlength="10" value="<?php echo isset($can_detail['emergencycontact'])? $can_detail['emergencycontact'] : '' ?>" > 
+														<input type="text" name="emergencycontact" class="textbox2 margin-t10 so" maxlength="10" value="<?php echo isset($can_detail['emergencycontact'])? $can_detail['emergencycontact'] : '' ?>" >
 													</div>
 												</div>
 												<input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" id="candidateid_2">
@@ -471,18 +432,18 @@
 								<div class="panel panel-default border-rad0">
 											<!-- heading ho so noi bo 4-->
 									<div id="collapsetotal42" class="panel-collapse collapse in">
-										<div class="panel-body" style="border: 0px">				         
-											<table   class="table table-striped table-bordered"> 
-												<thead> 
-													<tr class="fontstyle"> 
-														<th id="th" width="30%">Họ và tên</th> 
-														<th id="th" width="20%">Năm sinh</th> 
-														<th id="th" width="20%">Quan hệ</th> 
+										<div class="panel-body" style="border: 0px">
+											<table   class="table table-striped table-bordered">
+												<thead>
+													<tr class="fontstyle">
+														<th id="th" width="30%">Họ và tên</th>
+														<th id="th" width="20%">Năm sinh</th>
+														<th id="th" width="20%">Quan hệ</th>
 														<th id="th" width="20%">Nghề nghiệp</th>
 														<th id="th" width="10%"></th>
-													</tr> 
-												</thead> 
-												<tbody class="fontstyle text-center"> 
+													</tr>
+												</thead>
+												<tbody class="fontstyle text-center">
 													<?php if(isset($family) && $family != null) {
 										                $i = 0;
 										              foreach ($family as $key) { ?>
@@ -502,7 +463,7 @@
 										              <td><i class="fa fa-edit" onclick="editmodal('<?php echo 'click'.$i ?>')"></i> <i class="fa fa-eraser" onclick="delmodal('<?php echo 'click'.$i ?>')"></i></td>
 										             </tr>
 										             <?php $i++;} } ?>
-												</tbody> 
+												</tbody>
 											</table>
 											<a href="javascript:void(0)" onclick="showmodel11()"><label class="floatright">Thêm quan hệ <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a>
 										</div>
@@ -517,21 +478,21 @@
 							<div class="panel-group bor-mar-b0">
 								<div class="panel panel-default border-rad0">
 									<div id="collapsetotal52" class="panel-collapse collapse in">
-										<div class="panel-body" style="border: 0px">	
-											<label>Quá trình công tác</label>			         
-											<table   class="table table-striped table-bordered" > 
-												<thead class="fontstyle"> 
-													<tr > 
-														<th id="th" class="middle2" width="20%">Từ - Đến</th> 
-														<th id="th" class="middle2" width="20%">Cty/ Địa chỉ/ ĐT</th> 
-														<th id="th" width="13%">CV khi nghỉ</th> 
+										<div class="panel-body" style="border: 0px">
+											<label>Quá trình công tác</label>
+											<table   class="table table-striped table-bordered" >
+												<thead class="fontstyle">
+													<tr >
+														<th id="th" class="middle2" width="20%">Từ - Đến</th>
+														<th id="th" class="middle2" width="20%">Cty/ Địa chỉ/ ĐT</th>
+														<th id="th" width="13%">CV khi nghỉ</th>
 														<th id="th" width="17%">NV/ Trách nhiệm</th>
 														<th id="th" class="middle2" width="20%">Lý do nghỉ</th>
 														<th id="th" width="10%"></th>
-													</tr> 
-												</thead> 
-												<tbody class="fontstyle text-center"> 
-													<?php if( isset($experience) && $experience != null) { 
+													</tr>
+												</thead>
+												<tbody class="fontstyle text-center">
+													<?php if( isset($experience) && $experience != null) {
 										              $i = 0;
 										              foreach ($experience as $key) { ?>
 										             <tr>
@@ -555,22 +516,22 @@
 										             </tr>
 										             </tr>
 										             <?php $i++; } } ?>
-												</tbody> 
+												</tbody>
 											</table>
 											<a href="javascript:void(0)" onclick="showmodel2()"><label class="floatright">Thêm kinh nghiệm <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a>
 											<br>
 											<label>Người phụ trách tham khảo</label>
-											<table   class="table table-striped table-bordered" > 
-												<thead> 
-													<tr class="fontstyle"> 
-														<th id="th" width="30%">Họ và tên</th> 
-														<th id="th" width="15%">Chức vụ</th> 
-														<th id="th" width="20%">Công ty</th> 
+											<table   class="table table-striped table-bordered" >
+												<thead>
+													<tr class="fontstyle">
+														<th id="th" width="30%">Họ và tên</th>
+														<th id="th" width="15%">Chức vụ</th>
+														<th id="th" width="20%">Công ty</th>
 														<th id="th" width="25%">Liên hệ</th>
-														<th id="th" width="10%"></th>				                  
-													</tr> 
-												</thead> 
-												<tbody class="fontstyle text-center"> 
+														<th id="th" width="10%"></th>
+													</tr>
+												</thead>
+												<tbody class="fontstyle text-center">
 													<?php if(isset($reference) && $reference != null) {
 										              $i = 0;
 										              foreach ($reference as $key) { ?>
@@ -589,7 +550,7 @@
 										               <td><i class="fa fa-edit" onclick="editmodal3('<?php echo 'click3'.$i ?>')"></i> <i class="fa fa-eraser" onclick="delmodal3('<?php echo 'click3'.$i ?>')"></i></td>
 										             </tr>
 										             <?php $i++; } } ?>
-												</tbody> 
+												</tbody>
 											</table>
 											<a href="javascript:void(0)" onclick="showmodel3()"><label class="floatright">Thêm người tham chiếu <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a>
 										</div>
@@ -606,23 +567,23 @@
 								<div class="panel panel-default border-rad0">
 									<!-- heading ho so noi bo 6-->
 									<div id="collapsetotal62" class="panel-collapse collapse in">
-										<div class="panel-body" style="border: 0px">				         
-											<table   class="table table-striped table-bordered" > 
-												<thead class="fontstyle"> 
-													<tr > 
-														<th id="th" width="20%">Từ - Đến</th> 
-														<th id="th" width="20%">Trường</th> 
-														<th id="th" width="15%">Nơi học</th> 
+										<div class="panel-body" style="border: 0px">
+											<table   class="table table-striped table-bordered" >
+												<thead class="fontstyle">
+													<tr >
+														<th id="th" width="20%">Từ - Đến</th>
+														<th id="th" width="20%">Trường</th>
+														<th id="th" width="15%">Nơi học</th>
 														<th id="th" width="20%">Ngành học</th>
 														<th id="th" width="15%">Bằng cấp</th>
 														<th id="th" width="10%"></th>
 
-													</tr> 
-												</thead> 
-												<tbody class="fontstyle text-center"> 
+													</tr>
+												</thead>
+												<tbody class="fontstyle text-center">
 													<?php if(isset($knowledge) && $knowledge != null) {
 									                $i = 0;
-									              foreach ($knowledge as $key) { 
+									              foreach ($knowledge as $key) {
 									                if($key['traintimetype'] != null)
 									                  { continue; } else {?>
 									             <tr>
@@ -644,25 +605,25 @@
 									              <td><i class="fa fa-edit" onclick="editmodal4('<?php echo 'click4'.$i ?>')"></i> <i class="fa fa-eraser" onclick="delmodal4('<?php echo 'click4'.$i ?>')"></i></td>
 									             </tr>
 									             <?php $i++; } } }?>
-												</tbody> 
+												</tbody>
 											</table>
 											<a href="javascript:void(0)" onclick="showmodel4()"><label class="floatright">Thêm học vấn <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a>
 											<!-- <label class="floatright">Thêm học vấn <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label> -->
-											<table   class="table table-striped table-bordered" > 
-												<thead class="fontstyle"> 
-													<tr> 
-														<th id="th" width="20%">Từ - Đến</th> 
-														<th id="th" width="25%">Cơ sở đạo tào</th> 
-														<th id="th" width="13%">TG học</th> 
+											<table   class="table table-striped table-bordered" >
+												<thead class="fontstyle">
+													<tr>
+														<th id="th" width="20%">Từ - Đến</th>
+														<th id="th" width="25%">Cơ sở đạo tào</th>
+														<th id="th" width="13%">TG học</th>
 														<th id="th" width="17%">Ngành học</th>
 														<th id="th" width="15%">Bằng cấp</th>
 														<th id="th" width="10%"></th>
-													</tr> 
-												</thead> 
+													</tr>
+												</thead>
 												<tbody>
 													<?php if(isset($knowledge) && $knowledge != null) {
 										               $i = 0;
-										              foreach ($knowledge as $key) { 
+										              foreach ($knowledge as $key) {
 										                if($key['traintimetype'] == null)
 										                  { continue; } else {?>
 										             <tr>
@@ -684,10 +645,10 @@
 										               <td><i class="fa fa-edit" onclick="editmodal5('<?php echo 'click5'.$i ?>')"></i> <i class="fa fa-eraser" onclick="delmodal4('<?php echo 'click5'.$i ?>')"></i></td>
 										             </tr>
 										             <?php $i++; } } } ?>
-												</tbody> 
+												</tbody>
 											</table>
 											<a href="javascript:void(0)" onclick="showmodel5()"><label class="floatright">Thêm khoá đào tạo <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a>
-											
+
 										</div>
 									</div>
 									<!-- body ho so noi bo 6-->
@@ -700,22 +661,22 @@
 							<div class="panel-group bor-mar-b0">
 								<div class="panel panel-default border-rad0">
 									<div id="collapsetotal72" class="panel-collapse collapse in">
-										<div class="panel-body" style="border: 0px">				         
-											<table   class="table table-striped table-bordered" > 
-												<thead class="fontstyle"> 
-													<tr> 
-														<th id="th" >Ngoại Ngữ</th> 
-														<th id="th" >Nghe</th> 
-														<th id="th" >Nói</th> 
+										<div class="panel-body" style="border: 0px">
+											<table   class="table table-striped table-bordered" >
+												<thead class="fontstyle">
+													<tr>
+														<th id="th" >Ngoại Ngữ</th>
+														<th id="th" >Nghe</th>
+														<th id="th" >Nói</th>
 														<th id="th" >Đọc</th>
 														<th id="th" >Viết</th>
 														<th id="th" ></th>
-													</tr> 
-												</thead> 
-												<tbody class="fontstyle text-center"> 
+													</tr>
+												</thead>
+												<tbody class="fontstyle text-center">
 													<?php if(isset($language) && $language != null) {
 										              $i = 0;
-										              foreach ($language as $key) { 
+										              foreach ($language as $key) {
 										                ?>
 										             <tr>
 										              <form id="<?php echo 'click6'.$i ?>">
@@ -724,7 +685,7 @@
 										                <input type="hidden" name="rate2" value="<?php echo $key['rate2']?>">
 										                <input type="hidden" name="rate3" value="<?php echo $key['rate3']?>">
 										                <input type="hidden" name="rate4" value="<?php echo $key['rate4']?>">
-										                
+
 										                <input type="hidden" name="recordid" value="<?php echo $key['recordid']?>">
 										              </form>
 										              <td><?php echo $key['language']?></td>
@@ -735,10 +696,10 @@
 										              <td><i class="fa fa-edit" onclick="editmodal6('<?php echo 'click6'.$i ?>')"></i> <i class="fa fa-eraser" onclick="delmodal6('<?php echo 'click6'.$i ?>')"></i></td>
 										             </tr>
 										             <?php $i++; } } ?>
-												</tbody> 
+												</tbody>
 											</table>
 											<a href="javascript:void(0)" onclick="showmodel6()"><label class="floatright">Thêm ngoại ngữ <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a>
-											
+
 										</div>
 									</div>
 									<!-- body ho so noi bo 7-->
@@ -751,19 +712,19 @@
 							<div class="panel-group bor-mar-b0">
 								<div class="panel panel-default border-rad0">
 									<div id="collapsetotal82" class="panel-collapse collapse in">
-										<div class="panel-body" style="border: 0px">				         
-											<table   class="table table-striped table-bordered" > 
-												<thead class="fontstyle"> 
-													<tr> 
-														<th id="th" width="60%">Phần mềm</th> 
+										<div class="panel-body" style="border: 0px">
+											<table   class="table table-striped table-bordered" >
+												<thead class="fontstyle">
+													<tr>
+														<th id="th" width="60%">Phần mềm</th>
 														<th id="th" width="30%">Trình độ</th>
 														<th id="th" width="10%"></th>
-													</tr> 
-												</thead> 
-												<tbody class="fontstyle text-center"> 
+													</tr>
+												</thead>
+												<tbody class="fontstyle text-center">
 													<?php if(isset($software) && $software != null) {
 										              $i = 0;
-										              foreach ($software as $key) { 
+										              foreach ($software as $key) {
 										                ?>
 										             <tr>
 										              <form id="<?php echo 'click7'.$i ?>">
@@ -777,10 +738,10 @@
 										              <td><i class="fa fa-edit" onclick="editmodal7('<?php echo 'click7'.$i ?>')"></i> <i class="fa fa-eraser" onclick="delmodal7('<?php echo 'click7'.$i ?>')"></i></td>
 										             </tr>
 										             <?php $i++; } } ?>
-												</tbody> 
+												</tbody>
 											</table>
 											<a href="javascript:void(0)" onclick="showmodel7()"><label class="floatright">Thêm tin học <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a>
-											
+
 										</div>
 									</div>
 									<!-- body ho so noi bo 8-->
@@ -818,7 +779,7 @@
       			</div>
       			<div class="modal-footer">
         			<button type="button" class="btn btnlong btn88"  data-dismiss="modal">Close</button>
-        			<input type="button" class="btn btnlong btn99 b-blue" id="luu_1" value="Lưu">  
+        			<input type="button" class="btn btnlong btn99 b-blue" id="luu_1" value="Lưu">
       			</div>
     		</form>
    		</div>
@@ -830,33 +791,33 @@
     <div class="modal-content" style="padding: 20px;">
       <form action="<?php echo base_url()?>admin/handling/insert_relationship" method="post" id="form_can_3">
       <h3 class="title-modal margin-bot-15">Thêm người thân</h3>
-           
+
           <input type="hidden" name="checkup" id="checkup" value="0">
             <div class="form-group row padding-left-right-20 margin-bot-15" >
             <label for="staticEmail"  class="col-sm-4 col-form-label fontstyle">Họ và tên</label>
             <div class="col-sm-8">
-           
+
               <input class="fontstyle width100" type="text"  placeholder="" name="hoten" id="hoten11">
             </div>
           </div>
            <div class="form-group row padding-left-right-20 margin-bot-15" >
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Năm sinh</label>
             <div class="col-sm-8">
-           
+
               <select class="form-control height31" style="font-size: 14px" name="namsinh" id="namsinh11">
                  <option value="0">Chọn năm sinh</option>
                 <?php
-                   $date = getdate(); 
+                   $date = getdate();
                  for($i = $date['year']; $i > 1940; $i--) { ?>
                   <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-                <?php } ?>  
+                <?php } ?>
                 </select>
             </div>
           </div>
           <div class="form-group row padding-left-right-20 margin-bot-15" >
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Quan hệ</label>
             <div class="col-sm-8">
-           
+
              <select class="form-control height31" style="font-size: 14px" name="quanhe" id="quanhe11">
                   <option value="0">Chọn quan hệ</option>
                   <option value="Cha">Cha</option>
@@ -877,9 +838,9 @@
           <div class="form-group row padding-left-right-20 margin-bot-15" >
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Nghề nghiệp</label>
             <div class="col-sm-8">
-           
+
               <input class="width100 fontstyle" type="text"  placeholder="" name="nghenghiep" id="nn11">
-              
+
             </div>
           </div>
           	<input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" id="candidateid_3">
@@ -908,46 +869,46 @@
           </div>
             <div class="form-group row padding-left-right-20 margin-bot-12" >
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Tên công ty</label>
-            <div class="col-sm-6">
-           
+            <div class="col-sm-8">
+
               <input class="form-control fontstyle" type="text"  placeholder="" name="tencty" id="cty2">
             </div>
           </div>
            <div class="form-group row padding-left-right-20 margin-bot-15" >
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Địa chỉ</label>
             <div class="col-sm-8">
-           
+
               <textarea class="form-control off-resize fontstyle" rows="2" name="diachi" id="dc2"></textarea>
             </div>
           </div>
           <div class="form-group row padding-left-right-20 margin-bot-15" >
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Số điện thoại</label>
             <div class="col-sm-8">
-           
+
               <input class="form-control fontstyle" type="text"  maxlength="12" name="sdt" id="sdt2" >
             </div>
           </div>
           <div class="form-group row padding-left-right-20 margin-bot-12" >
             <label for="staticEmail" class="col-sm-4 padding-right2 fontstyle">Chức vụ khi nghỉ</label>
-            <div class="col-sm-6">
-           
+            <div class="col-sm-8">
+
               <input class="form-control fontstyle" type="text"  placeholder="" name="chucvukhinghi" id="chucvu2">
             </div>
           </div>
           <div class="form-group row padding-left-right-20 margin-bot-12" >
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle"> Nhiệm vụ/ Trách nhiệm </label>
-            <div class="col-sm-6">
-           
-              <input class="form-control fontstyle" type="text"  placeholder="" name="nhiemvu" id="nhiemvu2">
-              
+            <div class="col-sm-8">
+                <textarea class="form-control off-resize fontstyle" rows="3" name="nhiemvu" id="nhiemvu2" ></textarea>
+              <!-- <input class="form-control fontstyle" type="text"  placeholder="" name="nhiemvu" id="nhiemvu2"> -->
+
             </div>
           </div>
           <div class="form-group row padding-left-right-20 margin-bot-12" >
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Lý do nghỉ</label>
-            <div class="col-sm-6">
-           
+            <div class="col-sm-8">
+
               <input class="form-control fontstyle" type="text"  placeholder="" name="lydonghi" id="lydonghi2">
-              
+
             </div>
           </div>
           <input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" id="candidateid_4">
@@ -962,7 +923,7 @@
     <div class="modal-content" style="padding: 20px;">
       <form action="<?php echo base_url()?>admin/handling/insert_reference" method="post" id="form_can_5">
       <h3 class="title-modal margin-bot-15">Thêm người tham khảo</h3>
-           
+
           <input type="hidden" name="checkup" id="checkup3" value="0">
             <div class="form-group row padding-left-right-20" >
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Họ và tên</label>
@@ -973,14 +934,14 @@
            <div class="form-group row padding-left-right-20" >
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Chức vụ</label>
             <div class="col-sm-8">
-           
+
               <input class="form-control fontstyle" type="text"  placeholder="" name="chucvu" id="chucvu3">
             </div>
           </div>
           <div class="form-group row padding-left-right-20" >
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Công ty</label>
             <div class="col-sm-8">
-           
+
               <input class="form-control fontstyle" type="text"  placeholder="" name="congty" id="congty3">
             </div>
           </div>
@@ -1017,28 +978,28 @@
             <div class="form-group row padding-left-right-20" >
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Tên trường</label>
             <div class="col-sm-6">
-           
+
               <input class="form-control fontstyle" type="text"  placeholder="" name="tentruong" id="truong4">
             </div>
           </div>
            <div class="form-group row padding-left-right-20" >
             <label for="staticEmail fontstyle" class="col-sm-4 col-form-label">Nơi học</label>
             <div class="col-sm-6">
-           
+
               <input class="form-control fontstyle" type="text"  placeholder="" name="noihoc" id="noihoc4">
             </div>
           </div>
           <div class="form-group row padding-left-right-20" >
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Ngành học</label>
             <div class="col-sm-6">
-           
+
               <input class="form-control fontstyle" type="text"  placeholder="" name="nganhhoc" id="nganhhoc4">
             </div>
           </div>
           <div class="form-group row padding-left-right-20" >
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Bằng cấp/ trình độ</label>
             <div class="col-sm-6">
-           
+
               <input class="form-control fontstyle" type="text"  placeholder="" name="trinhdo" id="trinhdo4">
               <label class="radio-inline fontstyle">
                 <input type="radio"  name="caonhat" id="caonhat4" value="Y"> Bằng cao nhất của bạn (*)
@@ -1048,7 +1009,7 @@
           <input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" id="candidateid_6">
            <button type="button" class="btn them-modal" id="them4"> Thêm</button>
          </form>
-      
+
     </div>
   </div>
 </div>
@@ -1073,7 +1034,7 @@
             <div class="form-group row padding-left-right-20 margin-bot-2">
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Tên cơ sở đào tạo</label>
             <div class="col-sm-6">
-           
+
               <input class="form-control fontstyle" type="text"  placeholder="" name="cs_daotao" id="truong5" >
             </div>
           </div>
@@ -1089,7 +1050,7 @@
                   <option value="Năm" selected>Năm</option>
                   <option value="Tháng">Tháng</option>
                   <option value="Ngày">Ngày</option>
-                  
+
                 </select></div>
               </div>
             </div>
@@ -1097,20 +1058,20 @@
           <div class="form-group row padding-left-right-20">
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Ngành học</label>
             <div class="col-sm-6">
-           
+
               <input class="form-control fontstyle" type="text"  placeholder="" name="nganhhoc" id="nganhhoc5">
             </div>
           </div>
           <div class="form-group row padding-left-right-20">
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Bằng cấp/ chứng chỉ</label>
             <div class="col-sm-6">
-           
+
               <input class="form-control fontstyle  " type="text"  placeholder="" name="bangcap" id="bangcap5">
             </div>
           </div>
           <input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" id="candidateid_7">
            <button type="button" class="btn them-modal" id="them5"> Thêm</button>
-         
+
       </form>
     </div>
   </div>
@@ -1126,14 +1087,14 @@
           <div class="form-group row padding-left-right-20 margin-bot-12">
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Ngoại ngữ</label>
             <div class="col-sm-8">
-           
+
               <input class="form-control fontstyle" type="text"  placeholder="" name="tentruong" id="truong6">
             </div>
           </div>
             <div class="form-group row padding-left-right-20 margin-bot-12">
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Nghe</label>
             <div class="col-sm-6">
-           
+
               <select class="form-control height31 fontstyle" name="nghe" id="nghe6">
                   <option value="0">Chọn...</option>
                   <option value="Giỏi">Giỏi</option>
@@ -1146,7 +1107,7 @@
           <div class="form-group row padding-left-right-20 margin-bot-12">
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Nói</label>
             <div class="col-sm-6">
-           
+
               <select class="form-control height31 fontstyle" name="noi" id="noi6">
                   <option value="0">Chọn...</option>
                   <option value="Giỏi">Giỏi</option>
@@ -1159,7 +1120,7 @@
           <div class="form-group row padding-left-right-20 margin-bot-12">
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Đọc</label>
             <div class="col-sm-6">
-           
+
               <select class="form-control height31 fontstyle" name="doc" id="doc6">
                  <option value="0">Chọn...</option>
                   <option value="Giỏi">Giỏi</option>
@@ -1172,7 +1133,7 @@
           <div class="form-group row padding-left-right-20 margin-bot-12">
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Viết</label>
             <div class="col-sm-6">
-           
+
               <select class="form-control height31 fontstyle" name="viet" id="viet6">
                   <option value="0">Chọn...</option>
                   <option value="Giỏi">Giỏi</option>
@@ -1198,14 +1159,14 @@
           <div class="form-group row padding-left-right-20">
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Kiến thức/ Phần mềm</label>
             <div class="col-sm-8">
-           
+
               <textarea class="form-control off-resize fontstyle" rows="2" name="phanmem" id="pm7"></textarea>
             </div>
           </div>
             <div class="form-group row padding-left-right-20">
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Trình độ</label>
             <div class="col-sm-6">
-           
+
               <select class="form-control height31 fontstyle" name="trinhdo" id="trinhdo7">
                <option value="0">Chọn...</option>
                   <option value="Giỏi">Giỏi</option>
@@ -1227,7 +1188,7 @@
   <div class="modal-dialog width-50" role="document">
     <div class="modal-content">
       <form action="<?php echo base_url()?>admin/handling/del_relationship" method="POST" enctype="multipart/form-data" id="form_can_8">
-      <input type="hidden" name="checkup" id="checkup1d" value="0"> 
+      <input type="hidden" name="checkup" id="checkup1d" value="0">
       <input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" >
       <strong class="title-anhdaidien fontbig" style="margin-left: 25%;">Thông báo</strong>
       <br>
@@ -1245,7 +1206,7 @@
   <div class="modal-dialog width-50" role="document">
     <div class="modal-content">
       <form action="<?php echo base_url()?>admin/handling/del_experience" method="POST" enctype="multipart/form-data">
-      <input type="hidden" name="checkup" id="checkup2d" value="0">     
+      <input type="hidden" name="checkup" id="checkup2d" value="0">
       <input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" >
          <strong class="title-anhdaidien fontbig" style="margin-left: 25%;">Thông báo</strong>
       <br>
@@ -1264,7 +1225,7 @@
     <div class="modal-content">
       <form action="<?php echo base_url()?>admin/handling/del_reference" method="POST" enctype="multipart/form-data">
       <input type="hidden" name="checkup" id="checkup3d" value="0">
-      <input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" >     
+      <input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" >
          <strong class="title-anhdaidien fontbig" style="margin-left: 25%;">Thông báo</strong>
       <br>
           <label for="staticEmail"  style="margin-left: 40px">Bạn có muốn xóa thông tin này không?</label>
@@ -1281,8 +1242,8 @@
   <div class="modal-dialog width-50" role="document">
     <div class="modal-content">
       <form action="<?php echo base_url()?>admin/handling/del_knowledge" method="POST" enctype="multipart/form-data">
-      <input type="hidden" name="checkup" id="checkup4d" value="0"> 
-      <input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" >    
+      <input type="hidden" name="checkup" id="checkup4d" value="0">
+      <input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" >
          <strong class="title-anhdaidien fontbig" style="margin-left: 25%;">Thông báo</strong>
       <br>
           <label for="staticEmail"  style="margin-left: 40px">Bạn có muốn xóa thông tin này không?</label>
@@ -1299,8 +1260,8 @@
   <div class="modal-dialog width-50" role="document">
     <div class="modal-content">
       <form action="<?php echo base_url()?>admin/handling/del_language" method="POST" enctype="multipart/form-data">
-      <input type="hidden" name="checkup" id="checkup6d" value="0"> 
-      <input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" >    
+      <input type="hidden" name="checkup" id="checkup6d" value="0">
+      <input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" >
          <strong class="title-anhdaidien fontbig" style="margin-left: 25%;">Thông báo</strong>
       <br>
           <label for="staticEmail"  style="margin-left: 40px">Bạn có muốn xóa thông tin này không?</label>
@@ -1317,8 +1278,8 @@
   <div class="modal-dialog width-50" role="document">
     <div class="modal-content">
       <form action="<?php echo base_url()?>admin/handling/del_software" method="POST" enctype="multipart/form-data">
-      <input type="hidden" name="checkup" id="checkup7d" value="0">   
-      <input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" >  
+      <input type="hidden" name="checkup" id="checkup7d" value="0">
+      <input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : '' ?>" >
          <strong class="title-anhdaidien fontbig" style="margin-left: 25%;">Thông báo</strong>
       <br>
           <label for="staticEmail"  style="margin-left: 40px">Bạn có muốn xóa thông tin này không?</label>
@@ -1495,24 +1456,24 @@
             $("#label1").text(fileName);
             $("#label1").attr('href','#');
         });
-    });  
-    
+    });
+
 	function parseQuery(queryString) {
 	    var query = {};
 	    var pairs = (queryString[0] === '?' ? queryString.substr(1) : queryString).split('&');
 	    for (var i = 0; i < pairs.length; i++) {
 	        var pair = pairs[i].split('=');
-	        
+
 	        query[decodeURIComponent(pair[0].replace(/\+/g, '%20'))] = decodeURIComponent(pair[1].replace(/\+/g, '%20') || '');
 	    }
 	    return query;
 	}
 
     function editmodal(idform){
-      var data = ""; 
+      var data = "";
       data = $("#"+idform+"").serialize();
       var data2 = parseQuery(data);
-      
+
       $('#them11').text("Lưu");
       $('#myModal11').modal('show');
       $('#hoten11').val(data2.hoten);
@@ -1523,7 +1484,7 @@
 	}
 	function showmodel11(){
 	    $('#them11').text("Thêm");
-	   
+
 	    $('#myModal11').modal('show');
 	    $('#hoten11').val("");
 	    $('#nn11').val("");
@@ -1532,19 +1493,19 @@
 	    $('#quanhe11').val("0");
   	}
   	function delmodal(idform){
-	    var data = ""; 
+	    var data = "";
 	    data = $("#"+idform+"").serialize();
 	    var data2 = parseQuery(data);
 	    $('#myModaldel').modal('show');
 	    $('#checkup1d').val(data2.recordid);
 	}
 
-	// them xoa sua kinh nghiem lam việc 
+	// them xoa sua kinh nghiem lam việc
 	  function editmodal2(idform){
-	      var data = ""; 
+	      var data = "";
 	      data = $("#"+idform+"").serialize();
 	      var data2 = parseQuery(data);
-	      
+
 	      $('#them12').text("Lưu");
 	      $('#myModal2').modal('show');
 	      $('#tuden5').val(data2.tungay);
@@ -1558,9 +1519,9 @@
 	       $('#sdt2').val(data2.sdt);
 	  }
 	  function showmodel2(){
-	  
+
 	      $('#them12').text("Thêm");
-	     
+
 	      $('#myModal2').modal('show');
 	       $('#tuden5').val("");
 	      $('#tuden6').val("");
@@ -1573,20 +1534,20 @@
 	       $('#sdt2').val("");
 	  }
 	  function delmodal2(idform){
-	      var data = ""; 
+	      var data = "";
 	      data = $("#"+idform+"").serialize();
 	      var data2 = parseQuery(data);
 	      $('#myModaldel2').modal('show');
 	      $('#checkup2d').val(data2.recordid);
-	      
+
 	  }
 
 	// them xoa sua nguoi tham chieu
 	  function editmodal3(idform){
-	      var data = ""; 
+	      var data = "";
 	      data = $("#"+idform+"").serialize();
 	      var data2 = parseQuery(data);
-	      
+
 	      $('#them3').text("Lưu");
 	      $('#myModal3').modal('show');
 	     $('#hoten3').val(data2.hoten);
@@ -1596,9 +1557,9 @@
 	       $('#lienhe3').val(data2.lienhe);
 	  }
 	  function showmodel3(){
-	  
+
 	      $('#them3').text("Thêm");
-	     
+
 	      $('#myModal3').modal('show');
 	       $('#hoten3').val("");
 	      $('#chucvu3').val("");
@@ -1606,22 +1567,22 @@
 	      $('#congty3').val("");
 	       $('#lienhe3').val("");
 	  }
-	      
+
 	  function delmodal3(idform){
-	      var data = ""; 
+	      var data = "";
 	      data = $("#"+idform+"").serialize();
 	      var data2 = parseQuery(data);
 	      $('#myModaldel3').modal('show');
 	      $('#checkup3d').val(data2.recordid);
-	      
+
 	  }
 
 	  // them xoa sua trinh do hoc van
    function editmodal4(idform){
-      var data = ""; 
+      var data = "";
       data = $("#"+idform+"").serialize();
       var data2 = parseQuery(data);
-      
+
       $('#them4').text("Lưu");
       $('#myModal4').modal('show');
        $('#tuden1').val(data2.tu);
@@ -1638,9 +1599,9 @@
         }
   }
   function showmodel4(){
-  
+
       $('#them4').text("Thêm");
-     
+
       $('#myModal4').modal('show');
        $('#tuden1').val("");
       $('#tuden2').val("");
@@ -1651,20 +1612,20 @@
        $('#trinhdo4').val("");
        $('#caonhat4').prop('checked',false);
   }
-      
+
   function delmodal4(idform){
-      var data = ""; 
+      var data = "";
       data = $("#"+idform+"").serialize();
       var data2 = parseQuery(data);
       $('#myModaldel4').modal('show');
       $('#checkup4d').val(data2.recordid);
-      
+
   }
    function editmodal5(idform){
-      var data = ""; 
+      var data = "";
       data = $("#"+idform+"").serialize();
       var data2 = parseQuery(data);
-      
+
       $('#them5').text("Lưu");
       $('#myModal5').modal('show');
        $('#tuden3').val(data2.tu);
@@ -1675,12 +1636,12 @@
        $('#donvi5').val(data2.donvi);
        $('#nganhhoc5').val(data2.nganhhoc);
        $('#bangcap5').val(data2.chungchi);
-       
+
   }
   function showmodel5(){
-  
+
       $('#them5').text("Thêm");
-     
+
       $('#myModal5').modal('show');
        $('#tuden3').val("");
       $('#tuden4').val("");
@@ -1690,16 +1651,16 @@
        $('#donvi5').val("Năm");
        $('#nganhhoc5').val("");
        $('#bangcap5').val("");
-       
+
   }
   // them xoa sua ngoai ngu
   function editmodal6(idform){
-      var data = ""; 
+      var data = "";
       data = $("#"+idform+"").serialize();
       var data2 = parseQuery(data);
-      
+
       $('#them6').text("Lưu");
-     
+
       $('#myModal6').modal('show');
       $('#truong6').val(data2.ngonngu);
       $('#checkup6').val(data2.recordid);
@@ -1709,9 +1670,9 @@
       $('#viet6').val(data2.rate4);
   }
   function showmodel6(){
-  
+
       $('#them6').text("Thêm");
-     
+
       $('#myModal6').modal('show');
       $('#truong6').val("");
       $('#checkup6').val("0");
@@ -1719,47 +1680,47 @@
       $('#noi6').val("0");
       $('#doc6').val("0");
       $('#viet6').val("0");
-      
+
   }
   function delmodal6(idform){
-      var data = ""; 
+      var data = "";
       data = $("#"+idform+"").serialize();
       var data2 = parseQuery(data);
       $('#myModaldel6').modal('show');
-     
+
       $('#checkup6d').val(data2.recordid);
-      
+
   }
   //them xoa sua pm
    function editmodal7(idform){
-      var data = ""; 
+      var data = "";
       data = $("#"+idform+"").serialize();
       var data2 = parseQuery(data);
-      
+
       $('#them7').text("Lưu");
-     
+
       $('#myModal7').modal('show');
       $('#pm7').val(data2.pm);
       $('#checkup7').val(data2.recordid);
-      
+
       $('#trinhdo7').val(data2.rate1);
-      
+
   }
   function showmodel7(){
-  
+
       $('#them7').text("Thêm");
-     
+
       $('#myModal7').modal('show');
       $('#pm7').val("");
       $('#trinhdo7').val("0");
       $('#checkup7').val("0");
   }
   function delmodal7(idform){
-      var data = ""; 
+      var data = "";
       data = $("#"+idform+"").serialize();
       var data2 = parseQuery(data);
       $('#myModaldel7').modal('show');
-      $('#checkup7d').val(data2.recordid);   
+      $('#checkup7d').val(data2.recordid);
   }
 
   	$('#new_country1 option[value="'+$("#countryPREMANENT").val()+'"]').prop('selected','selected');
@@ -1819,7 +1780,7 @@
                   else
                   {
                     $('#chonqh-ad1').after('<option class="gicungdc" value="'+data[i].id_district+'">'+data[i].name+'</option>');
-                  } 
+                  }
                   }
 		})
 		.fail(function() {
@@ -1875,7 +1836,7 @@
                   else
                   {
                     $('#chonqh-ad2').after('<option class="gicungdc3" value="'+data[i].id_district+'">'+data[i].name+'</option>');
-                  } 
+                  }
                   }
 		})
 		.fail(function() {
@@ -1913,7 +1874,7 @@
 
 	function talent_detail(obj)
 	{
-		var id = obj; 
+		var id = obj;
 		$.ajax({
 			url: '<?php echo base_url()?>admin/handling/talent/'+id,
 			type: 'POST',
@@ -1925,21 +1886,21 @@
 			$('#iconstar_profile').removeClass('color-orange');
 			var t = '';
 			parent.$('#talent'+data[0]).empty();
-			
+
 			if(id == 0)
 			{
 				$('#iconstar_profile').addClass('color-gray');
-				$('#textstar_profile').text('');	
+				$('#textstar_profile').text('');
 				t = '<span class="fa-stack fa-1x"> <i class="fa fa-star color-gray fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9" ></span></span> ';
-			} 
+			}
 			else
 			{
 				$('#iconstar_profile').addClass('color-orange');
-				$('#textstar_profile').text(id);	
+				$('#textstar_profile').text(id);
 				t =	'<span class="fa-stack fa-1x"> <i class="fa fa-star color-orange fa-stack-2x nohover size18" ></i><span class="fa fa-stack-1x color-white size9">'+id+'</span></span> ';
-			}		
-			parent.$('#talent'+data[0]).append(t);		
-			
+			}
+			parent.$('#talent'+data[0]).append(t);
+
 		})
 		.fail(function() {
 			console.log("error");
@@ -1958,18 +1919,18 @@
 		})
 		.done(function(data) {
 			$('#checkchange').empty();
-			var t = ''; 
+			var t = '';
 			parent.$('#block'+data[0]).empty();
 			if(id == 'Y')
-			{ 
+			{
 				t ='<i class="fa fa-ban color-red size-icon" ></i>';
 				parent.$('#block'+data[0]).append('<i class="fa fa-ban color-red " ></i>');
 				parent.$('#ds'+data[0]).removeClass('col-md-4');
-				parent.$('#ds'+data[0]).addClass('col-md-3');	
+				parent.$('#ds'+data[0]).addClass('col-md-3');
 			}
-			else 
+			else
 			{
-				t = '<i class="fa fa-check-circle-o color-green size-icon"></i> ';	
+				t = '<i class="fa fa-check-circle-o color-green size-icon"></i> ';
 				parent.$('#ds'+data[0]).removeClass('col-md-3');
 				parent.$('#ds'+data[0]).addClass('col-md-4');
 			}
@@ -1982,7 +1943,7 @@
 	}
 
 	$('#btn_newProfile').on( "click", function() {
-		
+
 		if ($('#lastname').val() == "") { alert('Vui lòng nhập Họ tên đầy đủ!'); }
 		else if ($('#firstname').val() == "") { alert('Vui lòng nhập Họ tên đầy đủ!'); }
 		else if ($('#phone1').val() == 0 && $('#phone2').val() == 0) { alert('Vui lòng nhập số điện thoại!'); }
@@ -1991,7 +1952,7 @@
 			$('#btn_newProfile').prop('disabled', true);
 	  		$('#form_newProfile').submit();
 		}
-	  		
+
 	});
 
 	var substringMatcher = function(strs) {
@@ -2025,16 +1986,16 @@
 	    freeInput: true,
 	});
 
-	$('#typeahead').on('itemAdded', function(event) { 
+	$('#typeahead').on('itemAdded', function(event) {
 	 $('#typeahead').tagsinput('focus');
 	  $('#tags').val($('#typeahead').val());
 
 	});
 
-	  
+
 	$('#typeahead').on('itemRemoved', function(event) {
 	  $('#tags').val($('#typeahead').val());
-	});	
+	});
 
 	$(document).on('click', '.so', function(e) {
     if ($(this).val() == '') {
@@ -2042,10 +2003,10 @@
         }
     $(this).number( true );
     }).on('keypress', '.so',function(e){
-       
+
         if(!$.isNumeric(String.fromCharCode(e.which))) e.preventDefault();
-    }).on('paste', '.so', function(e){    
-        var cb = e.originalEvent.clipboardData || window.clipboardData;      
+    }).on('paste', '.so', function(e){
+        var cb = e.originalEvent.clipboardData || window.clipboardData;
         if(!$.isNumeric(cb.getData('text'))) e.preventDefault();
     });
     $("input[id='tghoc5']").on('input', function (e) {

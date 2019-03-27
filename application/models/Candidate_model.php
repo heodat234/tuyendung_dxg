@@ -1,14 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Candidate_model extends CI_Model{
-	
-	/* Gán tên bảng cần xử lý*/
-	private $table = 'operator';
-	// 
-	function __construct(){
+
+    /* Gán tên bảng cần xử lý*/
+    private $table = 'operator';
+    //
+    function __construct(){
         parent::__construct();
         $this->load->database();
         $this->primaryKey = 'id';
-    } 
+    }
     public function countTableById($table,$id)
     {
         $this->db->select()->where('candidateid', $id);
@@ -18,7 +18,7 @@ class Candidate_model extends CI_Model{
             return true;
         }else{ return false;}
     }
-    
+
     public function selectTableById($table,$id)
     {
         $this->db->select()->where('candidateid', $id);
@@ -60,7 +60,7 @@ class Candidate_model extends CI_Model{
         $this->db->order_by("candidateid", "desc");
         $this->db->limit(1);
         $this->db->from('candidate');
-        return $this->db->get()->row_array(); 
+        return $this->db->get()->row_array();
     }
      public function selectall($table)
     {
@@ -98,7 +98,7 @@ class Candidate_model extends CI_Model{
     public function select_sql($sql='')
     {
         $query = $this->db->query($sql);
-        
+
             if (!$query) {
                 return $this->db->error();
             }else{
@@ -119,7 +119,7 @@ class Candidate_model extends CI_Model{
         $this->db->where('tagtransaction.tablename','candidate');
         $this->db->where('tagtransaction.categoryid','position');
         $this->db->where('tagtransaction.recordid',$id);
-        return $this->db->get()->result_array();  
+        return $this->db->get()->result_array();
     }
     public function select_sugg_tag($select,$where)
     {

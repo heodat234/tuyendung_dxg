@@ -396,7 +396,7 @@
 								      			<div class="col-xs-4">
 
 								      				<div class="avatar">
-								      					<img src="<?php echo base_url() ?>image/bbye.jpg" alt=" " width="100" height="100">
+								      					<img src="<?php echo base_url() ?>public/image/bbye.jpg" alt=" " width="100" height="100">
 								      				</div>
 								      				
 								      				<a href="#"></a>
@@ -409,7 +409,7 @@
 								      			<div class="col-xs-4">
 
 								      				<div class="profile">
-								      					<img src="<?php echo base_url() ?>image/bbye.jpg" alt=" " width="100" height="100">
+								      					<img src="<?php echo base_url() ?>public/image/bbye.jpg" alt=" " width="100" height="100">
 								      				</div>
 								      				
 								      				<a href="#"></a>

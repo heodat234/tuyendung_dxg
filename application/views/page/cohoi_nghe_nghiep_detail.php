@@ -3,7 +3,7 @@
     <div class="full">
         <div class="justify">
             <div class="row">
-                <div class="col-lg-7">
+                <div class="col-lg-12">
                     <?php echo isset($recruite[0]['body'])? $recruite[0]['body']: '' ?>
                 </div>
             </div>

@@ -8,7 +8,7 @@ class Email extends CI_Controller {
 		$config['upload_path'] = './uploads/';
 	    $config['allowed_types'] = 'gif|jpg|png';
 	    $config['remove_spaces'] = true;
-	    $config['file_ext_tolower'] = true;    
+	    $config['file_ext_tolower'] = true;
 	    $this->load->library('upload', $config);
 		$this->load->helper(array('url','my_helper','file'));
 		$this->load->library('session');
@@ -21,7 +21,7 @@ class Email extends CI_Controller {
 	    $this->data['footer'] 		= $this->load->view('admin/home/footer',null,true);
 
 	    $this->seg = 1;
-	    $this->sess  = $this->session->userdata('user_admin');  
+	    $this->sess  = $this->session->userdata('user_admin');
 
 	}
 	public function index()
@@ -35,7 +35,7 @@ class Email extends CI_Controller {
 		}else{
 			$this->data['temp'] = $this->load->view('admin/email/index',$data,true);
 		}
-		
+
 		$this->load->view('admin/home/master',$this->data);
 	}
 	public function detail($value='')
@@ -56,7 +56,7 @@ class Email extends CI_Controller {
 		$data['dataEmail'] = $this->Data_model->selectTable('mailprofile',$arrayName);
 		$data['group'] = $value;
 		$data['emailsession']   = $this->session->userdata('user_admin')['email'];
-		
+
 		$this->data['temp'] = $this->load->view('admin/email/detail',$data,true);
 
 		$this->load->view('admin/home/master',$this->data);
@@ -67,7 +67,7 @@ class Email extends CI_Controller {
         $config = array(
             'upload_path'   => $path,
             'allowed_types' => '*',
-            'overwrite'     => FALSE,                       
+            'overwrite'     => FALSE,
         );
 
         $this->load->library('upload', $config);
@@ -176,8 +176,8 @@ class Email extends CI_Controller {
 				$body 				= $mailtemplate[0]['prebody'];
 				$mail["attachment"] = $mailtemplate[0]['preattach'];
 				$presender 			= $mailtemplate[0]['presender'];
-				// $mail["cc"] 		= $mailtemplate[0]['cc'];
-				// $mail["bcc"] 		= $mailtemplate[0]['bcc'];
+				$mail["cc"] 		= '';
+				$mail["bcc"] 		= '';
 			}else{
 				$subject			= $body = $mail["attachment"] = $mail["cc"] = $mail["bcc"] = $presender = '';
 			}
@@ -239,8 +239,8 @@ class Email extends CI_Controller {
 					$body 				= $mailtemplate[0]['prebody'];
 					$mail["attachment"] = $mailtemplate[0]['preattach'];
 					$presender 			= $mailtemplate[0]['presender'];
-					// $mail["cc"] 		= $mailtemplate[0]['cc'];
-					// $mail["bcc"] 		= $mailtemplate[0]['bcc'];
+					$mail["cc"] 		= '';
+					$mail["bcc"] 		= '';
 				}else{
 					$subject			= $body = $mail["attachment"] = $mail["cc"] = $mail["bcc"] = $presender = '';
 				}
@@ -284,139 +284,11 @@ class Email extends CI_Controller {
 		}else{
 			echo 'Sai user hoặc password';
 		}
-		
+
 	}
-	//mail nhắc nhở interviewer
-	// public function sendMailInterviewer()
-	// {
-	// 	$day 				= date('Y-m-d');
-	// 	$cenvertedTime 		= date('Y-m-d H:i:s',strtotime('-1 day',strtotime($day)));
-	// 	// $match 				= array('intdate' => $cenvertedTime);
-	// 	$sql = "select a.interviewid,c.name,b.position from interview a LEFT join reccampaign b on a.campaignid = b.campaignid LEFT join candidate c on a.candidateid = c.candidateid where a.intdate = '$cenvertedTime'";
-	// 	$interview 			= $this->Campaign_model->select_sql($sql);
-	// 	// var_dump($interview);exit;
-	// 	foreach ($interview as $int) {
-	// 		$interviewid 	= $int['interviewid'];
-	// 		$position 		= $int['position'];
-	// 		$candidate 		= $int['name'];
-	// 		$sql1 = "select b.operatorname,b.email from interviewer a LEFT join operator b on a.interviewer = b.operatorid where a.interviewid = '$interviewid'";
-	// 		$interviewer 			= $this->Campaign_model->select_sql($sql1);
-
-	// 		$mail = array();
-	// 		$mailtemplate = $this->Mail_model->select('mailprofile',array('mailprofileid' => 5));
-	// 		// var_dump($interviewer);exit;
-	// 		if(isset($mailtemplate[0])){
-	// 			$subject 			= $mailtemplate[0]['presubject'];
-	// 			$body 				= $mailtemplate[0]['prebody'];
-	// 			$mail["attachment"] = $mailtemplate[0]['preattach'];
-	// 			$presender 			= $mailtemplate[0]['presender'];
-	// 			// $mail["cc"] 		= $mailtemplate[0]['cc'];
-	// 			// $mail["bcc"] 		= $mailtemplate[0]['bcc'];
-	// 		}else{
-	// 			$subject			= $body = $mail["attachment"] = $mail["cc"] = $mail["bcc"] = $presender = '';
-	// 		}
-	// 		if ($presender != 'usersession') {
-	// 			$arrayName1 = array('operatorname' => 'mailsystem' );
-	// 			$mailSystem = $this->Mail_model->select('operator',$arrayName1);
-	// 			if ($mailSystem[0]['mcssl'] == '1') {
-	//         		$mail['mcsmtp']	= 'ssl://'.$mailSystem[0]['mcsmtp'];
-	//         	}else{
-	//         		$mail['mcsmtp']	= $mailSystem[0]['mcsmtp'];
-	//         	}
-	//         	$mail['mcuser']	= $mailSystem[0]['mcuser'];
-	//         	$mail['mcpass']	= base64_decode($mailSystem[0]['mcpass']);
-	//         	$mail['mcport']	= $mailSystem[0]['mcport'];
-	// 		}else{
-	// 			exit;
-	// 		}
-
-	// 		if(isset($interviewer[0])){
-	// 			foreach ($interviewer as $key) {
-	// 				$name 		= $key['operatorname'];
-
-
-	// 				$chuoi_tim 				= array('[Tuyển dụng viên]','[Tên Ứng viên]','[Vị trí]');
-	// 				$chuoi_thay_the 		= array($name,$candidate,$position);
-	// 				$mail['emailsubject'] 	= str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($subject));
-	// 				$mail['emailbody'] 		= str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($body));
-	// 				$mail['toemail'] 		= $key['email'];
-	// 				$this->Mail_model->sendMail($mail);
-
-	// 				$mail1['fromemail'] 		= $mail['mcuser'];
-	// 				$mail1['toemail'] 			= $key['email'];
-	// 				$mail1['emailbody'] 		= $mail['emailbody'];
-	// 				$mail1['emailsubject'] 		= $mail['emailsubject'];
-	// 				$mail1["attachment"] 		= json_encode($mail["attachment"]);
-	// 				$mail1['createdby'] 		= $this->session->userdata('user_admin')['operatorid'];
-	// 				$this->Mail_model->insert('mailtable',$mail1);
-	// 		    }
-	// 		}
-	// 	}
-
-		
-	// }
-	// //mail chúc mừng năm mới
-	// public function sendMailNewYear()
-	// {
-	// 	// $day 		= date('Y-m-d');
-	// 	$match 		= array('1' => 1);
-	// 	$candidate 	= $this->Data_model->selectTable('candidate',$match);
-	// 	// var_dump($candidate);exit;
-
-	// 	$mail = array();
-	// 	$mailtemplate = $this->Mail_model->select('mailprofile',array('mailprofileid' => 6));
-	// 	if(isset($mailtemplate[0])){
-	// 		$subject 			= $mailtemplate[0]['presubject'];
-	// 		$body 				= $mailtemplate[0]['prebody'];
-	// 		$mail["attachment"] = $mailtemplate[0]['preattach'];
-	// 		$presender 			= $mailtemplate[0]['presender'];
-	// 		// $mail["cc"] 		= $mailtemplate[0]['cc'];
-	// 		// $mail["bcc"] 		= $mailtemplate[0]['bcc'];
-	// 	}else{
-	// 		$subject			= $body = $mail["attachment"] = $mail["cc"] = $mail["bcc"] = $presender = '';
-	// 	}
-	// 	if ($presender != 'usersession') {
-	// 		$arrayName1 = array('operatorname' => 'mailsystem' );
-	// 		$mailSystem = $this->Mail_model->select('operator',$arrayName1);
-	// 		if ($mailSystem[0]['mcssl'] == '1') {
- //        		$mail['mcsmtp']	= 'ssl://'.$mailSystem[0]['mcsmtp'];
- //        	}else{
- //        		$mail['mcsmtp']	= $mailSystem[0]['mcsmtp'];
- //        	}
- //        	$mail['mcuser']	= $mailSystem[0]['mcuser'];
- //        	$mail['mcpass']	= base64_decode($mailSystem[0]['mcpass']);
- //        	$mail['mcport']	= $mailSystem[0]['mcport'];
-	// 	}else{
-	// 		exit;
-	// 	}
-
-	// 	if(isset($candidate[0])){
-	// 		foreach ($candidate as $key) {
-	// 			$lastname 	= $key['lastname'];
-	// 			$name 		= $key['name'];
-
-	// 			$chuoi_tim 				= array('[Tên Ứng viên]','[Tên]');
-	// 			$chuoi_thay_the 		= array($name,$lastname);
-	// 			$mail['emailsubject'] 	= str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($subject));
-	// 			$mail['emailbody'] 		= str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($body));
-	// 			$mail['toemail'] 		= $key['email'];
-	// 			$this->Mail_model->sendMail($mail);
-
-	// 			$mail1['fromemail'] 		= $mail['mcuser'];
-	// 			$mail1['toemail'] 			= $key['email'];
-	// 			$mail1['emailbody'] 		= $mail['emailbody'];
-	// 			$mail1['emailsubject'] 		= $mail['emailsubject'];
-	// 			$mail1["attachment"] 		= json_encode($mail["attachment"]);
-	// 			$mail1['createdby'] 		= $this->session->userdata('user_admin')['operatorid'];
-	// 			$this->Mail_model->insert('mailtable',$mail1);
-	// 	    }
-	// 	}
-	// }
-
-
 	public function get_mail()
     {
-    	$this->readingEmail(); 
+    	$this->readingEmail();
     	$operatorid = $this->session->userdata('user_admin')['operatorid'];
     	$sql ="SELECT a.mailid, a.emailsubject, a.createddate, b.operatorname from mailtable a LEFT OUTER JOIN operator b ON a.createdby = b.operatorid  WHere (a.isunread = 'Y' AND a.createdby = '$operatorid') ORDER BY a.createddate DESC";
     	$result['email'] = $this->Campaign_model->select_sql($sql);
@@ -451,16 +323,16 @@ class Email extends CI_Controller {
 
      public function readingEmail()
      {
-     	set_time_limit(40000); 
+     	set_time_limit(40000);
 
 		// Connect to gmail
 		$imapPath = '{mail.datxanh.com.vn:143}Inbox';
 		$username = $this->session->userdata('user_admin')['mcuser'];
 		$password = base64_decode($this->session->userdata('user_admin')['mcpass']);
-		 
-		// try to connect 
+
+		// try to connect
 		$inbox = imap_open($imapPath,$username,$password) or die('Cannot connect to Gmail: ' . imap_last_error());
-		 
+
 		   /* ALL - return all messages matching the rest of the criteria
 		    ANSWERED - match messages with the \\ANSWERED flag set
 		    BCC "string" - match messages with "string" in the Bcc: field
@@ -485,7 +357,7 @@ class Email extends CI_Controller {
 		    UNFLAGGED - match messages that are not flagged
 		    UNKEYWORD "string" - match messages that do not have the keyword "string"
 		    UNSEEN - match messages which have not been read yet*/
-		 
+
 		// search and get unseen emails, function will return email ids
 		// $emails 	= imap_search($inbox,'UNSEEN FROM "heodat234@gmail.com"');
 		// var_dump($emails);exit;
