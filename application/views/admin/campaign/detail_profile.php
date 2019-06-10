@@ -1,7 +1,7 @@
-<?php if ($id != ''): 
+<?php if ($id != ''):
 	$candidateid = ($candidate['candidateid'] != '')? $candidate['candidateid'] : $candidate_noibo['candidateid'];
 ?>
-	<form id="form_checkone">	
+	<form id="form_checkone">
 	<input type="hidden" name="campaignid" value="<?php echo $campaignid ?>">
  	<input type="hidden" name="roundid" value="<?php echo $roundid ?>">
 	<input type="hidden" name="check[]" id="checkoneid" value="<?php echo ($candidate['candidateid'] != '') ? $candidate['candidateid'] : $candidate_noibo['candidateid'] ?>" >
@@ -32,7 +32,7 @@
       		</ul>
 				<button type="button" class="btn-icon-header margin-r7" ><i class="fa fa-print color-ccc" ></i></button>
 				<button type="button" class="btn-icon-header margin-r7" onclick="sendMail()" ><i class="fa fa-envelope-o color-ccc" ></i></button>
-				<div class=""> 
+				<div class="">
 					<button type="button" class="btn-icon-header margin-r7" id="starbtn" data-toggle="dropdown" >
 						<span class="fa-stack fa-1x fixicon">
 						  <i class="fa fa-star <?php echo ($istalent == '0')? "color-gray" : "color-orange";?> fa-stack-2x star-icon" id="iconstar_profile"></i>
@@ -59,10 +59,10 @@
 				    </div>
 				</div>
 				<button type="button" class="btn-icon-header margin-r7" onclick="changeblock(this)" value="<?php echo $candidate['blocked'];?>" id="checkchange">
-					<?php if($candidate['blocked'] == 'Y' || $candidate_noibo['blocked'] == 'Y') { ?> 
+					<?php if($candidate['blocked'] == 'Y' || $candidate_noibo['blocked'] == 'Y') { ?>
 						<i class="fa fa-ban color-red size-icon" ></i>
 						<?php } else { ?>
-						<i class="fa fa-check-circle-o color-green size-icon"></i> 
+						<i class="fa fa-check-circle-o color-green size-icon"></i>
 						<?php } ?>
 				</button>
 				<?php if ($recflow['roundtype'] == 'Assessment'){ ?>
@@ -71,17 +71,17 @@
 					<button type="button" class="btn-icon-header margin-r7" onclick="createAppointment(<?php echo $recflow['scorecard'] ?>, <?php echo $recflow['interviewmailtemp'] ?>, <?php echo $recflow['invitemailtemp'] ?>)" ><i class="fa fa-calendar color-ccc" ></i></button>
 				<?php }else if ($recflow['roundtype'] == 'Offer') { ?>
 					<button type="button" class="btn-icon-header margin-r7" onclick="createOffer(<?php echo $recflow['letteroffermailtemp'] ?>)" ><i class="fa fa-handshake-o color-ccc" ></i></button>
-				<?php }else if ($recflow['roundtype'] == 'Recruite'){ 
+				<?php }else if ($recflow['roundtype'] == 'Recruite'){
 					if ($recruite == 0) { ?>
 					<button type="button" class="btn-icon-header margin-r7" id="btn_recruite" onclick="recruite()" ><i class="fa fa-flag color-ccc" ></i></button>
 				<?php }else{ ?>
 					<button type="button" class="btn-icon-header margin-r7" disabled="" id="btn_recruite" onclick="recruite()" ><i class="fa fa-flag color-flag-recruite" ></i></button>
 				<?php }} ?>
-				
+
 		</div>
 	</div>
 	<div class="margin-t4 dash-horizontal"  ></div>
-	<?php if ($candidate['imagelink'] != ''){ 
+	<?php if ($candidate['imagelink'] != ''){
 		$image = $candidate['imagelink'];
 	}else if ($candidate_noibo['imagelink']) {
 		$image = $candidate_noibo['imagelink'];
@@ -98,7 +98,7 @@
 				foreach ($tag as $key) {
 					array_push($aa, $key['title']);
 				}
-			
+
 				echo implode(", ", $aa);
 				?></label>
 			<span class="highR"><?php $aaa = array();
@@ -112,7 +112,7 @@
 			<label class="diem"><?php echo round($comment['scores'])?> điểm</label>
 			<label class="mau3"><?php echo $count_campaign ?> chiến dịch</label>
 			<br><br>
-			<span class="webportal"><?php echo ($candidate['profilesrc'] != '') ? $candidate['profilesrc'] : $candidate_noibo['profilesrc']; ?></span>							
+			<span class="webportal"><?php echo ($candidate['profilesrc'] != '') ? $candidate['profilesrc'] : $candidate_noibo['profilesrc']; ?></span>
 		</div>
 	</div>
 	<div style="height: 20px"></div>
@@ -156,7 +156,7 @@
 						            <label for="text" class="width20 col-xs-3 label-profile ">Giới thiệu</label>
 						            <div class="width80 col-xs-9 padding-lr0">
 						             <label class="fontArial colorgray labelcontent"><?php echo $candidate['introduction']?> </label>
-						             
+
 						            </div>
 						         </div>
 						     	 <div class="width100 row rowedit h-auto">
@@ -168,7 +168,7 @@
 										}
 										echo implode(", ", $canhan);
 										?></label>
-						             
+
 						            </div>
 						         </div>
 						          <div class="width100 row rowedit h-auto">
@@ -183,7 +183,7 @@
 						             <label class="fontArial colorcyan labelcontent" >
 						             	<a href="<?php echo $candidate['snid']?>"><?php echo $candidate['snid']?></a>
 						             </label>
-						             
+
 						            </div>
 						         </div>
 						          <div class="width100 row rowedit h-auto">
@@ -195,7 +195,7 @@
 						                        <i class="fa fa-download"></i> Chọn CV
 						                    </label>
 					                    </div> -->
-					                    <div class="col-sm-5"> 
+					                    <div class="col-sm-5">
 					                      <?php if (isset($document) && !empty($document)){
 					                        $url = $document['url'];
 					                        $name = $document['filename'];
@@ -229,14 +229,14 @@
 						            <label for="text" class="width20 col-xs-3 label-profile">Họ tên</label>
 						            <div class="width80 col-xs-9 padding-lr0">
 						             <label class="fontArial colorgray labelcontent"><?php echo $candidate['name']?></label>
-						             
+
 						            </div>
 						         </div>
 
 						     	 <div class="width100 row rowedit h-auto">
 						            <label for="text" class="width20 col-xs-3 label-profile">Ngày sinh</label>
 						            <div class="width20 col-xs-3 padding-lr0">
-						             <label class="fontArial colorgray labelcontent" ><?php 
+						             <label class="fontArial colorgray labelcontent" ><?php
 						              echo date("d-m-Y", strtotime($candidate['dateofbirth'] )); ?></label>
 						            </div>
 						            <div class="width20 col-xs-6 padding-lr0">
@@ -252,7 +252,7 @@
 						            <div class="width80 col-xs-9 padding-lr0">
 						             <label class="fontArial colorgray labelcontent" ><?php echo $candidate['placeofbirth']?></label>
 						            </div>
-						            
+
 						         </div>
 						          <div class="width100 row rowedit h-auto">
 						            <label for="text" class="width20 col-xs-3 label-profile">Dân Tộc</label>
@@ -291,7 +291,7 @@
 						            </div>
 						            <label for="text" class="width20 col-xs-3 label-profile">Ngày cấp/ Nơi cấp</label>
 						            <div class="width20 col-xs-3 padding-lr0">
-						             <label class="fontArial colorgray labelcontent" ><?php 
+						             <label class="fontArial colorgray labelcontent" ><?php
 						             echo date("d-m-Y", strtotime($candidate['dateofissue'] ));
 						             ?></label>
 						            </div>
@@ -299,7 +299,7 @@
 						             <label class="fontArial colorgray labelcontent" ><?php echo $candidate['placeofissue']?></label>
 						            </div>
 						         </div>
-						        
+
 						  	  </div>
 						    </div>
 						    <!-- body ho so ca nhan 2-->
@@ -328,9 +328,9 @@
 							     	 <div class="width100 row rowedit h-auto">
 							             <label for="text" class="width20 col-xs-3 label-profile">Địa chỉ thường trú</label>
 							            <div class="width80 col-xs-9 padding-lr0">
-							             <label class="fontArial colorgray labelcontent"><?php 
+							             <label class="fontArial colorgray labelcontent"><?php
 							                  if($address != null)
-							                  { 
+							                  {
 							                      foreach ($address as $key ) {
 							                        if($key['addtype'] == "PREMANENT")
 							                        {
@@ -346,7 +346,7 @@
 							             <label for="text" class="width20 col-xs-3 label-profile">Địa chỉ liên hệ</label>
 							            <div class="width80 col-xs-9 padding-lr0">
 							             <label class="fontArial colorgray labelcontent" >
-							             	<?php 
+							             	<?php
 							                  if($address != null)
 							                  {
 							                      foreach ($address as $key ) {
@@ -362,7 +362,7 @@
 							          <div class="width100 row rowedit h-auto">
 							            <label for="text" class="width20 col-xs-3 label-profile">Điện thoại</label>
 							            <div class="width80 col-xs-9 padding-lr0">
-							             <label class="fontArial colorgray labelcontent" ><?php echo $candidate['telephone'];?></label>
+							             <label class="fontArial colorgray labelcontent" ><?php echo trim($candidate['telephone'],',');?></label>
 							            </div>
 							        </div>
 							         <div class="width100 row rowedit h-auto">
@@ -371,7 +371,7 @@
 							             <label class="fontArial colorgray labelcontent" ><?php echo $candidate['emergencycontact'];?></label>
 							            </div>
 							         </div>
-							         
+
 							  	  </div>
 					    	</div>
 					    	<!-- body ho so ca nhan 3-->
@@ -390,16 +390,16 @@
 						    <!-- heading ho so ca nhan 4-->
 						    <div id="collapsetotal41" class="panel-collapse collapse tab_con_canhan in">
 						    	 <div class="panel-body" style="border: 0px">
-								      <table class="table table-striped table-bordered"> 
-								            <thead> 
-								              <tr class="fontstyle"> 
-								                <th id="th" width="30%">Họ và tên</th> 
-								                <th id="th" width="20%">Năm sinh</th> 
-								                <th id="th" width="20%">Quan hệ</th> 
+								      <table class="table table-striped table-bordered">
+								            <thead>
+								              <tr class="fontstyle">
+								                <th id="th" width="30%">Họ và tên</th>
+								                <th id="th" width="20%">Năm sinh</th>
+								                <th id="th" width="20%">Quan hệ</th>
 								                <th id="th" width="20%">Nghề nghiệp</th>
-								              </tr> 
-								            </thead> 
-								            <tbody class="fontstyle text-center"> 
+								              </tr>
+								            </thead>
+								            <tbody class="fontstyle text-center">
 								              <?php if($family != null) {
 								                $i = 0;
 								              foreach ($family as $key) { ?>
@@ -410,7 +410,7 @@
 								              <td><?php echo $key['career']?></td>
 								             </tr>
 								             <?php $i++;} } ?>
-								            </tbody> 
+								            </tbody>
 							          </table>
 					      		</div>
 						    </div>
@@ -430,22 +430,22 @@
 						    <!-- heading ho so ca nhan 5-->
 						    <div id="collapsetotal51" class="panel-collapse collapse tab_con_canhan in">
 						    	 <div class="panel-body" style="border: 0px">
-								      <table   class="table table-striped table-bordered" > 
-							            <thead class="fontstyle"> 
-							              <tr > 
-							                <th id="th" class="middle2" width="20%">Từ - Đến</th> 
-							                <th id="th" class="middle2" width="20%">Cty/ Địa chỉ/ ĐT</th> 
-							                <th id="th" width="13%">CV khi nghỉ</th> 
+								      <table   class="table table-striped table-bordered" >
+							            <thead class="fontstyle">
+							              <tr >
+							                <th id="th" class="middle2" width="20%">Từ - Đến</th>
+							                <th id="th" class="middle2" width="20%">Cty/ Địa chỉ/ ĐT</th>
+							                <th id="th" width="13%">CV khi nghỉ</th>
 							                <th id="th" width="23%">NV/ Trách nhiệm</th>
 							                 <th id="th" class="middle2" width="17%">Lý do nghỉ</th>
-							              </tr> 
-							            </thead> 
-							            <tbody class="fontstyle text-center"> 
-							             <?php if($experience != null) { 
+							              </tr>
+							            </thead>
+							            <tbody class="fontstyle text-center">
+							             <?php if($experience != null) {
 							              $i = 0;
 							              foreach ($experience as $key) { ?>
 							             <tr>
-							              
+
 							              <td><?php echo date("d/m/Y", strtotime($key['datefrom'])).' - '.date("d/m/Y", strtotime($key['dateto']))?></td>
 							              <td><?php echo $key['company']." / ".$key['address']." / ".$key['phone']?></td>
 							              <td><?php echo $key['position']?></td>
@@ -453,30 +453,30 @@
 							              <td><?php echo $key['quitreason']?></td>
 							             </tr>
 							             <?php $i++; } } ?>
-							            </tbody> 
+							            </tbody>
 							          </table>
 
-							          <table   class="table table-striped table-bordered" > 
-							            <thead> 
-							              <tr class="fontstyle"> 
-							                <th id="th" width="30%">Họ và tên</th> 
-							                <th id="th" width="15%">Chức vụ</th> 
-							                <th id="th" width="20%">Công ty</th> 
-							                <th id="th" width="25%">Liên hệ</th>				                  
-							              </tr> 
-							            </thead> 
-							            <tbody class="fontstyle text-center"> 
+							          <table   class="table table-striped table-bordered" >
+							            <thead>
+							              <tr class="fontstyle">
+							                <th id="th" width="30%">Họ và tên</th>
+							                <th id="th" width="15%">Chức vụ</th>
+							                <th id="th" width="20%">Công ty</th>
+							                <th id="th" width="25%">Liên hệ</th>
+							              </tr>
+							            </thead>
+							            <tbody class="fontstyle text-center">
 							             <?php if($reference != null) {
 							              $i = 0;
 							              foreach ($reference as $key) { ?>
-							             <tr>					               
+							             <tr>
 							              <td><?php echo $key['name']?></td>
 							              <td><?php echo $key['position']?></td>
 							              <td><?php echo $key['company']?></td>
 							              <td><?php echo $key['contactno']?></td>
 							             </tr>
 							             <?php $i++; } } ?>
-							            </tbody> 
+							            </tbody>
 							          </table>
 					      		</div>
 						    </div>
@@ -496,21 +496,21 @@
 						    <!-- heading ho so ca nhan 6-->
 						    <div id="collapsetotal61" class="panel-collapse collapse tab_con_canhan in">
 						    	 <div class="panel-body" style="border: 0px">
-								      <table   class="table table-striped table-bordered" > 
-							            <thead class="fontstyle"> 
-							              <tr > 
-							                <th id="th" width="20%">Từ - Đến</th> 
-							                <th id="th" width="20%">Trường</th> 
-							                <th id="th" width="15%">Nơi học</th> 
+								      <table   class="table table-striped table-bordered" >
+							            <thead class="fontstyle">
+							              <tr >
+							                <th id="th" width="20%">Từ - Đến</th>
+							                <th id="th" width="20%">Trường</th>
+							                <th id="th" width="15%">Nơi học</th>
 							                <th id="th" width="20%">Ngành học</th>
 							                 <th id="th" width="15%">Bằng cấp</th>
-							                 
-							              </tr> 
-							            </thead> 
-							            <tbody class="fontstyle text-center"> 
+
+							              </tr>
+							            </thead>
+							            <tbody class="fontstyle text-center">
 							              <?php if($knowledge != null) {
 							                $i = 0;
-							              foreach ($knowledge as $key) { 
+							              foreach ($knowledge as $key) {
 							                if($key['traintimetype'] != null)
 							                  { continue; } else {?>
 							             <tr>
@@ -521,24 +521,24 @@
 							              <td><?php echo $key['certificate']; if($key['highestcer'] == "Y") echo "(*)"; ?></td>
 							             </tr>
 							             <?php $i++; } } }?>
-							            </tbody> 
+							            </tbody>
 							          </table>
 
-							          <table   class="table table-striped table-bordered" > 
-							            <thead class="fontstyle"> 
-							              <tr> 
-							                <th id="th" width="20%">Từ - Đến</th> 
-							                <th id="th" width="25%">Cơ sở đạo tào</th> 
-							                <th id="th" width="13%">TG học</th> 
+							          <table   class="table table-striped table-bordered" >
+							            <thead class="fontstyle">
+							              <tr>
+							                <th id="th" width="20%">Từ - Đến</th>
+							                <th id="th" width="25%">Cơ sở đạo tào</th>
+							                <th id="th" width="13%">TG học</th>
 							                <th id="th" width="17%">Ngành học</th>
 							                 <th id="th" width="15%">Bằng cấp</th>
-							                
-							              </tr> 
-							            </thead> 
-							            <tbody class="fontstyle text-center"> 
+
+							              </tr>
+							            </thead>
+							            <tbody class="fontstyle text-center">
 							             <?php if($knowledge != null) {
 							               $i = 0;
-							              foreach ($knowledge as $key) { 
+							              foreach ($knowledge as $key) {
 							                if($key['traintimetype'] == null)
 							                  { continue; } else {?>
 							             <tr>
@@ -549,7 +549,7 @@
 							              <td><?php echo $key['certificate']?></td>
 							             </tr>
 							             <?php $i++; } } } ?>
-							            </tbody> 
+							            </tbody>
 							          </table>
 					      		</div>
 						    </div>
@@ -569,20 +569,20 @@
 						    <!-- heading ho so ca nhan 7-->
 						    <div id="collapsetotal71" class="panel-collapse collapse tab_con_canhan in">
 						    	 <div class="panel-body" style="border: 0px">
-								      <table class="table table-striped table-bordered" > 
-							            <thead class="fontstyle"> 
-							              <tr> 
-							                <th id="th" >Ngoại Ngữ</th> 
-							                <th id="th" >Nghe</th> 
-							                <th id="th" >Nói</th> 
+								      <table class="table table-striped table-bordered" >
+							            <thead class="fontstyle">
+							              <tr>
+							                <th id="th" >Ngoại Ngữ</th>
+							                <th id="th" >Nghe</th>
+							                <th id="th" >Nói</th>
 							                <th id="th" >Đọc</th>
 							                <th id="th" >Viết</th>
-							              </tr> 
-							            </thead> 
-							            <tbody class="fontstyle text-center"> 
+							              </tr>
+							            </thead>
+							            <tbody class="fontstyle text-center">
 							            <?php if($language != null) {
 							              $i = 0;
-							              foreach ($language as $key) { 
+							              foreach ($language as $key) {
 							                ?>
 							             <tr>
 							              <td><?php echo $key['language']?></td>
@@ -592,7 +592,7 @@
 							              <td><?php echo ($key['rate4'] !== "0")? $key['rate4']: ""; ?></td>
 							             </tr>
 							             <?php $i++; } } ?>
-							            </tbody> 
+							            </tbody>
 							          </table>
 					      		</div>
 						    </div>
@@ -612,24 +612,24 @@
 						    <!-- heading ho so ca nhan 8-->
 						    <div id="collapsetotal81" class="panel-collapse collapse tab_con_canhan in">
 						    	 <div class="panel-body" style="border: 0px">
-								     <table   class="table table-striped table-bordered" > 
-							            <thead class="fontstyle"> 
-							              <tr> 
-							                <th id="th" width="60%">Phần mềm</th> 
+								     <table   class="table table-striped table-bordered" >
+							            <thead class="fontstyle">
+							              <tr>
+							                <th id="th" width="60%">Phần mềm</th>
 							                <th id="th" width="30%">Trình độ</th>
-							              </tr> 
-							            </thead> 
-							            <tbody class="fontstyle text-center"> 
+							              </tr>
+							            </thead>
+							            <tbody class="fontstyle text-center">
 							             <?php if($software != null) {
 							              $i = 0;
-							              foreach ($software as $key) { 
+							              foreach ($software as $key) {
 							                ?>
 							             <tr>
 							              <td><?php echo $key['software']?></td>
 							              <td><?php echo ($key['rate1'] !== "0")? $key['rate1'] : ""; ?></td>
 							             </tr>
 							             <?php $i++; } } ?>
-							            </tbody> 
+							            </tbody>
 							          </table>
 					      		</div>
 						    </div>
@@ -665,7 +665,7 @@
 							             <label for="text" class="col-xs-3 width20 col-xs-3 label-profile">Email</label>
 							             <div class="col-xs-3 width30 padding-lr0">
 							             	<input type="text" class="textbox" name="email" value="<?php echo isset($candidate_noibo['email'])? $candidate_noibo['email'] : "";?>" >
-							             </div>   
+							             </div>
 							         </div>
 							         <br><br>
 							         <div class="width100">
@@ -676,7 +676,7 @@
 							             <label for="text" class="col-xs-3 width20 col-xs-3 label-profile">CMND/ ID</label>
 							             <div class="col-xs-3 width30 padding-lr0">
 							             	<input type="text" class="textbox" name="idcard" maxlength="9" value="<?php echo isset($candidate_noibo['idcard'])? $candidate_noibo['idcard'] : "";?>">
-							             </div>   
+							             </div>
 							         </div>
 							         <br><br>
 							         <div class="width100">
@@ -704,7 +704,7 @@
 						                    ?>
 						                    ">
 						                  </div>
-						                  
+
 							             </div>
 							         </div>
 							         <br><br>
@@ -739,7 +739,7 @@
 						                        <i class="fa fa-download"></i> Chọn CV
 						                    </label>
 					                    </div>
-					                    <div class="col-sm-5"> 
+					                    <div class="col-sm-5">
 					                      <?php if (isset($document_noibo) && !empty($document_noibo)){
 					                        $url = $document_noibo['url'];
 					                        $name = $document_noibo['filename'];
@@ -796,7 +796,7 @@
 							                  <option value="<?php echo $key['name'] ?>"><?php echo $key['name'] ?></option>
 							                  <?php } } ?>
 						                </select>
-						             </div> 
+						             </div>
 						         </div>
 						         <br><br>
 						         <div class="width100">
@@ -846,7 +846,7 @@
 						         <br><br>
 						         <div class="width100">
 						             <label for="text" class="width20 col-xs-3 label-profile">Ngày cấp/ Nơi cấp</label>
-						             <div class="col-xs-3 width30 padding-lr0"> 
+						             <div class="col-xs-3 width30 padding-lr0">
 						             	<input type="text"  name="dateofissue"  id="dateofissue" class="textbox2" value="<?php echo isset($candidate_noibo['dateofissue'])? date("d-m-Y", strtotime($candidate_noibo['dateofissue'])) : "";  ?>">
 						             </div>
 						             <div class="col-xs-1 width5 padding-lr0"></div>
@@ -857,14 +857,14 @@
 							                	if( isset($candidate_noibo['placeofissue']) && $key['name'] == $candidate_noibo['placeofissue'] )
 							                	{
 							                ?>
-							                <option value="<?php echo $key['name'] ?>" selected><?php echo $key['name'] ?></option>	
-							                <?php 
+							                <option value="<?php echo $key['name'] ?>" selected><?php echo $key['name'] ?></option>
+							                <?php
 							                	} else {
 							                ?>
 							                  <option value="<?php echo $key['name'] ?>"><?php echo $key['name'] ?></option>
 							                  <?php } } ?>
 						                </select>
-						             </div> 
+						             </div>
 						         </div>
 						         <button type="button" class="btn-luu-nav floatright margin-t35" <?php echo isset($candidate_noibo)? "" : "disabled";?> onclick="luu_canhan(<?php echo $candidate_noibo['candidateid'] ?>)"> Lưu</button>
 						  	  	</div>
@@ -892,7 +892,7 @@
 								             <div class="col-xs-3 width30 padding-lr0">
 								             	<select class="textbox2" name="country1" >
 								             		<option value="Việt Nam">Việt Nam</option>
-								             		<option value="Khác" <?php 
+								             		<option value="Khác" <?php
 								             		$n1 = isset($canaddress_noibo)? count($canaddress_noibo) : 0;
 								             		for ($i = 0; $i < $n1; $i++) {
 									             		if( ($canaddress_noibo[$i]['addtype'] == 'PREMANENT') && ($canaddress_noibo[$i]['country'] == 'Khác'))
@@ -905,10 +905,10 @@
 								             		>Khác</option>
 								             	</select>
 								             	<div class="h10-w-auto"></div>
-								             	<select class="textbox2 js-example-basic-single" onchange="comb_tp_qh_1(this.value,0,<?php echo $candidate_noibo['candidateid'] ?>)" 
+								             	<select class="textbox2 js-example-basic-single" onchange="comb_tp_qh_1(this.value,0,<?php echo $candidate_noibo['candidateid'] ?>)"
 								             		name="city1" id="city1_<?php echo $candidate_noibo['candidateid'] ?>" style="width: 195px;">
 									                 <option value="0" style="width: 195px" >Chọn tỉnh thành</option>
-									                <?php foreach ($city as $key ) 
+									                <?php foreach ($city as $key )
 									                {
 									                	$fdc = 0;
 									                	if(isset($canaddress_noibo))
@@ -925,7 +925,7 @@
 									                		}
 									                	}
 
-													 	if($fdc == 0) {?>		
+													 	if($fdc == 0) {?>
 									                  <option value="<?php echo $key['id_city'] ?>"><?php echo $key['name'] ?></option>
 									                  <?php }
 									                } ?>
@@ -937,7 +937,7 @@
 								                </select>
 								                <div class="h10-w-auto"></div>
 								                 <select class="textbox2 js-example-basic-single" name="ward1" id="phuongxa8-ad_<?php echo $candidate_noibo['candidateid'] ?>" style="width: 100%" required>
-								                 	<option value="0" id="chonpx-ad1_<?php echo $candidate_noibo['candidateid'] ?>" >Chọn phường xã</option>				                
+								                 	<option value="0" id="chonpx-ad1_<?php echo $candidate_noibo['candidateid'] ?>" >Chọn phường xã</option>
 								                </select>
 								                <div class="h10-w-auto"></div>
 
@@ -955,7 +955,7 @@
 								                 ?></textarea>
 								                 <div class="h10-w-auto"></div>
 								                   <textarea class="form-control off-resize fontstyle" rows="2" name="addressno1" id="toanha88_<?php echo $candidate_noibo['candidateid'] ?>"
-								                   ><?php 
+								                   ><?php
 								                 	if(isset($canaddress_noibo))
 									                	{
 									                		foreach ($canaddress_noibo as $value) {
@@ -973,12 +973,12 @@
 								                 ?>
 								                   </textarea>
 								             </div>
-								            
+
 								             <label for="text" class="width20 col-xs-3 label-profile" style="padding-left: 15px">Địa chỉ liên hệ</label>
 								             <div class="col-xs-3 width30 padding-lr0">
 								             	<select class="textbox2" name="country2">
 								             		<option value="Việt Nam">Việt Nam</option>
-								             		<option value="Khác" <?php 
+								             		<option value="Khác" <?php
 								             		$n1 = isset($canaddress_noibo)? count($canaddress_noibo) : 0;
 								             		for ($i = 0; $i < $n1; $i++) {
 									             		if( ($canaddress_noibo[$i]['addtype'] == 'CONTACT') && ($canaddress_noibo[$i]['country'] == 'Khác'))
@@ -993,7 +993,7 @@
 								             	<div class="h10-w-auto"></div>
 								             	<select class="textbox2 js-example-basic-single" id="city2_<?php echo $candidate_noibo['candidateid'] ?>" name="city2" style="width: 195px" onchange="comb_tp_qh_2(this.value,0,<?php echo $candidate_noibo['candidateid'] ?>)">
 									                 <option value="0" style="width: 195px" >Chọn tỉnh thành</option>
-									                <?php foreach ($city as $key ) 
+									                <?php foreach ($city as $key )
 									                {
 									                	$fdc = 0;
 									                	if(isset($canaddress_noibo))
@@ -1010,7 +1010,7 @@
 									                		}
 									                	}
 
-													 	if($fdc == 0) {?>		
+													 	if($fdc == 0) {?>
 									                  <option value="<?php echo $key['id_city'] ?>"><?php echo $key['name'] ?></option>
 									                  <?php }
 									                } ?>
@@ -1024,8 +1024,8 @@
 								                 	<option value="0" id="chonpx-ad2_<?php echo $candidate_noibo['candidateid'] ?>" >Chọn phường xã</option>
 								                </select>
 								                <div class="h10-w-auto"></div>
-								                 <textarea class="form-control off-resize fontstyle" rows="2" name="street2" id="duong8_<?php echo $candidate_noibo['candidateid'] ?>" 
-								                 ><?php 
+								                 <textarea class="form-control off-resize fontstyle" rows="2" name="street2" id="duong8_<?php echo $candidate_noibo['candidateid'] ?>"
+								                 ><?php
 								                 	if(isset($canaddress_noibo))
 									                	{
 									                		foreach ($canaddress_noibo as $value) {
@@ -1040,7 +1040,7 @@
 								                 </textarea>
 								                 <div class="h10-w-auto"></div>
 								                   <textarea class="form-control off-resize fontstyle" rows="2" name="addressno2" id="toanha8_<?php echo $candidate_noibo['candidateid'] ?>"
-								                   ><?php 
+								                   ><?php
 								                 	if(isset($canaddress_noibo))
 									                	{
 									                		foreach ($canaddress_noibo as $value) {
@@ -1061,8 +1061,8 @@
 
 								         <div class="width100">
 								             <label for="text" class="width20 col-xs-3 label-profile margin-t10" >Số điện thoại</label>
-								             <?php 
-								                    $pizza  = $candidate_noibo['telephone'];
+								             <?php
+								                    $pizza  = trim($candidate_noibo['telephone'],',');
 								                    $pieces = explode(",", $pizza);
 								                    $p1 = isset($pieces[0])? $pieces[0] : "" ;
 								                    $p2 = isset($pieces[1])? $pieces[1] : "" ;
@@ -1074,12 +1074,12 @@
 								             	<input type="text" name="phone2" class="textbox2" value="<?php echo $p2;?>">
 								             </div>
 								         </div>
-								         
-								        
+
+
 								         <div class="width100 pull-left">
 								             <label for="text" class="width20 col-xs-3 label-profile margin-t10" >Liên lạc khẩn cấp</label>
 								             <div class="col-xs-3 width30 padding-lr0">
-								             	<input type="text" name="emergencycontact" class="textbox2 margin-t10" value="<?php echo isset($candidate_noibo['emergencycontact'])? $candidate_noibo['emergencycontact'] : "";?>" > 
+								             	<input type="text" name="emergencycontact" class="textbox2 margin-t10" value="<?php echo isset($candidate_noibo['emergencycontact'])? $candidate_noibo['emergencycontact'] : "";?>" >
 								             </div>
 								         </div>
 								         <button type="button" class="btn-luu-nav floatright margin-t35" <?php echo isset($candidate_noibo)? "" : "disabled";?> onclick="luu_diachi(<?php echo $candidate_noibo['candidateid'] ?>)"> Lưu</button>
@@ -1101,18 +1101,18 @@
 						    </div>
 						    <!-- heading ho so noi bo 4-->
 						    <div id="collapsetotal42" class="panel-collapse collapse tab_con_noibo in">
-						      <div class="panel-body" style="border: 0px">				         
-						         <table   class="table table-striped table-bordered"> 
-						            <thead> 
-						              <tr class="fontstyle"> 
-						                <th id="th" width="30%">Họ và tên</th> 
-						                <th id="th" width="20%">Năm sinh</th> 
-						                <th id="th" width="20%">Quan hệ</th> 
+						      <div class="panel-body" style="border: 0px">
+						         <table   class="table table-striped table-bordered">
+						            <thead>
+						              <tr class="fontstyle">
+						                <th id="th" width="30%">Họ và tên</th>
+						                <th id="th" width="20%">Năm sinh</th>
+						                <th id="th" width="20%">Quan hệ</th>
 						                <th id="th" width="20%">Nghề nghiệp</th>
 						                <!-- <th id="th" width="10%"></th> -->
-						              </tr> 
-						            </thead> 
-						            <tbody class="fontstyle text-center"> 
+						              </tr>
+						            </thead>
+						            <tbody class="fontstyle text-center">
 					            	  <?php if($family_noibo != null) {
 							                $i = 0;
 							              foreach ($family_noibo as $key) { ?>
@@ -1132,9 +1132,9 @@
 							              <td><?php echo $key['career']?></td>
 							              <!-- <td><i class="fa fa-edit" onclick="editmodal('<?php echo 'click'.$i ?>')"></i> <i class="fa fa-eraser" onclick="delmodal('<?php echo 'click'.$i ?>')"></i></td> -->
 							             </tr>
-							             <?php $i++;} } 
+							             <?php $i++;} }
 						               ?>
-						            </tbody> 
+						            </tbody>
 						          </table>
 						          <!-- <a href="#" onclick="showmodel11(<?php echo $candidateid?>,<?php echo $candidate_noibo['candidateid']?>)" <?php echo isset($candidate_noibo)? "" : "disabled";?>><label class="floatright">Thêm quan hệ <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a> -->
 						  	  </div>
@@ -1154,20 +1154,20 @@
 						    </div>
 						    <!-- heading ho so noi bo 5-->
 						    <div id="collapsetotal52" class="panel-collapse collapse tab_con_noibo in">
-						      <div class="panel-body" style="border: 0px">				         
-						          <table   class="table table-striped table-bordered" > 
-							            <thead class="fontstyle"> 
-							              <tr > 
-							                <th id="th" class="middle2" width="20%">Từ - Đến</th> 
-							                <th id="th" class="middle2" width="20%">Cty/ Địa chỉ/ ĐT</th> 
-							                <th id="th" width="13%">CV khi nghỉ</th> 
+						      <div class="panel-body" style="border: 0px">
+						          <table   class="table table-striped table-bordered" >
+							            <thead class="fontstyle">
+							              <tr >
+							                <th id="th" class="middle2" width="20%">Từ - Đến</th>
+							                <th id="th" class="middle2" width="20%">Cty/ Địa chỉ/ ĐT</th>
+							                <th id="th" width="13%">CV khi nghỉ</th>
 							                <th id="th" width="23%">NV/ Trách nhiệm</th>
 							                 <th id="th" class="middle2" width="17%">Lý do nghỉ</th>
 							                 <!-- <th id="th" width="10%"></th> -->
-							              </tr> 
-							            </thead> 
-							            <tbody class="fontstyle text-center"> 
-							             <?php if($experience_noibo != null) { 
+							              </tr>
+							            </thead>
+							            <tbody class="fontstyle text-center">
+							             <?php if($experience_noibo != null) {
 							              $i = 0;
 							              foreach ($experience_noibo as $key) { ?>
 							             <tr>
@@ -1191,23 +1191,23 @@
 							              <td><?php echo $key['quitreason']?></td>
 							              <!-- <td><i class="fa fa-edit" onclick="editmodal2('<?php echo 'click2'.$i ?>')"></i> <i class="fa fa-eraser" onclick="delmodal2('<?php echo 'click2'.$i ?>')"></i></td> -->
 							             </tr>
-							             
+
 							             <?php $i++; } } ?>
-							            </tbody> 
+							            </tbody>
 							          </table>
 							          <!-- <a href="#" onclick="showmodel2(<?php echo $candidateid ?>,<?php echo $candidate_noibo['candidateid']?>)" <?php echo isset($candidate_noibo)? "" : "disabled";?>><label class="floatright">Thêm kinh nghiệm <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a> -->
-							          <table   class="table table-striped table-bordered" > 
-							            <thead> 
-							              <tr class="fontstyle"> 
-							                <th id="th" width="30%">Họ và tên</th> 
-							                <th id="th" width="15%">Chức vụ</th> 
-							                <th id="th" width="20%">Công ty</th> 
+							          <table   class="table table-striped table-bordered" >
+							            <thead>
+							              <tr class="fontstyle">
+							                <th id="th" width="30%">Họ và tên</th>
+							                <th id="th" width="15%">Chức vụ</th>
+							                <th id="th" width="20%">Công ty</th>
 							                <th id="th" width="25%">Liên hệ</th>
 							                <!-- <th id="th" width="10%"></th>				                   -->
-							              </tr> 
-							            </thead> 
-							            <tbody class="fontstyle text-center"> 
-										
+							              </tr>
+							            </thead>
+							            <tbody class="fontstyle text-center">
+
 						            		 <?php if($reference_noibo != null) {
 								              $i = 0;
 								              foreach ($reference_noibo as $key) { ?>
@@ -1228,9 +1228,9 @@
 								               <!-- <td><i class="fa fa-edit" onclick="editmodal3('<?php echo 'click3'.$i ?>')"></i> <i class="fa fa-eraser" onclick="delmodal3('<?php echo 'click3'.$i ?>')"></i></td> -->
 								             </tr>
 								             <?php $i++; } } ?>
-								              
-						            	
-							            </tbody> 
+
+
+							            </tbody>
 							          </table>
 						           <!-- <a href="#" onclick="showmodel3(<?php echo $candidateid ?>,<?php echo $candidate_noibo['candidateid']?>)" <?php echo isset($candidate_noibo)? "" : "disabled";?>><label class="floatright">Thêm người tham chiếu <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a> -->
 						  	  </div>
@@ -1250,23 +1250,23 @@
 						    </div>
 						    <!-- heading ho so noi bo 6-->
 						    <div id="collapsetotal62" class="panel-collapse collapse tab_con_noibo in">
-						      <div class="panel-body" style="border: 0px">				         
-						          <table   class="table table-striped table-bordered" > 
-							            <thead class="fontstyle"> 
-							              <tr > 
-							                <th id="th" width="20%">Từ - Đến</th> 
-							                <th id="th" width="20%">Trường</th> 
-							                <th id="th" width="15%">Nơi học</th> 
+						      <div class="panel-body" style="border: 0px">
+						          <table   class="table table-striped table-bordered" >
+							            <thead class="fontstyle">
+							              <tr >
+							                <th id="th" width="20%">Từ - Đến</th>
+							                <th id="th" width="20%">Trường</th>
+							                <th id="th" width="15%">Nơi học</th>
 							                <th id="th" width="20%">Ngành học</th>
 							                 <th id="th" width="15%">Bằng cấp</th>
 							                 <!-- <th id="th" width="10%"></th> -->
-							                 
-							              </tr> 
-							            </thead> 
-							            <tbody class="fontstyle text-center"> 
+
+							              </tr>
+							            </thead>
+							            <tbody class="fontstyle text-center">
 							              <?php if($knowledge_noibo != null) {
 								                $i = 0;
-								              foreach ($knowledge_noibo as $key) { 
+								              foreach ($knowledge_noibo as $key) {
 								                if($key['traintimetype'] != null)
 								                  { continue; } else {?>
 								             <tr>
@@ -1290,24 +1290,24 @@
 								              <!-- <td><i class="fa fa-edit" onclick="editmodal4('<?php echo 'click4'.$i ?>')"></i> <i class="fa fa-eraser" onclick="delmodal4('<?php echo 'click4'.$i ?>')"></i></td> -->
 								             </tr>
 							             <?php $i++; } } }?>
-							            </tbody> 
+							            </tbody>
 						          </table>
 							          <!-- <a href="#" onclick="showmodel4(<?php echo $candidateid ?>,<?php echo $candidate_noibo['candidateid']?>)" <?php echo isset($candidate_noibo)? "" : "disabled";?>><label class="floatright">Thêm học vấn <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a> -->
-							          <table   class="table table-striped table-bordered" > 
-							            <thead class="fontstyle"> 
-							              <tr> 
-							                <th id="th" width="20%">Từ - Đến</th> 
-							                <th id="th" width="25%">Cơ sở đạo tào</th> 
-							                <th id="th" width="13%">TG học</th> 
+							          <table   class="table table-striped table-bordered" >
+							            <thead class="fontstyle">
+							              <tr>
+							                <th id="th" width="20%">Từ - Đến</th>
+							                <th id="th" width="25%">Cơ sở đạo tào</th>
+							                <th id="th" width="13%">TG học</th>
 							                <th id="th" width="17%">Ngành học</th>
 							                 <th id="th" width="15%">Bằng cấp</th>
 							                 <!-- <th id="th" width="10%"></th> -->
-							              </tr> 
+							              </tr>
 							            </thead>
-							            <tbody> 
+							            <tbody>
 							          	 <?php if($knowledge_noibo != null) {
 							               $i = 0;
-							              foreach ($knowledge_noibo as $key) { 
+							              foreach ($knowledge_noibo as $key) {
 							                if($key['traintimetype'] == null)
 							                  { continue; } else {?>
 							             <tr>
@@ -1331,7 +1331,7 @@
 							               <!-- <td><i class="fa fa-edit" onclick="editmodal5('<?php echo 'click5'.$i ?>')"></i> <i class="fa fa-eraser" onclick="delmodal4('<?php echo 'click5'.$i ?>')"></i></td> -->
 							             </tr>
 							             <?php $i++; } } } ?>
-							            </tbody> 
+							            </tbody>
 							          </table>
 						           <!-- <a href="#" onclick="showmodel5(<?php echo $candidateid ?>,<?php echo $candidate_noibo['candidateid']?>)" <?php echo isset($candidate_noibo)? "" : "disabled";?>><label class="floatright">Thêm khoá đào tạo <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a> -->
 						  	  </div>
@@ -1351,22 +1351,22 @@
 						    </div>
 						    <!-- heading ho so noi bo 7-->
 						    <div id="collapsetotal72" class="panel-collapse collapse tab_con_noibo in">
-						      <div class="panel-body" style="border: 0px">				         
-						          <table   class="table table-striped table-bordered" > 
-							            <thead class="fontstyle"> 
-							              <tr> 
-							                <th id="th" >Ngoại Ngữ</th> 
-							                <th id="th" >Nghe</th> 
-							                <th id="th" >Nói</th> 
+						      <div class="panel-body" style="border: 0px">
+						          <table   class="table table-striped table-bordered" >
+							            <thead class="fontstyle">
+							              <tr>
+							                <th id="th" >Ngoại Ngữ</th>
+							                <th id="th" >Nghe</th>
+							                <th id="th" >Nói</th>
 							                <th id="th" >Đọc</th>
 							                <th id="th" >Viết</th>
 							                <!-- <th id="th" ></th> -->
-							              </tr> 
-							            </thead> 
-							            <tbody class="fontstyle text-center"> 
+							              </tr>
+							            </thead>
+							            <tbody class="fontstyle text-center">
 							             <?php if($language_noibo != null) {
 								              $i = 0;
-								              foreach ($language_noibo as $key) { 
+								              foreach ($language_noibo as $key) {
 								                ?>
 								             <tr>
 								              <form id="<?php echo 'click6'.$i ?>">
@@ -1375,7 +1375,7 @@
 								                <input type="hidden" name="rate2" value="<?php echo $key['rate2']?>">
 								                <input type="hidden" name="rate3" value="<?php echo $key['rate3']?>">
 								                <input type="hidden" name="rate4" value="<?php echo $key['rate4']?>">
-								                
+
 								                <input type="hidden" name="recordid" value="<?php echo $key['recordid']?>">
 								                <input type="hidden" name="candidateid_main" value="<?php echo $candidateid ?>">
 							                	<input type="hidden" name="candidateid_sub" value="<?php echo $candidate_noibo['candidateid']?>">
@@ -1388,8 +1388,8 @@
 								              <!-- <td><i class="fa fa-edit" onclick="editmodal6('<?php echo 'click6'.$i ?>')"></i> <i class="fa fa-eraser" onclick="delmodal6('<?php echo 'click6'.$i ?>')"></i></td> -->
 								             </tr>
 							             <?php $i++; } } ?>
-								            
-							            </tbody> 
+
+							            </tbody>
 							          </table>
 						           <!-- <a href="#" onclick="showmodel6(<?php echo $candidateid ?>,<?php echo $candidate_noibo['candidateid']?>)" <?php echo isset($candidate_noibo)? "" : "disabled";?>><label class="floatright">Thêm ngoại ngữ <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a> -->
 						  	  </div>
@@ -1409,19 +1409,19 @@
 						    </div>
 						    <!-- heading ho so noi bo 8-->
 						    <div id="collapsetotal82" class="panel-collapse collapse tab_con_noibo in">
-						      <div class="panel-body" style="border: 0px">				         
-						          <table   class="table table-striped table-bordered" > 
-							            <thead class="fontstyle"> 
-							              <tr> 
-							                <th id="th" width="60%">Phần mềm</th> 
+						      <div class="panel-body" style="border: 0px">
+						          <table   class="table table-striped table-bordered" >
+							            <thead class="fontstyle">
+							              <tr>
+							                <th id="th" width="60%">Phần mềm</th>
 							                <th id="th" width="30%">Trình độ</th>
 							                <!-- <th id="th" width="10%"></th> -->
-							              </tr> 
-							            </thead> 
-							            <tbody class="fontstyle text-center"> 
+							              </tr>
+							            </thead>
+							            <tbody class="fontstyle text-center">
 							              <?php if($software_noibo != null) {
 								              $i = 0;
-								              foreach ($software_noibo as $key) { 
+								              foreach ($software_noibo as $key) {
 								                ?>
 								             <tr>
 								              <form id="<?php echo 'click7'.$i ?>">
@@ -1437,7 +1437,7 @@
 								              <!-- <td><i class="fa fa-edit" onclick="editmodal7('<?php echo 'click7'.$i ?>')"></i> <i class="fa fa-eraser" onclick="delmodal7('<?php echo 'click7'.$i ?>')"></i></td> -->
 								             </tr>
 							             <?php $i++; } } ?>
-							            </tbody> 
+							            </tbody>
 							          </table>
 						           <!-- <a href="#" onclick="showmodel7(<?php echo $candidateid ?>,<?php echo $candidate_noibo['candidateid']?>)" <?php echo isset($candidate_noibo)? "" : "disabled";?>><label class="floatright">Thêm Tin học <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a> -->
 						  	  </div>
@@ -1476,7 +1476,7 @@
 								             <label for="text" class="col-xs-3 width20 col-xs-3 label-profile">Email</label>
 								             <div class="col-xs-3 width30 padding-lr0">
 								             	<input type="text" class="textbox" name="email" value="<?php echo isset($value_con['email'])? $value_con['email'] : "";?>" >
-								             </div>   
+								             </div>
 								         </div>
 								         <br><br>
 								         <div class="width100">
@@ -1487,7 +1487,7 @@
 								             <label for="text" class="col-xs-3 width20 col-xs-3 label-profile">CMND/ ID</label>
 								             <div class="col-xs-3 width30 padding-lr0">
 								             	<input type="text" class="textbox" name="idcard" maxlength="9" value="<?php echo isset($value_con['idcard'])? $value_con['idcard'] : "";?>">
-								             </div>   
+								             </div>
 								         </div>
 								         <br><br>
 								         <div class="width100">
@@ -1515,7 +1515,7 @@
 							                    ?>
 							                    ">
 							                  </div>
-							                  
+
 								             </div>
 								         </div>
 								         <br><br>
@@ -1550,7 +1550,7 @@
 							                        <i class="fa fa-download"></i> Chọn CV
 							                    </label>
 						                    </div> -->
-						                    <div class="col-sm-5"> 
+						                    <div class="col-sm-5">
 						                      <?php if (isset($document_con[$key_con]) && !empty($document_con[$key_con])){
 						                        $url = $document_con[$key_con]['url'];
 						                        $name = $document_con[$key_con]['filename'];
@@ -1607,7 +1607,7 @@
 								                  <option value="<?php echo $key['name'] ?>"><?php echo $key['name'] ?></option>
 								                  <?php } } ?>
 							                </select>
-							             </div> 
+							             </div>
 							         </div>
 							         <br><br>
 							         <div class="width100">
@@ -1657,7 +1657,7 @@
 							         <br><br>
 							         <div class="width100">
 							             <label for="text" class="width20 col-xs-3 label-profile">Ngày cấp/ Nơi cấp</label>
-							             <div class="col-xs-3 width30 padding-lr0"> 
+							             <div class="col-xs-3 width30 padding-lr0">
 							             	<input type="text"  name="dateofissue"  id="dateofissue" class="textbox2" value="<?php echo isset($value_con['dateofissue'])? date("d-m-Y", strtotime($value_con['dateofissue'])) : "";  ?>">
 							             </div>
 							             <div class="col-xs-1 width5 padding-lr0"></div>
@@ -1668,14 +1668,14 @@
 								                	if( isset($value_con['placeofissue']) && $key['name'] == $value_con['placeofissue'] )
 								                	{
 								                ?>
-								                <option value="<?php echo $key['name'] ?>" selected><?php echo $key['name'] ?></option>	
-								                <?php 
+								                <option value="<?php echo $key['name'] ?>" selected><?php echo $key['name'] ?></option>
+								                <?php
 								                	} else {
 								                ?>
 								                  <option value="<?php echo $key['name'] ?>"><?php echo $key['name'] ?></option>
 								                  <?php } } ?>
 							                </select>
-							             </div> 
+							             </div>
 							         </div>
 							         <button type="button" class="btn-luu-nav floatright margin-t35" <?php echo isset($value_con)? "" : "disabled";?> onclick="luu_canhan(<?php echo $value_con['candidateid'] ?>)"> Lưu</button>
 							  	  	</div>
@@ -1703,7 +1703,7 @@
 									             <div class="col-xs-3 width30 padding-lr0">
 									             	<select class="textbox2" name="country1" >
 									             		<option value="Việt Nam">Việt Nam</option>
-									             		<option value="Khác" <?php 
+									             		<option value="Khác" <?php
 									             		$n1 = isset($canaddress_con[$key_con])? count($canaddress_con[$key_con]) : 0;
 									             		for ($i = 0; $i < $n1; $i++) {
 										             		if( ($canaddress_con[$key_con][$i]['addtype'] == 'PREMANENT') && ($canaddress_con[$key_con][$i]['country'] == 'Khác'))
@@ -1716,10 +1716,10 @@
 									             		>Khác</option>
 									             	</select>
 									             	<div class="h10-w-auto"></div>
-									             	<select class="textbox2 js-example-basic-single" onchange="comb_tp_qh_1(this.value,0,<?php echo $value_con['candidateid'] ?>)" 
+									             	<select class="textbox2 js-example-basic-single" onchange="comb_tp_qh_1(this.value,0,<?php echo $value_con['candidateid'] ?>)"
 									             		name="city1" id="city1_<?php echo $value_con['candidateid'] ?>" style="width: 195px;">
 										                 <option value="0" style="width: 195px" >Chọn tỉnh thành</option>
-										                <?php foreach ($city as $key ) 
+										                <?php foreach ($city as $key )
 										                {
 										                	$fdc = 0;
 										                	if(isset($canaddress_con[$key_con]))
@@ -1736,7 +1736,7 @@
 										                		}
 										                	}
 
-														 	if($fdc == 0) {?>		
+														 	if($fdc == 0) {?>
 										                  <option value="<?php echo $key['id_city'] ?>"><?php echo $key['name'] ?></option>
 										                  <?php }
 										                } ?>
@@ -1748,7 +1748,7 @@
 									                </select>
 									                <div class="h10-w-auto"></div>
 									                 <select class="textbox2 js-example-basic-single" name="ward1" id="phuongxa8-ad_<?php echo $value_con['candidateid'] ?>" style="width: 100%" required>
-									                 	<option value="0" id="chonpx-ad1_<?php echo $value_con['candidateid'] ?>" >Chọn phường xã</option>				                
+									                 	<option value="0" id="chonpx-ad1_<?php echo $value_con['candidateid'] ?>" >Chọn phường xã</option>
 									                </select>
 									                <div class="h10-w-auto"></div>
 
@@ -1766,7 +1766,7 @@
 									                 ?></textarea>
 									                 <div class="h10-w-auto"></div>
 									                   <textarea class="form-control off-resize fontstyle" rows="2" name="addressno1" id="toanha88_<?php echo $value_con['candidateid'] ?>"
-									                   ><?php 
+									                   ><?php
 									                 	if(isset($canaddress_con[$key_con]))
 										                	{
 										                		foreach ($canaddress_con[$key_con] as $value) {
@@ -1784,12 +1784,12 @@
 									                 ?>
 									                   </textarea>
 									             </div>
-									            
+
 									             <label for="text" class="width20 col-xs-3 label-profile" style="padding-left: 15px">Địa chỉ liên hệ</label>
 									             <div class="col-xs-3 width30 padding-lr0">
 									             	<select class="textbox2" name="country2">
 									             		<option value="Việt Nam">Việt Nam</option>
-									             		<option value="Khác" <?php 
+									             		<option value="Khác" <?php
 									             		$n1 = isset($canaddress_con[$key_con])? count($canaddress_con[$key_con]) : 0;
 									             		for ($i = 0; $i < $n1; $i++) {
 										             		if( ($canaddress_con[$key_con][$i]['addtype'] == 'CONTACT') && ($canaddress_con[$key_con][$i]['country'] == 'Khác'))
@@ -1804,7 +1804,7 @@
 									             	<div class="h10-w-auto"></div>
 									             	<select class="textbox2 js-example-basic-single" id="city2_<?php echo $value_con['candidateid'] ?>" name="city2" style="width: 195px" onchange="comb_tp_qh_2(this.value,0,<?php echo $value_con['candidateid'] ?>)">
 										                 <option value="0" style="width: 195px" >Chọn tỉnh thành</option>
-										                <?php foreach ($city as $key ) 
+										                <?php foreach ($city as $key )
 										                {
 										                	$fdc = 0;
 										                	if(isset($canaddress_con[$key_con]))
@@ -1821,7 +1821,7 @@
 										                		}
 										                	}
 
-														 	if($fdc == 0) {?>		
+														 	if($fdc == 0) {?>
 										                  <option value="<?php echo $key['id_city'] ?>"><?php echo $key['name'] ?></option>
 										                  <?php }
 										                } ?>
@@ -1835,8 +1835,8 @@
 									                 	<option value="0" id="chonpx-ad2_<?php echo $value_con['candidateid'] ?>" >Chọn phường xã</option>
 									                </select>
 									                <div class="h10-w-auto"></div>
-									                 <textarea class="form-control off-resize fontstyle" rows="2" name="street2" id="duong8_<?php echo $value_con['candidateid'] ?>" 
-									                 ><?php 
+									                 <textarea class="form-control off-resize fontstyle" rows="2" name="street2" id="duong8_<?php echo $value_con['candidateid'] ?>"
+									                 ><?php
 									                 	if(isset($canaddress_con[$key_con]))
 										                	{
 										                		foreach ($canaddress_con[$key_con] as $value) {
@@ -1851,7 +1851,7 @@
 									                 </textarea>
 									                 <div class="h10-w-auto"></div>
 									                   <textarea class="form-control off-resize fontstyle" rows="2" name="addressno2" id="toanha8_<?php echo $value_con['candidateid'] ?>"
-									                   ><?php 
+									                   ><?php
 									                 	if(isset($canaddress_con[$key_con]))
 										                	{
 										                		foreach ($canaddress_con[$key_con] as $value) {
@@ -1872,8 +1872,8 @@
 
 									         <div class="width100">
 									             <label for="text" class="width20 col-xs-3 label-profile margin-t10" >Số điện thoại</label>
-									             <?php 
-									                    $pizza  = $value_con['telephone'];
+									             <?php
+									                    $pizza  = trim($value_con['telephone'],',');
 									                    $pieces = explode(",", $pizza);
 									                    $p1 = isset($pieces[0])? $pieces[0] : "" ;
 									                    $p2 = isset($pieces[1])? $pieces[1] : "" ;
@@ -1885,12 +1885,12 @@
 									             	<input type="text" name="phone2" class="textbox2" value="<?php echo $p2;?>">
 									             </div>
 									         </div>
-									         
-									        
+
+
 									         <div class="width100 pull-left">
 									             <label for="text" class="width20 col-xs-3 label-profile margin-t10" >Liên lạc khẩn cấp</label>
 									             <div class="col-xs-3 width30 padding-lr0">
-									             	<input type="text" name="emergencycontact" class="textbox2 margin-t10" value="<?php echo isset($value_con['emergencycontact'])? $value_con['emergencycontact'] : "";?>" > 
+									             	<input type="text" name="emergencycontact" class="textbox2 margin-t10" value="<?php echo isset($value_con['emergencycontact'])? $value_con['emergencycontact'] : "";?>" >
 									             </div>
 									         </div>
 									         <button type="button" class="btn-luu-nav floatright margin-t35" <?php echo isset($value_con)? "" : "disabled";?> onclick="luu_diachi(<?php echo $value_con['candidateid'] ?>)"> Lưu</button>
@@ -1912,18 +1912,18 @@
 							    </div>
 							    <!-- heading ho so noi bo 4-->
 							    <div id="collapsetotal42" class="panel-collapse collapse tab_con_noibo in">
-							      <div class="panel-body" style="border: 0px">				         
-							         <table   class="table table-striped table-bordered"> 
-							            <thead> 
-							              <tr class="fontstyle"> 
-							                <th id="th" width="30%">Họ và tên</th> 
-							                <th id="th" width="20%">Năm sinh</th> 
-							                <th id="th" width="20%">Quan hệ</th> 
+							      <div class="panel-body" style="border: 0px">
+							         <table   class="table table-striped table-bordered">
+							            <thead>
+							              <tr class="fontstyle">
+							                <th id="th" width="30%">Họ và tên</th>
+							                <th id="th" width="20%">Năm sinh</th>
+							                <th id="th" width="20%">Quan hệ</th>
 							                <th id="th" width="20%">Nghề nghiệp</th>
 							                <!-- <th id="th" width="10%"></th> -->
-							              </tr> 
-							            </thead> 
-							            <tbody class="fontstyle text-center"> 
+							              </tr>
+							            </thead>
+							            <tbody class="fontstyle text-center">
 						            	  <?php if($family_con[$key_con] != null) {
 								                $i = 0;
 								              foreach ($family_con[$key_con] as $key) { ?>
@@ -1943,9 +1943,9 @@
 								              <td><?php echo $key['career']?></td>
 								              <!-- <td><i class="fa fa-edit" onclick="editmodal('<?php echo 'click'.$i ?>')"></i> <i class="fa fa-eraser" onclick="delmodal('<?php echo 'click'.$i ?>')"></i></td> -->
 								             </tr>
-								             <?php $i++;} } 
+								             <?php $i++;} }
 							               ?>
-							            </tbody> 
+							            </tbody>
 							          </table>
 							          <!-- <a href="#" onclick="showmodel11(<?php echo $candidateid?>,<?php echo $candidate_noibo['candidateid']?>)" <?php echo isset($candidate_noibo)? "" : "disabled";?>><label class="floatright">Thêm quan hệ <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a> -->
 							  	  </div>
@@ -1965,20 +1965,20 @@
 							    </div>
 							    <!-- heading ho so noi bo 5-->
 							    <div id="collapsetotal52" class="panel-collapse collapse tab_con_noibo in">
-							      <div class="panel-body" style="border: 0px">				         
-							          <table   class="table table-striped table-bordered" > 
-								            <thead class="fontstyle"> 
-								              <tr > 
-								                <th id="th" class="middle2" width="20%">Từ - Đến</th> 
-								                <th id="th" class="middle2" width="20%">Cty/ Địa chỉ/ ĐT</th> 
-								                <th id="th" width="13%">CV khi nghỉ</th> 
+							      <div class="panel-body" style="border: 0px">
+							          <table   class="table table-striped table-bordered" >
+								            <thead class="fontstyle">
+								              <tr >
+								                <th id="th" class="middle2" width="20%">Từ - Đến</th>
+								                <th id="th" class="middle2" width="20%">Cty/ Địa chỉ/ ĐT</th>
+								                <th id="th" width="13%">CV khi nghỉ</th>
 								                <th id="th" width="23%">NV/ Trách nhiệm</th>
 								                 <th id="th" class="middle2" width="17%">Lý do nghỉ</th>
 								                 <!-- <th id="th" width="10%"></th> -->
-								              </tr> 
-								            </thead> 
-								            <tbody class="fontstyle text-center"> 
-								             <?php if($experience_con[$key_con] != null) { 
+								              </tr>
+								            </thead>
+								            <tbody class="fontstyle text-center">
+								             <?php if($experience_con[$key_con] != null) {
 								              $i = 0;
 								              foreach ($experience_con[$key_con] as $key) { ?>
 								             <tr>
@@ -2002,23 +2002,23 @@
 								              <td><?php echo $key['quitreason']?></td>
 								              <!-- <td><i class="fa fa-edit" onclick="editmodal2('<?php echo 'click2'.$i ?>')"></i> <i class="fa fa-eraser" onclick="delmodal2('<?php echo 'click2'.$i ?>')"></i></td> -->
 								             </tr>
-								             
+
 								             <?php $i++; } } ?>
-								            </tbody> 
+								            </tbody>
 								          </table>
 								          <!-- <a href="#" onclick="showmodel2(<?php echo $candidateid ?>,<?php echo $candidate_noibo['candidateid']?>)" <?php echo isset($candidate_noibo)? "" : "disabled";?>><label class="floatright">Thêm kinh nghiệm <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a> -->
-								          <table   class="table table-striped table-bordered" > 
-								            <thead> 
-								              <tr class="fontstyle"> 
-								                <th id="th" width="30%">Họ và tên</th> 
-								                <th id="th" width="15%">Chức vụ</th> 
-								                <th id="th" width="20%">Công ty</th> 
+								          <table   class="table table-striped table-bordered" >
+								            <thead>
+								              <tr class="fontstyle">
+								                <th id="th" width="30%">Họ và tên</th>
+								                <th id="th" width="15%">Chức vụ</th>
+								                <th id="th" width="20%">Công ty</th>
 								                <th id="th" width="25%">Liên hệ</th>
 								                <!-- <th id="th" width="10%"></th>				                   -->
-								              </tr> 
-								            </thead> 
-								            <tbody class="fontstyle text-center"> 
-											
+								              </tr>
+								            </thead>
+								            <tbody class="fontstyle text-center">
+
 							            		 <?php if($reference_con[$key_con] != null) {
 									              $i = 0;
 									              foreach ($reference_con[$key_con] as $key) { ?>
@@ -2039,9 +2039,9 @@
 									               <!-- <td><i class="fa fa-edit" onclick="editmodal3('<?php echo 'click3'.$i ?>')"></i> <i class="fa fa-eraser" onclick="delmodal3('<?php echo 'click3'.$i ?>')"></i></td> -->
 									             </tr>
 									             <?php $i++; } } ?>
-									              
-							            	
-								            </tbody> 
+
+
+								            </tbody>
 								          </table>
 							           <!-- <a href="#" onclick="showmodel3(<?php echo $candidateid ?>,<?php echo $candidate_noibo['candidateid']?>)" <?php echo isset($candidate_noibo)? "" : "disabled";?>><label class="floatright">Thêm người tham chiếu <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a> -->
 							  	  </div>
@@ -2061,23 +2061,23 @@
 							    </div>
 							    <!-- heading ho so noi bo 6-->
 							    <div id="collapsetotal62" class="panel-collapse collapse tab_con_noibo in">
-							      <div class="panel-body" style="border: 0px">				         
-							          <table   class="table table-striped table-bordered" > 
-								            <thead class="fontstyle"> 
-								              <tr > 
-								                <th id="th" width="20%">Từ - Đến</th> 
-								                <th id="th" width="20%">Trường</th> 
-								                <th id="th" width="15%">Nơi học</th> 
+							      <div class="panel-body" style="border: 0px">
+							          <table   class="table table-striped table-bordered" >
+								            <thead class="fontstyle">
+								              <tr >
+								                <th id="th" width="20%">Từ - Đến</th>
+								                <th id="th" width="20%">Trường</th>
+								                <th id="th" width="15%">Nơi học</th>
 								                <th id="th" width="20%">Ngành học</th>
 								                 <th id="th" width="15%">Bằng cấp</th>
 								                 <!-- <th id="th" width="10%"></th> -->
-								                 
-								              </tr> 
-								            </thead> 
-								            <tbody class="fontstyle text-center"> 
+
+								              </tr>
+								            </thead>
+								            <tbody class="fontstyle text-center">
 								              <?php if($knowledge_con[$key_con] != null) {
 									                $i = 0;
-									              foreach ($knowledge_con[$key_con] as $key) { 
+									              foreach ($knowledge_con[$key_con] as $key) {
 									                if($key['traintimetype'] != null)
 									                  { continue; } else {?>
 									             <tr>
@@ -2101,24 +2101,24 @@
 									              <!-- <td><i class="fa fa-edit" onclick="editmodal4('<?php echo 'click4'.$i ?>')"></i> <i class="fa fa-eraser" onclick="delmodal4('<?php echo 'click4'.$i ?>')"></i></td> -->
 									             </tr>
 								             <?php $i++; } } }?>
-								            </tbody> 
+								            </tbody>
 							          </table>
 								          <!-- <a href="#" onclick="showmodel4(<?php echo $candidateid ?>,<?php echo $candidate_noibo['candidateid']?>)" <?php echo isset($candidate_noibo)? "" : "disabled";?>><label class="floatright">Thêm học vấn <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a> -->
-								          <table   class="table table-striped table-bordered" > 
-								            <thead class="fontstyle"> 
-								              <tr> 
-								                <th id="th" width="20%">Từ - Đến</th> 
-								                <th id="th" width="25%">Cơ sở đạo tào</th> 
-								                <th id="th" width="13%">TG học</th> 
+								          <table   class="table table-striped table-bordered" >
+								            <thead class="fontstyle">
+								              <tr>
+								                <th id="th" width="20%">Từ - Đến</th>
+								                <th id="th" width="25%">Cơ sở đạo tào</th>
+								                <th id="th" width="13%">TG học</th>
 								                <th id="th" width="17%">Ngành học</th>
 								                 <th id="th" width="15%">Bằng cấp</th>
 								                 <!-- <th id="th" width="10%"></th> -->
-								              </tr> 
+								              </tr>
 								            </thead>
-								            <tbody> 
+								            <tbody>
 								          	 <?php if($knowledge_con[$key_con] != null) {
 								               $i = 0;
-								              foreach ($knowledge_con[$key_con] as $key) { 
+								              foreach ($knowledge_con[$key_con] as $key) {
 								                if($key['traintimetype'] == null)
 								                  { continue; } else {?>
 								             <tr>
@@ -2142,7 +2142,7 @@
 								               <!-- <td><i class="fa fa-edit" onclick="editmodal5('<?php echo 'click5'.$i ?>')"></i> <i class="fa fa-eraser" onclick="delmodal4('<?php echo 'click5'.$i ?>')"></i></td> -->
 								             </tr>
 								             <?php $i++; } } } ?>
-								            </tbody> 
+								            </tbody>
 								          </table>
 							           <!-- <a href="#" onclick="showmodel5(<?php echo $candidateid ?>,<?php echo $candidate_noibo['candidateid']?>)" <?php echo isset($candidate_noibo)? "" : "disabled";?>><label class="floatright">Thêm khoá đào tạo <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a> -->
 							  	  </div>
@@ -2162,22 +2162,22 @@
 							    </div>
 							    <!-- heading ho so noi bo 7-->
 							    <div id="collapsetotal72" class="panel-collapse collapse tab_con_noibo in">
-							      <div class="panel-body" style="border: 0px">				         
-							          <table   class="table table-striped table-bordered" > 
-								            <thead class="fontstyle"> 
-								              <tr> 
-								                <th id="th" >Ngoại Ngữ</th> 
-								                <th id="th" >Nghe</th> 
-								                <th id="th" >Nói</th> 
+							      <div class="panel-body" style="border: 0px">
+							          <table   class="table table-striped table-bordered" >
+								            <thead class="fontstyle">
+								              <tr>
+								                <th id="th" >Ngoại Ngữ</th>
+								                <th id="th" >Nghe</th>
+								                <th id="th" >Nói</th>
 								                <th id="th" >Đọc</th>
 								                <th id="th" >Viết</th>
 								                <!-- <th id="th" ></th> -->
-								              </tr> 
-								            </thead> 
-								            <tbody class="fontstyle text-center"> 
+								              </tr>
+								            </thead>
+								            <tbody class="fontstyle text-center">
 								             <?php if($language_con[$key_con] != null) {
 									              $i = 0;
-									              foreach ($language_con[$key_con] as $key) { 
+									              foreach ($language_con[$key_con] as $key) {
 									                ?>
 									             <tr>
 									              <form id="<?php echo 'click6'.$i ?>">
@@ -2186,7 +2186,7 @@
 									                <input type="hidden" name="rate2" value="<?php echo $key['rate2']?>">
 									                <input type="hidden" name="rate3" value="<?php echo $key['rate3']?>">
 									                <input type="hidden" name="rate4" value="<?php echo $key['rate4']?>">
-									                
+
 									                <input type="hidden" name="recordid" value="<?php echo $key['recordid']?>">
 									                <input type="hidden" name="candidateid_main" value="<?php echo $candidateid ?>">
 								                	<input type="hidden" name="candidateid_sub" value="<?php echo $candidate_noibo['candidateid']?>">
@@ -2199,8 +2199,8 @@
 									              <!-- <td><i class="fa fa-edit" onclick="editmodal6('<?php echo 'click6'.$i ?>')"></i> <i class="fa fa-eraser" onclick="delmodal6('<?php echo 'click6'.$i ?>')"></i></td> -->
 									             </tr>
 								             <?php $i++; } } ?>
-									            
-								            </tbody> 
+
+								            </tbody>
 								          </table>
 							           <!-- <a href="#" onclick="showmodel6(<?php echo $candidateid ?>,<?php echo $candidate_noibo['candidateid']?>)" <?php echo isset($candidate_noibo)? "" : "disabled";?>><label class="floatright">Thêm ngoại ngữ <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a> -->
 							  	  </div>
@@ -2220,19 +2220,19 @@
 							    </div>
 							    <!-- heading ho so noi bo 8-->
 							    <div id="collapsetotal82" class="panel-collapse collapse tab_con_noibo in">
-							      <div class="panel-body" style="border: 0px">				         
-							          <table   class="table table-striped table-bordered" > 
-								            <thead class="fontstyle"> 
-								              <tr> 
-								                <th id="th" width="60%">Phần mềm</th> 
+							      <div class="panel-body" style="border: 0px">
+							          <table   class="table table-striped table-bordered" >
+								            <thead class="fontstyle">
+								              <tr>
+								                <th id="th" width="60%">Phần mềm</th>
 								                <th id="th" width="30%">Trình độ</th>
 								                <!-- <th id="th" width="10%"></th> -->
-								              </tr> 
-								            </thead> 
-								            <tbody class="fontstyle text-center"> 
+								              </tr>
+								            </thead>
+								            <tbody class="fontstyle text-center">
 								              <?php if($software_con[$key_con] != null) {
 									              $i = 0;
-									              foreach ($software_[$key_con] as $key) { 
+									              foreach ($software_[$key_con] as $key) {
 									                ?>
 									             <tr>
 									              <form id="<?php echo 'click7'.$i ?>">
@@ -2248,7 +2248,7 @@
 									              <!-- <td><i class="fa fa-edit" onclick="editmodal7('<?php echo 'click7'.$i ?>')"></i> <i class="fa fa-eraser" onclick="delmodal7('<?php echo 'click7'.$i ?>')"></i></td> -->
 									             </tr>
 								             <?php $i++; } } ?>
-								            </tbody> 
+								            </tbody>
 								          </table>
 							           <!-- <a href="#" onclick="showmodel7(<?php echo $candidateid ?>,<?php echo $candidate_noibo['candidateid']?>)" <?php echo isset($candidate_noibo)? "" : "disabled";?>><label class="floatright">Thêm Tin học <i class="fa fa-plus-circle color-blue" aria-hidden="true"></i></label></a> -->
 							  	  </div>
@@ -2264,12 +2264,12 @@
     </div>
     <!-- ket thuc body cua tab 1 thong tin ung vien -->
   </div>
-  
+
   	<!-- ket thuc tat ca tab 1 thong tin ung vien -->
 
   <div class="panel panel-default border-rad0">
   	<a data-toggle="collapse" data-parent="#accordion" href="#collapse2" onclick="rotate(2)">
-	    <div class="panel-heading rad-pad0 b-blue"> 
+	    <div class="panel-heading rad-pad0 b-blue">
 	       <i class="fa fa-angle-right a-tabcs rotate rotate_2 "></i>
 	       <div class="ul-nav">
 	       	<label class="tittle-tab">
@@ -2281,8 +2281,8 @@
     <div id="collapse2" class="panel-collapse collapse in">
       <div class="panel-body pad0">
       	<table class="width100">
-      		<?php 
-      		 foreach ($history as $row) { 
+      		<?php
+      		 foreach ($history as $row) {
       			$share  = $comment = $icon = $interviewer = $display = '';
       			$createddate  = date_format(date_create($row['createddate']),"d/m/Y - H:i");
       			if ($row['filename'] == '') {
@@ -2391,9 +2391,33 @@
 					$to 			=  date_format(date_create($row['timeto']),"H:i");
 					$fa 			= '<a onclick="loadAppointment('.$row['interviewid'].')" target="_blank"><i class="fa fa-calendar star-icon1"></i></a>';
 					$type 			= ' Tạo lịch hẹn '.$row['roundname'].' - '.$createddate;
-					$comment 		= $thu.', '.$ngay.' Tháng '.$thang.' Năm '.$nam.'<br>'.$row['location'];
+					$comment 		= $thu.', '.$ngay.' Tháng '.$thang.' Năm '.$nam.' - '.$from.' → '.$to.'<br>'.$row['location'];
 					if (!empty($row['interviewer'])) {
       					$interviewer 		= '<div class="row">';
+
+                        if ($row['interview_his']['status_asmt'] == 'C') {
+                            if ($row['interview_his']['optionid'] == '1') {
+                                $status     = '<div class="colorsuccess fontArial show-view" >Đã xác nhận</div>';
+                            }
+                            else if($row['interview_his']['optionid'] == '2'){
+                                $date       =  date_format(date_create($row['interview_his']['ansdatetime']),"d/m/Y");
+                                $from       =  date_format(date_create($row['interview_his']['ansdatetime']),"H:i");
+                                $to         =  date_format(date_create($row['interview_his']['ansdatetime2']),"H:i");
+                                $status     = '<div class="colorred fontArial show-view" >Tham dự vào ngày khác </div><div class="colorred fontArial">'.$from.' - '.$to.' '.$date.'</div>';
+                            }
+                            else if($row['interview_his']['optionid'] == '3'){
+                                $status     = '<div class="colorred fontArial show-view" >Không tham dự </div>';
+                            }
+                        }else{
+                                $status     = '<div class="colorgray fontArial show-view" >Chờ xác nhận </div>';
+                        }
+
+                        if ($row['interview_his']['imagelink'] == '') {
+                            $image_inv = 'unknow.jpg';
+                        }else{
+                            $image_inv = $row['interview_his']['imagelink'];
+                        }
+                        $interviewer    .= '<div class="col-xs-3"><img src="'.base_url().'public/image/'.$image_inv.'"  class="img_profile">'.$row['interview_his']['name'].$status.'</div>';
       					foreach ($row['interviewer'] as $key) {
       						$icon_h ='';
       						if ($key['status'] == 'C') {
@@ -2412,15 +2436,13 @@
       						}else{
 	      							$status 	= '<div class="colorgray fontArial show-view" >Chờ xác nhận </div>';
 	      					}
-	      					if ($key['scr_asmtid'] != '0') {
-	      						$icon_h 		= ' <i class="fa fa-file-o"></i>';
-	      					}
+
 	      					if ($key['filename'] == '') {
-	      						$image_inv = 'unknow.jpg'; 
+	      						$image_inv = 'unknow.jpg';
 	      					}else{
 	      						$image_inv = $key['filename'];
 	      					}
-	      					$interviewer 	.= '<div class="col-xs-3"><img src="'.base_url().'public/image/'.$image_inv.'"  class="img_profile">'.$key['operatorname'].$icon_h.$status.'</div>';
+	      					$interviewer 	.= '<div class="col-xs-3"><img src="'.base_url().'public/image/'.$image_inv.'"  class="img_profile">'.$key['operatorname'].$status.'</div>';
 	      				}
 	      				$interviewer 		.= '</div>';
       				}
@@ -2482,12 +2504,12 @@
 		      				<?php echo $comment ?>
 		      				<?php echo isset($interviewer) ? $interviewer : '' ?>
 	      				</div>
-	      				
+
 	      			</td>
 	      		</tr>
       		<?php  }} ?>
-      		
-      		
+
+
       	</table>
       </div>
     </div>
@@ -2529,7 +2551,7 @@
 <?php endif ?>
 
 <?php if ($id != ''): ?>
-	
+
 <?php endif ?>
 <input type="hidden" id="getqh1" value="<?php if ($id != ''){
 	    		 for($i = 0; $i < count($canaddress_noibo); $i++)
@@ -2585,7 +2607,7 @@
 	    		 	}
 	    		 }}else{ echo '';}
 ?>">
-<?php if ($id != '') { 
+<?php if ($id != '') {
 	foreach ($candidate_con as $key => $value){ ?>
 	<input type="hidden" id="getqh1_<?php echo $value['candidateid'] ?>" value="<?php
 	    		 for($i = 0; $i < count($canaddress_con[$key]); $i++)
@@ -2665,7 +2687,7 @@
 		color: #A0BA82;
 	}
 	.img_profile{
-		float:left; 
+		float:left;
 		margin-right: 4px;
 		width: 32px;
 		height: 32px;
@@ -2677,14 +2699,14 @@
 	function rotate(id) {
 		for (var i = 1; i <= 3; i++) {
 			if(i != id){
-				$(".rotate_"+i).removeClass("down"); 
+				$(".rotate_"+i).removeClass("down");
 			}
 		}
-		$(".rotate_"+id).toggleClass("down"); 
+		$(".rotate_"+id).toggleClass("down");
 	}
-	
+
 	$(document).ready(function(){
-	
+
 		$('#ngaysinh123').datetimepicker({
 		   timepicker:false,
 		   format:'d-m-Y',
@@ -2697,7 +2719,7 @@
 		  maxDate:'+1970/01/01',
 		  format:'d-m-Y'
 		});
-	
+
 		$('.js-example-basic-single').select2();
 	});
 	$(document).ready(function(){
@@ -2712,8 +2734,8 @@
             var fileName = e.target.files[0].name;
             $("#label2").text(fileName);
             $("#label2").attr('href','#');
-        });        
-        
+        });
+
     });
 	$(document).ready(function(){
 		<?php if ($id != '') { ?>
@@ -2744,7 +2766,7 @@
 			    freeInput: true,
 			});
 
-			
+
 	    	<?php foreach ($candidate_con as $key => $value){ ?>
 	    		var candidateid = <?php echo $value['candidateid'] ?>;
 	    		if($('#city1_'+candidateid).val() != '0')
@@ -2772,9 +2794,9 @@
 				    freeInput: true,
 				});
 
-				
+
 	    	<?php } } ?>
-	   	
+
 	});
 	function comb_tp_qh_1(obj,get,candidateid)
 	{
@@ -2797,7 +2819,7 @@
 	                  else
 	                  {
 	                    $('#chonqh-ad1_'+candidateid).after('<option class="gicungdc" value="'+data[i].id_district+'">'+data[i].name+'</option>');
-	                  } 
+	                  }
 	                  }
 	                if ($('#addressno1_'+candidateid).val() == '') {
 	                	$('#toanha88_'+candidateid).val('');
@@ -2861,7 +2883,7 @@
 	              else
 	              {
 	                $('#chonqh-ad2_'+candidateid).after('<option class="gicungdc3" value="'+data[i].id_district+'">'+data[i].name+'</option>');
-	              } 
+	              }
               }
            	if ($('#addressno2_'+candidateid).val() == '') {
             	$('#toanha8_'+candidateid).val('');
@@ -2903,9 +2925,9 @@
 	        console.log("error");
 	      })
 	}
-	  
+
 	function luu_canhan($candidateid)
-	{	
+	{
 		// var candidate_id = $('#candidate_noibo').val();
 		$.ajax({
 			url: '<?php echo base_url()?>admin/handling/update_canhan/'+candidateid,
@@ -2921,10 +2943,10 @@
 		})
 		.always(function() {
 			console.log("complete");
-		});	
+		});
 	}
 	function luu_diachi($candidateid)
-	{	
+	{
 		// var candidate_id = $('#candidate_noibo').val();
 		$.ajax({
 			url: '<?php echo base_url()?>admin/handling/update_diachi/'+candidateid,
@@ -2941,12 +2963,12 @@
 		.always(function() {
 			console.log("complete");
 		});
-		
+
 	}
 
 	function talent_detail(obj)
 	{
-		var id = obj; 
+		var id = obj;
 		$.ajax({
 			url: '<?php echo base_url()?>admin/handling/talent/'+id,
 			type: 'POST',
@@ -2958,21 +2980,21 @@
 			$('#iconstar_profile').removeClass('color-orange');
 			var t = '';
 			parent.$('#talent'+data[0]).empty();
-			
+
 			if(id == 0)
 			{
 				$('#iconstar_profile').addClass('color-gray');
-				$('#textstar_profile').text('');	
+				$('#textstar_profile').text('');
 				t = '<span class="fa-stack fa-1x"> <i class="fa fa-star color-gray fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9" ></span></span> ';
-			} 
+			}
 			else
 			{
 				$('#iconstar_profile').addClass('color-orange');
-				$('#textstar_profile').text(id);	
+				$('#textstar_profile').text(id);
 				t =	'<span class="fa-stack fa-1x"> <i class="fa fa-star color-orange fa-stack-2x nohover size18" ></i><span class="fa fa-stack-1x color-white size9">'+id+'</span></span> ';
-			}		
-			parent.$('#talent'+data[0]).append(t);		
-			
+			}
+			parent.$('#talent'+data[0]).append(t);
+
 		})
 		.fail(function() {
 			console.log("error");
@@ -2994,18 +3016,18 @@
 		})
 		.done(function(data) {
 			$('#checkchange').empty();
-			var t = ''; 
+			var t = '';
 			parent.$('#block'+data[0]).empty();
 			if(id == 'Y')
-			{ 
+			{
 				t ='<i class="fa fa-ban color-red size-icon" ></i>';
 				parent.$('#block'+data[0]).append('<i class="fa fa-ban color-red " ></i>');
 				parent.$('#ds'+data[0]).removeClass('col-md-4');
-				parent.$('#ds'+data[0]).addClass('col-md-3');	
+				parent.$('#ds'+data[0]).addClass('col-md-3');
 			}
-			else 
+			else
 			{
-				t = '<i class="fa fa-check-circle-o color-green size-icon"></i> ';	
+				t = '<i class="fa fa-check-circle-o color-green size-icon"></i> ';
 				parent.$('#ds'+data[0]).removeClass('col-md-3');
 				parent.$('#ds'+data[0]).addClass('col-md-4');
 			}
@@ -3031,11 +3053,13 @@
 			url: '<?php echo base_url() ?>admin/campaign/selectRound',
 			type: 'POST',
 			dataType: 'json',
-			data: {campaignid: campaignid},
+			data: $('#form_checkone').serialize(),
 		})
 		.done(function(data) {
-			
+
 			var option = '';
+            var list_candidate = data['candidate'];
+            data = data['round'];
 			for(var i in data){
 				if(data[i]['roundtype'] == 'Profile'){
 					continue;
@@ -3089,8 +3113,8 @@
 		.fail(function() {
 			console.log("error");
 		});
-		
-				
+
+
 	}
 	function recruite() {
 		$.ajax({
@@ -3106,7 +3130,7 @@
 		.fail(function() {
 			console.log("error");
 		});
-		
+
 	}
 
 	function createMChoice(assessment, mailtemp) {
@@ -3121,7 +3145,7 @@
 			var name = $('#candidatename').val();
 			var avatar = $('#candidateimage').val();
 			row += '<div class="body_cam col-xs-12 body_chuyen body_taophieu" ><div class="row"><div class="col-md-3 box_profile_tn"><div class="profile_tn"><input type="hidden" name="profile_'+k+'[]" value="'+form[i].value+'">';
-            row += '<img src="<?php echo base_url() ?>public/image/'+avatar+'"><p class="guide-black">'+name+'</p></div></div>';       
+            row += '<img src="<?php echo base_url() ?>public/image/'+avatar+'"><p class="guide-black">'+name+'</p></div></div>';
             row += '<div class="col-md-9 border_left_ddd"><div class="rowedit2"><div class="col-xs-3 body-blac4">Mẫu phiếu trắc nghiệm: </div><div class="col-xs-8"><select class="js-example-basic-2 select2" name="profile_'+k+'[]" required="" style="width: 100%">';
             <?php foreach ($asmt_tn as $key): ?>
             	if (assessment == <?php echo $key['asmttemp'] ?>) {
@@ -3164,15 +3188,15 @@
 			var name = $('#candidatename').val();
 			var avatar = $('#candidateimage').val();
 			row += '<div class="body_cam col-xs-12 body_chuyen body_taopv" style="margin-top: 5px"><div class="row"><div class="col-md-3 box_profile_tn"><div class="profile_tn">';
-            row += '<img src="<?php echo base_url() ?>public/image/'+avatar+'"><p class="guide-black">'+name+'</p><input type="hidden" name="profile_'+k+'[]" value="'+form[i].value+'"><input type="hidden" name="profile_'+k+'[]" value="'+name+'"></div></div>';       
+            row += '<img src="<?php echo base_url() ?>public/image/'+avatar+'"><p class="guide-black">'+name+'</p><input type="hidden" name="profile_'+k+'[]" value="'+form[i].value+'"><input type="hidden" name="profile_'+k+'[]" value="'+name+'"></div></div>';
             row += '<div class="col-md-9 border_left_ddd"><div class="rowedit2"><div class="col-xs-3 body-blac4">Loại hình phỏng vấn:</div>';
             row += '<div class="col-xs-8"><select class="js-example-basic-2 select2" name="profile_'+k+'[]" required="" style="width: 100%"><option value="W">Phỏng vấn trực tiếp</option><option value="C">Phỏng vấn gián tiếp</option></select></div></div>';
-            row += '<div class="rowedit2"><div class="col-xs-3 body-blac4">Thời gian:</div><div class="col-xs-3"><input class="kttext width_100 timepicker" type="text" name="profile_'+k+'[]" value="09:00"></div><div class="col-xs-3"><input class="kttext width_100 timepicker" type="text" name="profile_'+k+'[]" value="10:00"></div></div>';          
-            row += '<div class="rowedit2"><div class="col-xs-3 body-blac4">Địa điểm:</div><div class="col-xs-8"><input class="kttext width_100" type="text" name="profile_'+k+'[]" value="2W Ung Văn Khiêm, P.25, Quận Bình Thạnh, Tp. HCM"></div></div>';             
-            row += '<div class="rowedit3"><div class="col-xs-3 body-blac4">Nội dung:</div><div class="col-xs-8"><textarea name="profile_'+k+'[]" class="textarea_profile" rows="3" required=""></textarea></div></div>';              
-            row += '<div class="rowedit3"><div class="col-xs-3 body-blac4">Người phỏng vấn:</div><div class="col-xs-8"><div class="col-xs-6 manage_pv" id="col_add_pt_'+k+'"><div ><img src="<?php echo base_url() ?>public/image/unknow.jpg"><a href="javascript:void(0)" class="add_pt" onclick="insertPV('+k+')"><span> Thêm người phỏng vấn</span></a></div></div></div><input type="hidden" id="managePV_'+k+'" name="profile_'+k+'[]"></div>';          
-                  
-                    
+            row += '<div class="rowedit2"><div class="col-xs-3 body-blac4">Thời gian:</div><div class="col-xs-3"><input class="kttext width_100 timepicker" type="text" name="profile_'+k+'[]" value="09:00"></div><div class="col-xs-3"><input class="kttext width_100 timepicker" type="text" name="profile_'+k+'[]" value="10:00"></div></div>';
+            row += '<div class="rowedit2"><div class="col-xs-3 body-blac4">Địa điểm:</div><div class="col-xs-8"><input class="kttext width_100" type="text" name="profile_'+k+'[]" value="2W Ung Văn Khiêm, P.25, Quận Bình Thạnh, Tp. HCM"></div></div>';
+            row += '<div class="rowedit3"><div class="col-xs-3 body-blac4">Nội dung:</div><div class="col-xs-8"><textarea name="profile_'+k+'[]" class="textarea_profile" rows="3" required=""></textarea></div></div>';
+            row += '<div class="rowedit3"><div class="col-xs-3 body-blac4">Người phỏng vấn:</div><div class="col-xs-8"><div class="col-xs-6 manage_pv" id="col_add_pt_'+k+'"><div ><img src="<?php echo base_url() ?>public/image/unknow.jpg"><a href="javascript:void(0)" class="add_pt" onclick="insertPV('+k+')"><span> Thêm người phỏng vấn</span></a></div></div></div><input type="hidden" id="managePV_'+k+'" name="profile_'+k+'[]"></div>';
+
+
           	if (email == '') {
             	email += $('#candidateemail').val();
             }else{
@@ -3211,51 +3235,51 @@
 			var name = $('#candidatename').val();
 			var avatar = $('#candidateimage').val();
 			row += '<div class="body_cam col-xs-12 body_chuyen body_offer"><div class="row" style="margin-right: 0px">';
-            row += '<div class="col-md-3 box_profile_tn"><div class="profile_tn"><img src="<?php echo base_url() ?>public/image/'+avatar+'"><p class="guide-black">'+name+'</p><input type="hidden" name="profile_'+k+'[]" value="'+form[i].value+'"><input type="hidden" name="profile_'+k+'[]" value="'+name+'"></div></div>';       
+            row += '<div class="col-md-3 box_profile_tn"><div class="profile_tn"><img src="<?php echo base_url() ?>public/image/'+avatar+'"><p class="guide-black">'+name+'</p><input type="hidden" name="profile_'+k+'[]" value="'+form[i].value+'"><input type="hidden" name="profile_'+k+'[]" value="'+name+'"></div></div>';
             row += '<div class="col-md-9 border_left_ddd"><div class="row"><div class="col-md-3 "><span>Ngày nhận việc</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 datetimepicker" name="profile_'+k+'[]" value="<?php echo date_format(date_create(),"d/m/Y") ?>"></div></div>';
-            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Thời gian thử việc</span></div><div class="col-md-9 padding_0"><div class="col-md-6 padding_0"><input type="text" class="so" name="profile_'+k+'[]" value="2"></div><div class="col-md-6"><input type="text"  name="" value="Tháng" readonly=""></div></div></div>';   
-            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Từ ngày</span></div><div class="col-md-9 padding_0"><div class="col-md-4 padding_0"><input type="text" class="datetimepicker" name="profile_'+k+'[]" value="<?php echo date_format(date_create(),"d/m/Y") ?>"></div><div class="col-md-2 padding_0"><span>Đến ngày</span></div><div class="col-md-4"><input class="datetimepicker" type="text" name="profile_'+k+'[]" value="<?php echo date_format(date_create(),"d/m/Y") ?>"></div></div></div>';       
-            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Địa điểm</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90"  name="profile_'+k+'[]" value="2W Ung Văn Khiêm, P.25, Quận Bình Thạnh, Tp. HCM"></div></div>';             
-            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Chế độ làm việc</span></div><div class="col-md-9 padding_0"><select class="select2" name="profile_'+k+'[]" required="" style="width: 90%"><option value="Toàn thời gian">Toàn thời gian</option><option value="Bán thời gian">Bán thời gian</option></select></div></div>';              
-            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Người hướng dẫn</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_trainer" name="profile_'+k+'[]" required="" style="width: 90%">';
+            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Thời gian thử việc</span></div><div class="col-md-9 padding_0"><div class="col-md-6 padding_0"><input type="text" class="so" name="profile_'+k+'[]" value="2"></div><div class="col-md-6"><input type="text"  name="" value="Tháng" readonly=""></div></div></div>';
+            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Từ ngày</span></div><div class="col-md-9 padding_0"><div class="col-md-4 padding_0"><input type="text" class="datetimepicker" name="profile_'+k+'[]" value="<?php echo date_format(date_create(),"d/m/Y") ?>"></div><div class="col-md-2 padding_0"><span>Đến ngày</span></div><div class="col-md-4"><input class="datetimepicker" type="text" name="profile_'+k+'[]" value="<?php echo date_format(date_create(),"d/m/Y") ?>"></div></div></div>';
+            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Địa điểm</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90"  name="profile_'+k+'[]" value="2W Ung Văn Khiêm, P.25, Quận Bình Thạnh, Tp. HCM"></div></div>';
+            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Chế độ làm việc</span></div><div class="col-md-9 padding_0"><select class="select2" name="profile_'+k+'[]" required="" style="width: 90%"><option value="Toàn thời gian">Toàn thời gian</option><option value="Bán thời gian">Bán thời gian</option></select></div></div>';
+            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Người hướng dẫn</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_trainer" name="profile_'+k+'[]" required="" style="width: 90%"><option value="0">Vui lòng chọn</option>';
             <?php foreach ($category as $key){
             	if ($key['category'] == 'POSITION') {?>
             	row += '<option value="<?php echo $key['code'] ?>"><?php echo $key['code'].' - '.$key['description'] ?></option>';
             <?php }} ?>
             row += '</select></div></div>';
-            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Báo cáo cho</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_reportto" name="profile_'+k+'[]" required="" style="width: 90%">';
+            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Báo cáo cho</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_reportto" name="profile_'+k+'[]" required="" style="width: 90%"><option value="0">Vui lòng chọn</option>';
             <?php foreach ($category as $key){
             	if ($key['category'] == 'POSITION') {?>
             	row += '<option value="<?php echo $key['code'] ?>"><?php echo $key['code'].' - '.$key['description'] ?></option>';
             <?php }} ?>
             row += '</select></div></div>';
-            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Mức lương thử việc</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';              
+            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Mức lương thử việc</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';
             row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Mức lương chính thức</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';
-            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Cấp</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_level" name="profile_'+k+'[]" required="" style="width: 90%">';
+            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Cấp</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_level" name="profile_'+k+'[]" required="" style="width: 90%"><option value="0">Vui lòng chọn</option>';
             <?php foreach ($category as $key){
             	if ($key['category'] == 'CAPBAC') {?>
             	row += '<option value="<?php echo trim($key['code']) ?>"><?php echo $key['description'] ?></option>';
             <?php }} ?>
-            row += '</select></div></div>';  
-            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Bậc</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90" name="profile_'+k+'[]" ></div></div>'; 
-            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Chức vụ</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_position" name="profile_'+k+'[]" required="" style="width: 90%">';
+            row += '</select></div></div>';
+            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Bậc</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90" name="profile_'+k+'[]" ></div></div>';
+            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Chức vụ</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_position" name="profile_'+k+'[]" required="" style="width: 90%"><option value="0">Vui lòng chọn</option>';
             <?php foreach ($category as $key){
             	if ($key['category'] == 'POSITION') {?>
             	row += '<option value="<?php echo $key['code'] ?>"><?php echo $key['description'] ?></option>';
             <?php }} ?>
-            row += '</select></div></div>'; 
-            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phòng ban</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_department" name="profile_'+k+'[]" required="" style="width: 90%">';
+            row += '</select></div></div>';
+            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phòng ban</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_department" name="profile_'+k+'[]" required="" style="width: 90%"><option value="0">Vui lòng chọn</option>';
             <?php foreach ($category as $key){
             	if ($key['category'] == 'DEPT') {?>
             	row += '<option value="<?php echo $key['code'] ?>"><?php echo $key['code'].' - '.$key['description'] ?></option>';
             <?php }} ?>
-            row += '</select></div></div>';   
-            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phụ cấp ăn trưa</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';    
-            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phụ cấp điện thoại</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';  
-            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Hỗ trợ xăng xe</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';   
-            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Đi lại, điện thoại, xăng xe tài xế</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';           
-            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phụ cấp khác</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div></div></div></div>';           
-                  
+            row += '</select></div></div>';
+            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phụ cấp ăn trưa</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';
+            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phụ cấp điện thoại</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';
+            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Hỗ trợ xăng xe</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';
+            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Đi lại, điện thoại, xăng xe tài xế</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';
+            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phụ cấp khác</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div></div></div></div>';
+
           	if (email == '') {
             	email += $('#candidateemail').val();
             }else{
@@ -3265,6 +3289,9 @@
             k = Number(k)+1;
 		}
 		parent.parent.loadCategoryOffer();
+        // if(mailtemp == 0){
+        //     mailtemp = 1;
+        // }
 		parent.parent.$('#mailid6').val(mailtemp).change();
 		parent.parent.$('#profile_offer').prepend(row);
 		parent.parent.$('#mail_to_offer').val(email);
@@ -3308,7 +3335,7 @@
       .fail(function() {
         console.log("error");
       });
-      
+
     }
     var substringMatcher = function(strs) {
 	  return function findMatches(q, cb) {
@@ -3332,7 +3359,7 @@
 	  };
 	};
 
-		
+
 </script>
 <style type="text/css">
 	.tt-input

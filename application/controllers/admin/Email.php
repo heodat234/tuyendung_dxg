@@ -214,7 +214,6 @@ class Email extends CI_Controller {
 					$mail1['emailbody'] 		= $mail['emailbody'];
 					$mail1['emailsubject'] 		= $mail['emailsubject'];
 					$mail1["attachment"] 		= json_encode($mail["attachment"]);
-					$mail1['createdby'] 		= $this->session->userdata('user_admin')['operatorid'];
 					$this->Mail_model->insert('mailtable',$mail1);
 			    }
 			}
@@ -276,7 +275,6 @@ class Email extends CI_Controller {
 						$mail1['emailbody'] 		= $mail['emailbody'];
 						$mail1['emailsubject'] 		= $mail['emailsubject'];
 						$mail1["attachment"] 		= json_encode($mail["attachment"]);
-						$mail1['createdby'] 		= $this->session->userdata('user_admin')['operatorid'];
 						$this->Mail_model->insert('mailtable',$mail1);
 				    }
 				}
@@ -315,9 +313,14 @@ class Email extends CI_Controller {
      public function mailById()
     {
     	$mailid = $this->input->post('mailid');
-    	$sql ="SELECT a.* from mailprofile a  WHere (a.mailprofileid = '$mailid')";
-    	$result = $this->Campaign_model->select_sql($sql);
-		echo json_encode($result);
+        if($mailid != 0){
+    	   $sql ="SELECT a.* from mailprofile a  WHere (a.mailprofileid = '$mailid')";
+           $result = $this->Campaign_model->select_sql($sql);
+            echo json_encode($result);
+        }else{
+            echo json_encode(1);
+        }
+
      }
 
 

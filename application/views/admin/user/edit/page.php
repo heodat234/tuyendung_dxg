@@ -19,7 +19,7 @@
 		            </div>
 		            <div id="box_header_2">
 		            	<a href="<?php echo base_url()?>admin/user" class="btn btn-box-tool" data-toggle="tooltip" title="" data-original-title="Previous">
-		            		<i class="fa fa-chevron-left"></i> 
+		            		<i class="fa fa-chevron-left"></i>
 		            		Quay lại
 		            	</a>
 		            </div>
@@ -27,7 +27,7 @@
 		            	<input type="hidden" name="groupid" value="<?php echo $records[0]['groupid']?>">
 			            <div class="panel-group" id="accordion">
 						  	<div class="panel panel-default border-rad0">
-						    	<div class="panel-heading rad-pad0 b-blue"> 
+						    	<div class="panel-heading rad-pad0 b-blue">
 						       		<ul class="nav nav-tabs ul-nav">
 						       			<li class="">
 						       				<a data-toggle="tab" href="#list_user" class="nemu-info-pf">
@@ -125,60 +125,60 @@
 													            <div class="col-xs-12 padding-lr0">
 													            	<div class="col-xs-3">
 													            		<label class="check_quyen">
-													            			<input type="checkbox" name="operator[1]" <?php echo substr($records[0]['operator'],0,1)=='Y'?'checked':''?>> 
+													            			<input type="checkbox" name="operator[1]" <?php echo substr($records[0]['operator'],0,1)=='Y'?'checked':''?>>
 													            		Tài khoản người dùng</label>
 													            	</div>
 													            	<div class="col-xs-3">
 													            		<label class="check_quyen">
-													            			<input type="checkbox" name="operator[2]" <?php echo substr($records[0]['operator'],1,1)=='Y'?'checked':''?>> 
+													            			<input type="checkbox" name="operator[2]" <?php echo substr($records[0]['operator'],1,1)=='Y'?'checked':''?>>
 													            		Mẫu Email</label>
 													            	</div>
 													            	<div class="col-xs-3">
 													            		<label class="check_quyen">
-													            			<input type="checkbox" name="operator[3]" <?php echo substr($records[0]['operator'],2,1)=='Y'?'checked':''?>> 
+													            			<input type="checkbox" name="operator[3]" <?php echo substr($records[0]['operator'],2,1)=='Y'?'checked':''?>>
 													            		Cấu hình chung</label>
 													            	</div>
 													            </div>
 													            <div class="col-xs-12 padding-lr0">
 													            	<div class="col-xs-3">
 													            		<label class="check_quyen">
-													            			<input type="checkbox" name="operator[4]" <?php echo substr($records[0]['operator'],3,1)=='Y'?'checked':''?>> 
+													            			<input type="checkbox" name="operator[4]" <?php echo substr($records[0]['operator'],3,1)=='Y'?'checked':''?>>
 													            		Tin tức tuyển dụng</label>
 													            	</div>
 													            	<div class="col-xs-3">
 													            		<label class="check_quyen">
-													            			<input type="checkbox" name="operator[5]" <?php echo substr($records[0]['operator'],4,1)=='Y'?'checked':''?>> 
+													            			<input type="checkbox" name="operator[5]" <?php echo substr($records[0]['operator'],4,1)=='Y'?'checked':''?>>
 													            		Chiến dịch tuyển dụng</label>
 													            	</div>
 													            	<div class="col-xs-3">
 													            		<label class="check_quyen">
-													            			<input type="checkbox" name="operator[6]" <?php echo substr($records[0]['operator'],5,1)=='Y'?'checked':''?>> 
+													            			<input type="checkbox" name="operator[6]" <?php substr($records[0]['operator'],5,1)=='Y'?'checked':''?>>
 													            		Quy trình phỏng vấn</label>
 													            	</div>
 													            	<div class="col-xs-3">
 													            		<label class="check_quyen">
-													            			<input type="checkbox" name="operator[7]" <?php echo substr($records[0]['operator'],6,1)=='Y'?'checked':''?>> 
+													            			<input type="checkbox" name="operator[7]" <?php echo substr($records[0]['operator'],6,1)=='Y'?'checked':''?>>
 													            		Phỏng vấn / Đánh giá</label>
 													            	</div>
 													            </div>
 													            <div class="col-xs-12 padding-lr0">
 													            	<div class="col-xs-3">
 													            		<label class="check_quyen">
-													            			<input type="checkbox" name="operator[8]" <?php echo substr($records[0]['operator'],7,1)=='Y'?'checked':''?>> 
+													            			<input type="checkbox" name="operator[8]" <?php echo substr($records[0]['operator'],7,1)=='Y'?'checked':''?>>
 													            		Hồ sơ ứng viên</label>
 													            	</div>
 													            </div>
 													            <div class="col-xs-12 padding-lr0">
 													            	<div class="col-xs-3">
 													            		<label class="check_quyen">
-													            			<input type="checkbox" name="operator[9]" <?php echo substr($records[0]['operator'],8,1)=='Y'?'checked':''?>> 
+													            			<input type="checkbox" name="operator[9]" <?php echo substr($records[0]['operator'],8,1)=='Y'?'checked':''?>>
 													            		Web portal</label>
 													            	</div>
 													            </div>
 													            <div class="col-xs-12 padding-lr0">
 													            	<div class="col-xs-3">
 													            		<label class="check_quyen">
-													            			<input type="checkbox" name="operator[10]" <?php echo substr($records[0]['operator'],9,1)=='Y'?'checked':''?>> 
+													            			<input type="checkbox" name="operator[10]" <?php echo substr($records[0]['operator'],9,1)=='Y'?'checked':''?>>
 													            		Import data</label>
 													            	</div>
 													            </div>
@@ -218,7 +218,7 @@
 		       				<input type="hidden" name="operatorid">
 				            <div class="panel-group" id="accordion">
 				            	<div class="panel panel-default border-rad0">
-							    	<div class="panel-heading rad-pad0 b-blue"> 
+							    	<div class="panel-heading rad-pad0 b-blue">
 							       			<!-- <i class="fa fa-angle-right a-tabcs rotate rotate_1 down"></i> -->
 							       		<div class="ul-nav">
 									       	<label class="tittle-tab" style="font-size: 17px;margin-bottom: 15px">
@@ -229,16 +229,17 @@
 							    	</div>
 								    <div id="collapse1" class="panel-collapse collapse in">
 								      	<div class="panel-body ">
+                                            <div class="alert alert-danger hide" id="err-user"></div>
 								      		<div class="row form_campaign">
 								      			<div class="col-xs-3">
 								      				<label class="label_cam"> Tên đăng nhập</label>
 								      			</div>
 								      			<div class="col-xs-4">
-								      				<input type="text" class="textbox" name="displayname" value="">
+								      				<input type="text" class="textbox" name="displayname" value="" required="">
 								      			</div>
 								      			<div class="col-xs-3">
 								      				<button type="button" class="btn btn_tk">
-								      					<i class="fa fa-lock"></i> 
+								      					<i class="fa fa-lock"></i>
 								      				Khôi phục tài khoản</button>
 								      			</div>
 								      		</div>
@@ -247,9 +248,9 @@
 								      				<label class="label_cam"> Mật khẩu</label>
 								      			</div>
 								      			<div class="col-xs-4">
-								      				<input type="password" class="textbox" name="password" value="******">
+								      				<input type="password" class="textbox" name="password" value="******" required="">
 								      			</div>
-								      			
+
 								      		</div>
 								      		<div class="row form_campaign">
 								      			<div class="col-xs-3">
@@ -258,7 +259,7 @@
 								      			<div class="col-xs-4">
 								      				<select class="textbox" name="groupid">
 								      					<!-- <option value="<?php echo($records[0]['groupid'])?>"><?php echo($records[0]['groupname'])?></option> -->
-								      					<?php foreach ($groups as $gr){ 
+								      					<?php foreach ($groups as $gr){
 								      						if ($gr['groupid'] == $records[0]['groupid']) { ?>
 								      							<option value="<?php echo($gr['groupid'])?>" selected><?php echo($gr['groupname'])?></option>
 								      						<?php }else{ ?>
@@ -293,13 +294,13 @@
 								      				<label class="label_cam"> Địa chỉ e-mail</label>
 								      			</div>
 								      			<div class="col-xs-4">
-								      				<input type="email" class="textbox" name="email" value="">
+								      				<input type="email" class="textbox" name="email" value="" required="">
 								      			</div>
 								      		</div>
 								      		<div class="row form_campaign">
 								      			<div class="col-xs-3">
 								      				<label class="label_cam">
-								      					<input type="checkbox" name="check_for_email"> 
+								      					<input type="checkbox" name="check_for_email">
 								      				Cấu hình email gửi nhận</label>
 								      			</div>
 								      		</div>
@@ -351,7 +352,7 @@
 								      			</div>
 								      			<div class="col-xs-6">
 								      				<label class="checkbox-inline">
-								      					<input type="checkbox" name="mcssl" value="" style="margin-top:5px !important;"> 
+								      					<input type="checkbox" name="mcssl" value="" style="margin-top:5px !important;">
 								      				Cho phép SSL</label>
 								      			</div>
 								      		</div>
@@ -398,7 +399,7 @@
 								      				<div class="avatar">
 								      					<img src="<?php echo base_url() ?>public/image/bbye.jpg" alt=" " width="100" height="100">
 								      				</div>
-								      				
+
 								      				<a href="#"></a>
 								      			</div>
 								      		</div>
@@ -411,7 +412,7 @@
 								      				<div class="profile">
 								      					<img src="<?php echo base_url() ?>public/image/bbye.jpg" alt=" " width="100" height="100">
 								      				</div>
-								      				
+
 								      				<a href="#"></a>
 								      			</div>
 								      		</div>
@@ -421,7 +422,7 @@
 							</div>
 							<div class="box_btn">
 								<div class=" pull-right">
-									<button class="btn btn-warning" data-dismiss="modal"> Huỷ</button> 
+									<button class="btn btn-warning" data-dismiss="modal"> Huỷ</button>
 									<button type="submit" class="btn btn_tt"><i></i> Lưu</button>
 								</div>
 							</div>

@@ -1,17 +1,17 @@
  <div style="background-color: white;">
-	<label class="np-header">
+	<div class="np-header">
 		<!-- <span style="color: #5fade0"><a href=""><i class="fa fa-angle-left font-16"></i> Quay Lại</a></span> -->
 		&nbsp; &nbsp; &nbsp;
-		<span class="color-ccc">Chọn: </span> 
+		<span class="color-ccc">Chọn: </span>
 		<span class="color-blue"><button id="checkAll" class="btn-none">Tất cả </button>|<button id="uncheckAll" class="btn-none"> Bỏ chọn</button></span>
-		<div class="floatright"> 
+		<div class="floatright">
 			<span class="color-ccc">Sắp xếp:</span>
 			<span class="color-blue"> Tiềm năng <i class="fa fa-angle-right font-16"></i></span>
 		</div>
-	</label>
+	</div>
  	<div class="margin-t5 dash-horizontal"></div>
  	<div class="row rowedit">
- 		<div class="col-md-4">	
+ 		<div class="col-md-4">
  			<button type="button" class="np-icon btn_eye" ><i class="fa fa-eye color-ccc" ></i></button>
  		</div>
  		<div class="col-md-8 hovbtn">
@@ -24,7 +24,7 @@
       		</ul>
  			<button type="button" class="btn-icon-header margin-r7"><i class="fa fa-print color-ccc" ></i></button>
 			<button type="button" class="btn-icon-header margin-r7" id="btn_sendMail" onclick="sendMail()" disabled><i class="fa fa-envelope-o color-ccc" ></i></button>
-			<div class=""> 
+			<div class="">
 				<button type="button" class="btn-icon-header margin-r7" id="starbtn" data-toggle="dropdown" disabled><i class="fa fa-star color-ccc"></i></button>
 				<div class="dropdown-menu star-pos-pro">
 					<a type="button" onclick="talent(0)" class="btn-none">
@@ -67,7 +67,7 @@
 			<?php } ?>
  		</div>
  	</div>
- 	<form id="form_candidate">	
+ 	<form id="form_candidate">
  		<input type="hidden" name="campaignid" id="campaignid" value="<?php echo $campaignid ?>">
  		<input type="hidden" name="roundid" id="roundid" value="<?php echo $roundid ?>">
  		<div class="row rowedit scrollbars">
@@ -99,7 +99,7 @@
 										<div class="col-md-3 padding-lr0 " id="ds<?php echo $candidate[$i]['candidateid']?>">
 											<?php } else { ?>
 										<div class="col-md-4 padding-lr0 " id="ds<?php echo $candidate[$i]['candidateid']?>">
-										<?php } ?>	
+										<?php } ?>
 											<span class="webportal"><?php echo $candidate[$i]['profilesrc'] ?> </span>
 										</div>
 										<div id="talent<?php echo $candidate[$i]['candidateid']?>" class="col-md-1 padding-lr0 ">
@@ -107,12 +107,12 @@
 												<span class="fa-stack fa-1x nohover">
 												  <i class="fa fa-star color-gray fa-stack-2x nohover size18" ></i>
 												  <span class="fa fa-stack-1x color-white nohover size9" ></span>
-												</span> 
+												</span>
 												<?php } else {?>
 												<span class="fa-stack fa-1x nohover">
 												  <i class="fa fa-star color-orange fa-stack-2x nohover size18"></i>
 												  <span class="fa fa-stack-1x color-white nohover size9"><?php echo $candidate[$i]['istalent'] ?></span>
-												</span> 
+												</span>
 												<?php } ?>
 										</div>
 										<div class="col-md-1 padding-lr0 icon-block" id="block<?php echo $candidate[$i]['candidateid']?>">
@@ -128,10 +128,10 @@
 										<label class="tuyendung-label2"><?php echo $candidate[$i]['tags'];?></label>
 										<?php } ?>
 									<label class="tuyendung-label3">
-										<?php echo ($candidate[$i]['gender'] == "M")? "Nam" : "Nữ"?>, <?php echo getAge($candidate[$i]['dateofbirth']);?> tuổi, <?php echo ($candidate[$i]['height'] == 0)? "" : $candidate[$i]['height']."cm, ";?><?php echo ($candidate[$i]['weight'] == 0)? "" : $candidate[$i]['weight']."kg, ";?><?php if($candidate[$i]['yearexperirence'] != null){    
+										<?php echo ($candidate[$i]['gender'] == "M")? "Nam" : "Nữ"?>, <?php echo getAge($candidate[$i]['dateofbirth']);?> tuổi, <?php echo ($candidate[$i]['height'] == 0)? "" : $candidate[$i]['height']."cm, ";?><?php echo ($candidate[$i]['weight'] == 0)? "" : $candidate[$i]['weight']."kg, ";?><?php if($candidate[$i]['yearexperirence'] != null){
 							                  echo ($candidate[$i]['yearexperirence'] == 0)? "kinh nghiệm dưới 1 năm, " : $candidate[$i]['yearexperirence']." năm kinh nghiệm, ";
-							              }              
-							              ?><?php echo ($candidate[$i]['desirebenefit'] == 0)? "" : number_format($candidate[$i]['desirebenefit'])." VND, "?><?php echo ($candidate[$i]['certificate'] == "")? "" :$candidate[$i]['certificate'].", ";?><?php 
+							              }
+							              ?><?php echo ($candidate[$i]['desirebenefit'] == 0)? "" : number_format($candidate[$i]['desirebenefit'])." VND, "?><?php echo ($candidate[$i]['certificate'] == "")? "" :$candidate[$i]['certificate'].", ";?><?php
 							              	  if($candidate[$i]['countlanguage'] == 0) echo "";
 							              	  else if($candidate[$i]['countlanguage'] == 1) echo $candidate[$i]['language'].", ";
 							              	  else echo $candidate[$i]['language']."+".($candidate[$i]['countlanguage']-1).", ";
@@ -149,7 +149,7 @@
 					</div>
 				</a>
 			<?php }} ?>
-		</div>	
+		</div>
 	</form>
 </div>
 <div class="hide" id="list_candidate"><?php echo ($candidate != '')? json_encode($candidate) :'' ?> </div>
@@ -173,40 +173,25 @@
 		document.getElementById('idf_profile').src = "<?php echo base_url()?>admin/campaign/hosochitiet/"+id+'/'+campaignid+'/'+roundid;
 	}
 	$(document).ready(function(){
- 		$("#checkAll").click(function(){
-	 	 if (! $('.checkcandidate').is(':checked')) {
-	      	$('.checkcandidate').prop('checked',true);
-	      	$('#starbtn').removeAttr('disabled');
-	      	$('#blockbtn').removeAttr('disabled');
-	      	$('#btn_transfer').removeAttr('disabled');
-	      	$('.btn_nav').removeAttr('disabled');
-	      	$('#btn_sendMail').removeAttr('disabled');
-	 	 } else {
-	     	$('.checkcandidate').prop('checked', false);
-	     	$('#starbtn').attr('disabled', 'disabled');
-	     	$('#blockbtn').attr('disabled', 'disabled');
-	     	$('#btn_transfer').attr('disabled', 'disabled');
-	     	$('.btn_nav').attr('disabled', 'disabled');
-	     	$('#btn_sendMail').attr('disabled', 'disabled');
-	 	 }       
-		});
-		$("#uncheckAll").click(function(){
-	 	 if (! $('.checkcandidate').is(':checked')) {
-	      	$('.checkcandidate').prop('checked',false);
-	      	$('#starbtn').attr('disabled','disabled');
-	    	$('#blockbtn').attr('disabled','disabled');  
-	    	$('#btn_transfer').attr('disabled', 'disabled');
-	    	$('.btn_nav').attr('disabled', 'disabled');
-	    	$('#btn_sendMail').attr('disabled', 'disabled');
-	 	 } else {
-	     	$('.checkcandidate').prop('checked', true);
-	     	$('#starbtn').removeAttr('disabled');
-	     	$('#blockbtn').removeAttr('disabled');
-	     	$('#btn_transfer').removeAttr('disabled');
-	     	$('.btn_nav').removeAttr('disabled');
-	     	$('#btn_sendMail').removeAttr('disabled');
-	 	 }       
-		});
+
+        $("#checkAll").click(function(){
+            $('.checkcandidate').prop('checked',true);
+            $('#starbtn').removeAttr('disabled');
+            $('#blockbtn').removeAttr('disabled');
+            $('#btn_transfer').removeAttr('disabled');
+            $('.btn_nav').removeAttr('disabled');
+            $('#btn_sendMail').removeAttr('disabled');
+
+        });
+        $("#uncheckAll").click(function(){
+            $('.checkcandidate').prop('checked',false);
+            $('#starbtn').attr('disabled','disabled');
+            $('#blockbtn').attr('disabled','disabled');
+            $('#btn_transfer').attr('disabled', 'disabled');
+            $('.btn_nav').attr('disabled', 'disabled');
+            $('#btn_sendMail').attr('disabled', 'disabled');
+
+        });
  	});
 
  	function checkbox_can() {
@@ -221,7 +206,7 @@
 				$('#btn_sendMail').removeAttr('disabled');
 				count = 1;
 			}
-		  
+
 		});
 		if(count == 0){
 			$('#starbtn').attr('disabled',true);
@@ -229,12 +214,12 @@
 			$('#btn_transfer').attr('disabled', 'disabled');
 			$('.btn_nav').attr('disabled', 'disabled');
 			$('#btn_sendMail').attr('disabled', 'disabled');
-		}	
+		}
 	}
 
 	function talent(obj)
 	{
-		var id = obj; 
+		var id = obj;
 		$.ajax({
 			url: '<?php echo base_url()?>admin/handling/talent/'+id,
 			type: 'POST',
@@ -242,18 +227,18 @@
 			data:  $('#form_candidate').serialize(),
 		})
 		.done(function(data) {
-			
+
 			for(var i in data)
-			{	
+			{
 				var t = '';
 				$('#talent'+data[i]).empty();
 				if(id == 0) {
 					t = '<span class="fa-stack fa-1x"> <i class="fa fa-star color-gray fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9" ></span></span> ';
 				} else {
 					t =	'<span class="fa-stack fa-1x"> <i class="fa fa-star color-orange fa-stack-2x nohover size18" ></i><span class="fa fa-stack-1x color-white size9">'+id+'</span></span> ';
-				}		
-				$('#talent'+data[i]).append(t);	
-				if($('#idf_profile').contents().find('#checkoneid').val() == data[i])		
+				}
+				$('#talent'+data[i]).append(t);
+				if($('#idf_profile').contents().find('#checkoneid').val() == data[i])
 				{
 					$('#idf_profile').contents().find('#iconstar_profile').removeClass('color-gray');
 					$('#idf_profile').contents().find('#iconstar_profile').removeClass('color-orange');
@@ -261,14 +246,14 @@
 					if(id == 0)
 					{
 						$('#idf_profile').contents().find('#iconstar_profile').addClass('color-gray');
-						$('#idf_profile').contents().find('#textstar_profile').text('');	
-					} 
+						$('#idf_profile').contents().find('#textstar_profile').text('');
+					}
 					else
 					{
 						$('#idf_profile').contents().find('#iconstar_profile').addClass('color-orange');
-						$('#idf_profile').contents().find('#textstar_profile').text(id);	
-					}	
-				}		
+						$('#idf_profile').contents().find('#textstar_profile').text(id);
+					}
+				}
 			}
 		})
 		.fail(function() {
@@ -280,7 +265,7 @@
 	}
 	function block(obj)
 	{
-		var id = obj; 
+		var id = obj;
 		$.ajax({
 			url: '<?php echo base_url()?>admin/handling/block/'+id,
 			type: 'POST',
@@ -289,29 +274,29 @@
 		})
 		.done(function(data) {
 			for(var i in data)
-			{	
+			{
 				var t = '';
 				$('#block'+data[i]).empty();
 				if(id == 'Y') {
 					t = '<i class="fa fa-ban color-red " ></i>';
 					$('#block'+data[i]).append(t);
 					$('#ds'+data[i]).removeClass('col-md-4');
-					$('#ds'+data[i]).addClass('col-md-3');	
+					$('#ds'+data[i]).addClass('col-md-3');
 				} else {
 					$('#ds'+data[i]).removeClass('col-md-3');
-					$('#ds'+data[i]).addClass('col-md-4');	
+					$('#ds'+data[i]).addClass('col-md-4');
 				}
-				if($('#idf_profile').contents().find('#checkoneid').val() == data[i])		
+				if($('#idf_profile').contents().find('#checkoneid').val() == data[i])
 				{
 					$('#idf_profile').contents().find('#checkchange').empty();
-					var t = ''; 
+					var t = '';
 					if(id == 'Y')
-					{ 
+					{
 						t ='<i class="fa fa-ban color-red size-icon" ></i>';
 					}
-					else 
+					else
 					{
-						t = '<i class="fa fa-check-circle-o color-green size-icon"></i> ';	
+						t = '<i class="fa fa-check-circle-o color-green size-icon"></i> ';
 					}
 					$('#idf_profile').contents().find('#checkchange').append(t);
 					$('#idf_profile').contents().find('#checkchange').val(id);
@@ -328,7 +313,7 @@
 
 	function transfer(type,checkmail, mailtemp)
 	{
-		var list_candidate = JSON.parse($('#list_candidate').text()) ;
+		// var list_candidate = JSON.parse($('#list_candidate').text()) ;
 		parent.$('#body_chuyen').empty();
 		parent.$('#body_loai').empty();
 		var form = $('#form_candidate').serializeArray();
@@ -339,10 +324,12 @@
 			url: '<?php echo base_url() ?>admin/campaign/selectRound',
 			type: 'POST',
 			dataType: 'json',
-			data: {campaignid: campaignid},
+			data: $('#form_candidate').serialize(),
 		})
 		.done(function(data) {
 			var option = '';
+            var list_candidate = data['candidate'];
+            data = data['round'];
 			for(var i in data){
 				if(data[i]['roundtype'] == 'Profile'){
 					continue;
@@ -355,20 +342,18 @@
 				}
 			}
 			var row = to_mail = '';
-			for (var i = 2; i < form.length; i++) {
 				for(var j =0;j < list_candidate.length; j++){
-					if (form[i].value == list_candidate[j]['candidateid']) {
 						var name = list_candidate[j]['name'];
 						var avatar = list_candidate[j]['imagelink'];
-						row += '<div class="col-xs-4 candidate_chuyen"><div><img src="<?php echo base_url() ?>public/image/'+avatar+'" class="img_chuyen"></div><label>'+name+'</label></div><input type="hidden" name="id[]" value="'+form[i].value+'">';
+						row += '<div class="col-xs-4 candidate_chuyen"><div><img src="<?php echo base_url() ?>public/image/'+avatar+'" class="img_chuyen"></div><label>'+name+'</label></div><input type="hidden" name="id[]" value="'+list_candidate[j]['candidateid']+'">';
 						if (to_mail == '') {
 			            	to_mail += list_candidate[j]['email'];
 			            }else{
 			            	to_mail += ', '+list_candidate[j]['email'];
 			            }
-					}
+
 				}
-			}
+
 			if (type == 1) {
 				if (checkmail == 'Y') {
 					parent.$('#check_mail1').removeClass('hide');
@@ -403,7 +388,7 @@
 		})
 		.fail(function() {
 			console.log("error");
-		});		
+		});
 	}
 
 	function recruite() {
@@ -421,7 +406,7 @@
 		.fail(function() {
 			console.log("error");
 		});
-		
+
 	}
 
 	function createMChoice(assessment, mailtemp) {
@@ -439,7 +424,7 @@
 					var name = list_candidate[j]['name'];
 					var avatar = list_candidate[j]['imagelink'];
 					row += '<div class="body_cam col-xs-12 body_chuyen body_taophieu" ><div class="row"><div class="col-md-3 box_profile_tn"><div class="profile_tn"><input type="hidden" name="profile_'+k+'[]" value="'+form[i].value+'">';
-		            row += '<img src="<?php echo base_url() ?>public/image/'+avatar+'"><p class="guide-black">'+name+'</p></div></div>';       
+		            row += '<img src="<?php echo base_url() ?>public/image/'+avatar+'"><p class="guide-black">'+name+'</p></div></div>';
 		            row += '<div class="col-md-9 border_left_ddd"><div class="rowedit2"><div class="col-xs-3 body-blac4">Mẫu phiếu trắc nghiệm: </div><div class="col-xs-8"><select class="js-example-basic-2 select2" name="profile_'+k+'[]" required="" style="width: 100%">';
 		            <?php foreach ($asmt_tn as $key): ?>
 		            	if (assessment == <?php echo $key['asmttemp'] ?>) {
@@ -497,12 +482,12 @@
 		            </div>';
 		            row += '<div class="col-md-9 border_left_ddd"><div class="rowedit2"><div class="col-xs-3 body-blac4">Loại hình phỏng vấn:</div>';
 		            row += '<div class="col-xs-8"><select class="js-example-basic-2 select2" name="profile_'+k+'[]" required="" id="select_status6" style="width: 100%"><option value="W">Phỏng vấn trực tiếp</option><option value="C">Phỏng vấn gián tiếp</option></select></div></div>';
-		            row += '<div class="rowedit2"><div class="col-xs-3 body-blac4">Thời gian:</div><div class="col-xs-3"><input class="kttext width_100 timepicker" type="text" name="profile_'+k+'[]" value="09:00"></div><div class="col-xs-3"><input class="kttext width_100 timepicker" type="text" name="profile_'+k+'[]" value="10:00"></div></div>';          
-		            row += '<div class="rowedit2"><div class="col-xs-3 body-blac4">Địa điểm:</div><div class="col-xs-8"><input class="kttext width_100" type="text" name="profile_'+k+'[]" value="2W Ung Văn Khiêm, P.25, Quận Bình Thạnh, Tp. HCM"></div></div>';             
-		            row += '<div class="rowedit3"><div class="col-xs-3 body-blac4">Nội dung:</div><div class="col-xs-8"><textarea name="profile_'+k+'[]" class="textarea_profile" rows="3" required=""></textarea></div></div>';              
-		            row += '<div class="rowedit3"><div class="col-xs-3 body-blac4">Người phỏng vấn:</div><div class="col-xs-8"><div class="col-xs-6 manage_pv" id="col_add_pt_'+k+'"><div ><img src="<?php echo base_url() ?>public/image/unknow.jpg"><a href="javascript:void(0)" class="add_pt" onclick="insertPV('+k+')"><span>Thêm người phỏng vấn</span></a></div></div></div><input type="hidden" id="managePV_'+k+'" name="profile_'+k+'[]"></div></div>';          
-		            //       
-		          
+		            row += '<div class="rowedit2"><div class="col-xs-3 body-blac4">Thời gian:</div><div class="col-xs-3"><input class="kttext width_100 timepicker" type="text" name="profile_'+k+'[]" value="09:00"></div><div class="col-xs-3"><input class="kttext width_100 timepicker" type="text" name="profile_'+k+'[]" value="10:00"></div></div>';
+		            row += '<div class="rowedit2"><div class="col-xs-3 body-blac4">Địa điểm:</div><div class="col-xs-8"><input class="kttext width_100" type="text" name="profile_'+k+'[]" value="2W Ung Văn Khiêm, P.25, Quận Bình Thạnh, Tp. HCM"></div></div>';
+		            row += '<div class="rowedit3"><div class="col-xs-3 body-blac4">Nội dung:</div><div class="col-xs-8"><textarea name="profile_'+k+'[]" class="textarea_profile" rows="3" required=""></textarea></div></div>';
+		            row += '<div class="rowedit3"><div class="col-xs-3 body-blac4">Người phỏng vấn:</div><div class="col-xs-8"><div class="col-xs-6 manage_pv" id="col_add_pt_'+k+'"><div ><img src="<?php echo base_url() ?>public/image/unknow.jpg"><a href="javascript:void(0)" class="add_pt" onclick="insertPV('+k+')"><span>Thêm người phỏng vấn</span></a></div></div></div><input type="hidden" id="managePV_'+k+'" name="profile_'+k+'[]"></div></div>';
+		            //
+
 		            if (email == '') {
 		            	email += list_candidate[j]['email'];
 		            }else{
@@ -541,51 +526,51 @@
 					var name = list_candidate[j]['name'];
 					var avatar = list_candidate[j]['imagelink'];
 					row += '<div class="body_cam col-xs-12 body_chuyen body_offer"><div class="row" style="margin-right: 0px">';
-		            row += '<div class="col-md-3 box_profile_tn"><div class="profile_tn"><img src="<?php echo base_url() ?>public/image/'+avatar+'"><p class="guide-black">'+name+'</p><input type="hidden" name="profile_'+k+'[]" value="'+form[i].value+'"><input type="hidden" name="profile_'+k+'[]" value="'+name+'"></div></div>';       
+		            row += '<div class="col-md-3 box_profile_tn"><div class="profile_tn"><img src="<?php echo base_url() ?>public/image/'+avatar+'"><p class="guide-black">'+name+'</p><input type="hidden" name="profile_'+k+'[]" value="'+form[i].value+'"><input type="hidden" name="profile_'+k+'[]" value="'+name+'"></div></div>';
 		            row += '<div class="col-md-9 border_left_ddd"><div class="row"><div class="col-md-3 "><span>Ngày nhận việc</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 datetimepicker" name="profile_'+k+'[]" value="<?php echo date_format(date_create(),"d/m/Y") ?>"></div></div>';
-		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Thời gian thử việc</span></div><div class="col-md-9 padding_0"><div class="col-md-6 padding_0"><input type="text" class="so" name="profile_'+k+'[]" value="2"></div><div class="col-md-6"><input type="text"  name="" value="Tháng" readonly=""></div></div></div>';   
-		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Từ ngày</span></div><div class="col-md-9 padding_0"><div class="col-md-4 padding_0"><input type="text" class="datetimepicker" name="profile_'+k+'[]" value="<?php echo date_format(date_create(),"d/m/Y") ?>"></div><div class="col-md-2 padding_0"><span>Đến ngày</span></div><div class="col-md-4"><input class="datetimepicker" type="text" name="profile_'+k+'[]" value="<?php echo date_format(date_create(),"d/m/Y") ?>"></div></div></div>';       
-		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Địa điểm</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90"  name="profile_'+k+'[]" value="2W Ung Văn Khiêm, P.25, Quận Bình Thạnh, Tp. HCM"></div></div>';             
-		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Chế độ làm việc</span></div><div class="col-md-9 padding_0"><select class="select2" name="profile_'+k+'[]" required="" style="width: 90%"><option value="Toàn thời gian">Toàn thời gian</option><option value="Bán thời gian">Bán thời gian</option></select></div></div>';              
-		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Người hướng dẫn</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_trainer" name="profile_'+k+'[]" required="" style="width: 90%">';
+		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Thời gian thử việc</span></div><div class="col-md-9 padding_0"><div class="col-md-6 padding_0"><input type="text" class="so" name="profile_'+k+'[]" value="2"></div><div class="col-md-6"><input type="text"  name="" value="Tháng" readonly=""></div></div></div>';
+		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Từ ngày</span></div><div class="col-md-9 padding_0"><div class="col-md-4 padding_0"><input type="text" class="datetimepicker" name="profile_'+k+'[]" value="<?php echo date_format(date_create(),"d/m/Y") ?>"></div><div class="col-md-2 padding_0"><span>Đến ngày</span></div><div class="col-md-4"><input class="datetimepicker" type="text" name="profile_'+k+'[]" value="<?php echo date_format(date_create(),"d/m/Y") ?>"></div></div></div>';
+		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Địa điểm</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90"  name="profile_'+k+'[]" value="2W Ung Văn Khiêm, P.25, Quận Bình Thạnh, Tp. HCM"></div></div>';
+		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Chế độ làm việc</span></div><div class="col-md-9 padding_0"><select class="select2" name="profile_'+k+'[]" required="" style="width: 90%"><option value="Toàn thời gian">Toàn thời gian</option><option value="Bán thời gian">Bán thời gian</option></select></div></div>';
+		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Người hướng dẫn</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_trainer" name="profile_'+k+'[]" required="" style="width: 90%"><option value="0">Vui lòng chọn</option>';
 		            <?php foreach ($category as $key){
 		            	if ($key['category'] == 'POSITION') {?>
 		            	row += '<option value="<?php echo $key['code'] ?>"><?php echo $key['code'].' - '.$key['description'] ?></option>';
 		            <?php }} ?>
 		            row += '</select></div></div>';
-		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Báo cáo cho</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_reportto" name="profile_'+k+'[]" required="" style="width: 90%">';
+		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Báo cáo cho</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_reportto" name="profile_'+k+'[]" required="" style="width: 90%"><option value="0">Vui lòng chọn</option>';
 		            <?php foreach ($category as $key){
 		            	if ($key['category'] == 'POSITION') {?>
 		            	row += '<option value="<?php echo $key['code'] ?>"><?php echo $key['code'].' - '.$key['description'] ?></option>';
 		            <?php }} ?>
 		            row += '</select></div></div>';
-		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Mức lương thử việc</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';              
+		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Mức lương thử việc</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';
 		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Mức lương chính thức</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';
-		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Cấp</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_level" name="profile_'+k+'[]" required="" style="width: 90%">';
+		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Cấp</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_level" name="profile_'+k+'[]" required="" style="width: 90%"><option value="0">Vui lòng chọn</option>';
 		            <?php foreach ($category as $key){
 		            	if ($key['category'] == 'CAPBAC') {?>
 		            	row += '<option value="<?php echo trim($key['code']) ?>"><?php echo $key['description'] ?></option>';
 		            <?php }} ?>
-		            row += '</select></div></div>';  
-		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Bậc</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90" name="profile_'+k+'[]" ></div></div>';   
-		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Chức vụ</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_position" name="profile_'+k+'[]" required="" style="width: 90%">';
+		            row += '</select></div></div>';
+		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Bậc</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90" name="profile_'+k+'[]" ></div></div>';
+		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Chức vụ</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_position" name="profile_'+k+'[]" required="" style="width: 90%"><option value="0">Vui lòng chọn</option>';
 		            <?php foreach ($category as $key){
 		            	if ($key['category'] == 'POSITION') {?>
 		            	row += '<option value="<?php echo $key['code'] ?>"><?php echo $key['description'] ?></option>';
 		            <?php }} ?>
-		            row += '</select></div></div>'; 
-		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phòng ban</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_department" name="profile_'+k+'[]" required="" style="width: 90%">';
+		            row += '</select></div></div>';
+		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phòng ban</span></div><div class="col-md-9 padding_0"><select class="select2 js-example-basic" id="select_department" name="profile_'+k+'[]" required="" style="width: 90%"><option value="0">Vui lòng chọn</option>';
 		            <?php foreach ($category as $key){
 		            	if ($key['category'] == 'DEPT') {?>
 		            	row += '<option value="<?php echo $key['code'] ?>"><?php echo $key['code'].' - '.$key['description'] ?></option>';
 		            <?php }} ?>
-		            row += '</select></div></div>';   
-		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phụ cấp ăn trưa</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';    
-		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phụ cấp điện thoại</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';  
-		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Hỗ trợ xăng xe</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';   
-		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Đi lại, điện thoại, xăng xe tài xế</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';           
-		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phụ cấp khác</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div></div></div></div>';                
-		          
+		            row += '</select></div></div>';
+		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phụ cấp ăn trưa</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';
+		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phụ cấp điện thoại</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';
+		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Hỗ trợ xăng xe</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';
+		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Đi lại, điện thoại, xăng xe tài xế</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div>';
+		            row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phụ cấp khác</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div></div></div></div>';
+
 		            if (email == '') {
 		            	email += list_candidate[j]['email'];
 		            }else{

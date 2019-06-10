@@ -88,6 +88,7 @@
 									<!-- heading ho so noi bo -->
 									<div id="collapsetotal2" class="panel-collapse collapse in">
 										<form id="form_newProfile" method="post" action="<?php echo base_url() ?>admin/handling/insertCandidate" enctype="multipart/form-data">
+                                            <div class="alert alert-danger hide" id="err-newUser" style="text-align: center;"></div>
 											<input type="hidden" name="candidateid" value="<?php echo isset($candidate['candidateid'])? $candidate['candidateid'] : 0; ?>">
 											<div class="panel-body" style="border: 0px">
 												<div class="width100">
@@ -117,7 +118,7 @@
 													<?php
 													if (isset($can_detail['telephone'])) {
 														$pizza  = $can_detail['telephone'];
-									                    $pieces = explode(",", $pizza);
+									                    $pieces = explode(",", trim($pizza,','));
 									                    $p1 = isset($pieces[0])? $pieces[0] : "" ;
 									                    $p2 = isset($pieces[1])? $pieces[1] : "" ;
 													}else{ $p1 = $p2 = '';}
@@ -1947,11 +1948,38 @@
 		if ($('#lastname').val() == "") { alert('Vui lòng nhập Họ tên đầy đủ!'); }
 		else if ($('#firstname').val() == "") { alert('Vui lòng nhập Họ tên đầy đủ!'); }
 		else if ($('#phone1').val() == 0 && $('#phone2').val() == 0) { alert('Vui lòng nhập số điện thoại!'); }
-		else {
-			$('#btn_newProfile').find('i').addClass('fa fa-spin fa-spinner');
-			$('#btn_newProfile').prop('disabled', true);
-	  		$('#form_newProfile').submit();
-		}
+        else
+            {
+                var email = $('#email').val();
+                var cmnd = $('#idcard').val();
+                var phone1 = $('#phone1').val();
+                var phone2 = $('#phone2').val();
+                $.ajax({
+                    url: '<?php echo base_url() ?>admin/handling/checkCandidate',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {email: email, cmnd:cmnd, phone1:phone1,phone2:phone2},
+                })
+                .done(function(data) {
+                    if (data != 0) {
+                        $('#err-newUser').text(data).removeClass('hide');
+                    }else{
+                        $('#btn_newProfile').find('i').addClass('fa fa-spin fa-spinner');
+                        $('#btn_newProfile').prop('disabled', true);
+                        $('#form_newProfile').submit();
+                    }
+
+                })
+                .fail(function() {
+                    console.log("error");
+                });
+
+            }
+		// else {
+		// 	$('#btn_newProfile').find('i').addClass('fa fa-spin fa-spinner');
+		// 	$('#btn_newProfile').prop('disabled', true);
+	 //  		$('#form_newProfile').submit();
+		// }
 
 	});
 

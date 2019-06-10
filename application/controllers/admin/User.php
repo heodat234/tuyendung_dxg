@@ -9,18 +9,18 @@ class User extends CI_Controller {
 		$config['upload_path'] = './uploads/';
 	    $config['allowed_types'] = 'gif|jpg|png';
 	    $config['remove_spaces'] = true;
-	    $config['file_ext_tolower'] = true;    
+	    $config['file_ext_tolower'] = true;
 	    $this->load->library('upload', $config);
-		
+
 		$this->load->helper(array('url','my_helper','file'));
 
 		$this->load->library('session');
-		
-		$this->load->model(array('M_data','admin/User_model','M_auth'));
+
+		$this->load->model(array('M_data','admin/User_model','M_auth','admin/Data_model'));
 
 		$this->sess  = $this->session->userdata('user_admin');
 		$this->table = 'oprgroup';
-		
+
 		$ac_data['system'] 	= 'active';
 		$ac_data['user'] 		= 'active';
 		$this->data['header'] 	= $this->load->view('admin/home/header',null,true);
@@ -37,31 +37,31 @@ class User extends CI_Controller {
 		$sql = "SELECT
 					a.groupid,
 					a.groupname,
-					a.status, 
-					a.operator, 
-					a.createddate, 
+					a.status,
+					a.operator,
+					a.createddate,
 					a.lastupdate,
-					b.operatorname as createdby_name, 
+					b.operatorname as createdby_name,
 					c.operatorname as updatedby_name,
-					count(d.operatorid) as counter 
+					count(d.operatorid) as counter
 				FROM oprgroup a
 				LEFT OUTER JOIN operator b ON a.createdby = b.operatorid
 				LEFT OUTER JOIN operator c ON a.updatedby = c.operatorid
 				LEFT OUTER JOIN operator d ON a.groupid = d.groupid
-				GROUP BY 
-					a.groupid, 
-					a.groupname, 
-					a.status, 
-					a.operator, 
-					a.createddate, 
-					a.lastupdate, 
-					b.operatorname, 
+				GROUP BY
+					a.groupid,
+					a.groupname,
+					a.status,
+					a.operator,
+					a.createddate,
+					a.lastupdate,
+					b.operatorname,
 					c.operatorname
 				ORDER BY a.lastupdate";
 
 		$_data['records'] = $this->M_data->select_sql($sql);
 
-		$this->data['script']   = $this->load->view('admin/user/default/script',null, TRUE); 
+		$this->data['script']   = $this->load->view('admin/user/default/script',null, TRUE);
 		if(!$this->M_auth->checkPermission($this->sess['groupid'],$this->seg)){
 			$this->data['temp'] 	= $this->load->view('admin/error/404',null,true);
 		}else{
@@ -75,7 +75,7 @@ class User extends CI_Controller {
 	public function create(){
 
 		$_data = [];
-		$this->data['script']   = $this->load->view('admin/user/create/script', $_data, TRUE); 
+		$this->data['script']   = $this->load->view('admin/user/create/script', $_data, TRUE);
 		$this->data['temp'] 	= $this->load->view('admin/user/create/page', $_data, true);
 
 		$this->load->view('admin/home/master',$this->data);
@@ -119,10 +119,10 @@ class User extends CI_Controller {
 	{
 		$_data = [];
 
-		$sql = "SELECT 
-					a.*, 
-					b.operatorname as createdby_name, 
-					c.operatorname as updatedby_name 
+		$sql = "SELECT
+					a.*,
+					b.operatorname as createdby_name,
+					c.operatorname as updatedby_name
 				FROM oprgroup a
 				LEFT JOIN operator b ON a.createdby = b.operatorid
 				LEFT JOIN operator c ON a.updatedby = c.operatorid
@@ -139,8 +139,8 @@ class User extends CI_Controller {
 
 		$sql = "SELECT * FROM oprgroup WHERE status='W'";
 		$_data['groups'] = $this->M_data->select_sql($sql);
-		
-		$this->data['script'] = $this->load->view('admin/user/edit/script',null, TRUE); 
+
+		$this->data['script'] = $this->load->view('admin/user/edit/script',null, TRUE);
 		$this->data['temp']   = $this->load->view('admin/user/edit/page',$_data,true);
 
 		$this->load->view('admin/home/master',$this->data);
@@ -148,7 +148,7 @@ class User extends CI_Controller {
 
 	public function get_user($operatorid){
 		$sql = "SELECT a.*, b.name as can_name, b.imagelink as can_image, c.url as avatar
-				FROM operator a 
+				FROM operator a
 				LEFT OUTER JOIN candidate b ON a.candidateid = b.candidateid
 				LEFT OUTER JOIN document c ON a.operatorid = c.referencekey
 				WHERE a.operatorid='$operatorid'";
@@ -177,7 +177,7 @@ class User extends CI_Controller {
 		$sql = "SELECT * FROM operator WHERE operatorid='$operatorid' AND password='$password'";
 
 		$row = $this->M_data->select_sql($sql);
-		
+
 		if ($row&&!empty($row)) {
 			// echo (1);
 			$resp['data'] = $this->M_data->update('operator',array('operatorid'=>$operatorid),array('password'=>$newpass));
@@ -270,23 +270,36 @@ class User extends CI_Controller {
 			"message" => "Failed",
 			"data"    => []
 		);
+        if ($this->Data_model->count_row('operator',array('displayname'=>$push['displayname'])) > 0) {
+            $resp = array(
+                "success" => false,
+                "message" => "Tên đăng nhập đã tồn tại",
+                "data"    => -1
+            );
+        }else if ($this->Data_model->count_row('operator',array('email'=>$push['email'])) >0) {
+            $resp = array(
+                "success" => false,
+                "message" => "Địa chỉ email đã tồn tại",
+                "data"    => -1
+            );
+        }else{
+            $rslt = $this->M_data->insert('operator',$push);
 
-		$rslt = $this->M_data->insert('operator',$push);
+            if (isset($f['avatar'])&&!empty($f['avatar'])&&$rslt) {
+                $_p['tablename']        = 'operator';
+                $_p['referencekey']     = $rslt;
+                $_p['filename']         = isset($f['avatar']['filename'])?$f['avatar']['filename']:'';
+                $_p['url']              = isset($f['avatar']['link'])?$f['avatar']['link']:'';
+                $_p['createdby']        = $this->sess['operatorid'];
+                $this->M_data->merge_data(array('referencekey'=>$rslt),$_p,'document');
+            }
 
-		if (isset($f['avatar'])&&!empty($f['avatar'])&&$rslt) {
-			$_p['tablename'] 		= 'operator';
-			$_p['referencekey']		= $rslt;
-			$_p['filename']			= isset($f['avatar']['filename'])?$f['avatar']['filename']:'';
-			$_p['url']				= isset($f['avatar']['link'])?$f['avatar']['link']:'';
-			$_p['createdby']		= $this->sess['operatorid'];
-			$this->M_data->merge_data(array('referencekey'=>$rslt),$_p,'document');
-		}
-
-		if ($rslt) {
-			$resp['success'] = true;
-			$resp['message'] = "success";
-			$resp['data']    = array('id'=>$rslt);
-		}
+            if ($rslt) {
+                $resp['success'] = true;
+                $resp['message'] = "success";
+                $resp['data']    = array('id'=>$rslt);
+            }
+        }
 
 		echo json_encode($resp);
 	}
@@ -348,27 +361,41 @@ class User extends CI_Controller {
 			"message" => "Failed",
 			"data"    => []
 		);
+        // var_dump($this->Data_model->count_row('operator',array('email'=>$push['email'],'operatorid !='=>$post['operatorid']));exit;
+        if ($this->Data_model->count_row('operator',array('displayname'=>$push['displayname'],'operatorid !='=>$post['operatorid'])) > 0) {
+            $resp = array(
+                "success" => false,
+                "message" => "Tên đăng nhập đã tồn tại",
+                "data"    => -1
+            );
+        }else if ($this->Data_model->count_row('operator',array('email'=>$push['email'],'operatorid !='=>$post['operatorid'])) >0) {
+            $resp = array(
+                "success" => false,
+                "message" => "Địa chỉ email đã tồn tại",
+                "data"    => -1
+            );
+        }else{
+    		$rslt = $this->M_data->update('operator',array('operatorid'=>$post['operatorid']),$push);
 
-		$rslt = $this->M_data->update('operator',array('operatorid'=>$post['operatorid']),$push);
+    		if (isset($f['avatar'])&&!empty($f['avatar'])&&$rslt) {
+    			$_p['tablename'] 		= 'operator';
+    			$_p['referencekey']		= $post['operatorid'];
+    			$_p['filename']			= isset($f['avatar']['filename'])?$f['avatar']['filename']:'';
+    			$_p['url']				= isset($f['avatar']['link'])?$f['avatar']['link']:'';
+    			$_p['updatedby']		= $this->sess['operatorid'];
+    			$this->M_data->merge_data(array('referencekey'=>$post['operatorid']),$_p,'document');
+    		}
 
-		if (isset($f['avatar'])&&!empty($f['avatar'])&&$rslt) {
-			$_p['tablename'] 		= 'operator';
-			$_p['referencekey']		= $post['operatorid'];
-			$_p['filename']			= isset($f['avatar']['filename'])?$f['avatar']['filename']:'';
-			$_p['url']				= isset($f['avatar']['link'])?$f['avatar']['link']:'';
-			$_p['updatedby']		= $this->sess['operatorid'];
-			$this->M_data->merge_data(array('referencekey'=>$post['operatorid']),$_p,'document');
-		}
-
-		if ($rslt) {
-			$resp['success'] = true;
-			$resp['message'] = "success";
-			$resp['data']    = array('result'=>$rslt);
-		}
-		if ($check==1) {
-			$this->session->unset_userdata('user_admin');
-		}
+    		if ($rslt) {
+    			$resp['success'] = true;
+    			$resp['message'] = "success";
+    			$resp['data']    = array('result'=>$rslt);
+    		}
+    		if ($check==1) {
+    			$this->session->unset_userdata('user_admin');
+    		}
+        }
 		echo json_encode($resp);
 	}
-	
+
 }

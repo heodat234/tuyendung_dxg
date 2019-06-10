@@ -34,7 +34,7 @@
 		            <div class="panel-group" id="accordion">
 					  	<div class="panel panel-default border-rad0">
 					  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse1" onclick="rotate(1)">
-						    	<div class="panel-heading rad-pad0 b-blue"> 
+						    	<div class="panel-heading rad-pad0 b-blue">
 						       		<i class="fa fa-angle-right a-tabcs rotate rotate_1 down"></i>
 						       		<div class="ul-nav">
 								       	<label class="tittle-tab">
@@ -48,7 +48,7 @@
 						      		<p class="title_ql">Là những người có thể thấy được toàn bộ nội dung của mọi bước trong chiến dịch, bao gồm cả những nội dung được đánh dấu ẩn với người khác của Thành viên chiến dịch</p>
 						      		<?php
 						      		if ($manager != '') {
-						      		 foreach ($manager as $row){ 
+						      		 foreach ($manager as $row){
 						      		 	foreach ($operator as $op){
 						      				if ($row == $op['operatorid']) { ?>
 						      					<div class="col-xs-2 padding_le_ri_0 ql" id="col_ql_<?php echo $row ?>" onclick="subColQL(<?php echo $row ?>)">
@@ -62,7 +62,7 @@
 									      		</div>
 
 						      		<?php } } } } ?>
-						      		
+
 						      		<div class="col-xs-2 padding_le_ri_0" id="col_add_ql">
 						      			<div class="col-xs-3 padding_le_ri_0">
 						      				<img class="img_ql" src="<?php echo base_url() ?>public/image/bbye.jpg">
@@ -74,10 +74,10 @@
 						      	</div>
 						    </div>
 					  	</div>
-					  	
+
 					  	<div class="panel panel-default border-rad0">
 					  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse2" onclick="rotate(2)">
-						    	<div class="panel-heading rad-pad0 b-blue"> 
+						    	<div class="panel-heading rad-pad0 b-blue">
 						       		<i class="fa fa-angle-right a-tabcs rotate rotate_2 down"></i>
 						       		<div class="ul-nav">
 								       	<label class="tittle-tab">
@@ -164,7 +164,7 @@
 											            </div>
 											            <label for="text" class=" col-xs-2 label-profile">Thời hạn vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<input type="text" name="round1[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>"> 
+											             	<input type="text" name="round1[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>">
 											            </div>
 											        </div>
 											        <div class="row form_campaign">
@@ -237,7 +237,7 @@
 											            </div>
 											            <label for="text" class=" col-xs-2 label-profile">Thời hạn vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<input type="text" name="round2[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>"> 
+											             	<input type="text" name="round2[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>">
 											            </div>
 											        </div>
 											        <div class="row form_campaign">
@@ -285,7 +285,7 @@
 								        			<input type="hidden" name="round3[]" value="3" class="sorting">
 								        			<div class=" col-xs-4 pull-left">
 								        				<i class="fa fa-ellipsis-v handle"></i>
-								        				
+
 								        				<span id="title_3">Tiếp cận</span>
 								        				<input type="text" name="round3[]" value="Tiếp cận" class="roundname hide input_title_3">
 								        			</div>
@@ -311,7 +311,7 @@
 											            </div>
 											            <label for="text" class=" col-xs-2 label-profile">Thời hạn vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<input type="text" name="round3[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>"> 
+											             	<input type="text" name="round3[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>">
 											            </div>
 											        </div>
 											        <div class="row form_campaign">
@@ -384,7 +384,7 @@
 											            </div>
 											            <label for="text" class=" col-xs-2 label-profile">Thời hạn vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<input type="text" name="round4[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>"> 
+											             	<input type="text" name="round4[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>">
 											            </div>
 											        </div>
 											        <div class="row form_campaign">
@@ -432,7 +432,7 @@
 											             		<option value="0">Chọn phiếu trắc nghiệm</option>
 											             		<?php foreach ($asmt_tn as $tn): ?>
 									                              	<option value="<?php echo $tn['asmttemp'] ?>"><?php echo $tn['asmtname'] ?></option>
-									                            <?php endforeach ?>	
+									                            <?php endforeach ?>
 											             	</select>
 											            </div>
 											        </div>
@@ -481,7 +481,7 @@
 											            </div>
 											            <label for="text" class=" col-xs-2 label-profile">Thời hạn vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<input type="text" name="round5[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>"> 
+											             	<input type="text" name="round5[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>">
 											            </div>
 											        </div>
 											        <div class="row form_campaign">
@@ -589,7 +589,7 @@
 											            </div>
 											            <label for="text" class=" col-xs-2 label-profile">Thời hạn vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<input type="text" name="round6[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>"> 
+											             	<input type="text" name="round6[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>">
 											            </div>
 											        </div>
 											        <div class="row form_campaign">
@@ -697,7 +697,7 @@
 											            </div>
 											            <label for="text" class=" col-xs-2 label-profile">Thời hạn vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<input type="text" name="round7[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>"> 
+											             	<input type="text" name="round7[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>">
 											            </div>
 											        </div>
 											        <div class="row form_campaign">
@@ -776,7 +776,7 @@
 											            </div>
 											            <label for="text" class=" col-xs-2 label-profile">Thời hạn vòng</label>
 											            <div class="col-xs-4  padding-lr0">
-											             	<input type="text" name="round8[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>"> 
+											             	<input type="text" name="round8[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>">
 											            </div>
 											        </div>
 											        <div class="row form_campaign_1">
@@ -896,6 +896,9 @@
 	}
 </style>
 <script type="text/javascript">
+    function initializeSelect2(selectElementObj) {
+        selectElementObj.select2();
+      }
 	$(document).ready(function() {
 		$('#sortable').sortable({
 			handle: '.handle',
@@ -916,7 +919,7 @@
 		var positions =[];
 		$('.updated').each(function() {
 			positions.push([$(this).attr('data-index'),$(this).attr('data-position')]);
-			
+
 			$(this).removeClass('updated');
 		});
 		console.log(positions);
@@ -940,27 +943,29 @@
 		}
 
 	}
-	
+
 	function copyRound(round) {
 		var count_round = Number($('#count_round').val());
 		var new_round = Number(round)+1;
-
+        // console.log(round);
+        // console.log(count_round);
 		for (var i = count_round; i > round; i--) {
 			var j = i+1;
+            $('#round_'+i).children('.v_'+i).attr('class', 'v_' + j);
 			$('#round_'+i).find('.sorting').val(j);
 			$('#round_'+i).removeAttr('data-position').attr('data-position', j).attr('data-index', j);
-			$('#round_'+i).find('.btn_copy_'+i).attr('onclick', 'copyRound('+j+')').addClass('btn btn_cd btn_copy_'+j).removeClass('btn_copy_'+i);
-			$('#round_'+i).find('.btn_delete_'+i).attr('onclick', 'deleteRound('+j+')').addClass('btn btn_cd btn_delete_'+j).removeClass('btn_delete_'+i);
-			$('#round_'+i).find('.btn_edit_'+i).attr('onclick', 'editTitle('+j+')').addClass('btn btn_cd btn_edit_'+j).removeClass('btn_edit_'+i);
-			$('#round_'+i).find('.roundname').addClass('roundname input_title_'+j).removeClass('input_title_'+i);
+			$('#round_'+i).contents().find('.btn_copy_'+i).removeAttr('onclick').attr('onclick', 'copyRound('+j+')').addClass('btn btn_cd btn_copy_'+j).removeClass('btn_copy_'+i);
+			$('#round_'+i).contents().find('.btn_delete_'+i).attr('onclick', 'deleteRound('+j+')').addClass('btn btn_cd btn_delete_'+j).removeClass('btn_delete_'+i);
+			$('#round_'+i).contents().find('.btn_edit_'+i).attr('onclick', 'editTitle('+j+')').addClass('btn btn_cd btn_edit_'+j).removeClass('btn_edit_'+i);
+			$('#round_'+i).contents().find('.roundname').addClass('roundname input_title_'+j).removeClass('input_title_'+i);
 			$('#round_'+i).contents().find('#title_'+i).attr('id', 'title_' + j);
 			$('#round_'+i).find('#col_add_pt_'+i).attr('id', 'col_add_pt_'+j);
-			$('#round_'+i).find('#select_type'+i).attr('id', 'select_type'+j);
+			$('#round_'+i).find('#select_type'+i).attr('id', 'select_type'+j).change();
 			$('#round_'+i).find('.add_pt').attr('onclick', 'insertPT('+j+')');
 			$('#round_'+i).find('#manageround_'+i).attr('id', 'manageround_'+j);
 			$('#round_'+i).find('[name*="round"]').each(function(){
 			    $(this).attr('name','round'+j+'[]');
-			}); 
+			});
 			$('#round_'+i).attr('id', 'round_'+j);
 
 			$('#box_round_'+i).find('.info-box-number').text('V'+j);
@@ -978,18 +983,26 @@
 		var title = $('#title_'+new_round).text();
 		$('#title_'+new_round).text(title+' copy');
 		$('#round_'+new_round).contents().find('.input_title_'+round).attr('class', 'input_title_' + new_round+ ' roundname hide');
-		$('#round_'+new_round).contents().find('.btn_copy_'+round).attr('onclick', 'copyRound('+new_round+')');
-		$('#round_'+new_round).contents().find('.btn_delete_'+round).attr('onclick', 'deleteRound('+new_round+')');
-		$('#round_'+new_round).contents().find('.btn_edit_'+round).attr('onclick', 'editTitle('+new_round+')');
+		$('#round_'+new_round).contents().find('button.btn_copy_'+round).removeAttr('onclick').attr('onclick', 'copyRound('+new_round+')').addClass('btn_copy_'+new_round).removeClass('btn_copy_'+round);
+		$('#round_'+new_round).contents().find('.btn_delete_'+round).attr('onclick', 'deleteRound('+new_round+')').addClass('btn_delete_'+new_round).removeClass('btn_delete_'+round);
+		$('#round_'+new_round).contents().find('.btn_edit_'+round).attr('onclick', 'editTitle('+new_round+')').addClass('btn_edit_'+new_round).removeClass('btn_edit_'+round);
 		$('#round_'+new_round).find('#col_add_pt_'+round).attr('id', 'col_add_pt_'+new_round);
 		$('#round_'+new_round).find('#select_type'+round).attr('id', 'select_type'+new_round);
 		$('#round_'+new_round).find('.add_pt').attr('onclick', 'insertPT('+new_round+')');
 		$('#round_'+new_round).find('#manageround_'+round).attr('id', 'manageround_'+new_round);
 		$('#round_'+new_round).find('[name*="round"]').each(function(){
 		    $(this).attr('name','round'+new_round+'[]');
-		}); 
+		});
+
+
+        $('#round_'+new_round).find('.select2').each(function(){
+            $(this).select2({ width: '100%' });
+            $(this).last().next().next().remove();
+        });
+
+
 		$('#select_type'+new_round+' option[value="'+roundtype+'"]').prop('selected', true);
-		var new_count = count_round+1;		
+		var new_count = count_round+1;
 		$('#count_round').val(new_count);
 
 		var box = $('#box_round_'+round).clone().attr('id', 'box_round_'+new_round).after('#box_round_'+round);
@@ -1003,6 +1016,7 @@
 	    	timepicker:false,
 	    	format:'d/m/Y',
 	    });
+
 	}
 	function deleteRound(round) {
 		var count_round = $('#count_round').val();
@@ -1024,9 +1038,10 @@
 			$('#round_'+i).find('#col_add_pt_'+i).attr('id', 'col_add_pt_'+j);
 			$('#round_'+i).find('.add_pt').attr('onclick', 'insertPT('+j+')');
 			$('#round_'+i).find('#manageround_'+i).attr('id', 'manageround_'+j);
+            $('#round_'+i).find('#select_type'+i).attr('id', 'select_type'+j).change();
 			$('#round_'+i).find('[name*="round"]').each(function(){
 			    $(this).attr('name','round'+j+'[]');
-			}); 
+			});
 			$('#round_'+i).attr('id', 'round_'+j);
 
 			$('#box_round_'+i).find('.info-box-number').text('V'+j);
@@ -1038,7 +1053,7 @@
 		$('#title_'+round).addClass('hide');
 		$('.input_title_'+round).removeClass('hide');
 	}
-	
+
 
 
 	$('.js-example-basic_ql').select2({ width: '100%' });
@@ -1094,21 +1109,21 @@
 			var row ='';
 			for(var i in data){
 				for(var j in operator ){
-					if (data[i] == operator[j]['operatorid']) { 
+					if (data[i] == operator[j]['operatorid']) {
 						row ='<div class="col-xs-2 padding_le_ri_0 ql" id="col_ql_'+data[i]+'" onclick="subColQL('+data[i]+')"><div class="col-xs-3 padding_le_ri_0">';
 						row += '<img class="img_ql" src="<?php echo base_url() ?>public/image/bbye.jpg"><div class="del_ql"><i class="fa fa-minus-circle fa-lg"></i></div></div>';
 						row += '<div class="col-xs-9 padding_le_ri_0"><p class="name_ql">'+operator[j]['operatorname']+'</p></div></div>';
 						$('#col_add_ql').before(row);
-					} 
-				}				      				
+					}
+				}
 			}
-			
+
 			$('#insertQL').modal('hide');
 		})
 		.fail(function() {
 			console.log("error");
 		});
-		
+
 	});
 
 	function insertPT(roundid) {
@@ -1157,18 +1172,18 @@
 		var str = '';
 		for(var i in data){
 			if (data[i].value == '')
-			{ 
+			{
 				continue;
 			}
 			for(var j in operator ){
-				if (data[i].value == operator[j]['operatorid']) { 
+				if (data[i].value == operator[j]['operatorid']) {
 					row ='<div class="col-xs-2 padding_le_ri_0 ql" id="col_pt_'+data[i].value+'" onclick="subColPT('+data[i].value+','+roundid+')"><div class="col-xs-3 padding_le_ri_0">';
 					row += '<img class="img_ql" src="<?php echo base_url() ?>public/image/bbye.jpg"><div class="del_ql"><i class="fa fa-minus-circle fa-lg"></i></div></div>';
 					row += '<div class="col-xs-9 padding_le_ri_0"><p class="name_ql">'+operator[j]['operatorname']+'</p></div></div>';
 					$('#col_add_pt_'+roundid).before(row);
-				} 
+				}
 			}
-			str += data[i].value + ',';				      				
+			str += data[i].value + ',';
 		}
 		var manageround = $('#manageround_'+roundid).val();
 		if(manageround != ''){
@@ -1178,9 +1193,9 @@
 		}
 		$('#manageround_'+roundid).val(manageround);
 		$('#insertPT').modal('hide');
-		
-		
-		
+
+
+
 	});
 
 	function changeProcess(id) {
@@ -1210,9 +1225,9 @@
         	 	row += '<div class="col-pc-12" id="box_round_'+j+'" style="width: '+width+' "><span class="info-box-number '+color+' ">V'+j+'</span><span class="info-box-text">'+data[i]['roundname']+'</span></div>';
         	 	j++;
         	}
-        	$('#box_temp').append(row);	
+        	$('#box_temp').append(row);
 
-        	
+
         	var k =1;
         	for (var i = 0; i < data.length; i++) {
         		var row1 = check1 = check2 = '';
@@ -1225,12 +1240,12 @@
         		if (data[i]['roundtype'] == 'Profile' ) {
         	 		row1 += '<li class="li_round ui-state-disabled" id="round_'+k+'" data-index="'+k+'" data-position="'+k+'">';
 					row1 += '<div class="v_'+k+'" >';
-					row1 += '<div class="header_vong_cd "><input type="hidden" name="round'+k+'[]" value="'+k+'" class="sorting"><div class=" col-xs-4 pull-left"><i class="fa fa-ellipsis-v dis_fa"></i> '+data[i]['roundname']+'</div><input type="hidden" name="round'+k+'[]" value="'+data[i]['roundname']+'" class="roundname hide "><div class="pull-right box_btn_cd disabled" ><button class="btn btn_cd" disabled><i class="fa fa-plus" ></i></button><button class="btn btn_cd" disabled><i class="fa fa-pencil" ></i></button></div></div>';        		
-					row1 += '<div class="body_vong_cd"><div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile">Loại vòng</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]" ><option value="Profile" >Hồ sơ</option></select></div><label for="text" class=" col-xs-2 label-profile">Thời hạn vòng</label><div class="col-xs-4  padding-lr0"><input type="text" name="round'+k+'[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>"></div></div>';		        		
-					row1 += '<div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile">Phụ trách vòng</label><div class="col-xs-10  padding-lr0"><div class="col-xs-2 padding_le_ri_0" id="col_add_pt_'+k+'"><div class="col-xs-3 padding_le_ri_0"><img class="img_ql" src="<?php echo base_url() ?>public/image/bbye.jpg"></div><div class="col-xs-9 padding_le_ri_0"><a href="javascript:void(0)" class="add_pt" onclick="insertPT('+k+')"><p class="name_ql">Thêm phụ trách vòng</p></a></div></div><input type="hidden" id="manageround_'+k+'" name="round'+k+'[]" value=""></div></div>';			        	
+					row1 += '<div class="header_vong_cd "><input type="hidden" name="round'+k+'[]" value="'+k+'" class="sorting"><div class=" col-xs-4 pull-left"><i class="fa fa-ellipsis-v dis_fa"></i> '+data[i]['roundname']+'</div><input type="hidden" name="round'+k+'[]" value="'+data[i]['roundname']+'" class="roundname hide "><div class="pull-right box_btn_cd disabled" ><button class="btn btn_cd" disabled><i class="fa fa-plus" ></i></button><button class="btn btn_cd" disabled><i class="fa fa-pencil" ></i></button></div></div>';
+					row1 += '<div class="body_vong_cd"><div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile">Loại vòng</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]" ><option value="Profile" >Hồ sơ</option></select></div><label for="text" class=" col-xs-2 label-profile">Thời hạn vòng</label><div class="col-xs-4  padding-lr0"><input type="text" name="round'+k+'[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>"></div></div>';
+					row1 += '<div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile">Phụ trách vòng</label><div class="col-xs-10  padding-lr0"><div class="col-xs-2 padding_le_ri_0" id="col_add_pt_'+k+'"><div class="col-xs-3 padding_le_ri_0"><img class="img_ql" src="<?php echo base_url() ?>public/image/bbye.jpg"></div><div class="col-xs-9 padding_le_ri_0"><a href="javascript:void(0)" class="add_pt" onclick="insertPT('+k+')"><p class="name_ql">Thêm phụ trách vòng</p></a></div></div><input type="hidden" id="manageround_'+k+'" name="round'+k+'[]" value=""></div></div>';
 					row1 += '<div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round'+k+'[]" '+check1+' > Email Chuyển vòng</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]"><option value="0">Chọn mẫu mail thông báo</option>';
 						<?php foreach ($mailtemplate as $mail): ?>
-							if ( data[i]['transfmailtemp'] == '<?php echo $mail['mailprofileid'] ?>') { 
+							if ( data[i]['transfmailtemp'] == '<?php echo $mail['mailprofileid'] ?>') {
 								row1 += '<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>';
 							}else{
 								row1 += '<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>';
@@ -1239,7 +1254,7 @@
 					row1 += '</select></div></div>';
 					row1 += '<div class="row form_campaign_1"><label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round'+k+'[]" '+check2+'> Email loại</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]"><option value="0">Chọn mẫu mail thông báo</option>';
 						<?php foreach ($mailtemplate as $mail): ?>
-							if ( data[i]['discmailtemp'] == '<?php echo $mail['mailprofileid'] ?>') { 
+							if ( data[i]['discmailtemp'] == '<?php echo $mail['mailprofileid'] ?>') {
 								row1 += '<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>';
 							}else{
 								row1 += '<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>';
@@ -1251,41 +1266,41 @@
         	 	else if (data[i]['roundtype'] == 'Recruite') {
         	 		row1 += '<li class="li_round" id="round_'+k+'" class="ui-state-disabled" data-index="'+k+'" data-position="'+k+'"><div class="v_'+k+' ">';
         	 		row1 += '<div class="header_vong_cd"><input type="hidden" name="round'+k+'[]" value="'+k+'" class="sorting"><div class=" col-xs-4 pull-left"><i class="fa fa-ellipsis-v dis_fa"></i> '+data[i]['roundname']+'</div><input type="hidden" name="round'+k+'[]" value="'+data[i]['roundname']+'" class="roundname "><div class="pull-right box_btn_cd"><button class="btn btn_cd" disabled><i class="fa fa-plus"></i></button><button class="btn btn_cd" disabled><i class="fa fa-pencil"></i></button></div></div>';
-					row1 += '<div class="body_vong_cd"><div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile">Loại vòng</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]"><option value="Recruite" selected="">Tuyển dụng</option></select></div><label for="text" class=" col-xs-2 label-profile">Thời hạn vòng</label><div class="col-xs-4  padding-lr0"><input type="text" name="round'+k+'[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>"></div></div>';			        		
+					row1 += '<div class="body_vong_cd"><div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile">Loại vòng</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]"><option value="Recruite" selected="">Tuyển dụng</option></select></div><label for="text" class=" col-xs-2 label-profile">Thời hạn vòng</label><div class="col-xs-4  padding-lr0"><input type="text" name="round'+k+'[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>"></div></div>';
 					row1 += '<div class="row form_campaign_1"><label for="text" class=" col-xs-2 label-profile">Phụ trách vòng</label><div class="col-xs-10  padding-lr0"><div class="col-xs-2 padding_le_ri_0" id="col_add_pt_'+k+'"><div class="col-xs-3 padding_le_ri_0"><img class="img_ql" src="<?php echo base_url() ?>public/image/bbye.jpg"></div><div class="col-xs-9 padding_le_ri_0"><a href="javascript:void(0)" class="add_pt" onclick="insertPT('+k+')"><p class="name_ql">Thêm phụ trách vòng</p></a></div></div><input type="hidden" id="manageround_'+k+'" name="round'+k+'[]" value=""></div></div></div></div></li>';
         	 	}
         	 	else{
         	 		row1 += '<li class="li_round" id="round_'+k+'" data-index="'+k+'" data-position="'+k+'"><div class="v_'+k+'" >';
-					row1 += '<div class="header_vong_cd"><input type="hidden" name="round'+k+'[]" value="'+k+'" class="sorting"><div class=" col-xs-4 pull-left"><i class="fa fa-ellipsis-v handle"></i><span id="title_'+k+'"> '+data[i]['roundname']+'</span><input type="text" name="round'+k+'[]" value="'+data[i]['roundname']+'" class="roundname hide input_title_'+k+'"></div><div class="pull-right box_btn_cd"><button type="button" class="btn btn_cd btn_copy_'+k+'" onclick="copyRound('+k+')"><i class="fa fa-plus"></i></button><button type="button" class="btn btn_cd btn_delete_'+k+'" onclick="deleteRound('+k+')"><i class="fa fa-trash-o"></i></button><button type="button" class="btn btn_cd btn_edit_'+k+'" onclick="editTitle('+k+')"><i class="fa fa-pencil"></i></button></div></div>';	
+					row1 += '<div class="header_vong_cd"><input type="hidden" name="round'+k+'[]" value="'+k+'" class="sorting"><div class=" col-xs-4 pull-left"><i class="fa fa-ellipsis-v handle"></i><span id="title_'+k+'"> '+data[i]['roundname']+'</span><input type="text" name="round'+k+'[]" value="'+data[i]['roundname']+'" class="roundname hide input_title_'+k+'"></div><div class="pull-right box_btn_cd"><button type="button" class="btn btn_cd btn_copy_'+k+'" onclick="copyRound('+k+')"><i class="fa fa-plus"></i></button><button type="button" class="btn btn_cd btn_delete_'+k+'" onclick="deleteRound('+k+')"><i class="fa fa-trash-o"></i></button><button type="button" class="btn btn_cd btn_edit_'+k+'" onclick="editTitle('+k+')"><i class="fa fa-pencil"></i></button></div></div>';
 
-					row1 += '<div class="body_vong_cd"><div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile">Loại vòng</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]" id="select_type'+k+'"><option value="Profile" disabled="">Hồ sơ</option><option value="Filter">Sơ loại</option><option value="Contact">Tiếp cận</option><option value="Assessment">Trắc nghiệm</option><option value="Interview">Phỏng vấn</option><option value="Offer">Đề nghị</option><option value="Recruite" disabled="">Tuyển dụng</option></select></div><label for="text" class=" col-xs-2 label-profile">Thời hạn vòng</label><div class="col-xs-4  padding-lr0"><input type="text" name="round'+k+'[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>"></div></div>'; 
+					row1 += '<div class="body_vong_cd"><div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile">Loại vòng</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]" id="select_type'+k+'"><option value="Profile" disabled="">Hồ sơ</option><option value="Filter">Sơ loại</option><option value="Contact">Tiếp cận</option><option value="Assessment">Trắc nghiệm</option><option value="Interview">Phỏng vấn</option><option value="Offer">Đề nghị</option><option value="Recruite" disabled="">Tuyển dụng</option></select></div><label for="text" class=" col-xs-2 label-profile">Thời hạn vòng</label><div class="col-xs-4  padding-lr0"><input type="text" name="round'+k+'[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>"></div></div>';
 
-					row1 += '<div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile">Phụ trách vòng</label><div class="col-xs-10  padding-lr0"><div class="col-xs-2 padding_le_ri_0" id="col_add_pt_'+k+'"><div class="col-xs-3 padding_le_ri_0"><img class="img_ql" src="<?php echo base_url() ?>public/image/bbye.jpg"></div><div class="col-xs-9 padding_le_ri_0"><a href="javascript:void(0)" class="add_pt" onclick="insertPT('+k+')"><p class="name_ql">Thêm phụ trách vòng</p></a></div></div><input type="hidden" id="manageround_'+k+'" name="round'+k+'[]" value=""></div></div>';       	
-								        		
+					row1 += '<div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile">Phụ trách vòng</label><div class="col-xs-10  padding-lr0"><div class="col-xs-2 padding_le_ri_0" id="col_add_pt_'+k+'"><div class="col-xs-3 padding_le_ri_0"><img class="img_ql" src="<?php echo base_url() ?>public/image/bbye.jpg"></div><div class="col-xs-9 padding_le_ri_0"><a href="javascript:void(0)" class="add_pt" onclick="insertPT('+k+')"><p class="name_ql">Thêm phụ trách vòng</p></a></div></div><input type="hidden" id="manageround_'+k+'" name="round'+k+'[]" value=""></div></div>';
+
 					row1 += '<div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round'+k+'[]" '+check1+'> Email Chuyển vòng</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]"><option value="0">Chọn mẫu mail thông báo</option>';
 						<?php foreach ($mailtemplate as $mail): ?>
-							if ( data[i]['transfmailtemp'] == '<?php echo $mail['mailprofileid'] ?>') { 
+							if ( data[i]['transfmailtemp'] == '<?php echo $mail['mailprofileid'] ?>') {
 								row1 += '<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>';
 							}else{
 								row1 += '<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>';
 							}
 						<?php endforeach ?>
 					row1 += '</select></div></div>';
-					
+
 					row1 += '<div class="row form_campaign_1"><label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round'+k+'[]" '+check2+'> Email loại</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]"><option value="0">Chọn mẫu mail thông báo</option>';
 						<?php foreach ($mailtemplate as $mail): ?>
-							if ( data[i]['discmailtemp'] == '<?php echo $mail['mailprofileid'] ?>') { 
+							if ( data[i]['discmailtemp'] == '<?php echo $mail['mailprofileid'] ?>') {
 								row1 += '<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>';
 							}else{
 								row1 += '<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>';
 							}
 						<?php endforeach ?>
-					row1 += '</select></div></div></div>';	
+					row1 += '</select></div></div></div>';
 
 					if (data[i]['roundtype'] == 'Assessment') {
 						row1 += '<div class="body_vong_cd_1"><div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile">Giới hạn mẫu phiếu trắc nghiệm</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]">';
 						<?php foreach ($asmt_tn as $tn){ ?>
-							if ( data[i]['assessment'] == '<?php echo $tn['asmttemp'] ?>') { 
+							if ( data[i]['assessment'] == '<?php echo $tn['asmttemp'] ?>') {
 								row1 += '<option value="<?php echo $tn['asmttemp'] ?>" selected><?php echo $tn['asmtname'] ?></option>';
 							}else{
 								row1 += '<option value="<?php echo $tn['asmttemp'] ?>"><?php echo $tn['asmtname'] ?></option>';
@@ -1295,7 +1310,7 @@
 
 						row1 += '<div class="row form_campaign_1"><label for="text" class=" col-xs-2 label-profile">Email thông báo</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]">';
 							<?php foreach ($mailtemplate as $mail): ?>
-								if ( data[i]['asmtmailtemp'] == '<?php echo $mail['mailprofileid'] ?>') { 
+								if ( data[i]['asmtmailtemp'] == '<?php echo $mail['mailprofileid'] ?>') {
 									row1 += '<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>';
 								}else{
 									row1 += '<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>';
@@ -1306,7 +1321,7 @@
 					}else if (data[i]['roundtype'] == 'Interview') {
 						row1 += '<div class="body_vong_cd_1"><div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile">Giới hạn mẫu phiếu phỏng vấn</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]">';
 							<?php foreach ($asmt_pv as $tn){ ?>
-								if ( data[i]['scorecard'] == '<?php echo $tn['asmttemp'] ?>') { 
+								if ( data[i]['scorecard'] == '<?php echo $tn['asmttemp'] ?>') {
 									row1 += '<option value="<?php echo $tn['asmttemp'] ?>" selected><?php echo $tn['asmtname'] ?></option>';
 								}else{
 									row1 += '<option value="<?php echo $tn['asmttemp'] ?>"><?php echo $tn['asmtname'] ?></option>';
@@ -1316,7 +1331,7 @@
 
 						row1 += '<div class="row form_campaign"><label for="text" class=" col-xs-2 label-profile">Email thông báo Ứng viên</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]">';
 							<?php foreach ($mailtemplate as $mail): ?>
-								if ( data[i]['interviewmailtemp'] == '<?php echo $mail['mailprofileid'] ?>') { 
+								if ( data[i]['interviewmailtemp'] == '<?php echo $mail['mailprofileid'] ?>') {
 									row1 += '<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>';
 								}else{
 									row1 += '<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>';
@@ -1326,7 +1341,7 @@
 
 						row1 += '<div class="row form_campaign_1"><label for="text" class=" col-xs-2 label-profile">Email thông báo Người PV</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]">';
 							<?php foreach ($mailtemplate as $mail): ?>
-								if ( data[i]['invitemailtemp'] == '<?php echo $mail['mailprofileid'] ?>') { 
+								if ( data[i]['invitemailtemp'] == '<?php echo $mail['mailprofileid'] ?>') {
 									row1 += '<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>';
 								}else{
 									row1 += '<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>';
@@ -1336,20 +1351,20 @@
 					}else if (data[i]['roundtype'] == 'Offer') {
 						row1 += '<div class="body_vong_cd_1"><div class="row form_campaign_1"><label for="text" class=" col-xs-2 label-profile">Email Đề nghị</label><div class="col-xs-4  padding-lr0"><select class="textbox select2" name="round'+k+'[]">';
 							<?php foreach ($mailtemplate as $mail): ?>
-								if ( data[i]['letteroffermailtemp'] == '<?php echo $mail['mailprofileid'] ?>') { 
+								if ( data[i]['letteroffermailtemp'] == '<?php echo $mail['mailprofileid'] ?>') {
 									row1 += '<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>';
 								}else{
 									row1 += '<option value="<?php echo $mail['mailprofileid'] ?>"><?php echo $mail['profilename'] ?></option>';
 								}
 							<?php endforeach ?>
 						row1 += '</select></div></div></div>';
-					}						        
-											        
+					}
+
 					row1 += '</div></li>';
 
         	 	}
 
-            	$('#campaignid_v3').before(row1);	
+            	$('#campaignid_v3').before(row1);
             	initializeSelect2($(".select2"));
             	$('#select_type'+k+' option[value="'+data[i]['roundtype']+'"]').prop('selected', true);
         	 	k++;
@@ -1359,7 +1374,7 @@
 		    	timepicker:false,
 		    	format:'d/m/Y',
 		    });
-			
+
 		})
 		.fail(function() {
 			console.log("error");
@@ -1367,12 +1382,12 @@
 		.always(function() {
 			console.log("complete");
 		});
-		
+
 	}
 
-	$('#saveRound').click(function(event) {
+	$('#saveRound').one( "click", function() {
 		var campaignid = $('#campaignid_v3').val();
-		
+
 		$.ajax({
 			url: '<?php echo base_url() ?>admin/campaign/saveRound',
 			type: 'POST',
@@ -1388,6 +1403,6 @@
 		.always(function() {
 			console.log("complete");
 		});
-		
+
 	});
 </script>

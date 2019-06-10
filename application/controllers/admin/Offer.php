@@ -36,7 +36,7 @@ class Offer extends CI_Controller {
 
             $filename = preg_replace('([\s_&#%]+)', '-', $image);
 
-            $images[] = base_url().$path.$filename;
+            $images[] = $_SERVER["DOCUMENT_ROOT"].'\public\document\\'.$filename;
 
             $config['file_name'] = $filename;
 
@@ -79,7 +79,7 @@ class Offer extends CI_Controller {
         $o_data['mailtemplate'] = $this->Campaign_model->select("mailprofileid,profilename",'mailprofile',array('profiletype' => '0'),'');
         $o_data['asmt_pv']          = $this->Campaign_model->select("asmttemp,asmtname",'asmtheader',array('asmtstatus' => 'W','asmttype' => '1'),'');
         $o_data['templateOffer']    = $this->Campaign_model->select("*",'templateform',array('status' => 'W','temptype' => '0'),'');
-
+        $o_data['category'] = $this->Campaign_model->select("category,code,description,ref1,ref2",'codedictionary',array('status' => 'W'),'');
         $data['check']      =  $check;
         $data['category']   = $this->Campaign_model->select("category,code,description",'codedictionary',array('status' => 'W'),'');
         $this->_data['temp']                = $this->load->view('admin/multiplechoice/offer',$data,true);
@@ -90,6 +90,7 @@ class Offer extends CI_Controller {
     public function saveOffer()
     {
     	$frm = $this->input->post();
+        // var_dump($frm);exit;
     	$campaignid 		= $frm['campaignid'];
     	$roundid 		    = $frm['roundid'];
     	$count 		        = $frm['count'];

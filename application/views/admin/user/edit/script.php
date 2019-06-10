@@ -17,7 +17,7 @@
 	    "columnDefs": [
 	        { targets: [0], visible: false},
 	    ]
-	});	
+	});
 
 	var table2 = $('table#user_c').DataTable({
 	    "bPaginate": true,
@@ -35,7 +35,7 @@
 	    "columnDefs": [
 	        { targets: [0], visible: false},
 	    ]
-	});	
+	});
 	<?php if($this->uri->segment(4)!='3'){?>
 	$('table#user_w tbody').on( 'click', 'tr', function () {
 	    var row = table1.row( this ).data();
@@ -119,7 +119,7 @@
 		var cur  = $(this);
 		var form = new FormData(cur[0]);
 		// console.log(form);
-		for (var [key, value] of form.entries()) { 
+		for (var [key, value] of form.entries()) {
 	      	console.log(key, value);
 	    }
 
@@ -153,7 +153,7 @@
 	    }else{
 	    	$('#email_info').addClass('hide');
 	    }
-	}); 
+	});
 
 	$('div.avatar').click(function(){
 		$(this).before('<input class="hide" type="file" name="avatar" onchange="choosePic(this)">').prev().trigger('click');
@@ -163,7 +163,7 @@
 		var img = $(input).next().find('img');
 		if (input.files && input.files[0]) {
             var reader = new FileReader();
-            
+
             reader.onload = function (e) {
                 img.attr('src', e.target.result);
             }
@@ -183,9 +183,9 @@
 		var cur  = $(this);
 		var form = new FormData(cur[0]);
 		// console.log(form);
-		for (var [key, value] of form.entries()) { 
-	      	console.log(key, value);
-	    }
+		// for (var [key, value] of form.entries()) {
+	 //      	console.log(key, value);
+	 //    }
 
 	    cur.find('button[type=submit] i').addClass('fa fa-spin fa-spinner');
 
@@ -199,10 +199,15 @@
           	processData:false,
           	timeout: 3000
 	    }).done(function(r){
-	        console.log(r);
-	        if (r.data) {window.location.reload();}
-	        cur.find('button[type=submit] i').removeClass();
-	        cur.find('button[data-dismiss]').trigger('click');
+	        // console.log(r);
+	        if (r.data != -1) {
+                window.location.reload();
+                cur.find('button[type=submit] i').removeClass();
+                cur.find('button[data-dismiss]').trigger('click');
+            }else{
+                $('#err-user').text(r.message).removeClass('hide');
+            }
+
 	    }).fail(function(r){
 	    	console.log(r);
 	    	cur.find('button[type=submit] i').removeClass();
@@ -224,6 +229,8 @@
 		modal.find('input[name=mcport]').val('587').trigger('change');
 
 		modal.find('#user_avatar').removeClass('hide');
+        modal.find('#err-user').addClass('hide');
+        modal.find('button[type=submit] i').removeClass('fa fa-spin fa-spinner');
 		modal.find('#user_profile').removeClass('hide').addClass('hide');
 		modal.modal("show");
 	}

@@ -131,14 +131,25 @@ class Data_model extends CI_Model{
 
     public function sync_data($match,$data,$table)
     {
-        $result = $this->count_row($table,$match);
-        if ($result >0) {
-            $this->db->where($match)->update($table,$data);
-            return 'true';
-        }else{
-            $this->db->insert($table,$data);
-            return $this->insert_id();
-        }
+        $count = $this->count_row($table,$match);
+
+            if ($count >0) {
+                $result = $this->db->where($match)->update($table,$data);
+                if (!$result) {
+                    return $this->db->error();
+                }else{
+                    return 'true';
+                }
+            }else{
+                $result = $this->db->insert($table,$data);
+                if (!$result) {
+                    return $this->db->error();
+                }else{
+                    return $this->insert_id();
+                }
+
+            }
+
     }
 }
 ?>

@@ -1,5 +1,7 @@
 <div class="row">
-	<form id="form_ans"> 
+	<form id="form_ans">
+    <input type="hidden" name="candidateid" value="<?php echo(isset($assessment['candidateid'])?$assessment['candidateid']:'')?>">
+    <input type="hidden" name="campaignid" value="<?php echo(isset($assessment['campaignid'])?$assessment['campaignid']:'')?>">
 	<input type="hidden" name="asmtid" value="<?php echo($assessment['asmtid'])?>">
 	<section class="col-md-6 col-md-offset-3">
 		<div class="page_header">
@@ -98,17 +100,17 @@
 						<?php if (isset($assessment['status']) && ($assessment['status'] != 'D' || $assessment['status'] != 'C')){ ?>
 							<div class="time_as">
 								<p>Thời gian còn lại: <span class="countdown" id="countdown1"><?php echo date('H:i:s',mktime(0,$assessment['timelimit'],0))?></span>
-						        
+
 						        <span class="countdown" id="js-countdown">
 								      <span class="countdown__timer js-countdown-hours" aria-labelledby="hour-countdown">
 								      </span> :
-								    
+
 								      <span class="countdown__timer js-countdown-minutes" aria-labelledby="minute-countdown">
 								      </span> :
-								      
+
 								      <span class="countdown__timer js-countdown-seconds" aria-labelledby="second-countdown">
 								      </span>
-								      
+
 								</span>
 								</p>
 							</div>
@@ -120,7 +122,7 @@
 					<?php }elseif ($assessment['status'] == 'C'){ ?>
 						<p style="color: red">Bạn đã hoàn thành phiếu này. Chúng tôi sẽ thông báo kết quả tới bạn sớm nhất có thể.</p>
 						<p style="color: red">Xin chân thành cảm ơn </p>
-					<?php }else{ 
+					<?php }else{
 						if ($check == '1') { ?>
 							<button type="button" class="btn btn_start" id="btn_start" data-asmtid="<?php echo($assessment['asmtid'])?>" data-asmttemp="<?php echo($assessment['asmttemp'])?>"><i></i> Bắt đầu</button>
 						 <?php }else{ ?>
@@ -168,7 +170,7 @@
 	$('#js-countdown').hide();
 	function getRemainingTime(endtime) {
 	  const milliseconds = Date.parse(new Date(endtime)) - Date.parse(new Date());
-	  
+
 	  const seconds = Math.floor( (milliseconds/1000) % 60 );
 	  const minutes = Math.floor( (milliseconds/1000/60) % 60 );
 	  const hours = Math.floor( (milliseconds/(1000*60*60)) % 24 );
@@ -182,7 +184,7 @@
 	    'days': days,
 	  };
 	}
-	  
+
 	function initClock(id, endtime) {
 	  const counter = document.getElementById(id);
 	  const hoursItem = counter.querySelector('.js-countdown-hours');
@@ -383,7 +385,7 @@
 								}
 							dom+='</div></div>';
 						}
-					   	
+
 					}
 			dom+='</div>';
 		}

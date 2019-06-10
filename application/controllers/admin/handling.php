@@ -6,11 +6,11 @@ class Handling extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		
+
 		$config['upload_path'] = './uploads/';
 	    $config['allowed_types'] = 'gif|jpg|png';
 	    $config['remove_spaces'] = true;
-	    $config['file_ext_tolower'] = true;    
+	    $config['file_ext_tolower'] = true;
 	    $this->load->library('upload', $config);
 		$this->load->helper(array('url','my_helper','file'));
 		$this->load->library('session');
@@ -20,6 +20,7 @@ class Handling extends CI_Controller {
         $o_data['mailtemplate'] = $this->Campaign_model->select("mailprofileid,profilename",'mailprofile',array('profiletype' => '0','status' => 'W'),'');
         $o_data['operator']     = $this->Campaign_model->select("operatorid,operatorname,email",'operator',array('hidden' => 1),'');
         $o_data['asmt_pv']      = $this->Campaign_model->select("asmttemp,asmtname",'asmtheader',array('asmtstatus' => 'W','asmttype' => '1'),'');
+        $o_data['category'] = $this->Campaign_model->select("category,code,description,ref1,ref2",'codedictionary',array('status' => 'W'),'');
         // echo "<pre>";
         // print_r($o_data);
         // echo "</pre>"; exit;
@@ -29,18 +30,29 @@ class Handling extends CI_Controller {
 	    $this->data['footer']              = $this->load->view('admin/home/footer',null,true);
 
         $this->seg = 7;
-        $this->sess  = $this->session->userdata('user_admin');  
+        $this->sess  = $this->session->userdata('user_admin');
         $this->day       = date('Y-m-d H:i:s');
 	}
     public function refresh()
     {
-        session_destroy();
-        redirect(base_url('login.html'));
+        // session_destroy();
+        // redirect(base_url('login.html'));
+        // $pieces = explode(",",trim(',234234,55555,',','));
+        // var_dump($pieces);exit;
+        $result = $this->Campaign_model->select_sql("SELECT candidateid,telephone FROM candidate ");
+        foreach ($result as $value) {
+            $temp = ','.$value['telephone'].',';
+            $data['telephone'] = $temp;
+            $id = $value['candidateid'];
+            $this->Data_model->update('candidate',"candidateid = $id",$data);
+        }
+        echo "success";
+
     }
-    
+
 	public function index($quaylai = '')
 	{
-		
+
 		if($quaylai == '')
 		{
 			$where = 'AND candidate.hidden = 1 AND candidate.mergewith = 0';
@@ -65,12 +77,12 @@ class Handling extends CI_Controller {
 
         $this->data2['checkRecruit']        = $checkRecruit;
 		$this->data2['checknemu']           = $frm;
-        $this->data2['total_candidate']     = $this->Candidate_model->count_filter($join,$where);
+        $this->data2['total_candidate']     = $this->Candidate_model->count_filter('','');
         $this->data2['profilesrc']          = $this->total_model->select_rows('profilesrc, count(profilesrc) as sl','candidate',array('hidden' => 1),'profilesrc');
         $this->data2['hocvan']              = $this->total_model->select_rows("certificate",'canknowledge',array('hidden' => 1),'certificate');
         $this->data2['ngoaingu']            = $this->total_model->select_rows("language",'canlanguage',array('hidden' => 1),'language');
         $this->data2['tinhoc']              = $this->total_model->select_rows("software",'cansoftware',array('hidden' => 1),'software');
-        $this->data2['filter']              = $this->Data_model->selectTable('filterprofile', array('campaignid' => 0));  
+        $this->data2['filter']              = $this->Data_model->selectTable('filterprofile', array('campaignid' => 0));
 		$this->data2['city']                = $this->total_model->selectall('city');
 		$this->data2['tag']                 = $this->Candidate_model->select_sugg_tag('tagprofile.title, tagprofile.tagid',array('tagtransaction.tablename' => 'candidate' , 'tagtransaction.categoryid' => 'position'));
         $this->data2['tagrandom']           = $this->Candidate_model->select_sugg_tag('tagprofile.title, tagprofile.tagid',array('tagtransaction.tablename' => 'candidate' , 'tagtransaction.categoryid' => 'random'));
@@ -91,9 +103,9 @@ class Handling extends CI_Controller {
         $data1['phantrang']             =  $this->pagination->create_links();
 
         if (isset($checkTrung) && $checkTrung == '1'){
-            $data1['candidate']             = $this->Candidate_model->list_trung($join,$where,$start,$config['per_page'],$order); 
+            $data1['candidate']             = $this->Candidate_model->list_trung($join,$where,$start,$config['per_page'],$order);
         }else{
-            $data1['candidate']             = $this->Candidate_model->list_filter($join,$where,$start,$config['per_page'],$order); 
+            $data1['candidate']             = $this->Candidate_model->list_filter($join,$where,$start,$config['per_page'],$order);
         }
         $data1['total_candidate']       = $config['total_rows'];
         $data1['nav']                   = $this->load->view('admin/page/nav',$this->data2,true);
@@ -134,12 +146,12 @@ class Handling extends CI_Controller {
         $start = ($start-1)*$config['per_page'];
         $this->load->library('pagination', $config);
         $data2['phantrang']             =  $this->pagination->create_links();
-		
+
         $data2['id_active']             = $id;
 
         $data2['checkTrung']            = $checkTrung;
         if ($checkTrung == '1') {
-            $data2['candidate']             = $this->Candidate_model->list_trung($join,$where,$start,$config['per_page'],$order);  
+            $data2['candidate']             = $this->Candidate_model->list_trung($join,$where,$start,$config['per_page'],$order);
         }else{
             $data2['candidate']             = $this->Candidate_model->list_filter($join,$where,$start,$config['per_page'],$order);
         }
@@ -158,7 +170,7 @@ class Handling extends CI_Controller {
         $result             = ($this->Campaign_model->select_sql($sql))[0];
         $mail               = $result['email'];
         $profilesrc         = $result['profilesrc'];
-        
+
         $join[0]    = array('table'=> 'operator','match' =>'tb.createdby = operator.operatorid');
         $join[1]    = array('table'=> 'document','match' =>'tb.createdby = document.referencekey');
         $orderby    = array('colname'=>'tb.createddate','typesort'=>'desc');
@@ -182,7 +194,7 @@ class Handling extends CI_Controller {
             return ($a['createddate'] < $b['createddate']) ? 1 : -1;
         }
         uasort($this->data2['history'], 'cmp');
-        
+
         if($profilesrc == 'Nội bộ'|| $profilesrc == 'Web Admin'){
             $this->data2['candidate_noibo']     = $this->Candidate_model->first_row('candidate',array('candidateid' => $id, ),'','');
             $id                                 = -1;
@@ -213,16 +225,16 @@ class Handling extends CI_Controller {
         $sql = "SELECT count(recordid) as count FROM profilehistory WHERE candidateid = '$id' AND actiontype = 'Recruite'";
         $this->data2['recruite']      = $this->Campaign_model->select_sql($sql)[0]['count'];
         //ngay cap nhat
-        $sql0 = "SELECT DISTINCT a.lastupdate as a, b.lastupdate as b, c.lastupdate as c, d.lastupdate as d, f.lastupdate as f, g.lastupdate as g, h.lastupdate as h, j.lastupdate as j,e.lastupdate as e 
-                FROM candidate a 
-                Left JOIN (SELECT top 1 * FROM canaddress WHERE candidateid = $id ORDER BY lastupdate DESC) b ON a.candidateid = b.candidateid 
-                Left JOIN (SELECT top 1 * FROM canexperience WHERE candidateid = $id ORDER BY lastupdate DESC) c ON a.candidateid = c.candidateid 
-                Left JOIN (SELECT top 1 * FROM canknowledge WHERE candidateid = $id ORDER BY lastupdate DESC) d ON a.candidateid = d.candidateid 
-                Left JOIN cansocial e ON a.candidateid = e.candidateid 
-                Left JOIN (SELECT top 1 * FROM canlanguage WHERE candidateid = $id ORDER BY lastupdate DESC) f ON a.candidateid = f.candidateid 
-                Left JOIN (SELECT top 1 * FROM cansoftware WHERE candidateid = $id ORDER BY lastupdate DESC) g ON a.candidateid = g.candidateid 
-                Left JOIN (SELECT top 1 * FROM canreference WHERE candidateid = $id ORDER BY lastupdate DESC) h ON a.candidateid = h.candidateid 
-                Left JOIN (SELECT top 1 * FROM document WHERE referencekey = $id ORDER BY lastupdate DESC) j ON a.candidateid = j.referencekey AND j.tablename = 'candidate'  
+        $sql0 = "SELECT DISTINCT a.lastupdate as a, b.lastupdate as b, c.lastupdate as c, d.lastupdate as d, f.lastupdate as f, g.lastupdate as g, h.lastupdate as h, j.lastupdate as j,e.lastupdate as e
+                FROM candidate a
+                Left JOIN (SELECT top 1 * FROM canaddress WHERE candidateid = $id ORDER BY lastupdate DESC) b ON a.candidateid = b.candidateid
+                Left JOIN (SELECT top 1 * FROM canexperience WHERE candidateid = $id ORDER BY lastupdate DESC) c ON a.candidateid = c.candidateid
+                Left JOIN (SELECT top 1 * FROM canknowledge WHERE candidateid = $id ORDER BY lastupdate DESC) d ON a.candidateid = d.candidateid
+                Left JOIN cansocial e ON a.candidateid = e.candidateid
+                Left JOIN (SELECT top 1 * FROM canlanguage WHERE candidateid = $id ORDER BY lastupdate DESC) f ON a.candidateid = f.candidateid
+                Left JOIN (SELECT top 1 * FROM cansoftware WHERE candidateid = $id ORDER BY lastupdate DESC) g ON a.candidateid = g.candidateid
+                Left JOIN (SELECT top 1 * FROM canreference WHERE candidateid = $id ORDER BY lastupdate DESC) h ON a.candidateid = h.candidateid
+                Left JOIN (SELECT top 1 * FROM document WHERE referencekey = $id ORDER BY lastupdate DESC) j ON a.candidateid = j.referencekey AND j.tablename = 'candidate'
                 WHERE a.candidateid = $id ORDER BY j.lastupdate DESC";
         $this->data2['lastupdate']      = $this->Campaign_model->select_sql($sql0);
         if (isset($this->data2['lastupdate'][0])) {
@@ -246,21 +258,21 @@ class Handling extends CI_Controller {
             $this->data2['vt_noibo']            = $vt1['position'].' - '.$vt1['company'];
             // var_dump($this->data2['document_noibo']);exit;
             if ($id_mergewith != Null) {
-                $sql0 = "SELECT DISTINCT a.lastupdate as a, b.lastupdate as b, c.lastupdate as c, d.lastupdate as d, f.lastupdate as f, g.lastupdate as g, h.lastupdate as h, j.lastupdate as j,e.lastupdate as e 
-                FROM candidate a 
-                Left JOIN (SELECT top 1 * FROM canaddress WHERE candidateid = $id_mergewith ORDER BY lastupdate DESC) b ON a.candidateid = b.candidateid 
-                Left JOIN (SELECT top 1 * FROM canexperience WHERE candidateid = $id_mergewith ORDER BY lastupdate DESC) c ON a.candidateid = c.candidateid 
-                Left JOIN (SELECT top 1 * FROM canknowledge WHERE candidateid = $id_mergewith ORDER BY lastupdate DESC) d ON a.candidateid = d.candidateid 
-                Left JOIN cansocial e ON a.candidateid = e.candidateid 
-                Left JOIN (SELECT top 1 * FROM canlanguage WHERE candidateid = $id_mergewith ORDER BY lastupdate DESC) f ON a.candidateid = f.candidateid 
-                Left JOIN (SELECT top 1 * FROM cansoftware WHERE candidateid = $id_mergewith ORDER BY lastupdate DESC) g ON a.candidateid = g.candidateid 
-                Left JOIN (SELECT top 1 * FROM canreference WHERE candidateid = $id_mergewith ORDER BY lastupdate DESC) h ON a.candidateid = h.candidateid 
-                Left JOIN (SELECT top 1 * FROM document WHERE referencekey = $id_mergewith ORDER BY lastupdate DESC) j ON a.candidateid = j.referencekey AND j.tablename = 'candidate'  
+                $sql0 = "SELECT DISTINCT a.lastupdate as a, b.lastupdate as b, c.lastupdate as c, d.lastupdate as d, f.lastupdate as f, g.lastupdate as g, h.lastupdate as h, j.lastupdate as j,e.lastupdate as e
+                FROM candidate a
+                Left JOIN (SELECT top 1 * FROM canaddress WHERE candidateid = $id_mergewith ORDER BY lastupdate DESC) b ON a.candidateid = b.candidateid
+                Left JOIN (SELECT top 1 * FROM canexperience WHERE candidateid = $id_mergewith ORDER BY lastupdate DESC) c ON a.candidateid = c.candidateid
+                Left JOIN (SELECT top 1 * FROM canknowledge WHERE candidateid = $id_mergewith ORDER BY lastupdate DESC) d ON a.candidateid = d.candidateid
+                Left JOIN cansocial e ON a.candidateid = e.candidateid
+                Left JOIN (SELECT top 1 * FROM canlanguage WHERE candidateid = $id_mergewith ORDER BY lastupdate DESC) f ON a.candidateid = f.candidateid
+                Left JOIN (SELECT top 1 * FROM cansoftware WHERE candidateid = $id_mergewith ORDER BY lastupdate DESC) g ON a.candidateid = g.candidateid
+                Left JOIN (SELECT top 1 * FROM canreference WHERE candidateid = $id_mergewith ORDER BY lastupdate DESC) h ON a.candidateid = h.candidateid
+                Left JOIN (SELECT top 1 * FROM document WHERE referencekey = $id_mergewith ORDER BY lastupdate DESC) j ON a.candidateid = j.referencekey AND j.tablename = 'candidate'
                 WHERE a.candidateid = $id_mergewith ORDER BY j.lastupdate DESC";
                 $this->data2['lastupdate_noibo']      = $this->Campaign_model->select_sql($sql0);
                 rsort($this->data2['lastupdate_noibo'][0]);
                 // var_dump($this->data2['lastupdate_noibo']);exit;
-                
+
             }else{
                 $this->data2['lastupdate_noibo'][0][0]      = '';
             }
@@ -286,20 +298,20 @@ class Handling extends CI_Controller {
             $this->data2['vt_con'][$key]            = $vt1['position'].' - '.$vt1['company'];
 
             if ($id_con != Null) {
-                $sql0 = "SELECT DISTINCT a.lastupdate as a, b.lastupdate as b, c.lastupdate as c, d.lastupdate as d, f.lastupdate as f, g.lastupdate as g, h.lastupdate as h, j.lastupdate as j,e.lastupdate as e 
-                FROM candidate a 
-                Left JOIN (SELECT top 1 * FROM canaddress WHERE candidateid = $id_con ORDER BY lastupdate DESC) b ON a.candidateid = b.candidateid 
-                Left JOIN (SELECT top 1 * FROM canexperience WHERE candidateid = $id_con ORDER BY lastupdate DESC) c ON a.candidateid = c.candidateid 
-                Left JOIN (SELECT top 1 * FROM canknowledge WHERE candidateid = $id_con ORDER BY lastupdate DESC) d ON a.candidateid = d.candidateid 
-                Left JOIN cansocial e ON a.candidateid = e.candidateid 
-                Left JOIN (SELECT top 1 * FROM canlanguage WHERE candidateid = $id_con ORDER BY lastupdate DESC) f ON a.candidateid = f.candidateid 
-                Left JOIN (SELECT top 1 * FROM cansoftware WHERE candidateid = $id_con ORDER BY lastupdate DESC) g ON a.candidateid = g.candidateid 
-                Left JOIN (SELECT top 1 * FROM canreference WHERE candidateid = $id_con ORDER BY lastupdate DESC) h ON a.candidateid = h.candidateid 
-                Left JOIN (SELECT top 1 * FROM document WHERE referencekey = $id_con ORDER BY lastupdate DESC) j ON a.candidateid = j.referencekey AND j.tablename = 'candidate'  
+                $sql0 = "SELECT DISTINCT a.lastupdate as a, b.lastupdate as b, c.lastupdate as c, d.lastupdate as d, f.lastupdate as f, g.lastupdate as g, h.lastupdate as h, j.lastupdate as j,e.lastupdate as e
+                FROM candidate a
+                Left JOIN (SELECT top 1 * FROM canaddress WHERE candidateid = $id_con ORDER BY lastupdate DESC) b ON a.candidateid = b.candidateid
+                Left JOIN (SELECT top 1 * FROM canexperience WHERE candidateid = $id_con ORDER BY lastupdate DESC) c ON a.candidateid = c.candidateid
+                Left JOIN (SELECT top 1 * FROM canknowledge WHERE candidateid = $id_con ORDER BY lastupdate DESC) d ON a.candidateid = d.candidateid
+                Left JOIN cansocial e ON a.candidateid = e.candidateid
+                Left JOIN (SELECT top 1 * FROM canlanguage WHERE candidateid = $id_con ORDER BY lastupdate DESC) f ON a.candidateid = f.candidateid
+                Left JOIN (SELECT top 1 * FROM cansoftware WHERE candidateid = $id_con ORDER BY lastupdate DESC) g ON a.candidateid = g.candidateid
+                Left JOIN (SELECT top 1 * FROM canreference WHERE candidateid = $id_con ORDER BY lastupdate DESC) h ON a.candidateid = h.candidateid
+                Left JOIN (SELECT top 1 * FROM document WHERE referencekey = $id_con ORDER BY lastupdate DESC) j ON a.candidateid = j.referencekey AND j.tablename = 'candidate'
                 WHERE a.candidateid = $id_mergewith ORDER BY j.lastupdate DESC";
                 $this->data2['lastupdate_con'][$key]      = $this->Campaign_model->select_sql($sql0);
                 rsort($this->data2['lastupdate_con'][$key][0]);
-                
+
             }else{
                 $this->data2['lastupdate_con'][$key][0][0]      = '';
             }
@@ -325,7 +337,7 @@ class Handling extends CI_Controller {
         {
             $this->data2['comment']['scores'] = 0;
         }
-        
+
         $this->data2['tabActive'] = $tabActive;
 		$data['temp'] = $this->load->view('admin/page/detail_profile',$this->data2,true);
 		$this->load->view('admin/home/master-profile',$data);
@@ -361,24 +373,24 @@ class Handling extends CI_Controller {
     	}
     	if(($frm['agefrom'] != '') || ($frm['ageto'] != ''))
     	{
-    		if($frm['agefrom'] != ''){ 
+    		if($frm['agefrom'] != ''){
     			$tru = '-'.$frm['agefrom'].' years';
     			$ngay = date('Y-m-d', strtotime($tru));
-    		    $where[] = "candidate.dateofbirth <= '".$ngay."'";  
+    		    $where[] = "candidate.dateofbirth <= '".$ngay."'";
     		}
-    		if($frm['ageto'] != ''){ 
+    		if($frm['ageto'] != ''){
     			$tru = '-'.$frm['ageto'].' years';
     			$ngay = date('Y-m-d', strtotime($tru));
-                $where[] = "candidate.dateofbirth >= '".$ngay."'";  
+                $where[] = "candidate.dateofbirth >= '".$ngay."'";
     		}
 
     	}
     	if(($frm['heightfrom'] != '') || ($frm['heightto'] != ''))
     	{
-    		if($frm['heightfrom'] != ''){ 
+    		if($frm['heightfrom'] != ''){
                 $where[] = "candidate.height >= '".$frm['heightfrom']."'";
     		}
-    		if($frm['heightto'] != ''){ 
+    		if($frm['heightto'] != ''){
                 $where[] = "candidate.height <= '".$frm['heightto']."'";
     		}
 
@@ -386,19 +398,19 @@ class Handling extends CI_Controller {
     	if(($frm['weightfrom'] != '') || ($frm['weightto'] != ''))
     	{
     		if($frm['weightfrom'] != ''){
-            $where[] = "candidate.weight >= '".$frm['weightfrom']."'"; 
+            $where[] = "candidate.weight >= '".$frm['weightfrom']."'";
     		}
-    		if($frm['weightto'] != ''){ 
-                $where[] = "candidate.weight <= '".$frm['weightto']."'"; 
+    		if($frm['weightto'] != ''){
+                $where[] = "candidate.weight <= '".$frm['weightto']."'";
     		}
     	}
     	if($frm['ethnic'] != '')
     	{
-            $where[] = "candidate.ethnic = '".$frm['ethnic']."'"; 
+            $where[] = "candidate.ethnic = '".$frm['ethnic']."'";
     	}
     	if($frm['nationality'] != '')
     	{
-            $where[] = "candidate.nationality = '".$frm['nationality']."'"; 
+            $where[] = "candidate.nationality = '".$frm['nationality']."'";
     	}
         if(($frm['cityori'] != '')||($frm['citycurr'] != ''))
         {
@@ -418,19 +430,19 @@ class Handling extends CI_Controller {
     	}
     	if(($frm['currbenefitfrom'] != '') || ($frm['currbenefitto'] != ''))
     	{
-    		if($frm['currbenefitfrom'] != ''){ 
+    		if($frm['currbenefitfrom'] != ''){
                 $where[] = "candidate.currentbenefit >='".$this->toInt($frm['currbenefitfrom'])."'";
     		}
-    		if($frm['currbenefitto'] != ''){ 
+    		if($frm['currbenefitto'] != ''){
                 $where[] = "candidate.currentbenefit <='".$this->toInt($frm['currbenefitto'])."'";
     		}
     	}
     	if(($frm['desbenefitfrom'] != '') || ($frm['desbenefitto'] != ''))
     	{
-    		if($frm['desbenefitfrom'] != ''){ 
+    		if($frm['desbenefitfrom'] != ''){
                 $where[] = "candidate.desirebenefit >='".$this->toInt($frm['desbenefitfrom'])."'";
     		}
-    		if($frm['desbenefitto'] != ''){ 
+    		if($frm['desbenefitto'] != ''){
                 $where[] = "candidate.desirebenefit <='".$this->toInt($frm['desbenefitto'])."'";
     		}
     	}
@@ -465,7 +477,7 @@ class Handling extends CI_Controller {
                     if($i != count($arr_hv) -2)
                     {
                         $st_hv .= " OR";
-                    }  
+                    }
                 }
                 $where[] = $st_hv.")";
                 $join[] = 'LEFT JOIN canknowledge ON candidate.candidateid = canknowledge.candidateid';
@@ -484,7 +496,7 @@ class Handling extends CI_Controller {
                     if($i != count($arr_nn) -2)
                     {
                         $st_nn .= " OR";
-                    }  
+                    }
                 }
                 $where[] = $st_nn.")";
                 $join[] = 'LEFT JOIN canlanguage ON candidate.candidateid = canlanguage.candidateid';
@@ -505,7 +517,7 @@ class Handling extends CI_Controller {
                     if($i != count($arr_th) -2)
                     {
                         $st_th .= " OR";
-                    }  
+                    }
                 }
                 $where[] = $st_th.")";
                 $join[] = 'LEFT JOIN cansoftware ON candidate.candidateid = cansoftware.candidateid';
@@ -520,7 +532,7 @@ class Handling extends CI_Controller {
                 if($i != count($arr) -2)
                 {
                     $st .= " OR";
-                }  
+                }
             }
             $where[] = $st.")";
         }
@@ -533,7 +545,7 @@ class Handling extends CI_Controller {
                 if($i != count($arr) -2)
                 {
                     $st .= " OR";
-                }  
+                }
             }
             $where[] = $st.")";
             $where[] = "tag_a.tablename = 'candidate' AND tag_a.categoryid = 'position'";
@@ -548,7 +560,7 @@ class Handling extends CI_Controller {
                 if($i != count($arr) -2)
                 {
                     $st .= " OR";
-                }  
+                }
             }
             $where[] = $st.")";
             $where[] = "tag_b.tablename = 'candidate' AND tag_b.categoryid = 'random'";
@@ -560,10 +572,10 @@ class Handling extends CI_Controller {
 
         if(($frm['talentfrom'] != '') || ($frm['talentto'] != ''))
         {
-            if($frm['talentfrom'] != '' ){ 
+            if($frm['talentfrom'] != '' ){
                 $where[] = "candidate.istalent >= '".$frm['talentfrom']."'";
             }
-            if($frm['talentto'] != ''){ 
+            if($frm['talentto'] != ''){
                 $where[] = "candidate.istalent <= '".$frm['talentto']."'";
             }
 
@@ -572,16 +584,16 @@ class Handling extends CI_Controller {
         {
             $frm['updatefrom'] = date('Y-m-d',strtotime($frm['updatefrom']));
             $frm['updateto'] = date('Y-m-d',strtotime($frm['updateto']));
-            $join[] = "Left JOIN canaddress b ON candidate.candidateid = b.candidateid 
-                        Left JOIN canexperience c ON candidate.candidateid = c.candidateid 
-                        Left JOIN canknowledge d ON candidate.candidateid = d.candidateid 
-                        Left JOIN cansocial e ON candidate.candidateid = e.candidateid 
-                        Left JOIN canlanguage f ON candidate.candidateid = f.candidateid 
-                        Left JOIN cansoftware g ON candidate.candidateid = g.candidateid 
-                        Left JOIN canreference h ON candidate.candidateid = h.candidateid 
+            $join[] = "Left JOIN canaddress b ON candidate.candidateid = b.candidateid
+                        Left JOIN canexperience c ON candidate.candidateid = c.candidateid
+                        Left JOIN canknowledge d ON candidate.candidateid = d.candidateid
+                        Left JOIN cansocial e ON candidate.candidateid = e.candidateid
+                        Left JOIN canlanguage f ON candidate.candidateid = f.candidateid
+                        Left JOIN cansoftware g ON candidate.candidateid = g.candidateid
+                        Left JOIN canreference h ON candidate.candidateid = h.candidateid
                         Left JOIN document j ON candidate.candidateid = j.referencekey AND j.tablename = 'candidate' ";
-            if($frm['updatefrom'] != '' && $frm['updateto'] != ''){ 
-                $where[] = "((candidate.lastupdate >= '".$frm['updatefrom']."' AND candidate.lastupdate <= '".$frm['updateto']."') 
+            if($frm['updatefrom'] != '' && $frm['updateto'] != ''){
+                $where[] = "((candidate.lastupdate >= '".$frm['updatefrom']."' AND candidate.lastupdate <= '".$frm['updateto']."')
                     OR (b.lastupdate >= '".$frm['updatefrom']."' AND b.lastupdate <= '".$frm['updateto']."')
                     OR (c.lastupdate >= '".$frm['updatefrom']."' AND c.lastupdate <= '".$frm['updateto']."')
                     OR (d.lastupdate >= '".$frm['updatefrom']."' AND d.lastupdate <= '".$frm['updateto']."')
@@ -591,8 +603,8 @@ class Handling extends CI_Controller {
                     OR (h.lastupdate >= '".$frm['updatefrom']."' AND h.lastupdate <= '".$frm['updateto']."')
                     OR (j.lastupdate >= '".$frm['updatefrom']."' AND j.lastupdate <= '".$frm['updateto']."'))";
             }
-            else if($frm['updatefrom'] != '' && $frm['updateto'] == ''){ 
-                $where[] = "((candidate.lastupdate >= '".$frm['updatefrom']."') 
+            else if($frm['updatefrom'] != '' && $frm['updateto'] == ''){
+                $where[] = "((candidate.lastupdate >= '".$frm['updatefrom']."')
                     OR (b.lastupdate >= '".$frm['updatefrom']."')
                     OR (c.lastupdate >= '".$frm['updatefrom']."' )
                     OR (d.lastupdate >= '".$frm['updatefrom']."' )
@@ -602,8 +614,8 @@ class Handling extends CI_Controller {
                     OR (h.lastupdate >= '".$frm['updatefrom']."' )
                     OR (j.lastupdate >= '".$frm['updatefrom']."' ))";
             }
-            else if($frm['updatefrom'] == '' && $frm['updateto'] != ''){ 
-                $where[] = "((candidate.lastupdate <= '".$frm['updateto']."') 
+            else if($frm['updatefrom'] == '' && $frm['updateto'] != ''){
+                $where[] = "((candidate.lastupdate <= '".$frm['updateto']."')
                     OR (b.lastupdate <= '".$frm['updateto']."')
                     OR (c.lastupdate <= '".$frm['updateto']."' )
                     OR (d.lastupdate <= '".$frm['updateto']."' )
@@ -658,12 +670,15 @@ class Handling extends CI_Controller {
 
         $check_all = $this->input->post('check_all');
         if ($check_all != 'on') {
-            
+
             $where_before        = $this->session->userdata('filterRecruit');
         }else if($check_all == 'on'){
             $where_before        = ' ';
+            if($this->session->has_userdata('filterRecruit')) {
+                $this->session->unset_userdata('filterRecruit');
+            }
         }
-        
+
         if(count($where) > 0)
         {
             $condition = 'AND '.implode('AND ', $where);
@@ -679,7 +694,7 @@ class Handling extends CI_Controller {
         $this->session->set_userdata('order', $order);
         $this->session->set_userdata('frm', $frm);
         $this->session->set_userdata('checkRecruit', -1);
-        
+
         $config['total_rows']           = $this->Candidate_model->count_filter($jointable,$condition);
         $config['base_url']             = base_url()."admin/handling/index/";
         $config['per_page']             = 100;
@@ -693,22 +708,22 @@ class Handling extends CI_Controller {
         $start = ($start-1)*$config['per_page'];
         $this->load->library('pagination', $config);
 
-        $data1 = $this->Candidate_model->list_filter($jointable,$condition,$start,$config['per_page'],$order); 
+        $data1 = $this->Candidate_model->list_filter($jointable,$condition,$start,$config['per_page'],$order);
 		for($i = 0 ; $i < count($data1); $i++)
 		{
 			$data1[$i]['dateofbirth2'] = getAge($data1[$i]['dateofbirth']);
-			$data1[$i]['kinhnghiem'] = ""; 
-			if($data1[$i]['yearexperirence'] != null){    
+			$data1[$i]['kinhnghiem'] = "";
+			if($data1[$i]['yearexperirence'] != null){
                                 $data1[$i]['kinhnghiem'] = ($data1[$i]['yearexperirence'] == 0)? "kinh nghiệm dưới 1 năm, " : $data1[$i]['yearexperirence']." năm kinh nghiệm, ";
                             }
             $data1[$i]['thunhap']   =  ($data1[$i]['desirebenefit'] == 0)? "" : number_format($data1[$i]['desirebenefit'])." VND, ";
-              
+
 		}
         $data1['total_rows']        = $config['total_rows'];
         $data1['phantrang']         =  '<div id="jquery_link" align="center" style="height:50px">'.$this->pagination->create_links().'</div>';
 		echo json_encode($data1);
     }
-    
+
      function toInt($str)
     {
         return (int)preg_replace("/\..+$/i", "", preg_replace("/[^0-9\.]/i", "", $str));
@@ -749,7 +764,7 @@ class Handling extends CI_Controller {
         }
         $dreturn[0]['filterid'] = $detail['filterid'];
         $dreturn[0]['filtername'] = $name['filtername'];
-        echo json_encode($dreturn);       
+        echo json_encode($dreturn);
     }
     function loadfilter()
     {
@@ -759,7 +774,7 @@ class Handling extends CI_Controller {
         echo json_encode($data);
     }
     function talent($talent = '')
-    {   
+    {
         $frm = $this->input->post('check');
         foreach ($frm as $key ) {
            $this->Candidate_model->UpdateData('candidate',array('candidateid' => $key),array('istalent' => $talent));
@@ -779,7 +794,7 @@ class Handling extends CI_Controller {
     }
 
     function block($block = '')
-    {   
+    {
         $frm = $this->input->post('check');
         foreach ($frm as $key ) {
             $this->Candidate_model->UpdateData('candidate',array('candidateid' => $key),array('blocked' => $block));
@@ -799,20 +814,20 @@ class Handling extends CI_Controller {
     }
     function searchname()
     {
-        $frm = $this->input->post();
-        $filter = $this->session->userdata('filter');
-        $temp0         = $this->session->userdata('filterRecruit');
-        $filter        = isset($temp0)? $filter.' '.$temp0 : $filter;
-        
-        $join = 'LEFT JOIN canknowledge a ON candidate.candidateid = a.candidateid 
+        $frm            = $this->input->post();
+        $filter         = $this->session->userdata('filter');
+        $temp0          = $this->session->userdata('filterRecruit');
+        $filter         = isset($temp0)? $filter.' '.$temp0 : $filter;
+
+        $join = 'LEFT JOIN canknowledge a ON candidate.candidateid = a.candidateid
                     LEFT JOIN cansoftware b ON candidate.candidateid = b.candidateid
                     LEFT JOIN canexperience c ON candidate.candidateid = c.candidateid
                     LEFT JOIN canreference d ON candidate.candidateid = d.candidateid
-                    LEFT JOIN canlanguage e ON candidate.candidateid = e.candidateid ';  
+                    LEFT JOIN canlanguage e ON candidate.candidateid = e.candidateid ';
         $where = "AND ((LOWER(candidate.name) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(candidate.email) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(a.certificate) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(b.software) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(c.company) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(c.position) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(d.name) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(d.position) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(d.company) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(e.language) LIKE LOWER(N'%".$frm['name']."%'))) $filter";
             // $this->session->set_userdata('filter', $where);
             // $this->session->set_userdata('join', $join);
-        
+
         $config['total_rows']           = $this->Candidate_model->count_filter($join,$where);
         $config['base_url']             = base_url()."admin/handling/index/";
         $config['per_page']             = 100;
@@ -826,20 +841,20 @@ class Handling extends CI_Controller {
         $start = ($start-1)*$config['per_page'];
         $this->load->library('pagination', $config);
 
-        $data1 = $this->Candidate_model->list_filter($join,$where,$start,$config['per_page'],"candidate.lastupdate desc");    
+        $data1 = $this->Candidate_model->list_filter($join,$where,$start,$config['per_page'],"candidate.lastupdate desc");
         for($i = 0 ; $i < count($data1); $i++)
         {
             $data1[$i]['dateofbirth2'] = getAge($data1[$i]['dateofbirth']);
-            $data1[$i]['kinhnghiem'] = ""; 
-            if($data1[$i]['yearexperirence'] != null){    
+            $data1[$i]['kinhnghiem'] = "";
+            if($data1[$i]['yearexperirence'] != null){
                                 $data1[$i]['kinhnghiem'] = ($data1[$i]['yearexperirence'] == 0)? "kinh nghiệm dưới 1 năm, " : $data1[$i]['yearexperirence']." năm kinh nghiệm, ";
                             }
             $data1[$i]['thunhap'] =  ($data1[$i]['desirebenefit'] == 0)? "" : number_format($data1[$i]['desirebenefit'])." VND, ";
-              
+
         }
         $data1['total_rows']        = $config['total_rows'];
         $data1['phantrang']         =  '<div id="jquery_link" align="center" style="height:50px">'.$this->pagination->create_links().'</div>';
-        echo json_encode($data1);         
+        echo json_encode($data1);
     }
 
     function loc_hs_trung()
@@ -848,7 +863,7 @@ class Handling extends CI_Controller {
         // $filter = $this->session->userdata('filter');
         // $temp0         = $this->session->userdata('filterRecruit');
         // $filter        = isset($temp0)? $filter.' '.$temp0 : $filter;
-        $join = '';  
+        $join = '';
 
         $where = ($check == 'on')? "AND ((idcard IN (SELECT idcard FROM candidate WHERE mergewith = 0 GROUP BY idcard HAVING COUNT(idcard) > 1) AND idcard != '') OR (email IN (SELECT email FROM candidate WHERE mergewith = 0 GROUP BY email HAVING COUNT(email) > 1) AND email != '') )" : '';
         $this->session->set_userdata('filter', $where);
@@ -859,7 +874,7 @@ class Handling extends CI_Controller {
             $this->session->set_userdata('order', 'candidate.lastupdate desc');
             $this->session->set_userdata('checkTrung', '0');
         }
-        
+
         $config['total_rows']           = $this->Candidate_model->count_filter($join,$where);
         $config['base_url']             = base_url()."admin/handling/index/";
         $config['per_page']             = 100;
@@ -873,24 +888,24 @@ class Handling extends CI_Controller {
         $start = ($start-1)*$config['per_page'];
         $this->load->library('pagination', $config);
         if ($check == 'on') {
-            $data1 = $this->Candidate_model->list_trung($join,$where,$start,$config['per_page'],"idcard desc, email desc");  
+            $data1 = $this->Candidate_model->list_trung($join,$where,$start,$config['per_page'],"idcard desc, email desc");
         }else{
-            $data1 = $this->Candidate_model->list_filter($join,'',$start,$config['per_page'],"candidate.lastupdate desc"); 
+            $data1 = $this->Candidate_model->list_filter($join,'',$start,$config['per_page'],"candidate.lastupdate desc");
         }
-        // $data1 = $this->Candidate_model->list_trung($join,$where,$start,$config['per_page'],"email desc");    
+        // $data1 = $this->Candidate_model->list_trung($join,$where,$start,$config['per_page'],"email desc");
         for($i = 0 ; $i < count($data1); $i++)
         {
             $data1[$i]['dateofbirth2'] = getAge($data1[$i]['dateofbirth']);
-            $data1[$i]['kinhnghiem'] = ""; 
-            if($data1[$i]['yearexperirence'] != null){    
+            $data1[$i]['kinhnghiem'] = "";
+            if($data1[$i]['yearexperirence'] != null){
                                 $data1[$i]['kinhnghiem'] = ($data1[$i]['yearexperirence'] == 0)? "kinh nghiệm dưới 1 năm, " : $data1[$i]['yearexperirence']." năm kinh nghiệm, ";
                             }
             $data1[$i]['thunhap'] =  ($data1[$i]['desirebenefit'] == 0)? "" : number_format($data1[$i]['desirebenefit'])." VND, ";
-              
+
         }
         $data1['total_rows']        = $config['total_rows'];
         $data1['phantrang']         =  '<div id="jquery_link" align="center" style="height:50px">'.$this->pagination->create_links().'</div>';
-        echo json_encode($data1);         
+        echo json_encode($data1);
     }
 
     function postcomment()
@@ -940,12 +955,12 @@ class Handling extends CI_Controller {
         for($i = 0 ; $i < count($data1); $i++)
         {
             $data1[$i]['dateofbirth2'] = getAge($data1[$i]['dateofbirth']);
-            $data1[$i]['kinhnghiem'] = ""; 
-            if($data1[$i]['yearexperirence'] != null){    
+            $data1[$i]['kinhnghiem'] = "";
+            if($data1[$i]['yearexperirence'] != null){
                                 $data1[$i]['kinhnghiem'] = ($data1[$i]['yearexperirence'] == 0)? "kinh nghiệm dưới 1 năm, " : $data1[$i]['yearexperirence']." năm kinh nghiệm, ";
                             }
             $data1[$i]['thunhap'] =  ($data1[$i]['desirebenefit'] == 0)? "" : number_format($data1[$i]['desirebenefit'])." VND, ";
-              
+
         }
         $data1['total_rows']        = $config['total_rows'];
         $data1['phantrang']             =  '<div id="jquery_link" align="center" style="height:50px">'.$this->pagination->create_links().'</div>';
@@ -992,7 +1007,8 @@ class Handling extends CI_Controller {
         $tag['tagsrandom']  = $frm['tagsrandom'];
         unset($frm['tagsrandom']);
         $frm['name']        = $frm['firstname'].' '.$frm['lastname'];
-        $frm['telephone']   = $frm['phone1'].','.$frm['phone2'];
+        $frm['telephone']   = ','.$frm['phone1'].','.$frm['phone2'].',';
+        // var_dump($frm['telephone']);exit;
         unset($frm['phone1']);
         unset($frm['phone2']);
         if ($frm['candidateid'] == '0') {
@@ -1005,12 +1021,12 @@ class Handling extends CI_Controller {
             $this->Data_model->update('candidate',$match,$frm);
         }
         $this->Candidate_model->delete_real('tagtransaction',array('tablename' => 'candidate', 'recordid' => $id));
-        
+
         $arr_tags = explode(',', $tag['tags']);
         foreach ($arr_tags as $key => $value) {
             $row['data'] = $this->Candidate_model->checktagsprofile(array('title' =>  trim($value)));
             if(!is_array($row['data']))
-            {   
+            {
                 if(trim($value) == "")
                 {
                     continue;
@@ -1019,7 +1035,7 @@ class Handling extends CI_Controller {
                 $data2['tagid'] = $this->Candidate_model->InsertData("tagprofile",$data1);
                 $data2['tablename'] = "candidate";
                 $data2['recordid'] = $id;
-                $data2['categoryid'] = "position"; 
+                $data2['categoryid'] = "position";
                 $this->Candidate_model->InsertData("tagtransaction",$data2);
             }
             else
@@ -1027,9 +1043,9 @@ class Handling extends CI_Controller {
                 $data2['tagid'] = $row['data']['tagid'];
                 $data2['tablename'] = "candidate";
                 $data2['recordid'] = $id;
-                $data2['categoryid'] = "position"; 
+                $data2['categoryid'] = "position";
                 $this->Candidate_model->InsertData("tagtransaction",$data2);
-            }   
+            }
         }
         $arr_tags2 = explode(',', $tag['tagsrandom']);
         foreach ($arr_tags2 as $key => $value) {
@@ -1039,12 +1055,12 @@ class Handling extends CI_Controller {
             }
             $row['data'] = $this->Candidate_model->checktagsprofile(array('title' =>  trim($value)));
             if(!is_array($row['data']))
-            {   
+            {
                 $data1['title'] = trim($value);
                 $data2['tagid'] = $this->Candidate_model->InsertData("tagprofile",$data1);
                 $data2['tablename'] = "candidate";
                 $data2['recordid'] = $id;
-                $data2['categoryid'] = "random"; 
+                $data2['categoryid'] = "random";
                 $this->Candidate_model->InsertData("tagtransaction",$data2);
             }
             else
@@ -1052,16 +1068,16 @@ class Handling extends CI_Controller {
                 $data2['tagid'] = $row['data']['tagid'];
                 $data2['tablename'] = "candidate";
                 $data2['recordid'] = $id;
-                $data2['categoryid'] = "random"; 
+                $data2['categoryid'] = "random";
                 $this->Candidate_model->InsertData("tagtransaction",$data2);
-            }   
+            }
         }
         if (!empty($_FILES['fileCV']['name'])) {
             $config['upload_path'] = './public/document/';
             $config['allowed_types'] = '*';
             $filename = preg_replace('([\s_&#%]+)', '-', $_FILES['fileCV']['name']);
             $config['file_name'] = $filename;
-            $config['overwrite'] = FALSE;  
+            $config['overwrite'] = FALSE;
             $this->load->library('upload', $config);
             $this->upload->initialize($config);
             $data2 = array();
@@ -1081,7 +1097,7 @@ class Handling extends CI_Controller {
              else
              {
                 $datas['errors'] = $this->upload->display_errors();
-             } 
+             }
         }
         else
         {
@@ -1097,7 +1113,7 @@ class Handling extends CI_Controller {
             $config['upload_path'] = './public/image/';
             $config['allowed_types'] = 'jpg|jpeg|png|gif';
             $config['file_name'] = $_FILES['image']['name'];
-            $config['overwrite'] = FALSE;  
+            $config['overwrite'] = FALSE;
             $this->load->library('upload', $config);
             $this->upload->initialize($config);
 
@@ -1125,8 +1141,8 @@ class Handling extends CI_Controller {
 
         $id = $frm['candidateid'];
         unset($frm['candidateid']);
-        $this->Data_model->update('candidate',array('candidateid' => $id),$frm);  
-        echo "<script>alert('Lưu thành công');</script>";   
+        $this->Data_model->update('candidate',array('candidateid' => $id),$frm);
+        echo "<script>alert('Lưu thành công');</script>";
         $this->new_profile($id,'2');
     }
     function insetAddress()
@@ -1149,7 +1165,7 @@ class Handling extends CI_Controller {
         $data2['emergencycontact'] = $frm['emergencycontact'];
         $match2 =  array('candidateid' => $frm['candidateid']);
         $this->Data_model->update("candidate",$match2,$data2);
-        
+
         $_jsoncity = $this->total_model->selectall('city');
         foreach ($_jsoncity as $key ) {
             if($key['id_city'] == $frm['city'][0])
@@ -1212,22 +1228,22 @@ class Handling extends CI_Controller {
             $namepx1 = '';
         }
 
-        
+
         $data0['address'] = $frm['addressno'][0].", ".$frm['street'][0].", ".$namepx0.", ".$nameqh0.", ".$namecity0;
         $temp0 = explode(',', $data0['address']);
         $arr0 = array();
-        for ($i=0; $i < count($temp0); $i++) { 
+        for ($i=0; $i < count($temp0); $i++) {
             // $temp0[$i] = preg_replace('/\s+/', '', $temp0[$i]);
             if ($temp0[$i] != "") {
                 array_push($arr0, trim($temp0[$i]));
             }
         }
         $data0['address'] = implode(', ', $arr0);
-        
+
         $data1['address'] = $frm['addressno'][1].", ".$frm['street'][1].", ".$namepx1.", ".$nameqh1.", ".$namecity1;
         $temp1 = explode(',', $data1['address']);
         $arr1 = array();
-        for ($i=0; $i < count($temp1); $i++) { 
+        for ($i=0; $i < count($temp1); $i++) {
             // $temp1[$i] = preg_replace('/\s+/', '', $temp1[$i]);
             if ($temp1[$i] != "") {
                 array_push($arr1, trim($temp1[$i]));
@@ -1254,12 +1270,12 @@ class Handling extends CI_Controller {
         }
         echo "<script>alert('Lưu thành công');</script>";
         $this->new_profile($frm['candidateid'],'3');
-        
+
     }
 
     function insert_relationship()
     {
-        $frm = $this->input->post();    
+        $frm = $this->input->post();
         if($frm['checkup'] != "0")
         {
             $data1['type'] = $frm['quanhe'];
@@ -1284,10 +1300,10 @@ class Handling extends CI_Controller {
 
     public function insert_experience()
     {
-        $frm = $this->input->post();    
+        $frm = $this->input->post();
         if($frm['checkup'] != "0")
         {
-            $data1['datefrom'] = date("Y-m-d", strtotime($frm['tu'])); 
+            $data1['datefrom'] = date("Y-m-d", strtotime($frm['tu']));
             $data1['dateto'] = date("Y-m-d", strtotime($frm['den'])) ;
             $data1['company'] = $frm['tencty'];
             $data1['position'] = $frm['chucvukhinghi'];
@@ -1300,7 +1316,7 @@ class Handling extends CI_Controller {
         }
         else
         {
-            $data1['datefrom'] = date("Y-m-d", strtotime($frm['tu'])); 
+            $data1['datefrom'] = date("Y-m-d", strtotime($frm['tu']));
             $data1['dateto'] = date("Y-m-d", strtotime($frm['den'])) ;
             $data1['company'] = $frm['tencty'];
             $data1['position'] = $frm['chucvukhinghi'];
@@ -1330,14 +1346,14 @@ class Handling extends CI_Controller {
     }
     public function insert_reference()
     {
-        $frm = $this->input->post();    
+        $frm = $this->input->post();
         if($frm['checkup'] != "0")
         {
             $data1['name'] = $frm['hoten'];
             $data1['position'] = $frm['chucvu'];
             $data1['company'] = $frm['congty'];
             $data1['contactno'] = $frm['lienhe'];
-            
+
             $array =  array('candidateid' => $frm['candidateid'], 'recordid' => $frm['checkup']);
             $this->Data_model->update("canreference",$array,$data1);
         }
@@ -1355,10 +1371,10 @@ class Handling extends CI_Controller {
     }
     public function insert_knowledge()
     {
-        $frm = $this->input->post();    
+        $frm = $this->input->post();
         if($frm['checkup'] != "0")
         {
-            $data1['datefrom'] = date("Y-m-d", strtotime($frm['tu'])); 
+            $data1['datefrom'] = date("Y-m-d", strtotime($frm['tu']));
             $data1['dateto'] = date("Y-m-d", strtotime($frm['den'])) ;
             $data1['trainingcenter'] = $frm['tentruong'];
             $data1['trainingplace'] = $frm['noihoc'];
@@ -1376,7 +1392,7 @@ class Handling extends CI_Controller {
         }
         else
         {
-            $data1['datefrom'] = date("Y-m-d", strtotime($frm['tu'])); 
+            $data1['datefrom'] = date("Y-m-d", strtotime($frm['tu']));
             $data1['dateto'] = date("Y-m-d", strtotime($frm['den'])) ;
             $data1['trainingcenter'] = $frm['tentruong'];
             $data1['trainingplace'] = $frm['noihoc'];
@@ -1398,30 +1414,30 @@ class Handling extends CI_Controller {
     }
     public function insert_knowledge_v2()
     {
-        $frm = $this->input->post();    
+        $frm = $this->input->post();
         if($frm['checkup'] != "0")
         {
-            $data1['datefrom'] = date("Y-m-d", strtotime($frm['tu'])); 
+            $data1['datefrom'] = date("Y-m-d", strtotime($frm['tu']));
             $data1['dateto'] = date("Y-m-d", strtotime($frm['den'])) ;
             $data1['trainingcenter'] = $frm['cs_daotao'];
             $data1['traintime'] = $frm['tghoc'];
             $data1['traintimetype'] = $frm['donvi'];
             $data1['trainingcourse'] = $frm['nganhhoc'];
             $data1['certificate'] = $frm['bangcap'];
-            
+
             $array =  array('candidateid' => $frm['candidateid'], 'recordid' => $frm['checkup']);
             $this->Data_model->update("canknowledge",$array,$data1);
         }
         else
         {
-            $data1['datefrom'] = date("Y-m-d", strtotime($frm['tu'])); 
+            $data1['datefrom'] = date("Y-m-d", strtotime($frm['tu']));
             $data1['dateto'] = date("Y-m-d", strtotime($frm['den'])) ;
             $data1['trainingcenter'] = $frm['cs_daotao'];
             $data1['traintime'] = $frm['tghoc'];
             $data1['traintimetype'] = $frm['donvi'];
             $data1['trainingcourse'] = $frm['nganhhoc'];
             $data1['certificate'] = $frm['bangcap'];
-            
+
             $data1['candidateid'] = $frm['candidateid'];
             $this->Data_model->insert("canknowledge",$data1);
         }
@@ -1430,7 +1446,7 @@ class Handling extends CI_Controller {
     }
     public function insert_language()
     {
-        $frm = $this->input->post();    
+        $frm = $this->input->post();
         if($frm['checkup'] != "0")
         {
             $data1['language'] = $frm['tentruong'];
@@ -1449,7 +1465,7 @@ class Handling extends CI_Controller {
             $data1['rate2'] = $frm['noi'];
             $data1['rate3'] = $frm['doc'];
             $data1['rate4'] = $frm['viet'];
-            
+
             $data1['candidateid'] = $frm['candidateid'];
             $this->Data_model->insert("canlanguage",$data1);
         }
@@ -1458,12 +1474,12 @@ class Handling extends CI_Controller {
     }
     public function insert_software()
     {
-        $frm = $this->input->post();    
+        $frm = $this->input->post();
         if($frm['checkup'] != "0")
         {
             $data1['software'] = $frm['phanmem'];
             $data1['rate1'] = $frm['trinhdo'];
-            
+
             $array =  array('candidateid' => $frm['candidateid'], 'recordid' => $frm['checkup']);
             $this->Data_model->update("cansoftware",$array,$data1);
         }
@@ -1471,7 +1487,7 @@ class Handling extends CI_Controller {
         {
             $data1['software'] = $frm['phanmem'];
             $data1['rate1'] = $frm['trinhdo'];
-            
+
             $data1['candidateid'] = $frm['candidateid'];
             $this->Data_model->insert("cansoftware",$data1);
         }
@@ -1603,12 +1619,12 @@ class Handling extends CI_Controller {
         }
         $dreturn[0]['filterid'] = $detail['filterid'];
         $dreturn[0]['filtername'] = $name['filtername'];
-        echo json_encode($dreturn);       
+        echo json_encode($dreturn);
     }
     function insertCandidate_internal($id)
     {
         $frm = $this->input->post();
-     
+
         if($id == 0) // them
         {
             $data['email']          = $frm['email'];
@@ -1619,8 +1635,8 @@ class Handling extends CI_Controller {
             $data['name']           = $frm['firstname']." ".$frm['lastname'];
             $data['profilesrc']     = $frm['profilesrc'];
             $data['snid']           = $frm['snid'];
-           
-                
+
+
                 $candidateid = $this->Data_model->insert('candidate',$data);
                 $this->Candidate_model->delete_real('tagtransaction',array('tablename' => 'candidate', 'recordid' => $candidateid));
                 $tag['tags'] = $frm['tags'];
@@ -1632,13 +1648,13 @@ class Handling extends CI_Controller {
                     }
                     $row['data'] = $this->Candidate_model->checktagsprofile(array('title' =>  trim($value)));
                     if(!is_array($row['data']))
-                    {   
-                        
+                    {
+
                         $data1['title'] = trim($value);
                         $data2['tagid'] = $this->Candidate_model->InsertData("tagprofile",$data1);
                         $data2['tablename'] = "candidate";
                         $data2['recordid'] = $candidateid;
-                        $data2['categoryid'] = "position"; 
+                        $data2['categoryid'] = "position";
                         $this->Candidate_model->InsertData("tagtransaction",$data2);
                     }
                     else
@@ -1646,9 +1662,9 @@ class Handling extends CI_Controller {
                         $data2['tagid'] = $row['data']['tagid'];
                         $data2['tablename'] = "candidate";
                         $data2['recordid'] = $candidateid;
-                        $data2['categoryid'] = "position"; 
+                        $data2['categoryid'] = "position";
                         $this->Candidate_model->InsertData("tagtransaction",$data2);
-                    }   
+                    }
                 }
                 // tag random
                 $tags_rd['rd'] = $frm['tagsrandom'];
@@ -1660,13 +1676,13 @@ class Handling extends CI_Controller {
                         }
                     $row['data'] = $this->Candidate_model->checktagsprofile(array('title' =>  trim($value)));
                     if(!is_array($row['data']))
-                    {   
-                        
+                    {
+
                         $data1['title'] = trim($value);
                         $data2['tagid'] = $this->Candidate_model->InsertData("tagprofile",$data1);
                         $data2['tablename'] = "candidate";
                         $data2['recordid'] = $candidateid;
-                        $data2['categoryid'] = "random"; 
+                        $data2['categoryid'] = "random";
                         $this->Candidate_model->InsertData("tagtransaction",$data2);
                     }
                     else
@@ -1674,16 +1690,16 @@ class Handling extends CI_Controller {
                         $data2['tagid'] = $row['data']['tagid'];
                         $data2['tablename'] = "candidate";
                         $data2['recordid'] = $candidateid;
-                        $data2['categoryid'] = "random"; 
+                        $data2['categoryid'] = "random";
                         $this->Candidate_model->InsertData("tagtransaction",$data2);
-                    }   
+                    }
                 }
                 if (!empty($_FILES['fileCV1']['name'])) {
                     $config['upload_path'] = './public/document/';
                     $config['allowed_types'] = '*';
                     $filename = preg_replace('([\s_&#%]+)', '-', $_FILES['fileCV1']['name']);
                     $config['file_name'] = $filename;
-                    $config['overwrite'] = FALSE;  
+                    $config['overwrite'] = FALSE;
                     $this->load->library('upload', $config);
                     $this->upload->initialize($config);
 
@@ -1703,7 +1719,7 @@ class Handling extends CI_Controller {
                      else
                      {
                         $datas['errors'] = $this->upload->display_errors();
-                     } 
+                     }
                 }
                 else
                 {
@@ -1717,13 +1733,13 @@ class Handling extends CI_Controller {
         {
             $data['email']      = $frm['email'];
             $data['idcard']     = $frm['idcard'];
-            
+
             $data['lastname']   = $frm['lastname'];
             $data['firstname']  = $frm['firstname'];
             $data['name']       = $frm['firstname']." ".$frm['lastname'];
             $data['profilesrc'] = $frm['profilesrc'];
             $data['snid']       = $frm['snid'];
-            // if ($this->Candidate_model->checkMail_internal( $frm['email'], $this->toInt($id) )) {    
+            // if ($this->Candidate_model->checkMail_internal( $frm['email'], $this->toInt($id) )) {
             //     echo '<script type="text/javascript">alert("Email đãng tồn tại!");</script>';
             // }
             // else if($this->Candidate_model->checkID_internal( $frm['idcard'], $this->toInt($id) ))
@@ -1739,7 +1755,7 @@ class Handling extends CI_Controller {
                 foreach ($arr_tags as $key => $value) {
                     $row['data'] = $this->Candidate_model->checktagsprofile(array('title' =>  trim($value)));
                     if(!is_array($row['data']))
-                    {   
+                    {
                         if(trim($value) == "")
                         {
                             continue;
@@ -1748,7 +1764,7 @@ class Handling extends CI_Controller {
                         $data2['tagid'] = $this->Candidate_model->InsertData("tagprofile",$data1);
                         $data2['tablename'] = "candidate";
                         $data2['recordid'] = $id;
-                        $data2['categoryid'] = "position"; 
+                        $data2['categoryid'] = "position";
                         $this->Candidate_model->InsertData("tagtransaction",$data2);
                     }
                     else
@@ -1756,9 +1772,9 @@ class Handling extends CI_Controller {
                         $data2['tagid'] = $row['data']['tagid'];
                         $data2['tablename'] = "candidate";
                         $data2['recordid'] = $id;
-                        $data2['categoryid'] = "position"; 
+                        $data2['categoryid'] = "position";
                         $this->Candidate_model->InsertData("tagtransaction",$data2);
-                    }   
+                    }
                 }
                 $tags_rd['rd'] = $frm['tagsrandom'];
                 $arr_tags2 = explode(',', $tags_rd['rd']);
@@ -1766,7 +1782,7 @@ class Handling extends CI_Controller {
                 foreach ($arr_tags2 as $key => $value) {
                     $row['data'] = $this->Candidate_model->checktagsprofile(array('title' =>  trim($value)));
                     if(!is_array($row['data']))
-                    {   
+                    {
                         if(trim($value) == "")
                         {
                             continue;
@@ -1775,7 +1791,7 @@ class Handling extends CI_Controller {
                         $data2['tagid'] = $this->Candidate_model->InsertData("tagprofile",$data1);
                         $data2['tablename'] = "candidate";
                         $data2['recordid'] = $id;
-                        $data2['categoryid'] = "random"; 
+                        $data2['categoryid'] = "random";
                         $this->Candidate_model->InsertData("tagtransaction",$data2);
                     }
                     else
@@ -1783,16 +1799,16 @@ class Handling extends CI_Controller {
                         $data2['tagid'] = $row['data']['tagid'];
                         $data2['tablename'] = "candidate";
                         $data2['recordid'] = $id;
-                        $data2['categoryid'] = "random"; 
+                        $data2['categoryid'] = "random";
                         $this->Candidate_model->InsertData("tagtransaction",$data2);
-                    }   
+                    }
                 }
                 if (!empty($_FILES['fileCV1']['name'])) {
                     $config['upload_path'] = './public/document/';
                     $config['allowed_types'] = '*';
                     $filename = preg_replace('([\s_&#%]+)', '-', $_FILES['fileCV1']['name']);
                     $config['file_name'] = $filename;
-                    $config['overwrite'] = FALSE;  
+                    $config['overwrite'] = FALSE;
                     $this->load->library('upload', $config);
                     $this->upload->initialize($config);
 
@@ -1812,7 +1828,7 @@ class Handling extends CI_Controller {
                      else
                      {
                         $datas['errors'] = $this->upload->display_errors();
-                     } 
+                     }
                 }
                 else
                 {
@@ -1839,7 +1855,7 @@ class Handling extends CI_Controller {
         $data['placeofissue'] = $frm['placeofissue'];
         $this->Candidate_model->UpdateData('candidate',array('candidateid' => $id),$data);
         echo json_encode("1");
-              
+
     }
 
     public function updateCV()
@@ -1850,7 +1866,7 @@ class Handling extends CI_Controller {
             $config['allowed_types'] = '*';
             $filename = preg_replace('([\s_&#%]+)', '-', $_FILES['fileCV']['name']);
             $config['file_name'] = $filename;
-            $config['overwrite'] = FALSE;  
+            $config['overwrite'] = FALSE;
             $this->load->library('upload', $config);
             $this->upload->initialize($config);
 
@@ -1870,7 +1886,7 @@ class Handling extends CI_Controller {
              else
              {
                 $datas['errors'] = $this->upload->display_errors();
-             } 
+             }
         }
         else
         {
@@ -1896,7 +1912,7 @@ class Handling extends CI_Controller {
         $data1['addressno'] = $frm['addressno2'];
         // var_dump($data0);exit;
 
-        $data2['telephone'] = $frm['phone1'].','.$frm['phone2'];
+        $data2['telephone'] = ','.$frm['phone1'].','.$frm['phone2'].',';
         $data2['emergencycontact'] = $frm['emergencycontact'];
 
         $match2 =  array('candidateid' => $id);
@@ -1950,22 +1966,22 @@ class Handling extends CI_Controller {
             }
         }
 
-        
+
         $data0['address'] = $frm['addressno1'].", ".$frm['street1'].", ".$namepx0.", ".$nameqh0.", ".$namecity0;
         $temp0 = explode(',', $data0['address']);
         $arr0 = array();
-        for ($i=0; $i < count($temp0); $i++) { 
+        for ($i=0; $i < count($temp0); $i++) {
             // $temp0[$i] = preg_replace('/\s+/', '', $temp0[$i]);
             if ($temp0[$i] != "") {
                 array_push($arr0, trim($temp0[$i]));
             }
         }
         $data0['address'] = implode(', ', $arr0);
-        
+
         $data1['address'] = $frm['addressno2'].", ".$frm['street2'].", ".$namepx1.", ".$nameqh1.", ".$namecity1;
         $temp1 = explode(',', $data1['address']);
         $arr1 = array();
-        for ($i=0; $i < count($temp1); $i++) { 
+        for ($i=0; $i < count($temp1); $i++) {
             // $temp1[$i] = preg_replace('/\s+/', '', $temp1[$i]);
             if ($temp1[$i] != "") {
                 array_push($arr1, trim($temp1[$i]));
@@ -1994,7 +2010,7 @@ class Handling extends CI_Controller {
     public function ins_upd_relationship()
     {
 
-        $frm = $this->input->post();   
+        $frm = $this->input->post();
         if($frm['checkup'] != "0")
         {
             $data1['type'] = $frm['quanhe'];
@@ -2018,10 +2034,10 @@ class Handling extends CI_Controller {
     }
     public function ins_upd_experience()
     {
-        $frm = $this->input->post();    
+        $frm = $this->input->post();
         if($frm['checkup'] != "0")
         {
-            $data1['datefrom'] = date("Y-m-d", strtotime($frm['tu'])); 
+            $data1['datefrom'] = date("Y-m-d", strtotime($frm['tu']));
             $data1['dateto'] = date("Y-m-d", strtotime($frm['den'])) ;
             $data1['company'] = $frm['tencty'];
             $data1['position'] = $frm['chucvukhinghi'];
@@ -2034,7 +2050,7 @@ class Handling extends CI_Controller {
         }
         else
         {
-            $data1['datefrom'] = date("Y-m-d", strtotime($frm['tu'])); 
+            $data1['datefrom'] = date("Y-m-d", strtotime($frm['tu']));
             $data1['dateto'] = date("Y-m-d", strtotime($frm['den'])) ;
             $data1['company'] = $frm['tencty'];
             $data1['position'] = $frm['chucvukhinghi'];
@@ -2064,14 +2080,14 @@ class Handling extends CI_Controller {
     }
     public function ins_upd_reference()
     {
-        $frm = $this->input->post();    
+        $frm = $this->input->post();
         if($frm['checkup'] != "0")
         {
             $data1['name'] = $frm['hoten'];
             $data1['position'] = $frm['chucvu'];
             $data1['company'] = $frm['congty'];
             $data1['contactno'] = $frm['lienhe'];
-            
+
             $array =  array('candidateid' => $frm['candidate_sub'], 'recordid' => $frm['checkup']);
             $this->Candidate_model->UpdateData("canreference",$array,$data1);
         }
@@ -2086,14 +2102,14 @@ class Handling extends CI_Controller {
         }
         $page = ($this->uri->segment(5)) ? $this->uri->segment(5) : 1;
         redirect(base_url('admin/handling/profile/'.$frm['candidate_main'].'/'.$page.'/5'));
-        
+
     }
     public function ins_upd_knowledge()
     {
-        $frm = $this->input->post();    
+        $frm = $this->input->post();
         if($frm['checkup'] != "0")
         {
-            $data1['datefrom']          = date("Y-m-d", strtotime($frm['tu'])); 
+            $data1['datefrom']          = date("Y-m-d", strtotime($frm['tu']));
             $data1['dateto']            = date("Y-m-d", strtotime($frm['den'])) ;
             $data1['trainingcenter']    = $frm['tentruong'];
             $data1['trainingplace']     = $frm['noihoc'];
@@ -2112,7 +2128,7 @@ class Handling extends CI_Controller {
         }
         else
         {
-            $data1['datefrom']          = date("Y-m-d", strtotime($frm['tu'])); 
+            $data1['datefrom']          = date("Y-m-d", strtotime($frm['tu']));
             $data1['dateto']            = date("Y-m-d", strtotime($frm['den'])) ;
             $data1['trainingcenter']    = $frm['tentruong'];
             $data1['trainingplace']     = $frm['noihoc'];
@@ -2135,10 +2151,10 @@ class Handling extends CI_Controller {
     }
     public function ins_upd_knowledge_v2()
     {
-        $frm = $this->input->post();    
+        $frm = $this->input->post();
         if($frm['checkup'] != "0")
         {
-            $data1['datefrom']          = date("Y-m-d", strtotime($frm['tu'])); 
+            $data1['datefrom']          = date("Y-m-d", strtotime($frm['tu']));
             $data1['dateto']            = date("Y-m-d", strtotime($frm['den'])) ;
             $data1['trainingcenter']    = $frm['cs_daotao'];
             $data1['traintime']         = ($frm['tghoc'] != '')? $frm['tghoc'] : 0;
@@ -2151,7 +2167,7 @@ class Handling extends CI_Controller {
         }
         else
         {
-            $data1['datefrom']          = date("Y-m-d", strtotime($frm['tu'])); 
+            $data1['datefrom']          = date("Y-m-d", strtotime($frm['tu']));
             $data1['dateto']            = date("Y-m-d", strtotime($frm['den'])) ;
             $data1['trainingcenter']    = $frm['cs_daotao'];
             $data1['traintime']         = ($frm['tghoc'] != '')? $frm['tghoc'] : 0;
@@ -2167,7 +2183,7 @@ class Handling extends CI_Controller {
     }
     public function ins_upd_language()
     {
-        $frm = $this->input->post();    
+        $frm = $this->input->post();
         if($frm['checkup'] != "0")
         {
             $data1['language'] = $frm['tentruong'];
@@ -2186,7 +2202,7 @@ class Handling extends CI_Controller {
             $data1['rate2'] = $frm['noi'];
             $data1['rate3'] = $frm['doc'];
             $data1['rate4'] = $frm['viet'];
-            
+
             $data1['candidateid'] = $frm['candidate_sub'];
             $this->Candidate_model->InsertData("canlanguage",$data1);
         }
@@ -2195,12 +2211,12 @@ class Handling extends CI_Controller {
     }
     public function ins_upd_software()
     {
-        $frm = $this->input->post();    
+        $frm = $this->input->post();
         if($frm['checkup'] != "0")
         {
             $data1['software'] = $frm['phanmem'];
             $data1['rate1'] = $frm['trinhdo'];
-            
+
 
             $array =  array('candidateid' => $frm['candidate_sub'], 'recordid' => $frm['checkup']);
             $this->Candidate_model->UpdateData("cansoftware",$array,$data1);
@@ -2209,8 +2225,8 @@ class Handling extends CI_Controller {
         {
             $data1['software'] = $frm['phanmem'];
             $data1['rate1'] = $frm['trinhdo'];
-            
-            
+
+
             $data1['candidateid'] = $frm['candidate_sub'];
             $this->Candidate_model->InsertData("cansoftware",$data1);
         }
@@ -2292,6 +2308,25 @@ class Handling extends CI_Controller {
             $this->Candidate_model->UpdateData("candidate", $match,$data);
         }
         echo json_encode(1);
+    }
+    public function checkCandidate()
+    {
+        $post = $this->input->post();
+        if($this->Data_model->count_row('candidate',array('email'=>$post['email'])) > 0 && ($post['email'] != '')){
+            echo json_encode('Email đã tồn tại');
+        }
+        else if($this->Data_model->count_row('candidate',array('idcard'=>$post['cmnd'])) > 0 && ($post['cmnd'] != '')){
+            echo json_encode('Chứng minh nhân dân đã tồn tại');
+        }
+        else if($this->Data_model->count_row('candidate',"telephone LIKE '%,".$post['phone1'].",%'") > 0 && ($post['phone1'] != 0)){
+            echo json_encode('Số điện thoại thứ nhất đã tồn tại');
+        }
+        else if($this->Data_model->count_row('candidate',"telephone LIKE '%,".$post['phone2'].",%'") > 0 && ($post['phone2'] != 0)){
+            echo json_encode('Số điện thoại thứ hai đã tồn tại');
+        }
+        else{
+            echo json_encode(0);
+        }
     }
 }
 ?>

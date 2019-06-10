@@ -20,6 +20,7 @@ var modal = $('\
 							    	</div>\
 								    <div id="collapse1" class="panel-collapse collapse in">\
 								      	<div class="panel-body ">\
+                                            <div class="alert alert-danger hide" id="err-user"></div>\
 								      		<div class="row form_campaign">\
 								      			<div class="col-xs-3">\
 								      				<label class="label_cam"> Tên đăng nhập</label>\
@@ -213,7 +214,7 @@ window.showUserProfileModal = function(id) {
 	    	url: url+'get_user/'+id,
 	    	dataType: 'json'
 	    }).done(function(r){
-	        console.log(r);
+	        // console.log(r);
 	        var user = r.data[0];
 	        if(!user)return;
 	        modal.find('select[name=groupid]').append($('<option value="'+user['groupid']+'">'+user['groupname']+'</option>'));
@@ -255,7 +256,7 @@ window.showUserProfileModal = function(id) {
 	    }else{
 	    	modal.find('#email_info').addClass('hide');
 	    }
-	}); 
+	});
 
 	modal.find('#btn_destroy').click(function(){
 		modal.remove();
@@ -267,7 +268,7 @@ window.showUserProfileModal = function(id) {
 		var cur  = $(this);
 		var form = new FormData(cur[0]);
 		// console.log(form);
-		// for (var [key, value] of form.entries()) { 
+		// for (var [key, value] of form.entries()) {
 	 //      	console.log(key, value);
 	 //    }
 
@@ -283,12 +284,21 @@ window.showUserProfileModal = function(id) {
           	processData:false,
           	timeout: 3000
 	    }).done(function(r){
-	        // console.log(r);
-	        if (r.data) {alert('Change have been successfuly saved!!');window.location.href = base_url+'login.html';}
-	        cur.find('button[type=submit] i').removeClass();
-	        cur.find('button[data-dismiss]').trigger('click');
-	        modal.remove();
-	        $('.modal-backdrop').remove();
+            console.log(r);
+	        if (r.data != -1) {
+                alert('Change have been successfuly saved!!');window.location.href = base_url+'login.html';
+                cur.find('button[type=submit] i').removeClass();
+                cur.find('button[data-dismiss]').trigger('click');
+                modal.remove();
+                $('.modal-backdrop').remove();
+            }else{
+                modal.find('div#err-user').text(r.message).removeClass('hide');
+            }
+	        // if (r.data) {alert('Change have been successfuly saved!!');window.location.href = base_url+'login.html';}
+	        // cur.find('button[type=submit] i').removeClass();
+	        // cur.find('button[data-dismiss]').trigger('click');
+	        // modal.remove();
+	        // $('.modal-backdrop').remove();
 	    }).fail(function(r){
 	    	console.log(r);
 	    	cur.find('button[type=submit] i').removeClass();
@@ -300,13 +310,13 @@ window.showUserProfileModal = function(id) {
 	modal.find('div.avatar').click(function(){
 		$(this).before('<input class="hide" type="file" name="avatar" onchange="choosePic(this)">').prev().trigger('click');
 	});
-	
+
 }
 function choosePic(input){
 		var img = $(input).next().find('img');
 		if (input.files && input.files[0]) {
             var reader = new FileReader();
-            
+
             reader.onload = function (e) {
                 img.attr('src', e.target.result);
             }
@@ -383,7 +393,7 @@ var modalPass = $('\
 ');
 
 window.showUserPasswordModal = function(id) {
-	
+
 	modalPass.modal('show').on("hidden", function(){
 	          modalPass.remove();
 	    });
@@ -397,7 +407,7 @@ window.showUserPasswordModal = function(id) {
 		var cur  = $(this);
 		var form = new FormData(cur[0]);
 		// console.log(form);
-		for (var [key, value] of form.entries()) { 
+		for (var [key, value] of form.entries()) {
 	      	console.log(key, value);
 	    }
 
@@ -431,5 +441,5 @@ window.showUserPasswordModal = function(id) {
 
 		return false;
 	});
-	
+
 }

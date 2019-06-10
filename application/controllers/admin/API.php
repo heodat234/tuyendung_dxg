@@ -9,7 +9,19 @@ class API extends CI_Controller {
 		$this->load->model(array('admin/Campaign_model','admin/Candidate_model','admin/Data_model','admin/Mail_model'));
 		$this->load->library(array('session','upload','excel'));
 	}
-
+    function doLog($msg) {
+        if (is_array($msg)) {
+            $msg = $msg['message'];
+        }
+        error_log(date('Y-m-d H:i:s') . ": $msg \r\n", 3, 'log.log');
+    }
+    public function readLog()
+    {
+        $read = file('log.log');
+        foreach ($read as $line) {
+        echo $line ."<br>";
+        }
+    }
 
     public function index()
     {
@@ -125,7 +137,6 @@ class API extends CI_Controller {
         $colm = ["quantity",
                 "expdate",
                 "expeffect",
-                "showtype",
                 "position",
                 "department",
                 "location",
@@ -136,7 +147,6 @@ class API extends CI_Controller {
                 "jurisdiction",
                 "environment",
                 "requirements",
-                "managecampaign"
                 ];
 
         $post = json_decode(file_get_contents('php://input'), true);
@@ -146,7 +156,8 @@ class API extends CI_Controller {
             'method'=>'undefined',
             'result'=>array('success'=>false,'data'=>null,'message'=>'Failed')
         );
-
+        // echo json_encode($resp);
+        // exit;
         $a_flg = false;
         $m_flg = false;
         $d_flg = false;
@@ -196,9 +207,11 @@ class API extends CI_Controller {
                     foreach ($colm as $key => $value) {
                         $push[$value] = isset($post['data'][$i][$value])?$post['data'][$i][$value]:'';
                     }
-                    $push['status'] = 'D';
-                    // $match = array('campaignid'=>$push['campaignid']);
-                    $resp['result']['data'][$i] = $this->Data_model->sync_data('reccampaign',$push);
+                    $push['expdate'] = date('Y-m-d',strtotime(str_replace('/', '-',$push['expdate'])));
+                    $push['status']     = 'D';
+                    $push['showtype']   = 'I';
+                    $match = array('reference'=>$push['reference'],'status'=>'D');
+                    $resp['result']['data'][$i] = $this->Data_model->sync_data($match,$push,'reccampaign');
                 }
                 if (!empty($resp['result']['data'])) {
                     $resp['result']['success'] = true;
@@ -209,14 +222,13 @@ class API extends CI_Controller {
         echo json_encode($resp);
     }
 
-    public function operator(){
+    public function employee(){
 
         set_time_limit(60*60*24);
 
-        $colm = ["operatorname",
-                "idcard",
-                "telephone",
-                "email",
+        $colm = ["code",
+                "ref1",
+                "ref2"
                 ];
 
         $post = json_decode(file_get_contents('php://input'), true);
@@ -270,14 +282,14 @@ class API extends CI_Controller {
             if ($a_flg==true&&$m_flg==true&&$d_flg==true) {
                 for ($i=0; $i < count($post['data']); $i++) {
                     $push = [];
-                    // for ($j=0; $j < count($colm); $j++) {
-                    //  $push[$colm[$j]] = isset($post['data'][$i][$j])?$post['data'][$i][$j]:'';
-                    // }
+
                     foreach ($colm as $key => $value) {
                         $push[$value] = isset($post['data'][$i][$value])?$post['data'][$i][$value]:'';
                     }
-                    // $match = array('category'=>$push['category'],'code'=>$push['code']);
-                    $resp['result']['data'][$i] = $this->Data_model->insert('operator',$push);
+                    $push['category']       = 'ERP';
+                    $match = array('code'=>$push['code'],'category'=>'ERP');
+                    $resp['result']['data'][$i] = $this->Data_model->sync_data($match,$push,'codedictionary');
+                    $this->doLog($resp['result']['data'][$i]);
                 }
                 if (!empty($resp['result']['data'])) {
                     $resp['result']['success'] = true;

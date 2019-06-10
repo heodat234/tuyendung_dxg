@@ -8,7 +8,7 @@
 	font-size: 14px;
 	font-weight: 400;
 	padding-left: 0px;
-	padding-right: 0px; 
+	padding-right: 0px;
 }
 .width5
 {
@@ -41,7 +41,7 @@
 .padding-lr0
 {
 	padding-left: 0px;
-	padding-right: 0px; 
+	padding-right: 0px;
 }
 .fontArial
 {
@@ -58,7 +58,7 @@
 	line-height: 20px;
 	text-align: left;
 	padding-left: 0px;
-	padding-right: 0px; 
+	padding-right: 0px;
 }
 .colorcyan
 {
@@ -120,7 +120,7 @@
 {
 	font-size: 12px;
 	font-weight: 400;
-	padding-left: 10px; 
+	padding-left: 10px;
 	padding-top: 15px;
 	padding-right: 10px;
 	width: 100%
@@ -128,9 +128,9 @@
 .np-icon
 {
 	float: right;
-	height: 27px; 
+	height: 27px;
 	width: 27px;
-	margin-top: 7px; 
+	margin-top: 7px;
 	font-size: 12px;
 	border: 0px;
 	background-color: #f6f6f6
@@ -149,7 +149,7 @@
 }
 .rowcontent
 {
-	margin-top: -99px; 
+	margin-top: -99px;
 	margin-left: 142px;
 }
 .fontstyle
@@ -189,10 +189,10 @@
 }
 .nemu-info-pf
 {
-	height: 30px; 
+	height: 30px;
 	border-radius: 0px !important;
 	font-size: 14px;
-	padding-left: 6px !important; 
+	padding-left: 6px !important;
 	padding-right: 6px !important;
 	padding-top: 6px !important;
 }
@@ -203,7 +203,7 @@
 }
 .scrollbars
 {
-	height: 100vh;   
+	height: 100vh;
 	overflow-y : scroll;
 	overflow-x: hidden;
 }
@@ -217,7 +217,7 @@
 {
 	font-size: 12px;
 	font-weight: 400;
-	margin-bottom: 0px; 
+	margin-bottom: 0px;
 	color: #5fade0;
 	padding-top: 1px;
 	width: 100%;
@@ -226,15 +226,15 @@
 {
 	font-size: 23px;
 	font-weight: 600;
-	margin-bottom: 0px; 
-	color: #005AA6; 
-	padding-top: 3px; 
+	margin-bottom: 0px;
+	color: #005AA6;
+	padding-top: 3px;
 	width: 100%
 }
 .highR
 {
 	font-size: 13px;
-	color: #5fade0; 
+	color: #5fade0;
 	width: 100%
 }
 .tag-lb
@@ -242,7 +242,7 @@
 	font-size: 13px;
 	margin-bottom: 4px;
 	font-weight: 350;
-	color: #5fade0; 
+	color: #5fade0;
 	width: 100%;
 }
 .cv-old
@@ -250,13 +250,13 @@
 	font-size: 14px;
 	margin-bottom: 4px;
 	font-weight: 450;
-	margin-top: -5px; 
+	margin-top: -5px;
 	width: 100%;
 }
 .can-name
 {
-	font-size: 23px; 
-	font-weight: 600; 
+	font-size: 23px;
+	font-weight: 600;
 	width: 100%;
 	margin-bottom: 5px;
 	margin-top: 2px
@@ -270,7 +270,7 @@
 }
 .bor-mar-b0
 {
-	border: 0px; 
+	border: 0px;
 	margin-bottom: 0px
 }
 .cyan-profile
@@ -279,7 +279,7 @@
 }
 .rad-pad0
 {
-	border-radius: 0px; 
+	border-radius: 0px;
 	padding: 0px;
 }
 .a-expand
@@ -287,7 +287,7 @@
 	font-size: 17;
 	font-weight: 600;
 	color: #999999;
-	 padding-right: 17px; 
+	 padding-right: 17px;
 	 padding-top: 8px;
 	 padding-left: 10px;
 }
@@ -297,15 +297,15 @@
 }
 .a-tabcs
 {
-	float: right; 
+	float: right;
 	font-size: 23;
-	color: white; 
-	padding-right: 15px; 
+	color: white;
+	padding-right: 15px;
 	padding-top: 8px;
 }
 .ul-nav
 {
-	padding-top: 10px; 
+	padding-top: 10px;
 	padding-left: 10px;
 	border: 0px;
 }
@@ -314,10 +314,10 @@
 	height: 25px;
 	border-radius: 0px;
 	font-size: 14px;
-	padding-left: 6px; 
+	padding-left: 6px;
 	padding-right: 6px;
-	padding-top: 6px; 
-	color: white; 
+	padding-top: 6px;
+	color: white;
 	font-weight: 450;
 }
 .mr-pd
@@ -327,17 +327,17 @@
 }
 .show-view
 {
-	font-weight: 400; 
-	font-size: 13px;
+	font-weight: 400;
+	font-size: 16px;
 	margin-bottom: 3px;
 }
 .textara1
 {
-	resize: none; 
-	width:100%; 
-	padding-left: 4px; 
+	resize: none;
+	width:100%;
+	padding-left: 4px;
 	padding-right: 4px;
-	margin-bottom: 9px; 
+	margin-bottom: 9px;
 	border: 1px solid #E4E4E4;
 }
 .luu-cmt
@@ -350,7 +350,7 @@
 }
 .phu
 {
-	border: 0.5px solid #ccc; width: 100%;margin-top: 
+	border: 0.5px solid #ccc; width: 100%;margin-top:
 	     150px;
 }
 .h10-w-auto

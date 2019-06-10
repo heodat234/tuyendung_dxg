@@ -8,7 +8,7 @@
         <form id="formTransfer1">
           <div class=" modal_body_chuyen">
             <div class="body_cam col-xs-12 body_chuyen" id="body_chuyen">
-              
+
             </div>
             <div class="col-xs-12 body_chuyen_1">
               <div class="col-xs-4">
@@ -124,7 +124,7 @@
         <form id="formDiscard">
           <div class=" modal_body_chuyen">
             <div class="body_cam col-xs-12 body_chuyen" id="body_loai">
-              
+
             </div>
             <div class="col-xs-12 body_chuyen_1">
               <div class="col-xs-4">
@@ -359,7 +359,7 @@
               </div>
             </div>
             <div id="profile_taopv">
-              
+
             </div>
 
             <div class="col-xs-12 body_chuyen_1">
@@ -797,7 +797,7 @@
     <div class="modal-content " >
         <div class="modal-header modal_header_cam">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Thêm phụ trách vòng </h4>
+          <h4 class="modal-title">Thêm người phỏng vấn </h4>
         </div>
         <input type="hidden" id="roundid_pt">
         <form id="formPV">
@@ -809,9 +809,11 @@
               <div class="col-xs-11">
                 <select class="seletext select2" name="managecampaign[]" required="" id="select_type_pt_1" style="width: 100%">
                   <option value="">Tìm kiếm từ danh sách người dùng</option>
-                  <?php foreach ($operator as $row): ?>
-                    <option value="<?php echo $row['operatorid'] ?>" ><?php echo $row['operatorname'] ?></option>
-                  <?php endforeach ?>
+                    <?php foreach ($category as $row){
+                        if ($row['category'] == 'ERP') {
+                    ?>
+                        <option value="<?php echo $row['code'] ?>" ><?php echo $row['code'].' - '.$row['ref1'] ?></option>
+                    <?php }} ?>
                 </select>
                 <span class="hide" id="show_name_pt_1"></span>
               </div>
@@ -877,7 +879,7 @@
         <form id="formMerge">
           <div class=" modal_body_chuyen">
             <div class="body_cam col-xs-12 body_chuyen" id="body_chuyen_ghep">
-              
+
             </div>
           </div>
           <div class="modal-footer modal_footer_cam">
@@ -955,7 +957,7 @@
           $(".filename_label_1").append(row);
       });
 
-  }); 
+  });
 
   $(document).ready(function() {
       $('.js-example-basic-1').select2();
@@ -986,11 +988,11 @@
           filebrowserImageUploadUrl : '<?php echo base_url('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images') ?>',
           filebrowserFlashUploadUrl : '<?php echo base_url('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash') ?>'
         });
-      
+
       $('#timecomplete').datetimepicker({
             format:'d/m/Y h:i',
       });
-      
+
       $('#timecomplete1').datetimepicker({
         timepicker:false,
         format:'d/m/Y',
@@ -1001,12 +1003,12 @@
       });
       initializeSelect2($(".select2"));
 
-      
+
   });
   function initializeSelect2(selectElementObj) {
     selectElementObj.select2();
   }
-  
+
   $(document).on('click', '.so', function(e) {
     if ($(this).val() == '') {
               $(this).val(0);
@@ -1017,12 +1019,12 @@
         //   $(this).val('');
         // $(this).number( true );
         if(!$.isNumeric(String.fromCharCode(e.which))) e.preventDefault();
-    }).on('paste', '.so', function(e){    
-        var cb = e.originalEvent.clipboardData || window.clipboardData;      
+    }).on('paste', '.so', function(e){
+        var cb = e.originalEvent.clipboardData || window.clipboardData;
         if(!$.isNumeric(cb.getData('text'))) e.preventDefault();
     });
 
-  
+
   $(document).on('click', '.datetimepicker', function() {
     $( this ).datetimepicker({
         timepicker:false,
@@ -1066,7 +1068,7 @@
     .always(function() {
       console.log("complete");
     });
-    
+
   });
   $('#saveDiscard').click(function(event) {
     $(this).find('i').addClass('fa fa-spin fa-spinner');
@@ -1093,7 +1095,7 @@
     .always(function() {
       console.log("complete");
     });
-    
+
   });
 
   function changeTemplate(id,check) {
@@ -1107,26 +1109,28 @@
       data: {mailid: id},
     })
     .done(function(mail) {
-      $('#presender'+check).val(mail[0]['presender']);
-      $('#subjectmail'+check).html(mail[0]['presubject']);
-      // console.log(mail[0]['prebody']);
-      CKEDITOR.instances['body'+check].setData(mail[0]['prebody']);
+        if (mail != 1) {
+          $('#presender'+check).val(mail[0]['presender']);
+          $('#subjectmail'+check).html(mail[0]['presubject']);
+          // console.log(mail[0]['prebody']);
+          CKEDITOR.instances['body'+check].setData(mail[0]['prebody']);
 
-      $('#preattach_'+check).val(mail[0]['preattach']);
-      if (mail[0]['preattach'] != '') {
-        preattach = JSON.parse(mail[0]['preattach']);
-        var row = '';
-        for(var j = 0; j< preattach.length; j++){
-            row += '<div class="col-md-5 dom_file"><a class="fontstyle label1" href="#">'+preattach[j]+'</a></div>';
+          $('#preattach_'+check).val(mail[0]['preattach']);
+          if (mail[0]['preattach'] != '') {
+            preattach = JSON.parse(mail[0]['preattach']);
+            var row = '';
+            for(var j = 0; j< preattach.length; j++){
+                row += '<div class="col-md-5 dom_file"><a class="fontstyle label1" href="#">'+preattach[j]+'</a></div>';
+              }
+              $("#filename_label"+check).append(row);
           }
-          $("#filename_label"+check).append(row);
-      }
+        }
     })
     .fail(function() {
       console.log("error");
     });
   }
-  
+
   $('#saveMChoice').click(function(event) {
     for (instance in CKEDITOR.instances) {
         CKEDITOR.instances[instance].updateElement();
@@ -1152,7 +1156,7 @@
     .always(function() {
       console.log("complete");
     });
-    
+
   });
 
   function insertPV(roundid) {
@@ -1189,75 +1193,84 @@
     manageround1 = manageround.replace(id+',', '');
     $('#managePV_'+roundid).val(manageround1);
 
-    var operator = $('#operator_js').text();
-    operator = (JSON.parse(operator));
-    for(var j in operator ){
-      if (id == operator[j]['operatorid']) { 
-        var temp = operator[j]['email'];
+    // var operator = $('#operator_js').text();
+    // operator = (JSON.parse(operator));
+    // for(var j in operator ){
+    <?php foreach ($category as $cate){ ?>
+      if (id == '<?php echo $cate['code'] ?>') {
+        var temp = '<?php echo $cate['ref2'] ?>';
         var listmail = $('#email_to_pv2').val();
         listmail1 = listmail.replace(temp+',', '');
         $('#email_to_pv2').val(listmail1);
-      } 
-    }
-    
+      }
+    <?php } ?>
+
   }
 
-  $('#savePT').click(function(event) {
-    var roundid = $('#roundid_pt').val();
-    var operator = $('#operator_js').text();
-    operator = (JSON.parse(operator));
-    var data = $('#formPV').serializeArray();
-    var row = '';
-    var str = '';
-    var email = $('#email_to_pv2').val();
-    for(var i in data){
-      if (data[i].value == '')
-      { 
-        continue;
-      }
-      for(var j in operator ){
-        if (data[i].value == operator[j]['operatorid']) { 
-          row ='<div class="col-md-12" id="col_pt_'+data[i].value+'" ><div class="col-md-6 manage_pv ql" style="margin-left: -30px;">';
-          row += '<div class="col-md-3" onclick="subColPV('+data[i].value+','+roundid+')""><img src="<?php echo base_url().'public/image/' ?>'+operator[j]['filename']+'"><div class="del_ql"><i class="fa fa-minus-circle fa-lg"></i></div></div>';
-          row += '<span class="body-blac4" style="font-size:16px;">'+operator[j]['operatorname']+'</span></div>';
-          row += '<div class="col-md-6" style="margin-top: 10px;float: right;"><select class="js-example-basic-2 select2" name="pv[]" required="" style="width: 100%">';
-            <?php foreach ($asmt_pv as $key): ?>
-               row += '<option value="<?php echo $key['asmttemp'] ?>"><?php echo $key['asmtname'] ?></option>';
+    $('#savePT').click(function(event) {
+        var roundid = $('#roundid_pt').val();
+        var data = $('#formPV').serializeArray();
+        var row = '';
+        var str = '';
+        var email = $('#email_to_pv2').val();
+        for(var i in data){
+            if (data[i].value == '')
+            {
+                continue;
+            }
+            <?php foreach ($category as $cate):
+                if ($cate['category'] != 'ERP') {continue;}?>
+                if (data[i].value == '<?php echo $cate['code'] ?>') {
+                    var name = '<?php echo $cate['ref1'] ?>';
+                    var email1 = '<?php echo $cate['ref2'] ?>';
+                    row ='<div class="col-md-12" id="col_pt_'+data[i].value+'" ><div class="col-md-6 manage_pv ql" style="margin-left: -30px;">';
+                    row += '<div class="col-md-3" ';
+                    row += 'onclick="subColPV(\'' +data[i].value+ '\','+roundid+')">';
+                    row += '<img src="<?php echo base_url().'public/image/bbye.jpg' ?>"><div class="del_ql"><i class="fa fa-minus-circle fa-lg"></i></div></div>';
+                    row += '<span class="body-blac4" style="font-size:16px;">'+name+'</span></div>';
+                    row += '<div class="col-md-6" style="margin-top: 10px;float: right;"><select class="js-example-basic-2 select2" name="pv[]" required="" style="width: 100%">';
+                    <?php foreach ($asmt_pv as $key): ?>
+                       row += '<option value="<?php echo $key['asmttemp'] ?>"><?php echo $key['asmtname'] ?></option>';
+                    <?php endforeach ?>
+                    row += '</select></div></div>';
+
+                    $('#col_add_pt_'+roundid).before(row);
+                    initializeSelect2($(".select2"));
+
+                    var temp = email1;
+                    email += temp+', ';
+                }
             <?php endforeach ?>
-            row += '</select></div></div>';  
+      // for(var j in operator ){
 
-          $('#col_add_pt_'+roundid).before(row);
-          initializeSelect2($(".select2"));
-
-          var temp = operator[j]['email'];
-            email += temp+', ';
-        } 
-      }
-      str += data[i].value + ',';                     
-    }
-    $('#email_to_pv2').val(email);
-    var manageround = $('#managePV_'+roundid).val();
-    if(manageround != ''){
-      manageround += str;
-    }else{
-      manageround = str;
-    }
-    $('#managePV_'+roundid).val(manageround);
-
-    $('.option_add_'+roundid).remove();
-    var option = '';
-    var arr = manageround.split(',');
-    for(var k in arr){
-      for(var j in operator ){
-        if (arr[k] == operator[j]['operatorid']) { 
-          option += '<option class="option_add_'+roundid+'" value="'+arr[k]+'">'+operator[j]['operatorname']+'</option>';
-          break;
+      // }
+            str += data[i].value + ',';
         }
-      }
-    }
-    $('#option_'+roundid).after(option);
-    $('#insertPV').modal('hide');    
-  });
+        $('#email_to_pv2').val(email);
+        var manageround = $('#managePV_'+roundid).val();
+        if(manageround != ''){
+          manageround += str;
+        }else{
+          manageround = str;
+        }
+        $('#managePV_'+roundid).val(manageround);
+
+        $('.option_add_'+roundid).remove();
+        var option = '';
+        var arr = manageround.split(',');
+        for(var k in arr){
+            <?php foreach ($category as $cate){ ?>
+                var name = '<?php echo $cate['ref1'] ?>';
+          // for(var j in operator ){
+                if (arr[k] == '<?php echo $cate['code'] ?>') {
+                  option += '<option class="option_add_'+roundid+'" value="'+arr[k]+'">'+name+'</option>';
+                  break;
+                }
+            <?php } ?>
+        }
+        $('#option_'+roundid).after(option);
+        $('#insertPV').modal('hide');
+    });
 
 
 
@@ -1286,7 +1299,7 @@
     .always(function() {
       console.log("complete");
     });
-    
+
   });
 
   $('#saveOffer').click(function(event) {
@@ -1314,15 +1327,15 @@
               alert('Tạo đề nghị và gửi email thành công');
             }else{
               alert('Tạo đề nghị thành công');
-            }  
+            }
           }else{
             if ($('#inputcheckmail_5').prop('checked')) {
               alert('Cập nhật đề nghị và gửi email thành công');
             }else{
               alert('Cập nhật đề nghị thành công');
-            } 
+            }
           }
-          
+
         }
       })
       .fail(function() {
@@ -1330,7 +1343,7 @@
       });
     }
   });
-  
+
   $('#saveMail').click(function(event) {
     for (instance in CKEDITOR.instances) {
         CKEDITOR.instances[instance].updateElement();
@@ -1356,7 +1369,7 @@
     .fail(function() {
       alert('gửi mail thất bại');
     });
-    
+
   });
 
   function changeDate(intdate) {
@@ -1381,7 +1394,7 @@
     .fail(function() {
       console.log("error");
     });
-    
+
   }
   function insertField(check) {
     $('#check').val(check);
@@ -1411,7 +1424,7 @@
     .always(function() {
       console.log("complete");
     });
-    
+
   }
   function insertFieldOffer(check) {
     $('#checkOffer').val(check);
@@ -1424,7 +1437,7 @@
     $('#insertOffer').modal('hide');
   }
   function loadCategory(id_trainer,id_reportto,id_level,id_position,id_department) {
-    
+
     // var count_trainer     =  $('#select_trainer option').length;
     // var count_reportto    =  $('#select_reportto option').length;
     var count_level       =  $('#select_level option').length;
@@ -1438,12 +1451,12 @@
     })
     .done(function(data) {
       // console.log(data);
-      var row1 = row2 = row3 = row4 = row5 = '';
+      var row1 = row2 = row3 = row4 = row5 = '<option value="0">Vui lòng chọn</option>';
       if (data['position'].length != count_position) {
         for(var i in data['position']){
           var key = data['position'][i];
-          row1 += '<option value="'+key['code']+'">'+key['code']+' - '+key['description']+'</option>'; 
-          row4 += '<option value="'+key['code']+'">'+key['description']+'</option>';         
+          row1 += '<option value="'+key['code']+'">'+key['code']+' - '+key['description']+'</option>';
+          row4 += '<option value="'+key['code']+'">'+key['description']+'</option>';
         }
 
         $('#select_trainer').empty().prepend(row1);
@@ -1457,7 +1470,7 @@
       if (data['capbac'].length != count_level) {
         for(var i in data['capbac']){
           var key = data['capbac'][i];
-          row2 += '<option value="'+key['code']+'">'+key['description']+'</option>';         
+          row2 += '<option value="'+key['code']+'">'+key['description']+'</option>';
         }
 
         $('#select_level').empty().prepend(row2);
@@ -1467,14 +1480,14 @@
       if (data['dept'].length != count_department) {
         for(var i in data['dept']){
           var key = data['dept'][i];
-          row3 += '<option value="'+key['code']+'">'+key['description']+'</option>';         
+          row3 += '<option value="'+key['code']+'">'+key['description']+'</option>';
         }
 
         $('#select_department').empty().prepend(row3);
 
         $('#select_department').val(id_department).change();
       }
-      
+
     })
     .fail(function() {
       console.log("error");
@@ -1483,10 +1496,10 @@
   var interval;
 
   function loadCategoryOffer() {
-    
+
     interval = setInterval(function(){
-      
-      
+
+
         var id_trainer    = $('#select_trainer').val();
         var id_reportto   = $('#select_reportto').val();
         var id_level      = $('#select_level').val();

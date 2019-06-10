@@ -35,7 +35,7 @@
           <div class="form-group row padding-left-right-20  margin-bot-2" >
             <label for="staticEmail" class="col-sm-4 col-form-label fontstyle">Thời điểm có thể bắt đầu làm việc</label>
             <div class="col-sm-8">
-           
+
               <input class="form-control" type="text"  id="ngaybd" name="availabledate">
             </div>
           </div>
@@ -61,26 +61,26 @@
         timepicker:false,
         format:'d/m/Y',
       });
-  
+
   $(document).ready(function(){
     $('#inlineRadio1').click(function(){
-      
+
     if( $('#inlineRadio1').is(":checked") == true)
       $('#btn_apply').prop('disabled',false);
     else
       $('#btn_apply').prop('disabled',true);
   });
-    
+
   });
   function applyCampaign(position,campaignid,candidateid) {
     $('#position_cam').text(position);
     $('#campaignid').val(campaignid);
     $('#candidateid').val(candidateid);
     $('#myModalch1').modal('show');
-    
+
   }
   function notApplyCampaign() {
-      alert('Bạn chưa đăng nhập. Đăng nhập trước khi nộp hồ sơ.');
+      alert('Bạn chưa đăng nhập tài khoản. Vui lòng đăng nhập để nộp hồ sơ ứng tuyển.');
   }
   $('#btn_apply').click(function(event) {
     $.ajax({
@@ -99,6 +99,6 @@
     .always(function() {
       console.log("complete");
     });
-    
+
   });
 </script>

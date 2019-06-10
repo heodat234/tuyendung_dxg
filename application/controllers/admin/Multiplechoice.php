@@ -663,11 +663,11 @@ class Multiplechoice extends CI_Controller {
         $history_profile4 	= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate,recflow.roundname',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','interview tb',$join,'',$orderby1,'','');
         $orderby1 			= array('colname'=>'a.createddate','typesort'=>'desc');
         for ($i=0; $i < count($history_profile4); $i++) {
-        	$join1[0] 		= array('table'=> 'operator b','match' =>'a.interviewer = b.operatorid');
+        	$join1[0]      = array('table'=> "codedictionary b","match" =>"CAST(a.interviewer as nvarchar) = b.code AND b.category = 'ERP' ");
         	$join1[1] 		= array('table'=> 'document c','match' =>"a.interviewer = c.referencekey AND c.tablename = 'operator' ");
         	$join1[2] 		= array('table'=> 'assessment d','match' =>'a.inv_asmtid = d.asmtid');
         	$join1[3] 		= array('table'=> 'asmtanswer e','match' =>'a.inv_asmtid = e.asmtid');
-        	$history_profile4[$i]['interviewer'] = $this->Data_model->select_row_option('a.interviewer, a.inv_asmtid, a.scr_asmtid, d.status, b.operatorname, c.filename, e.optionid, e.ansdatetime, e.ansdatetime2',array('a.interviewid'=>$history_profile4[$i]['interviewid']),'','interviewer a',$join1,'',$orderby1,'','');
+        	$history_profile4[$i]['interviewer'] = $this->Data_model->select_row_option('a.interviewer, a.inv_asmtid, a.scr_asmtid, d.status, b.ref1 as operatorname, c.filename, e.optionid, e.ansdatetime, e.ansdatetime2',array('a.interviewid'=>$history_profile4[$i]['interviewid']),'','interviewer a',$join1,'',$orderby1,'','');
         }
 
 
@@ -736,7 +736,7 @@ class Multiplechoice extends CI_Controller {
         }
 
 		//for interview question
-		$sql = "SELECT a.scr_asmtid as asmtid, b.asmttemp
+		$sql = "SELECT a.scr_asmtid as asmtid, b.asmttemp,b.status
 				FROM interviewer a
 				LEFT OUTER JOIN assessment b ON a.scr_asmtid = b.asmtid
 				WHERE a.interviewer = '$interviewerid' and a.interviewid = '$interviewid'";
@@ -751,6 +751,7 @@ class Multiplechoice extends CI_Controller {
 			$this->data2['section'] = !empty($section)?$section:[];
 			$this->data2['asmtid'] = $asmt[0]['asmtid'];
 			$this->save_genquest($asmt[0]['asmtid'],$section);
+            $this->data2['status'] = $asmt[0]['status'];
 			// var_dump($this->data2['section']);
 		}
         // echo "<pre>";
@@ -767,7 +768,7 @@ class Multiplechoice extends CI_Controller {
 	    $o_data['operator'] = $this->Data_model->select_row_option('tb.operatorname,tb.operatorid,tb.email, document.filename',array('tb.hidden' => 1),'','operator tb',$join,'','','','');
         $o_data['mailtemplate'] = $this->Campaign_model->select("mailprofileid,profilename",'mailprofile',array('profiletype' => '0'),'');
         $o_data['asmt_pv'] = $data['asmt_pv']     = $this->Campaign_model->select("asmttemp,asmtname",'asmtheader',array('asmtstatus' => 'W','asmttype' => '1'),'');
-
+        $o_data['category'] = $this->Campaign_model->select("category,code,description,ref1,ref2",'codedictionary',array('status' => 'W'),'');
 		$sql = "SELECT a.*,
 					b.name,
 					b.email,
@@ -786,22 +787,22 @@ class Multiplechoice extends CI_Controller {
 		$result = $this->Campaign_model->select_sql($sql);
 		$data['interview'] = $result[0];
 
-		$join1[0] = array('table' => 'operator b','match' =>'a.interviewer = b.operatorid');
+		$join1[0]         = array('table'=> "codedictionary b","match" =>" CAST(a.interviewer as nvarchar) = b.code AND b.category = 'ERP' ");
     	$join1[1] = array('table' => 'document c','match' =>'a.interviewer = c.referencekey');
         $join1[2] = array('table' => 'assessment d','match' =>'a.inv_asmtid = d.asmtid');
         $join1[3] = array('table' => 'asmtanswer e','match' =>'a.inv_asmtid = e.asmtid');
 
-    	$data['interviewer'] = $this->Data_model->select_row_option('a.interviewerid,a.inv_asmtid,a.scr_asmtid, b.operatorname,b.email, c.filename, d.status as status_asmt, e.optionid, e.ansdatetime, e.ansdatetime2 ',array('a.interviewid'=>$interviewid),'','interviewer a',$join1,'','','','');
+    	$data['interviewer'] = $this->Data_model->select_row_option('a.interviewerid,a.inv_asmtid,a.scr_asmtid,  b.ref1 as operatorname, b.ref2 as email, c.filename, d.status as status_asmt, e.optionid, e.ansdatetime, e.ansdatetime2 ',array('a.interviewid'=>$interviewid),'','interviewer a',$join1,'','','','');
 
     	for ($i=0; $i < count($data['interviewer']); $i++) {
     		$interviewerid = $data['interviewer'][$i]['interviewerid'];
     		// echo $interviewerid;
     		//for interview question
-			$sql = "SELECT a.scr_asmtid as asmtid, b.asmttemp, c.filename, d.operatorname
+			$sql = "SELECT a.scr_asmtid as asmtid, b.asmttemp, c.filename, d.ref1 as operatorname
 					FROM interviewer a
 					LEFT OUTER JOIN assessment b ON a.scr_asmtid = b.asmtid
 					LEFT OUTER JOIN document c ON a.interviewer = c.referencekey AND c.tablename='operator'
-					LEFT OUTER JOIN operator d ON a.interviewer = d.operatorid
+					LEFT OUTER JOIN codedictionary d ON CAST(a.interviewer as nvarchar) = d.code AND d.category = 'ERP'
 					WHERE a.interviewerid = '$interviewerid'";
 
 			$asmt = $this->M_data->select_sql($sql);
@@ -856,7 +857,7 @@ class Multiplechoice extends CI_Controller {
 			LEFT JOIN document d ON a.imageid = d.recordid
 			LEFT OUTER JOIN asmtanswer e ON a.questionid = e.questionid and f.asmtid = e.asmtid
 			WHERE a.asmttemp = '$asmttemp'
-			ORDER BY a.section";
+			ORDER BY a.section,a.sorting";
 
 		$ques = $this->M_data->select_sql($sql);
 		// echo "<pre>";
@@ -986,7 +987,7 @@ class Multiplechoice extends CI_Controller {
 
 	public function save_answer(){
 		$post = $this->input->post();
-
+        // var_dump($post['asmtid']);exit;
 		$resp = array(
 			"success" => false,
 			"message" => "Failed",
@@ -1024,67 +1025,61 @@ class Multiplechoice extends CI_Controller {
 			$resp['data'][] = $this->M_data->merge_data(array('asmtid'=>$post['asmtid'],'questionid'=>$push['questionid']),$push,'asmtanswer');
 		}
 
-		if ($post['asmtid']!=''&&!isset($post['interviewid'])) {
+		if ($post['asmtid']!='') {
+            // var_dump($post['asmtid']);exit;
 			$this->M_data->update('assessment',array('asmtid'=>$post['asmtid']),array('status'=>'C'));
 		}
 
 		if (isset($post['interviewid'])&&$post['interviewid']!='') {
 			$this->M_data->update('interview',array('interviewid'=>$post['interviewid']),array('status'=>'C'));
-		}
+		}else{
+            //mail manage
+            $mail = array();
+            $mailtemplate = $this->Mail_model->select('mailprofile',array('mailprofileid' => 7));
+            if(isset($mailtemplate[0])){
+                $subject            = $mailtemplate[0]['presubject'];
+                $body               = $mailtemplate[0]['prebody'];
+                $mail["attachment"] = $mailtemplate[0]['preattach'];
+                $presender          = $mailtemplate[0]['presender'];
+                $mail["cc"]         = '';
+                $mail["bcc"]        = '';
+            }else{
+                $subject            = $body = $mail["attachment"] = $mail["cc"] = $mail["bcc"] = $presender = '';
+            }
+            if ($presender != 'usersession') {
+                $arrayName1 = array('operatorname' => 'mailsystem' );
+                $mailSystem = $this->Mail_model->select('operator',$arrayName1);
+                $mail['mcsmtp'] = $mailSystem[0]['mcsmtp'];
+                $mail['mcuser'] = $mailSystem[0]['mcuser'];
+                $mail['mcpass'] = base64_decode($mailSystem[0]['mcpass']);
+                $mail['mcport'] = $mailSystem[0]['mcport'];
+            }else{
+                echo json_encode($resp);
+            }
+            $match                      = array('candidateid' => $post['candidateid']);
+            $candidate                  = $this->Candidate_model->selectBySelect('*','candidate',$match)[0];
+            $lastname                   = $candidate['lastname'];
+            $name                       = $candidate['name'];
+            $match                      = array('campaignid' => $post['campaignid']);
+            $campaigns                  = $this->Candidate_model->selectBySelect('*','reccampaign',$match)[0];
+            $position                   = $campaigns['position'];
+            $temp                       = trim($campaigns['managecampaign'],',');
+            $manage                     = explode(',', $temp);
+            foreach ($manage as $key) {
+                $match                      = array('operatorid' => $key);
+                $operator                   = $this->Candidate_model->selectBySelect('*','operator',$match)[0];
+                $chuoi_tim              = array('[Tên Ứng viên]','[Tên]','[Vị trí]');
+                $chuoi_thay_the         = array($name,$lastname,$position);
+                $mail['emailsubject']   = str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($subject));
+                $mail['emailbody']      = str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($body));
+                $mail['toemail']        = $operator['email'];
+                $this->Mail_model->sendMail($mail);
+
+            }
+        }
 
 		$resp['success'] = true;
 		$resp['message'] = "success";
-
-		//mail manage
-		$mail = array();
-		$mailtemplate = $this->Mail_model->select('mailprofile',array('mailprofileid' => 13));
-		if(isset($mailtemplate[0])){
-			$subject 			= $mailtemplate[0]['presubject'];
-			$body 				= $mailtemplate[0]['prebody'];
-			$mail["attachment"] = $mailtemplate[0]['preattach'];
-			$presender 			= $mailtemplate[0]['presender'];
-			$mail["cc"] 		= '';
-			$mail["bcc"] 		= '';
-		}else{
-			$subject			= $body = $mail["attachment"] = $mail["cc"] = $mail["bcc"] = $presender = '';
-		}
-		if ($presender != 'usersession') {
-			$arrayName1 = array('operatorname' => 'mailsystem' );
-			$mailSystem = $this->Mail_model->select('operator',$arrayName1);
-        	$mail['mcsmtp']	= $mailSystem[0]['mcsmtp'];
-        	$mail['mcuser']	= $mailSystem[0]['mcuser'];
-        	$mail['mcpass']	= base64_decode($mailSystem[0]['mcpass']);
-        	$mail['mcport']	= $mailSystem[0]['mcport'];
-		}else{
-			echo json_encode($resp);
-		}
-		$match 						= array('candidateid' => $post['candidateid']);
-		$candidate 					= $this->Candidate_model->selectByWhere('candidate',$match)[0];
-		$lastname 					= $candidate['lastname'];
-		$name 						= $candidate['name'];
-		$match 						= array('campaignid' => $post['campaignid']);
-		$campaigns 					= $this->Candidate_model->selectByWhere('reccampaign',$match)[0];
-		$position 					= $campaigns['position'];
-		$temp						= trim($campaigns['managecampaign'],',');
-		$manage 					= explode(',', $temp);
-		foreach ($manage as $key) {
-			$match 						= array('operatorid' => $key);
-			$operator 					= $this->Candidate_model->selectByWhere('operator',$match)[0];
-			$chuoi_tim 				= array('[Tên Ứng viên]','[Tên]','[Vị trí]');
-			$chuoi_thay_the 		= array($name,$lastname,$position);
-			$mail['emailsubject'] 	= str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($subject));
-			$mail['emailbody'] 		= str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($body));
-			$mail['toemail'] 		= $operator['email'];
-			$this->Mail_model->sendMail($mail);
-
-			$mail1['fromemail'] 		= $mail['mcuser'];
-			$mail1['toemail'] 			= $operator['email'];
-			$mail1['emailbody'] 		= $mail['emailbody'];
-			$mail1['emailsubject'] 		= $mail['emailsubject'];
-			$mail1["attachment"] 		= json_encode($mail["attachment"]);
-			$mail1['createdby'] 		= $this->session->userdata('user_admin')['operatorid'];
-			$this->Mail_model->insert('mailtable',$mail1);
-		}
 
 		echo json_encode($resp);
 	}

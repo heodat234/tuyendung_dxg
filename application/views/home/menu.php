@@ -24,10 +24,10 @@
 	</div>
 </div>
 	<div class="block-formLink" style="z-index: 999;"><div class="Module Module-171"><div class="ModuleContent"><p class="nemu"><strong>HƯỚNG DẪN NỘP HỒ SƠ</strong></p>
-		<p>Ứng viên tải Biểu mẫu đăng kí <a href="/Data/Sites/1/media/tuyen-dung/p.ns-qt01-bm004-bang-du-lieu-ung-vien.doc">&gt;&gt; tại đây &lt;&lt;,</a>&nbsp;điền đầy đủ thông tin, gởi về địa chỉ email:&nbsp;<a href="mailto:tuyendung@datxanh.com.vn"><span>tuyendung@datxanh.com.vn</span></a></p>
-		<p>Mọi thắc mắc Liên hệ trực tiếp Bộ phận Tuyển dụng: <br>
-		ĐT: 028. 6252 5252 (Ext: 5015)</p>
-	</div>
+        <p>Ứng viên tạo tài khoản và đăng nhập để cập nhật hồ sơ của mình <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal">>>tại đây<< </a>&nbsp; Sau đó ứng tuyển vào các vị trí mong muốn tại phần&nbsp; <a href="<?php echo base_url() ?>cohoi_nghe_nghiep.html">>>Cơ hội nghề nghiệp<< </a></p>
+        <p>Mọi thắc mắc Liên hệ trực tiếp Bộ phận Tuyển dụng: <br>
+        ĐT: 028. 6252 5252 (Ext: 5083)</p>
+    </div>
 </div>
 </div>
 <div>

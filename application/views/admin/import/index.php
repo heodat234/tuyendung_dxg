@@ -29,7 +29,7 @@
 			        </div>
 			    </div>
 			</div>
-			
+
 			<div class="col-md-4">
 			    <div class="panel panel-default">
 			        <div class="panel-heading"><strong>Upload Files CV</strong> <small></small></div>
@@ -56,13 +56,13 @@
 					<a href="<?php echo base_url() ?>public/document/file_mau.xlsx" class="btn btn-labeled btn-primary"> <span class="btn-label"><i class="glyphicon glyphicon-download"></i> </span>Download file mẫu</a>
 					<br />
 	    		</div>
-	    		</div>	
-			</div>  
+	    		</div>
+			</div>
 		</div>
 	</section>
 </div>
 
-<!-- /container --> 
+<!-- /container -->
 <style type="text/css">
 	/* layout.css Style */
 .upload-drop-zone {
@@ -89,10 +89,10 @@
 .image-preview-input {
     position: relative;
     overflow: hidden;
-    margin: 0px;    
+    margin: 0px;
     color: #333;
     background-color: #fff;
-    border-color: #ccc;    
+    border-color: #ccc;
 }
 .image-preview-input input[type=file] {
 	position: absolute;
@@ -139,10 +139,16 @@
 			      contentType: false,
 			      processData: false,
 			})
-			.done(function() {
-				$('.ajax-loader').css("visibility", "hidden");
-				$('#js-upload-files').val('');
-				alert('Tải nhập ứng viên thành công');
+			.done(function(data) {
+                $('.ajax-loader').css("visibility", "hidden");
+                $('#js-upload-files').val('');
+                if (data == 1) {
+                    alert('Tải nhập ứng viên thành công');
+                }else{
+                    alert('Thông báo: Ứng viên '+data+' đã tồn tại trong hệ thống');
+                }
+
+				// alert('Tải nhập ứng viên thành công');
 			})
 			.fail(function() {
 				console.log("error");
@@ -150,7 +156,7 @@
 			.always(function() {
 				console.log("complete");
 			});
-			
+
 		}
 	});
 
@@ -183,9 +189,9 @@
 			.always(function() {
 				console.log("complete");
 			});
-			
+
 		}
 	});
-	
+
 
 </script>

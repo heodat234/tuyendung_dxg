@@ -9,7 +9,7 @@ G.padding-top0
 .blue
 {
 	background-color: rgb(95, 162, 221);
-	
+
 }
 .heading
 {
@@ -25,7 +25,7 @@ G.padding-top0
     font-weight: 400;
 }
 .nav-check-save>li>a:hover, .nav-check-save>li>a:focus {
-    text-decoration: none;	
+    text-decoration: none;
 	color: white !important;
     background-color: rgb(95, 162, 221) !important;
 }
@@ -33,7 +33,7 @@ G.padding-top0
 	padding-left: 10px !important;
 	font-size: 12px !important;
 	padding-top: 10px !important;
-	padding-bottom: 10px !important; 
+	padding-bottom: 10px !important;
 	width: 100%;
 	color: black !important;
 	font-weight: 400;
@@ -42,7 +42,7 @@ G.padding-top0
 	padding-left: 12px !important;
 	font-size: 14px !important;
 	padding-top: 13px !important;
-	padding-bottom: 13px !important; 
+	padding-bottom: 13px !important;
 	width: 100%;
 	color: black !important;
 }
@@ -143,7 +143,7 @@ G.padding-top0
 .demhs
 {
 	font-size: 14px;
-	font-weight: 400; 
+	font-weight: 400;
 	color: #ccc;
 	margin-left: 15px;
 	padding-top: 8px;
@@ -171,19 +171,19 @@ G.padding-top0
 .td-cot1
 {
 	vertical-align: top;
-	padding: 2px; 
+	padding: 2px;
 	width: 4%
 }
 .td-cot2
 {
 	vertical-align: top;
-	padding: 2px; 
+	padding: 2px;
 	width: 18%
 }
 .td-cot3
 {
 	vertical-align: top;
-	padding: 2px; 
+	padding: 2px;
 	width: 78%;
 }
 .frameimage
@@ -194,7 +194,7 @@ G.padding-top0
 {
 	font-size: 12px;
 	font-weight: 400;
-	margin-bottom: 0px; 
+	margin-bottom: 0px;
 	color: #5fade0;
 }
 .pad-t1
@@ -217,7 +217,7 @@ G.padding-top0
 }
 .label-name
 {
-	font-size: 16px; 
+	font-size: 16px;
 	font-weight: 600;
 	margin-bottom: 0px;
 }
@@ -238,15 +238,22 @@ G.padding-top0
 	font-size: 14px;
 	margin-bottom: 0px;
 	font-weight: 400;
-	margin-top: -5px; 
+	margin-top: -5px;
 	width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 21px;
+    -webkit-line-clamp: 3;
+    height: auto;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
 }
 .tuyendung-label2
 {
 	font-size: 13px;
 	margin-bottom: 0px;
 	font-weight: 350;
-	color: #5fade0; 
+	color: #5fade0;
 	width :100%
 }
 .tuyendung-label3
@@ -264,7 +271,7 @@ G.padding-top0
 	color: white;
 	background-color: #5fade0;
 	margin-top: 41px;
-	margin-left: 10px; 
+	margin-left: 10px;
 	margin-bottom: 10px;
 }
 .highr
@@ -297,13 +304,13 @@ G.padding-top0
 {
 	height: 30px;
 	border-radius: 0px !important;
-	padding-left: 6px !important; 
+	padding-left: 6px !important;
 	padding-right: 6px !important;
 	padding-top: 6px !important;
 }
 .pad-tl10
 {
-	padding-top: 10px; 
+	padding-top: 10px;
 	padding-left: 10px;
 }
 .width100
@@ -324,7 +331,7 @@ G.padding-top0
 {
 	width: 100%;
 	border-radius: 0px;
-	border: 0.5px solid #ececec; 
+	border: 0.5px solid #ececec;
 	background-color: #f6f6f6
 }
 .div-label-check
@@ -342,7 +349,7 @@ G.padding-top0
 }
 .hienthithem
 {
-	font-weight: 350; 
+	font-weight: 350;
 	font-size: 13px;
 	 color:#5fade0;
 	 padding-left: 30px;
@@ -351,27 +358,27 @@ G.padding-top0
 .inputthem
 {
 	margin-left: 30px;
-	margin-top: 5px; 
-	padding-left: 6px; 
-	padding-bottom: 3px; 
-	padding-top: 4px; 
+	margin-top: 5px;
+	padding-left: 6px;
+	padding-bottom: 3px;
+	padding-top: 4px;
 	width: 210px;
 	font-size: 13px;
-	color: #55595c; 
-	background-color: #fff; 
+	color: #55595c;
+	background-color: #fff;
 	background-image: none;
-	border: 1px solid #ccc; 
+	border: 1px solid #ccc;
 	margin-bottom: 10px
 }
 .btn-luu-nav
 {
 	border: 0px;
-	height: 30px; 
-	width: 70px; 
+	height: 30px;
+	width: 70px;
 	color: white;
 	background-color: #5fade0;
-	margin-left: 10px; 
-	margin-top: 8px; 
+	margin-left: 10px;
+	margin-top: 8px;
 	margin-bottom: 10px;
 }
 .floatright
@@ -571,7 +578,7 @@ G.padding-top0
 }
 .size9
 {
-	font-size: 9px; 
+	font-size: 9px;
 
 }
 .size18
@@ -584,7 +591,7 @@ G.padding-top0
 }
 .title-modal
 {
-  color: #005aa6; 
+  color: #005aa6;
   padding-left: 20px;
   padding-right: 20px;
   padding-top: 20px;
@@ -593,12 +600,12 @@ G.padding-top0
 {
   background-color: #f58220 !important;
   color: white;
-  margin-bottom: 10px; 
+  margin-bottom: 10px;
   width: 100px;
   font-size: 13px !important;
   padding: 4px !important;
   margin-left: 38%
-  
+
 }
 .margin-bot-15
 {
@@ -616,7 +623,7 @@ G.padding-top0
 .fontstyle
 {
   font-size: 14px !important;
-  
+
 }
 .title-anhdaidien
 {

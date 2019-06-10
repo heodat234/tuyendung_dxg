@@ -241,7 +241,7 @@
 													          <div class="width100 row rowedit h-auto">
 													            <label for="text" class="width20 col-xs-3 label-profile">Điện thoại</label>
 													            <div class="width80 col-xs-9 padding-lr0">
-													             <label class="fontArial colorgray labelcontent" ><?php echo $candidate['telephone'];?></label>
+													             <label class="fontArial colorgray labelcontent" ><?php echo trim($candidate['telephone'],',');?></label>
 													            </div>
 													        </div>
 													         <div class="width100 row rowedit h-auto">
@@ -709,7 +709,7 @@
 													          <div class="width100 row rowedit h-auto">
 													            <label for="text" class="width20 col-xs-3 label-profile">Điện thoại</label>
 													            <div class="width80 col-xs-9 padding-lr0">
-													             <label class="fontArial colorgray labelcontent" ><?php echo $candidate_noibo['telephone'];?></label>
+													             <label class="fontArial colorgray labelcontent" ><?php echo trim($candidate_noibo['telephone'],',');?></label>
 													            </div>
 													        </div>
 													         <div class="width100 row rowedit h-auto">
@@ -1178,7 +1178,7 @@
 														          <div class="width100 row rowedit h-auto">
 														            <label for="text" class="width20 col-xs-3 label-profile">Điện thoại</label>
 														            <div class="width80 col-xs-9 padding-lr0">
-														             <label class="fontArial colorgray labelcontent" ><?php echo $value_con['telephone'];?></label>
+														             <label class="fontArial colorgray labelcontent" ><?php echo trim($value_con['telephone'],',');?></label>
 														            </div>
 														        </div>
 														         <div class="width100 row rowedit h-auto">
@@ -1468,7 +1468,7 @@
 							       <i class="fa fa-angle-right a-tabcs rotate rotate_2 "></i>
 							       <div class="ul-nav">
 							       	<label class="tittle-tab">
-							       		Lịch sử hồ sơ
+							       		Kết quả các vòng
 							       	</label>
 							       </div>
 							    </div>
@@ -1501,7 +1501,7 @@
 							      				$comment 		= '<div>'.$row['asmtname'].' Cấu trúc: '.$row['count_section'].' phần - '.$row['count_question'].' câu - Trộn tạo thành '.$row['shuffleqty'].' câu</div>';
 							      				if ($row['status'] == 'W') {
 								      				$comment 	.= '<div class="color-sign-in">Trạng thái: Đang thực hiện</div>';
-								      				$check 		= 1;
+								      				$check 		= 0;
 							      				}
 							      				else if ($row['status'] == 'C') {
 								      				$comment 	= '<div class="color-sign-in">Trạng thái: Hoàn thành ('.$row['count_answer'].'/'.$row['count_question'].') - Kết quả: '.$row['score_answer'].'/'.(int)$row['targetscore'].'/'.$row['score_genquest'].'</div>';
@@ -1510,68 +1510,94 @@
 							      				else if ($row['status'] == 'D') {
 								      				$icon 		= '<div class="pull-right"><i class="fa fa-trash-o fa-lg color-trash"></i></div>';
 								      				$comment 	.= '<div class="color-sign-in">Trạng thái: Hủy phiếu - bởi '.$row['nameupdate'].' - '.date_format(date_create($row['lastupdate']),"d/m/Y - H:i").'</div>';
-								      				$check 		= 1;
+								      				$check 		= 0;
 							      				}
 							      				else {
 								      				$comment 	.= '<div class="color-sign-in">Trạng thái: Chưa thực hiện </div>';
-								      				$check 		= 1;
+								      				$check 		= 0;
 							      				}
 							      			}else if (isset($row['interviewid'])) {
-							      				$thu 			= date_format(date_create($row['intdate']),"N");
-												if ($thu != 7) {
-													$temp 		= (int)$thu+1;
-													$thu 		= 'Thứ '.(string)$temp;
-												}else{
-													$thu 		= 'Chủ Nhật';
-												}
-												$ngay 			=  date_format(date_create($row['intdate']),"d");
-												$thang 			=  date_format(date_create($row['intdate']),"m");
-												$nam 			=  date_format(date_create($row['intdate']),"Y");
-												$from 			=  date_format(date_create($row['timefrom']),"H:i");
-												$to 			=  date_format(date_create($row['timeto']),"H:i");
-												$fa 			= '<a onclick="loadAppointment('.$row['interviewid'].')" target="_blank"><i class="fa fa-calendar star-icon1"></i></a>';
-												$type 			= ' Tạo lịch hẹn '.$row['roundname'].' - '.$createddate;
-												$comment 		= $thu.', '.$ngay.' Tháng '.$thang.' Năm '.$nam.'<br>'.$row['location'];
+                                                $thu            = date_format(date_create($row['intdate']),"N");
+                                                if ($thu != 7) {
+                                                    $temp       = (int)$thu+1;
+                                                    $temp = (int)$thu+1;
+                                                    if ($temp == 2) {
+                                                        $t = 'Hai';
+                                                    }else if ($temp == 3) {
+                                                        $t = 'Ba';
+                                                    }else if ($temp == 4) {
+                                                        $t = 'Tư';
+                                                    }else if ($temp == 5) {
+                                                        $t = 'Năm';
+                                                    }else if ($temp == 6) {
+                                                        $t = 'Sáu';
+                                                    }else if ($temp == 7) {
+                                                        $t = 'Bảy';
+                                                    }
+                                                    $thu = 'Thứ '.$t;
+                                                }else{
+                                                    $thu        = 'Chủ Nhật';
+                                                }
+                                                $ngay           =  date_format(date_create($row['intdate']),"d");
+                                                $thang          =  date_format(date_create($row['intdate']),"m");
+                                                $nam            =  date_format(date_create($row['intdate']),"Y");
+                                                $from           =  date_format(date_create($row['timefrom']),"H:i");
+                                                $to             =  date_format(date_create($row['timeto']),"H:i");
+                                                $fa             = '<a onclick="loadAppointment('.$row['interviewid'].')" target="_blank"><i class="fa fa-calendar star-icon1"></i></a>';
+                                                $type           = ' Kết quả '.$row['roundname'];
+                                                $comment        = 'Thời gian phỏng vấn: '.$from.'h → '.$to.'h, '.$thu.', '.$ngay.' Tháng '.$thang.' Năm '.$nam;
+
 												if (!empty($row['interviewer'])) {
-							      					$interviewer 		= '<div class="row">';
-							      					foreach ($row['interviewer'] as $key) {
-							      						$icon_h ='';
-							      						if ($key['status'] == 'C') {
-							      							if ($key['optionid'] == '1') {
-							      								$status 	= '<div class="colorsuccess fontArial show-view" >Đã xác nhận</div>';
-							      							}
-							      							else if($key['optionid'] == '2'){
-							      								$date 		=  date_format(date_create($key['ansdatetime']),"d/m/Y");
-							      								$from 		=  date_format(date_create($key['ansdatetime']),"H:i");
-																$to 		=  date_format(date_create($key['ansdatetime2']),"H:i");
-							      								$status 	= '<div class="colorred fontArial show-view" >Tham dự vào ngày khác </div><div>'.$from.' - '.$to.' '.$date.'</div>';
-								      						}
-								      						else if($key['optionid'] == '3'){
-							      								$status 	= '<div class="colorred fontArial show-view" >Không tham dự </div>';
-								      						}
-							      						}else{
-								      							$status 	= '<div class="colorgray fontArial show-view" >Chờ xác nhận </div>';
-								      					}
-								      					if ($key['scr_asmtid'] != '0') {
-								      						$icon_h 		= ' <i class="fa fa-file-o"></i>';
-								      					}
-                                                        $img_a = ($key['filename'] != '')? $key['filename'] : 'unknow.jpg';
-								      					$interviewer 	.= '<div class="col-xs-3"><img src="'.base_url().'public/image/'.$img_a.'"  class="img_profile">'.$key['operatorname'].$icon_h.$status.'</div>';
-								      				}
-								      				$interviewer 		.= '</div>';
-							      				}
+                                                    $arr_name = [];
+                                                    $interviewer        = '<div class="row">';
+                                                    foreach ($row['interviewer'] as $key) {
+                                                        // $icon_h ='';
+                                                        // if ($key['status'] == 'C') {
+                                                        //     if ($key['optionid'] == '1') {
+                                                        //         $status     = '<div class="colorsuccess fontArial show-view" >Đã xác nhận</div>';
+                                                        //     }
+                                                        //     else if($key['optionid'] == '2'){
+                                                        //         $date       =  date_format(date_create($key['ansdatetime']),"d/m/Y");
+                                                        //         $from       =  date_format(date_create($key['ansdatetime']),"H:i");
+                                                        //         $to         =  date_format(date_create($key['ansdatetime2']),"H:i");
+                                                        //         $status     = '<div class="colorred fontArial show-view" >Tham dự vào ngày khác </div><div>'.$from.' - '.$to.' '.$date.'</div>';
+                                                        //     }
+                                                        //     else if($key['optionid'] == '3'){
+                                                        //         $status     = '<div class="colorred fontArial show-view" >Không tham dự </div>';
+                                                        //     }
+                                                        // }else{
+                                                        //         $status     = '<div class="colorgray fontArial show-view" >Chờ xác nhận </div>';
+                                                        // }
+                                                        // if ($key['scr_asmtid'] != '0') {
+                                                        //     $icon_h         = ' <i class="fa fa-file-o"></i>';
+                                                        // }
+                                                        // if ($key['filename'] == '') {
+                                                        //     $image_inv = 'unknow.jpg';
+                                                        // }else{
+                                                        //     $image_inv = $key['filename'];
+                                                        // }
+                                                        // $interviewer    .= '<div class="col-xs-3"><img src="'.base_url().'public/image/'.$image_inv.'"  class="img_profile">'.$key['operatorname'].$icon_h.$status.'</div>';
+                                                        $arr_name[] = $key['operatorname'];
+                                                    }
+                                                    $name = implode(' - ', $arr_name);
+                                                    $interviewer        .= 'Tên người đánh giá: '.$name;
+                                                    $interviewer        .= '</div>';
+                                                }
+                                                $share          = '';
 
 							      				if ($row['status'] == "W") {
 								      				$comment 	.= '<br><div class="color-sign-in">Trạng thái: Chờ phỏng vấn </div>';
-								      				$check 		= 1;
+								      				$check 		= 0;
+                                                    continue;
 							      				}
 							      				else if ($row['status'] == "C") {
-								      				$comment 	.= '<br><div class="color-sign-in">Trạng thái: Đã phỏng vấn </div>';
+								      				$comment 	.= '<br><div class="color-sign-in">Trạng thái: Đã phỏng vấn</div>';
 								      				$check 		= 1;
 							      				}
 							      				else if ($row['status'] == "D") {
 								      				$comment 	.= '<br><div class="color-sign-in">Trạng thái: Hủy phỏng vấn </div>';
-								      				$check 		= 1;
+								      				$check 		= 0;
+                                                    continue;
 							      				}
 							      			}
 
@@ -1582,7 +1608,7 @@
 							      			<td class="table-his-cont" style="width: 96%">
 							      				<img src="<?php echo base_url().'public/image/'.$image?>"  width="32px" height="32px" style="float:left; margin-right: 4px">
 							      				<div class="col-xs-11 mr-pd">
-							      					<label class="text-his fontArial" style="margin-bottom: 2px"><span style="font-weight: 600"><?php echo $row['operatorname'] ?> </span><span class="colorgray"><?php echo $type ?> </span></label><?php echo isset($icon) ? $icon : '' ?>
+							      					<label class="text-his fontArial" style="margin-bottom: 2px"><span style="font-weight: 600"><?php echo $row['operatorname'] ?> </span><span style="color: red" class=""><?php echo $type ?> </span></label><?php echo isset($icon) ? $icon : '' ?>
 							      					<br>
 							      					<?php echo isset($share) ? $share : '' ?>
 							      					<?php echo $comment ?>
@@ -1600,6 +1626,10 @@
 					  	</div>
 					</div>
 				</div>
+                <?php if($status == 'C'){ ?>
+                    <p class="colorcyan">Tất cả các câu trả lời đã được lưu.</p>
+                    <p class="colorcyan">Xin chân thành cảm ơn!!! </p>
+                <?php }else{ ?>
 				<form id="form_ans">
 					<input type="hidden" name="interviewerid" value="<?php echo $interviewerid ?>">
 					<input type="hidden" name="interviewid" value="<?php echo $interviewid ?>">
@@ -1642,14 +1672,15 @@
 						<?php }?>
 					</div>
 					<?php }?>
-			</div>
-		</div>
-		<div class="footer_as">
-			<div>
-				<button type="submit" class="btn btn_start" id="btn_end"><i></i> Kết thúc</button>
-			</div>
-		</div>
-	</form>
+        			</div>
+        		</div>
+        		<div class="footer_as">
+        			<div>
+        				<button type="submit" class="btn btn_start" id="btn_end"><i></i> Kết thúc</button>
+        			</div>
+        		</div>
+        	</form>
+        <?php } ?>
 	</section>
 </div>
 

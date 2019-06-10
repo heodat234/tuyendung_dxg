@@ -57,7 +57,7 @@ class Mail_model extends CI_Model{
                     $this->email->attach($key);
                 }
             }
-        // $this->email->attach('http://recruit.tavicosoft.com/public/document/Chiến dịch tuyển dụng.docx');
+        // $this->email->attach('https://tuyendung.datxanh.com.vn/public/document/HM-API.xlsx');
         // $this->email->attach('http://recruit.tavicosoft.com/public/document/DXG - Breakdown checklist.xlsx');
         //thuc hien gui
         if ( ! $this->email->send())
@@ -76,35 +76,61 @@ class Mail_model extends CI_Model{
             $dmy = date("r", strtotime("now"));
             $boundary = "------=".md5(uniqid(rand()));
 
-            // $msgid = $this->generateMessageID();
-            $msg = "From: ".trim($data['mcuser'])."\r\n";
-            $msg .= "To: ".$data['toemail']."\r\n";
-            $msg .= "Cc: ".isset($data['cc'])? $data['cc'] : ''."\r\n";
-            $msg .= "Bcc: ".isset($data['cc'])? $data['cc'] : ''."\r\n";
-            $msg .= "Date: $dmy\r\n";
-            $msg .= "Subject: $subject\r\n";
-            $msg .= "MIME-Version: 1.0\r\n";
-            $msg .= "Content-Type: multipart/mixed; boundary=\"$boundary\"\r\n";
-            $msg .= "\r\n\r\n";
-            $msg .= "--$boundary\r\n";
-            $msg .= "Content-Type: text/html;\r\n\tcharset=\"utf-8\"\r\n";
-            $msg .= "Content-Transfer-Encoding: quoted-printable \r\n";
-            $msg .= "\r\n\r\n";
-            $msg .= "$new_body\r\n";
+            // // $msgid = $this->generateMessageID();
+            // $msg = "From: ".trim($data['mcuser'])."\r\n";
+            // $msg .= "To: ".$data['toemail']."\r\n";
+            // // $msg .= "Cc: ".isset($data['cc'])? $data['cc'] : ''."\r\n";
+            // // $msg .= "Bcc: ".isset($data['bcc'])? $data['bcc'] : ''."\r\n";
+            // $msg .= "Date: ".$dmy."\r\n";
+            // $msg .= "Cc: ".isset($data['cc'])? $data['cc'] : ''."\r\n";
+            // $msg .= "Subject: $subject\r\n";
+            // $msg .= "MIME-Version: 1.0\r\n";
+            // $msg .= "Content-Type: multipart/mixed; boundary=\"$boundary\"\r\n";
+            // $msg .= "\r\n\r\n";
+            // $msg .= "--$boundary\r\n";
+            // $msg .= "Content-Type: text/html;\r\n\tcharset=\"utf-8\"\r\n";
+            // $msg .= "Content-Transfer-Encoding: quoted-printable \r\n";
+            // $msg .= "\r\n\r\n";
+            // $msg .= "$new_body\r\n";
+            $msg_file = "";
             if(!empty($attach)) {
-                $msg .= "\r\n\r\n";
-                $msg .= "--$boundary\r\n";
                 foreach ($attach as $filelink) {
                     $arr = explode('/', $filelink);
                     $filename = $arr[count($arr)-1];
                     $attachment = chunk_split(base64_encode(file_get_contents($filelink)));
-                    $msg .= "Content-Transfer-Encoding: base64\r\n";
-                    $msg .= "Content-Disposition: attachment; filename=\"$filename\"\r\n";
-                    $msg .= "\r\n" . $attachment . "\r\n\r\n";
+                    $msg_file .= "Content-Transfer-Encoding: base64\r\n";
+                    $msg_file .= "Content-Disposition: attachment; filename=\"$filename\"\r\n";
+                    $msg_file .= "\r\n" . $attachment . "\r\n\r\n";
                 }
             }
-            $msg .= "\r\n\r\n\r\n";
-            $msg .= "--$boundary--\r\n\r\n";
+            // $msg .= "\r\n\r\n\r\n";
+            // $msg .= "--$boundary--\r\n\r\n";
+
+            // $dmy=date("d-m-Y H:i:s");
+
+            $cc     = isset($data['cc'])? $data['cc'] : "";
+            $bcc    = isset($data['bcc'])? $data['bcc'] : "";
+
+            $msg = ("From: ".trim($data['mcuser'])."\r\n"
+                . "To: ".$data['toemail']."\r\n"
+                . "Cc: $cc\r\n"
+                . "Bcc: $bcc\r\n"
+                . "Date: $dmy\r\n"
+                . "Subject: $subject\r\n"
+                . "MIME-Version: 1.0\r\n"
+                . "Content-Type: multipart/mixed; boundary=\"$boundary\"\r\n"
+                . "\r\n\r\n"
+                . "--$boundary\r\n"
+                . "Content-Type: text/html;\r\n\tcharset=\"utf-8\"\r\n"
+                . "Content-Transfer-Encoding: quoted-printable \r\n"
+                . "\r\n\r\n"
+                . "$new_body\r\n"
+                . "\r\n\r\n"
+                . "--$boundary\r\n"
+                . "$msg_file\r\n"
+                . "\r\n\r\n\r\n"
+                . "--$boundary--\r\n\r\n");
+            // var_dump($msg);exit;
             imap_append($mbox, "{".$data['mcsmtp'].":143}Sent Items",$msg);
                 // close mail connection.
                 imap_close($mbox);

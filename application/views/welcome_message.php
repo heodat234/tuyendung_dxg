@@ -6,6 +6,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<meta charset="utf-8">
 	<title>Welcome to CodeIgniter</title>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 	<style type="text/css">
 
 	::selection { background-color: #E13300; color: white; }
@@ -71,19 +74,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<h1>Welcome to CodeIgniter!</h1>
 
 	<div id="body">
-		<p>The page you are looking at is being generated dynamically by CodeIgniter.</p>
-
-		<p>If you would like to edit this page you'll find it located at:</p>
-		<code>application/views/welcome_message.php</code>
-
-		<p>The corresponding controller for this page is found at:</p>
-		<code>application/controllers/Welcome.php</code>
-
-		<p>If you are exploring CodeIgniter for the very first time, you should start by reading the <a href="user_guide/">User Guide</a>.</p>
+		<table id="table_a">
+            <thead>
+                <th>aaa</th>
+                <th>bbbb</th>
+            </thead>
+            <tbody>
+                <td>ádasdas</td>
+                <td>fghdfhfd</td>
+            </tbody>
+        </table>
 	</div>
 
-	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></p>
 </div>
-
+<script type="text/javascript">
+    $(document).ready( function () {
+    $('#table_a').DataTable();
+} );
+</script>
 </body>
 </html>

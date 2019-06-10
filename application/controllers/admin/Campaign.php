@@ -19,13 +19,14 @@ class Campaign extends CI_Controller {
 		$o_data['operator'] 	= $this->Data_model->select_row_option('tb.operatorname,tb.operatorid,tb.email, document.filename',array('status' => 'W','candidateid' => 0),'','operator tb',$join,'','','','');
 		$o_data['asmt_pv'] 		= $this->Campaign_model->select("asmttemp,asmtname",'asmtheader',array('asmtstatus' => 'W','asmttype' => '1'),'');
 		$o_data['templateOffer'] 	= $this->Campaign_model->select("*",'templateform',array('status' => 'W','temptype' => '0'),'');
+        $o_data['category'] = $this->Campaign_model->select("category,code,description,ref1,ref2",'codedictionary',array('status' => 'W'),'');
 
 		$this->_data['modal_campaign'] 	= $this->load->view('admin/campaign/modal_campaign',$o_data,true);
 		$this->_data['header'] 	= $this->load->view('admin/home/header',null,true);
 	    $this->_data['menu']   	= $this->load->view('admin/home/menu',$ac_data,true);
 	    $this->_data['footer'] 	= $this->load->view('admin/home/footer',null,true);
 
-	    $this->sess  = $this->session->userdata('user_admin');  
+	    $this->sess  = $this->session->userdata('user_admin');
 	    $this->seg = 4;
 	}
 
@@ -34,7 +35,7 @@ class Campaign extends CI_Controller {
         $config = array(
             'upload_path'   => $path,
             'allowed_types' => '*',
-            'overwrite'     => FALSE,                       
+            'overwrite'     => FALSE,
         );
 
         $this->load->library('upload', $config);
@@ -50,7 +51,7 @@ class Campaign extends CI_Controller {
 
             $filename = preg_replace('([\s_&#%]+)', '-', $image);
 
-            $images[] 						= base_url().$path.$filename;
+            $images[] 						= $_SERVER["DOCUMENT_ROOT"].'\public\document\\'.$filename;
 
             $config['file_name'] 			= $filename;
 
@@ -88,7 +89,7 @@ class Campaign extends CI_Controller {
 	public function index(){
 		$this->load->view('admin/master',$this->_data);
 	}
-	
+
 	public function total_round($campaignid='',$roundid='',$type ='')
 	{
 		$sql = "SELECT COUNT(tt.candidateid) as count FROM profilehistory tt INNER JOIN (SELECT candidateid, MAX(createddate) AS MaxDateTime FROM profilehistory WHERE campaignid = '$campaignid' AND actiontype != 'Recruite'  GROUP BY candidateid) groupedtt ON tt.candidateid = groupedtt.candidateid AND tt.createddate = groupedtt.MaxDateTime LEFT JOIN candidate c ON tt.candidateid = c.candidateid WHERE tt.roundid = '$roundid' AND tt.actiontype = '$type' AND c.mergewith = 0 ";
@@ -108,13 +109,13 @@ class Campaign extends CI_Controller {
 				WHere a.expdate >= '$day' AND a.status = 'W'
 				and (a.managecampaign like '%,$operatorid,%' or a.showtype = 'O' or a.showtype='I' or b.manageround like '%,$operatorid,%') order by a.lastupdate DESC";
 		$data['campaigns_active'] = $this->M_data->select_sql($sql);
-		
-		for ($i=0; $i < count($data['campaigns_active']); $i++) { 
+
+		for ($i=0; $i < count($data['campaigns_active']); $i++) {
 			$match = array('campaignid' => $data['campaigns_active'][$i]['campaignid'] );
 			$data['campaigns_active'][$i]['round'] =	$this->Campaign_model->select("roundid,sorting,roundname,roundtype",'recflow',$match,'');
 
 			$data['campaigns_active'][$i]['round'][0]['count_round'] = $this->Candidate_model->count_round_hs($from,$where,$data['campaigns_active'][$i]['campaignid'])[0]['count'];
-			for ($j=1; $j < count($data['campaigns_active'][$i]['round']); $j++) { 
+			for ($j=1; $j < count($data['campaigns_active'][$i]['round']); $j++) {
 				$data['campaigns_active'][$i]['round'][$j]['count_round'] = $this->total_round($data['campaigns_active'][$i]['campaignid'],$data['campaigns_active'][$i]['round'][$j]['roundid'],'Transfer');
 			}
 
@@ -138,12 +139,12 @@ class Campaign extends CI_Controller {
 				WHere a.expdate >= '$day' AND a.status = 'W'
 				and b.campaignid = '$cmpid'
 				and (a.managecampaign like '%,$operatorid,%' or b.manageround like '%,$operatorid,%')
-				
+
 				";
 			$data['campaigns_active'][$i]['roundlist'] = $this->M_data->select_sql($sql);
 		}
 		//đã kết thúc
-		
+
 		// $data['campaigns_end'] 		=	$this->Data_model->selectTable('reccampaign',$match);
 		$sql = "SELECT DISTINCT a.*
 				from reccampaign a
@@ -152,12 +153,12 @@ class Campaign extends CI_Controller {
 				and (a.managecampaign like '%,$operatorid,%' or a.showtype = 'O' or a.showtype='I' or b.manageround like '%,$operatorid,%') order by a.lastupdate DESC";
 		$data['campaigns_end'] = $this->M_data->select_sql($sql);
 
-		for ($i=0; $i < count($data['campaigns_end']); $i++) { 
+		for ($i=0; $i < count($data['campaigns_end']); $i++) {
 			$match = array('campaignid' => $data['campaigns_end'][$i]['campaignid'] );
 			$data['campaigns_end'][$i]['round'] =	$this->Campaign_model->select("roundid,sorting,roundname,roundtype",'recflow',$match,'');
 
 			$data['campaigns_end'][$i]['round'][0]['count_round'] = $this->Candidate_model->count_round_hs($from,$where,$data['campaigns_end'][$i]['campaignid'])[0]['count'];
-			for ($j=1; $j < count($data['campaigns_end'][$i]['round']); $j++) { 
+			for ($j=1; $j < count($data['campaigns_end'][$i]['round']); $j++) {
 				$data['campaigns_end'][$i]['round'][$j]['count_round'] = $this->total_round($data['campaigns_end'][$i]['campaignid'],$data['campaigns_end'][$i]['round'][$j]['roundid'],'Transfer');
 			}
 
@@ -180,20 +181,40 @@ class Campaign extends CI_Controller {
 				WHere a.expdate < '$day' AND a.status = 'W'
 				and b.campaignid = '$cmpid'
 				and (a.managecampaign like '%,$operatorid,%' or b.manageround like '%,$operatorid,%')
-				
+
 				";
 				$data['campaigns_end'][$i]['roundlist'] = $this->M_data->select_sql($sql);
 			}
 		}
+
+
+        //chiến dịch đang chờ
+        $sql = "SELECT DISTINCT a.*
+                from reccampaign a
+                LEFT OUTER JOIN recflow b ON a.campaignid = b.campaignid
+                WHere a.status = 'D' order by a.lastupdate DESC";
+        $data['campaigns_wait'] = $this->M_data->select_sql($sql);
+        // var_dump($data['campaigns_wait']);exit;
+
+        // for ($i=0; $i < count($data['campaigns_end']); $i++) {
+        //     $match = array('campaignid' => $data['campaigns_end'][$i]['campaignid'] );
+        //     $data['campaigns_end'][$i]['round'] =   $this->Campaign_model->select("roundid,sorting,roundname,roundtype",'recflow',$match,'');
+
+        //     $data['campaigns_end'][$i]['round'][0]['count_round'] = $this->Candidate_model->count_round_hs($from,$where,$data['campaigns_end'][$i]['campaignid'])[0]['count'];
+        //     for ($j=1; $j < count($data['campaigns_end'][$i]['round']); $j++) {
+        //         $data['campaigns_end'][$i]['round'][$j]['count_round'] = $this->total_round($data['campaigns_end'][$i]['campaignid'],$data['campaigns_end'][$i]['round'][$j]['roundid'],'Transfer');
+        //     }
+        // }
+
 		if(!$this->M_auth->checkPermission($this->sess['groupid'],$this->seg)){
 			$this->data['temp'] 	= $this->load->view('admin/error/404',null,true);
 		}else{
 			$this->_data['temp'] 	= $this->load->view('admin/campaign/main',$data,true);
 		}
-		
+
 		$this->load->view('admin/home/master',$this->_data);
 	}
-	
+
 	public function round_1_1($roundid='',$campaignid=''){
 		$match 					= array('campaignid' => $campaignid, );
 		$data['campaigns'] 		=	$this->Data_model->selectTable('reccampaign',$match);
@@ -220,7 +241,7 @@ class Campaign extends CI_Controller {
 			$from 			= '';
 			$where 			= 'AND candidate.hidden = 1 AND candidate.mergewith = 0';
 			$c_data['round_main'][0]['count_round'] 		= $this->Candidate_model->count_round_hs($from,$where,$campaignid)[0]['count'];
-			for ($j=1; $j < count($c_data['round_main']); $j++) { 
+			for ($j=1; $j < count($c_data['round_main']); $j++) {
 				$c_data['round_main'][$j]['count_round'] 	= $this->total_round($campaignid,$c_data['round_main'][$j]['roundid'],'Transfer');
 			}
 
@@ -235,7 +256,7 @@ class Campaign extends CI_Controller {
 					$c_data['manager'][$key] 	=($this->Data_model->select_join("operator.operatorid,operator.operatorname,document.filename",$match,'operator',$join))[0];
 				}
 			}
-			
+
 			$c_data['duedate'] 			= $c_data['round_main'][0]['duedate'];
 
 			$sql = "SELECT b.roundid, b.sorting
@@ -243,7 +264,7 @@ class Campaign extends CI_Controller {
 				LEFT OUTER JOIN recflow b ON a.campaignid = b.campaignid
 				WHere b.campaignid = '$campaignid'
 				and (a.managecampaign like '%,$operatorid,%' or b.manageround like '%,$operatorid,%')
-				
+
 				";
 			$c_data['roundlist'] = $this->M_data->select_sql($sql);
 
@@ -251,18 +272,18 @@ class Campaign extends CI_Controller {
 			$a_data['roundid']			= $roundid;
 			$c_data['campaign_info'] 	= $this->load->view('admin/campaign/content_iframe_info',$a_data,true);
 
-			$data['main_round']     	= $this->load->view('admin/campaign/main_round',$c_data,true); 
+			$data['main_round']     	= $this->load->view('admin/campaign/main_round',$c_data,true);
 		}else{
 			$data['src'] 				= '';
 			$data['main_round'] 		= '';
 		}
-		
+
 		$this->_data['temp'] 			= $this->load->view('admin/campaign/round_1_1',$data,true);
 		$this->load->view('admin/home/master',$this->_data);
 	}
 
 	public function round_1_2($roundid='',$campaignid=''){
-		
+
 		$type1 				= "Transfer";
 		$type2 				= "Discard";
 
@@ -292,7 +313,7 @@ class Campaign extends CI_Controller {
 		$from 		= '';
 		$where 		= 'AND candidate.hidden = 1 AND candidate.mergewith = 0';
 		$c_data['round_main'][0]['count_round'] = $this->Candidate_model->count_round_hs($from,$where,$campaignid)[0]['count'];
-		for ($j=1; $j < count($c_data['round_main']); $j++) { 
+		for ($j=1; $j < count($c_data['round_main']); $j++) {
 			$c_data['round_main'][$j]['count_round'] = $this->total_round($campaignid,$c_data['round_main'][$j]['roundid'],'Transfer');
 
 			if ($c_data['round_main'][$j]['roundid'] == $roundid) {
@@ -325,15 +346,15 @@ class Campaign extends CI_Controller {
 				LEFT OUTER JOIN recflow b ON a.campaignid = b.campaignid
 				WHere b.campaignid = '$campaignid'
 				and (a.managecampaign like '%,$operatorid,%' or b.manageround like '%,$operatorid,%')
-				
+
 				";
 			$c_data['roundlist'] = $this->M_data->select_sql($sql);
-		
-		$data['main_round']     		= $this->load->view('admin/campaign/main_round',$c_data,true); 
+
+		$data['main_round']     		= $this->load->view('admin/campaign/main_round',$c_data,true);
 		$this->_data['temp'] 			= $this->load->view('admin/campaign/round_1_2',$data,true);
 		$this->load->view('admin/home/master',$this->_data);
 	}
-	
+
 
 	public function list_profile($campaignid='',$roundid='',$type='')
 	{
@@ -386,15 +407,15 @@ class Campaign extends CI_Controller {
         $this->data1['phantrang']           =  $this->pagination->create_links();
 
         $order = 'candidate.lastupdate desc';
-        $this->data1['candidate']           = $this->Candidate_model->list_filter_campaign($join,$where,$campaignid,$start,$config['per_page'],$order); 
+        $this->data1['candidate']           = $this->Candidate_model->list_filter_campaign($join,$where,$campaignid,$start,$config['per_page'],$order);
         $this->data1['total_candidate']     = $this->data2['total_candidate'];
-		
+
 		$iframe_data['temp'] 				= $this->load->view('admin/campaign/search_candidate',$this->data1,true);
 		$this->load->view('admin/home/master-iframe',$iframe_data);
 	}
 
 	public function profile($id ='',$hs = '0',$campaignid='',$roundid='',$type='')
-	{	
+	{
 		$order        = $this->session->userdata('order');
         if ($order == NULL) {
             $order        = "candidate.lastupdate desc";
@@ -406,36 +427,36 @@ class Campaign extends CI_Controller {
 			$sql = "SELECT tt.candidateid FROM profilehistory tt INNER JOIN (SELECT candidateid, MAX(createddate) AS MaxDateTime FROM profilehistory WHERE campaignid = '$campaignid' AND actiontype != 'Recruite'  GROUP BY candidateid) groupedtt ON tt.candidateid = groupedtt.candidateid AND tt.createddate = groupedtt.MaxDateTime WHERE tt.roundid = '$roundid' AND tt.actiontype = '$type' ";
 			$candidate = $this->Campaign_model->select_sql($sql);
 			// var_dump($candidate);exit;
-			
+
 			$join = '';
 			if (!empty($candidate)) {
 				$id = $candidate[0]['candidateid'];
 				$where = 'AND mergewith = 0 AND candidate.candidateid IN ( ';
-				for ($i=0; $i < count($candidate); $i++) { 
+				for ($i=0; $i < count($candidate); $i++) {
 					if ($i == count($candidate)-1) {
-						$where .= $candidate[$i]['candidateid']; 
+						$where .= $candidate[$i]['candidateid'];
 					}else{
-						$where .= $candidate[$i]['candidateid']. ','; 
+						$where .= $candidate[$i]['candidateid']. ',';
 					}
 				}
 				$where .= ')';
-				$this->data2['candidate'] = $this->Candidate_model->list_filter($join,$where,0,100,$order ); 
+				$this->data2['candidate'] = $this->Candidate_model->list_filter($join,$where,0,100,$order );
 			}else{
 				$this->data2['candidate'] = '';
 				$id = '-1';
 			}
-			
+
 		}else{
 			$where 		= $this->session->userdata('filter');
 			$join 		= '';
 	        $join 		= $this->session->userdata('join');
-	        $this->data2['candidate'] = $this->Candidate_model->list_filter($join,$where,0,100,$order); 
+	        $this->data2['candidate'] = $this->Candidate_model->list_filter($join,$where,0,100,$order);
 		}
-		
+
 		$this->data1['campaignid'] 	= $this->data2['campaignid'] 	= $campaignid;
 		$this->data1['roundid'] 	= $this->data2['roundid'] 		= $roundid;
         $this->data1['id'] 			= $this->data2['id_active'] 	= $id;
-        
+
         $match 						= array('campaignid' => $campaignid, 'roundid' => $roundid);
 		$this->data2['recflow'] 	=	($this->Campaign_model->select("*",'recflow',$match,''))[0];
 
@@ -458,11 +479,11 @@ class Campaign extends CI_Controller {
 		$this->data2['category'] = $this->Campaign_model->select("category,code,description",'codedictionary',array('status' => 'W'),'');
 
 		$this->data1['nav'] 		= $this->load->view('admin/campaign/nav_profile',$this->data2,true);
-		
+
 		$iframe_data['temp'] 		= $this->load->view('admin/campaign/profile_candidate',$this->data1,true);
 		$this->load->view('admin/home/master-iframe',$iframe_data);
 	}
-	
+
 	public function hosochitiet($id = '',$campaignid='',$roundid='', $tabActive='1')
 	{
 		$this->data2['campaignid'] 		= $campaignid;
@@ -470,7 +491,7 @@ class Campaign extends CI_Controller {
 		$match 							= array('campaignid' => $campaignid, 'roundid' => $roundid);
 		$this->data2['campaignname'] 	=	($this->Campaign_model->select("position",'reccampaign',array('campaignid' => $campaignid,),''))[0]['position'];
 		$this->data2['recflow'] 		=	($this->Campaign_model->select("*",'recflow',$match,''))[0];
-		
+
 
 		if ($id != '-1') {
 			$sql                = "SELECT email,profilesrc FROM candidate WHERE candidateid = $id";
@@ -488,14 +509,14 @@ class Campaign extends CI_Controller {
 	        $history_profile1 	= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename',array('tb.candidateid'=>$id, 'tb.campaignid' => 0),'','profilehistory tb',$join,'',$orderby,'','');
 	        $history_profile2 	= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','profilehistory tb',$join,'',$orderby,'','');
 
-	        
+
 
 	        //history assessment
 	        $join[2] 			= array('table'=> 'operator c','match' =>'tb.updatedby = c.operatorid');
 	        $join[3] 			= array('table'=> 'asmtheader d','match' =>'tb.asmttemp = d.asmttemp');
 	        $orderby1 			= array('colname'=>'tb.lastupdate','typesort'=>'desc');
 	        $history_profile3 	= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate, d.asmtname, d.shuffleqty, d.targetscore',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid,'sysform !=' => 'N'),'','assessment tb',$join,'',$orderby1,'','');
-	        for ($j=0; $j < count($history_profile3) ; $j++) { 
+	        for ($j=0; $j < count($history_profile3) ; $j++) {
 	        	$asmttemp = $history_profile3[$j]['asmttemp'];
 	        	$asmtid = $history_profile3[$j]['asmtid'];
 	        	$sql = "SELECT COUNT(DISTINCT section) as count_section, count(questionid) as count_question FROM asmtquestion WHERE asmttemp = '$asmttemp'";
@@ -522,13 +543,41 @@ class Campaign extends CI_Controller {
 	        $join[3] 			= array('table'=> 'recflow','match' =>'tb.roundid = recflow.roundid');
 	        $history_profile4 	= $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate,recflow.roundname',array('tb.candidateid'=>$id,'tb.campaignid' => $campaignid),'','interview tb',$join,'',$orderby1,'','');
 	        $orderby1 			= array('colname'=>'a.createddate','typesort'=>'desc');
-	        for ($i=0; $i < count($history_profile4); $i++) { 
-	        	$join1[0] 		= array('table'=> 'operator b','match' =>'a.interviewer = b.operatorid');
-	        	$join1[1] 		= array('table'=> 'document c','match' =>"a.interviewer = c.referencekey AND c.tablename = 'operator' ");
+	        for ($i=0; $i < count($history_profile4); $i++) {
+	        	$join1[0] 		= array('table'=> "codedictionary b","match" =>"CAST(a.interviewer as nvarchar) = b.code AND b.category = 'ERP' ");
+	        	$join1[1] 		= array('table'=> 'document c','match' =>"a.interviewer = CAST(c.referencekey as bigInt) AND c.tablename = 'operator' ");
 	        	$join1[2] 		= array('table'=> 'assessment d','match' =>'a.inv_asmtid = d.asmtid');
 	        	$join1[3] 		= array('table'=> 'asmtanswer e','match' =>'a.inv_asmtid = e.asmtid');
-	        	$history_profile4[$i]['interviewer'] = $this->Data_model->select_row_option('a.interviewer, a.inv_asmtid, a.scr_asmtid, d.status, b.operatorname, c.filename, e.optionid, e.ansdatetime, e.ansdatetime2',array('a.interviewid'=>$history_profile4[$i]['interviewid']),'','interviewer a',$join1,'',$orderby1,'','');
+	        	$history_profile4[$i]['interviewer'] = $this->Data_model->select_row_option('a.interviewer, a.inv_asmtid, a.scr_asmtid, d.status, b.ref1 as operatorname, c.filename, e.optionid, e.ansdatetime, e.ansdatetime2',array('a.interviewid'=>$history_profile4[$i]['interviewid']),'','interviewer a',$join1,'',$orderby1,'','');
+
+                $sql = "SELECT
+                    b.name,
+                    b.email,
+                    b.imagelink,
+                    c.position,
+                    d.status as status_asmt,
+                    e.optionid, e.ansdatetime,
+                    e.ansdatetime2
+                FROM interview a
+                LEFT JOIN candidate b ON a.candidateid = b.candidateid
+                LEFT JOIN reccampaign c ON a.campaignid = c.campaignid
+                LEFT JOIN assessment d ON a.inv_asmtid = d.asmtid
+                LEFT JOIN asmtanswer e ON a.inv_asmtid = e.asmtid
+                WHERE a.interviewid = ".$history_profile4[$i]['interviewid'];
+
+
+                $result = $this->Campaign_model->select_sql($sql);
+                $history_profile4[$i]['interview_his'] = $result[0];
+
+                // $sql1= "SELECT * FROM asmtanswer WHERE asmtid = 690";
+                // $result = $this->Campaign_model->select_sql($sql1);
+                // $history_profile4[$i]['asmtanswer'] = $result[0];
 	        }
+
+            // echo "<pre>";
+            // print_r($history_profile4);
+            // echo "</pre>";
+            // exit;
 	        // history offer
 	        $join[3] 			= array('table'=> 'assessment d','match' =>'tb.off_asmtid = d.asmtid');
 	        $join[4] 			= array('table'=> 'asmtanswer e','match' =>'tb.off_asmtid = e.asmtid');
@@ -553,7 +602,7 @@ class Campaign extends CI_Controller {
 	            return ($a['createddate'] < $b['createddate']) ? 1 : -1;
 	        }
 	        uasort($this->data2['history'], 'cmp');
-	       
+
 	       //   echo "<pre>";
         	// print_r($history_profile3);
         	// echo "</pre>";exit;
@@ -608,7 +657,7 @@ class Campaign extends CI_Controller {
 	        $roww = $this->Candidate_model->query_sql("select COUNT(DISTINCT campaignid) as slchiendich from profilehistory where candidateid = '".$id."'");
         	$this->data2['count_campaign'] = $roww[0]['slchiendich'];
 			//noibo
-	        
+
             $this->data2['canaddress_noibo']    = $this->Candidate_model->selectTableByIds('canaddress',$id_mergewith);
             $this->data2['family_noibo']        = $this->Candidate_model->selectTableByIds('cansocial',$id_mergewith);
             $this->data2['experience_noibo']    = $this->Candidate_model->selectTableByIds('canexperience',$id_mergewith);
@@ -642,7 +691,7 @@ class Campaign extends CI_Controller {
 	            $this->data2['tags_con'][$key]          = $this->Candidate_model->join_tag($id_con);
 	            $this->data2['tagstrandom_con'][$key]   = $this->Candidate_model->join_tag_random($id_con);
 	            $this->data2['vt_con'][$key]            = $vt1['position'].' - '.$vt1['company'];
-	            
+
 	        }
 	        // var_dump($this->data2['canaddress_con']);exit;
 		}else{
@@ -658,21 +707,38 @@ class Campaign extends CI_Controller {
 	}
 
 
-	public function new_campaign()
+	public function new_campaign($campaignid = '')
 	{
-		$this->_data['script'] = $this->load->view('admin/script/script_campaign', NULL, TRUE); 
-		$this->_data['temp'] 	= $this->load->view('admin/campaign/new_campaign_1',null,true);
+        if ($campaignid != '') {
+            $sql = "SELECT a.* from reccampaign a WHere a.campaignid = $campaignid";
+            $result = $this->M_data->select_sql($sql);
+            $data['campaign'] = isset($result[0])? $result[0] : '';
+        }
+        $data['campaignid'] = $campaignid;
+		$this->_data['script'] = $this->load->view('admin/script/script_campaign', NULL, TRUE);
+		$this->_data['temp'] 	= $this->load->view('admin/campaign/new_campaign_1',$data,true);
 		$this->load->view('admin/home/master',$this->_data);
 	}
 	public function new_campaign_2()
 	{
 		$frm = $this->input->post();
-		$frm['status'] 				= "C";
+
 		$frm['expdate'] 			= date('Y-m-d H:i:s',strtotime(str_replace('/', '-', $frm['expdate'])));
 		$frm['managecampaign'] 		= ','.$this->session->userdata('user_admin')['operatorid'].',';
 		$frm['createdby'] 			= $this->session->userdata('user_admin')['operatorid'];
 		$frm['updatedby'] 			= $this->session->userdata('user_admin')['operatorid'];
-		$m_data['id'] 				= $this->Campaign_model->insert('reccampaign', $frm);
+        if ($frm['campaignid'] == '') {
+            $frm['status']              = "C";
+            unset($frm['campaignid']);
+            $m_data['id']               = $this->Campaign_model->insert('reccampaign', $frm);
+        }else{
+            $match                      = array('campaignid' => $frm['campaignid']);
+            $m_data['id']               = $frm['campaignid'];
+            unset($frm['campaignid']);
+            $frm['status']              = "D";
+            $this->Campaign_model->update('reccampaign',$match, $frm);
+        }
+
 		$m_data['hocvan'] 			= $this->Campaign_model->select("certificate",'canknowledge',array('hidden' => 1),'certificate');
         $m_data['ngoaingu'] 		= $this->Campaign_model->select("language",'canlanguage',array('hidden' => 1),'language');
         $m_data['tinhoc'] 			= $this->Campaign_model->select("software",'cansoftware',array('hidden' => 1),'software');
@@ -680,7 +746,7 @@ class Campaign extends CI_Controller {
         $m_data['tag']                 = $this->Candidate_model->select_sugg_tag('tagprofile.title, tagprofile.tagid',array('tagtransaction.tablename' => 'candidate' , 'tagtransaction.categoryid' => 'position'));
         $m_data['tagrandom']           = $this->Candidate_model->select_sugg_tag('tagprofile.title, tagprofile.tagid',array('tagtransaction.tablename' => 'candidate' , 'tagtransaction.categoryid' => 'random'));
 
-		$this->_data['script'] 		= $this->load->view('admin/script/script_campaign', NULL, TRUE); 
+		$this->_data['script'] 		= $this->load->view('admin/script/script_campaign', NULL, TRUE);
 		$this->_data['temp'] 		= $this->load->view('admin/campaign/new_campaign_2',$m_data,true);
 		$this->load->view('admin/home/master',$this->_data);
 	}
@@ -702,7 +768,7 @@ class Campaign extends CI_Controller {
 		$m_data['mailtemplate'] 	= $this->Campaign_model->select("mailprofileid,profilename",'mailprofile',array('profiletype' => '0','status' => 'W'),'');
 		$m_data['asmt_tn'] 			= $this->Campaign_model->select("asmttemp,asmtname",'asmtheader',array('asmtstatus' => 'W','asmttype' => '2'),'');
 		$m_data['asmt_pv'] 			= $this->Campaign_model->select("asmttemp,asmtname",'asmtheader',array('asmtstatus' => 'W','asmttype' => '1'),'');
-		$this->_data['script'] 		= $this->load->view('admin/script/script_campaign', NULL, TRUE); 
+		$this->_data['script'] 		= $this->load->view('admin/script/script_campaign', NULL, TRUE);
 		$this->_data['temp'] 		= $this->load->view('admin/campaign/new_campaign_3',$m_data,true);
 		$this->load->view('admin/home/master',$this->_data);
 	}
@@ -712,7 +778,7 @@ class Campaign extends CI_Controller {
 		$frm = $this->input->post();
 		$data['campaignid'] = $frm['campaignid'];
 		unset($frm['campaignid']);
-		
+        // var_dump($frm);exit;
 		foreach ($frm as $row) {
 			$data['transferemail'] 	= $data['discardemail'] = 'N';
 			$data['transfmailtemp'] 	= $data['discmailtemp'] = $data['assessment'] = $data['asmtmailtemp'] = $data['letteroffermailtemp'] = $data['scorecard']  = $data['interviewmailtemp'] = $data['invitemailtemp'] = 0;
@@ -743,7 +809,7 @@ class Campaign extends CI_Controller {
 						$data['invitemailtemp'] 		= $row[11];
 					}
 				}
-			} 
+			}
 			else if (isset($row[5]) && $row[5] == 'on') {
 				$data['transferemail'] 		= 'Y';
 				$data['transfmailtemp'] 	= $row[6];
@@ -792,8 +858,13 @@ class Campaign extends CI_Controller {
 						$data['invitemailtemp'] 		= $row[9];
 					}
 				}
-			
+
 			}
+            // if ($data['sorting'] == 5) {
+            //     var_dump($data);
+            //     exit;
+            // }
+
 			$this->Data_model->insert('recflow',$data);
 		}
 		echo json_encode(1);
@@ -803,7 +874,7 @@ class Campaign extends CI_Controller {
 		$data['campaignid'] 		= $campaignid;
 		$match 						= array('campaignid' => $campaignid, );
 		$data['campaigns'] 			=	$this->Data_model->selectTable('reccampaign',$match);
-		$this->_data['script'] 		= $this->load->view('admin/script/script_campaign', NULL, TRUE); 
+		$this->_data['script'] 		= $this->load->view('admin/script/script_campaign', NULL, TRUE);
 		$this->_data['temp'] 		= $this->load->view('admin/campaign/new_campaign_4',$data,true);
 		$this->load->view('admin/home/master',$this->_data);
 	}
@@ -812,7 +883,7 @@ class Campaign extends CI_Controller {
 		$frm 			= $this->input->post();
 		$frm['status'] 	= $data['status'] = "W";
 		$frm['expdate'] = date('Y-m-d H:i:s',strtotime(str_replace('/', '-', $frm['expdate'])));
-		
+
 		$this->Data_model->update('reccampaign',array('campaignid'=>$frm['campaignid']),$data);
 		$this->Data_model->insert('recartical',$frm);
 		redirect(base_url('admin/campaign/main'));
@@ -847,20 +918,20 @@ class Campaign extends CI_Controller {
         for($i = 0 ; $i < count($data1); $i++)
 		{
 			$data1[$i]['dateofbirth2'] = getAge($data1[$i]['dateofbirth']);
-			$data1[$i]['kinhnghiem'] = ""; 
-			if($data1[$i]['yearexperirence'] != null){    
+			$data1[$i]['kinhnghiem'] = "";
+			if($data1[$i]['yearexperirence'] != null){
                                 $data1[$i]['kinhnghiem'] = ($data1[$i]['yearexperirence'] == 0)? "kinh nghiệm dưới 1 năm, " : $data1[$i]['yearexperirence']." năm kinh nghiệm, ";
                             }
             $data1[$i]['thunhap'] =  ($data1[$i]['desirebenefit'] == 0)? "" : number_format($data1[$i]['desirebenefit'])." VND, ";
-              
+
 		}
 		echo json_encode($data1);
     }
     function filterRecruit($check,$campaignid,$roundid)
     {
-        
+
         $where = "AND candidate.candidateid NOT IN (SELECT candidateid from profilehistory where actiontype = 'Recruite') ";
-        
+
         $this->session->set_userdata('filterRecruit', $where);
         $this->session->set_userdata('checkRecruit', $check);
         $config['total_rows']           = $this->Candidate_model->count_filter('',$where);
@@ -879,12 +950,12 @@ class Campaign extends CI_Controller {
         for($i = 0 ; $i < count($data1); $i++)
         {
             $data1[$i]['dateofbirth2'] = getAge($data1[$i]['dateofbirth']);
-            $data1[$i]['kinhnghiem'] = ""; 
-            if($data1[$i]['yearexperirence'] != null){    
+            $data1[$i]['kinhnghiem'] = "";
+            if($data1[$i]['yearexperirence'] != null){
                                 $data1[$i]['kinhnghiem'] = ($data1[$i]['yearexperirence'] == 0)? "kinh nghiệm dưới 1 năm, " : $data1[$i]['yearexperirence']." năm kinh nghiệm, ";
                             }
             $data1[$i]['thunhap'] =  ($data1[$i]['desirebenefit'] == 0)? "" : number_format($data1[$i]['desirebenefit'])." VND, ";
-              
+
         }
         $data1['total_rows']        = $config['total_rows'];
         $data1['phantrang']         =  '<div id="jquery_link" align="center" style="height:50px">'.$this->pagination->create_links().'</div>';
@@ -909,24 +980,24 @@ class Campaign extends CI_Controller {
     	}
     	if(($frm['agefrom'] != '') || ($frm['ageto'] != ''))
     	{
-    		if($frm['agefrom'] != ''){ 
+    		if($frm['agefrom'] != ''){
     			$tru = '-'.$frm['agefrom'].' years';
     			$ngay = date('Y-m-d', strtotime($tru));
-    		    $where[] = "candidate.dateofbirth <= '".$ngay."'";  
+    		    $where[] = "candidate.dateofbirth <= '".$ngay."'";
     		}
-    		if($frm['ageto'] != ''){ 
+    		if($frm['ageto'] != ''){
     			$tru = '-'.$frm['ageto'].' years';
     			$ngay = date('Y-m-d', strtotime($tru));
-                $where[] = "candidate.dateofbirth >= '".$ngay."'";  
+                $where[] = "candidate.dateofbirth >= '".$ngay."'";
     		}
 
     	}
     	if(($frm['heightfrom'] != '') || ($frm['heightto'] != ''))
     	{
-    		if($frm['heightfrom'] != ''){ 
+    		if($frm['heightfrom'] != ''){
                 $where[] = "candidate.height >= '".$frm['heightfrom']."'";
     		}
-    		if($frm['heightto'] != ''){ 
+    		if($frm['heightto'] != ''){
                 $where[] = "candidate.height <= '".$frm['heightto']."'";
     		}
 
@@ -934,19 +1005,19 @@ class Campaign extends CI_Controller {
     	if(($frm['weightfrom'] != '') || ($frm['weightto'] != ''))
     	{
     		if($frm['weightfrom'] != ''){
-            $where[] = "candidate.weight >= '".$frm['weightfrom']."'"; 
+            $where[] = "candidate.weight >= '".$frm['weightfrom']."'";
     		}
-    		if($frm['weightto'] != ''){ 
-                $where[] = "candidate.weight <= '".$frm['weightto']."'"; 
+    		if($frm['weightto'] != ''){
+                $where[] = "candidate.weight <= '".$frm['weightto']."'";
     		}
     	}
     	if($frm['ethnic'] != '')
     	{
-            $where[] = "candidate.ethnic = '".$frm['ethnic']."'"; 
+            $where[] = "candidate.ethnic = '".$frm['ethnic']."'";
     	}
     	if($frm['nationality'] != '')
     	{
-            $where[] = "candidate.nationality = '".$frm['nationality']."'"; 
+            $where[] = "candidate.nationality = '".$frm['nationality']."'";
     	}
         if(($frm['cityori'] != '')||($frm['citycurr'] != ''))
         {
@@ -966,19 +1037,19 @@ class Campaign extends CI_Controller {
     	}
     	if(($frm['currbenefitfrom'] != '') || ($frm['currbenefitto'] != ''))
     	{
-    		if($frm['currbenefitfrom'] != ''){ 
+    		if($frm['currbenefitfrom'] != ''){
                 $where[] = "candidate.currentbenefit >='".$this->toInt($frm['currbenefitfrom'])."'";
     		}
-    		if($frm['currbenefitto'] != ''){ 
+    		if($frm['currbenefitto'] != ''){
                 $where[] = "candidate.currentbenefit <='".$this->toInt($frm['currbenefitto'])."'";
     		}
     	}
     	if(($frm['desbenefitfrom'] != '') || ($frm['desbenefitto'] != ''))
     	{
-    		if($frm['desbenefitfrom'] != ''){ 
+    		if($frm['desbenefitfrom'] != ''){
                 $where[] = "candidate.desirebenefit >='".$this->toInt($frm['desbenefitfrom'])."'";
     		}
-    		if($frm['desbenefitto'] != ''){ 
+    		if($frm['desbenefitto'] != ''){
                 $where[] = "candidate.desirebenefit <='".$this->toInt($frm['desbenefitto'])."'";
     		}
     	}
@@ -1013,7 +1084,7 @@ class Campaign extends CI_Controller {
                     if($i != count($arr_hv) -2)
                     {
                         $st_hv .= " OR";
-                    }  
+                    }
                 }
                 $where[] = $st_hv.")";
                 $join[] = 'LEFT JOIN canknowledge ON candidate.candidateid = canknowledge.candidateid';
@@ -1032,7 +1103,7 @@ class Campaign extends CI_Controller {
                     if($i != count($arr_nn) -2)
                     {
                         $st_nn .= " OR";
-                    }  
+                    }
                 }
                 $where[] = $st_nn.")";
                 $join[] = 'LEFT JOIN canlanguage ON candidate.candidateid = canlanguage.candidateid';
@@ -1053,7 +1124,7 @@ class Campaign extends CI_Controller {
                     if($i != count($arr_th) -2)
                     {
                         $st_th .= " OR";
-                    }  
+                    }
                 }
                 $where[] = $st_th.")";
                 $join[] = 'LEFT JOIN cansoftware ON candidate.candidateid = cansoftware.candidateid';
@@ -1068,7 +1139,7 @@ class Campaign extends CI_Controller {
                 if($i != count($arr) -2)
                 {
                     $st .= " OR";
-                }  
+                }
             }
             $where[] = $st.")";
         }
@@ -1078,10 +1149,10 @@ class Campaign extends CI_Controller {
         // }
         if(($frm['talentfrom'] != '') || ($frm['talentto'] != ''))
         {
-            if($frm['talentfrom'] != ''){ 
+            if($frm['talentfrom'] != ''){
                 $where[] = "candidate.istalent >= '".$frm['talentfrom']."'";
             }
-            if($frm['talentto'] != ''){ 
+            if($frm['talentto'] != ''){
                 $where[] = "candidate.istalent <= '".$frm['talentto']."'";
             }
 
@@ -1118,22 +1189,22 @@ class Campaign extends CI_Controller {
         $this->session->set_userdata('frm', $frm);
         $order        = "candidate.lastupdate desc";
         $this->session->set_userdata('order', $order);
-        
-        
-        $data1 = $this->Candidate_model->list_filter($jointable,$condition);	
+
+
+        $data1 = $this->Candidate_model->list_filter($jointable,$condition);
 		for($i = 0 ; $i < count($data1); $i++)
 		{
 			$data1[$i]['dateofbirth2'] = getAge($data1[$i]['dateofbirth']);
-			$data1[$i]['kinhnghiem'] = ""; 
-			if($data1[$i]['yearexperirence'] != null){    
+			$data1[$i]['kinhnghiem'] = "";
+			if($data1[$i]['yearexperirence'] != null){
                                 $data1[$i]['kinhnghiem'] = ($data1[$i]['yearexperirence'] == 0)? "kinh nghiệm dưới 1 năm, " : $data1[$i]['yearexperirence']." năm kinh nghiệm, ";
                             }
             $data1[$i]['thunhap'] =  ($data1[$i]['desirebenefit'] == 0)? "" : number_format($data1[$i]['desirebenefit'])." VND, ";
-              
+
 		}
 		echo json_encode($data1);
     }
-    
+
      function toInt($str)
     {
         return (int)preg_replace("/\..+$/i", "", preg_replace("/[^0-9\.]/i", "", $str));
@@ -1171,8 +1242,8 @@ class Campaign extends CI_Controller {
 
            }
         }
-        
-        echo json_encode($campaignid);       
+
+        echo json_encode($campaignid);
     }
 
     function saveManager()
@@ -1219,7 +1290,7 @@ class Campaign extends CI_Controller {
     		$roundname_old	= $roundname;
     	}
     	if (isset($isshare)) {
-            $data["isshare"] = $isshare; 
+            $data["isshare"] = $isshare;
         }
         foreach ($candidateid as $key ) {
             $data['candidateid'] 	= $key;
@@ -1272,8 +1343,8 @@ class Campaign extends CI_Controller {
         		if($frm['preattach'] != '' && $frm['preattach'] != 'false'){
         			$fileattach = array();
         			$temp = json_decode($frm['preattach'],true);
-        			for ($f=0; $f < count($temp); $f++) { 
-        				array_push($fileattach, base_url().'public/document/'.$temp[$f]); 
+        			for ($f=0; $f < count($temp); $f++) {
+        				array_push($fileattach, base_url().'public/document/'.$temp[$f]);
         			}
         		}
         	}
@@ -1315,10 +1386,17 @@ class Campaign extends CI_Controller {
 
     public function selectRound()
     {
-    	$campaignid 	= $this->input->post('campaignid');
+        $campaignid     = $this->input->post('campaignid');
+    	$check 	        = $this->input->post('check');
+        // var_dump($check);
+        $candidateid    = implode(',', $check);
     	$match 			= array('campaignid' => $campaignid, );
-		$round			=	$this->Campaign_model->select('roundid, roundname','recflow',$match,'');
-		echo json_encode($round);
+		$data['round']			=	$this->Campaign_model->select('roundid, roundname','recflow',$match,'');
+
+        $sql = "SELECT candidateid,name,email,imagelink FROM candidate  WHERE candidateid IN ($candidateid)";
+        $data['candidate']         = $this->Campaign_model->select_sql($sql);
+        // var_dump($result);exit;
+		echo json_encode($data);
     }
 
     public function recruite()
@@ -1340,7 +1418,7 @@ class Campaign extends CI_Controller {
 
 
     //tool
-    
+
 
     public function pageAssessment($asmtid, $check = '1')
 	{
@@ -1354,7 +1432,7 @@ class Campaign extends CI_Controller {
 		$data['check'] = $check;
 		$this->_data['temp'] = $this->load->view('admin/multiplechoice/pageAssessment',$data,true);
 
-		$this->load->view('admin/home/master-iframe',$this->_data);	
+		$this->load->view('admin/home/master-iframe',$this->_data);
 	}
 
 
@@ -1365,7 +1443,7 @@ class Campaign extends CI_Controller {
     	$campaignid 	= $frm['campaignid'];
     	$roundid 		= $frm['roundid'];
     	if (isset($frm['private'])) {
-    		$data['private'] = $private; 
+    		$data['private'] = $private;
     		unset($frm['private']);
     	}
     	unset($frm['campaignid']);
@@ -1382,8 +1460,8 @@ class Campaign extends CI_Controller {
     		if($frm['preattach'] != '' && $frm['preattach'] != 'false'){
     			$fileattach = array();
     			$temp = json_decode($frm['preattach'],true);
-    			for ($f=0; $f < count($temp); $f++) { 
-    				array_push($fileattach, base_url().'public/document/'.$temp[$f]); 
+    			for ($f=0; $f < count($temp); $f++) {
+    				array_push($fileattach, base_url().'public/document/'.$temp[$f]);
     			}
     		}
     	}
@@ -1413,7 +1491,7 @@ class Campaign extends CI_Controller {
 	            $notes[$i] = $key[3];
 	            $asmtname[$i] 			= ($this->Campaign_model->select("asmtname",'asmtheader',array('asmttemp' => $key[1]),''))[0]['asmtname'];
         		$i++;
-        	}            
+        	}
         }
         //mail
         if($frm['presender'] == 'usersession'){
@@ -1491,7 +1569,7 @@ class Campaign extends CI_Controller {
     	$frm = $this->input->post();
     	$mail = array();
     	if (isset($frm['isshare'])) {
-    		$mail['isshare'] = $frm['isshare']; 
+    		$mail['isshare'] = $frm['isshare'];
     	}
     	$campaignid 	= $frm['campaignid'];
     	$roundid 		= $frm['roundid'];
@@ -1535,11 +1613,12 @@ class Campaign extends CI_Controller {
     		if($frm['preattach'] != '' && $frm['preattach'] != 'false'){
     			$fileattach = array();
     			$temp = json_decode($frm['preattach'],true);
-    			for ($f=0; $f < count($temp); $f++) { 
-    				array_push($fileattach, base_url().'public/document/'.$temp[$f]); 
+    			for ($f=0; $f < count($temp); $f++) {
+    				array_push($fileattach, $_SERVER["DOCUMENT_ROOT"].'\public\document\\'.$temp[$f]);
     			}
     		}
     	}
+        // var_dump($fileattach);exit;
     	$mail["attachment"] = $fileattach;
     	$candidateid = explode(',',$frm['candidateid']);
     	$j= 0;
@@ -1577,7 +1656,7 @@ class Campaign extends CI_Controller {
 	{
 		$match 						= array('a.campaignid'=>$campaignid);
 		$data['campaign'] 			= $this->Data_model->select_row_option('a.*,',$match,'','reccampaign a','','','','','')[0];
-		$this->data['script'] 		= $this->load->view('admin/script/script_campaign', NULL, TRUE); 
+		$this->data['script'] 		= $this->load->view('admin/script/script_campaign', NULL, TRUE);
 		$this->data['temp'] 		= $this->load->view('admin/campaign/campaign_info_1',$data,true);
 		$this->load->view('admin/home/master-iframe',$this->data);
 	}
@@ -1595,7 +1674,7 @@ class Campaign extends CI_Controller {
         	$m_data['filterid'] 	= $result[0]['filterid'];
         	$m_data['detail'] 		= $this->Data_model->selectTable('filterdetail',array('filterid'=>$m_data['filterid']));
         }
-		$this->data['script'] 		= $this->load->view('admin/script/script_campaign', $m_data, TRUE); 
+		$this->data['script'] 		= $this->load->view('admin/script/script_campaign', $m_data, TRUE);
 		$this->data['temp'] 		= $this->load->view('admin/campaign/campaign_info_2',null,true);
 		$this->load->view('admin/home/master-iframe',$this->data);
 	}
@@ -1609,9 +1688,9 @@ class Campaign extends CI_Controller {
 		}else{
 			$m_data['manager'] 		= '';
 		}
-		
+
 		$round  		 			= $this->Campaign_model->select("*",'recflow',array('campaignid' => $campaignid),'');
-		for ($i=0; $i < count($round); $i++) { 
+		for ($i=0; $i < count($round); $i++) {
 			$mana 				= trim($round[$i]['manageround'],',');
 			$mana 				= explode(',', $mana);
 			if ($mana[0] == '') {
@@ -1632,16 +1711,16 @@ class Campaign extends CI_Controller {
 		$m_data['mailtemplate'] 	= $this->Campaign_model->select("mailprofileid,profilename",'mailprofile',array('profiletype' => '0','status' =>'W'),'');
 		$m_data['asmt_tn'] 			= $this->Campaign_model->select("asmttemp,asmtname",'asmtheader',array('asmtstatus' => 'W','asmttype' => '2'),'');
 		$m_data['asmt_pv'] 			= $this->Campaign_model->select("asmttemp,asmtname",'asmtheader',array('asmtstatus' => 'W','asmttype' => '1'),'');
-		$this->data['script'] 		= $this->load->view('admin/script/script_campaign', $m_data, TRUE); 
+		$this->data['script'] 		= $this->load->view('admin/script/script_campaign', $m_data, TRUE);
 		$this->data['temp'] 		= $this->load->view('admin/campaign/campaign_info_3',null,true);
 		$this->load->view('admin/home/master-iframe',$this->data);
 	}
 	public function campaign_info_4($campaignid)
-	{	
+	{
 		$data['campaignid'] 		= $campaignid;
 		$match 						= array('a.campaignid'=>$campaignid);
 		$data['campaign'] 			= $this->Data_model->select_row_option('a.*,',$match,'','recartical a','','','','','')[0];
-		$this->data['script'] 		= $this->load->view('admin/script/script_campaign', NULL, TRUE); 
+		$this->data['script'] 		= $this->load->view('admin/script/script_campaign', NULL, TRUE);
 		$this->data['temp'] 		= $this->load->view('admin/campaign/campaign_info_4',$data,true);
 		$this->load->view('admin/home/master-iframe',$this->data);
 	}
@@ -1651,9 +1730,14 @@ class Campaign extends CI_Controller {
 		$frm 					= $this->input->post();
 		$match 					= array('campaignid' => $frm['campaignid']);
 		unset($frm['campaignid']);
+        $frm['expeffect']       = isset($frm['expeffect'])? $frm['expeffect'] : 'N';
 		$frm['expdate'] 		= date('Y-m-d H:i:s',strtotime(str_replace('/', '-', $frm['expdate'])));
 		$frm['lastupdate'] 		= date('Y-m-d H:i:s');
 		$this->Data_model->update('reccampaign',$match,$frm);
+
+        $data['expdate']        = $frm['expdate'];
+        $data['expeffect']      = $frm['expeffect'];
+        $this->Data_model->update('recartical',$match,$data);
 		echo json_encode(1);
 	}
 	function updateRound2()
@@ -1682,8 +1766,8 @@ class Campaign extends CI_Controller {
 
            }
         }
-        
-        echo json_encode($filterid);       
+
+        echo json_encode($filterid);
     }
 	public function updateRound4()
 	{
@@ -1691,7 +1775,7 @@ class Campaign extends CI_Controller {
 		$match 					= array('campaignid' => $frm['campaignid']);
 		unset($frm['campaignid']);
 		$frm['expdate'] 		= date('Y-m-d H:i:s',strtotime(str_replace('/', '-', $frm['expdate'])));
-		
+
 		$this->Data_model->update('recartical',$match,$frm);
 		echo json_encode(1);
 	}
@@ -1716,12 +1800,12 @@ class Campaign extends CI_Controller {
 				order by a.createddate DESC";
 			$data['campaigns_end'] = $this->M_data->select_sql($sql);
 
-			for ($i=0; $i < count($data['campaigns_end']); $i++) { 
+			for ($i=0; $i < count($data['campaigns_end']); $i++) {
 				$match = array('campaignid' => $data['campaigns_end'][$i]['campaignid'] );
 				$data['campaigns_end'][$i]['round'] =	$this->Campaign_model->select("roundid,sorting,roundname,roundtype",'recflow',$match,'');
 
 				$data['campaigns_end'][$i]['round'][0]['count_round'] = $this->Candidate_model->count_round_hs($from,$where,$data['campaigns_end'][$i]['campaignid'])[0]['count'];
-				for ($j=1; $j < count($data['campaigns_end'][$i]['round']); $j++) { 
+				for ($j=1; $j < count($data['campaigns_end'][$i]['round']); $j++) {
 					$data['campaigns_end'][$i]['round'][$j]['count_round'] = $this->total_round($data['campaigns_end'][$i]['campaignid'],$data['campaigns_end'][$i]['round'][$j]['roundid'],'Transfer');
 				}
 
@@ -1741,10 +1825,10 @@ class Campaign extends CI_Controller {
 					$sql = "SELECT b.roundid, b.sorting
 					from reccampaign a
 					LEFT OUTER JOIN recflow b ON a.campaignid = b.campaignid
-					WHere a.expdate < '$day' 
+					WHere a.expdate < '$day'
 					and b.campaignid = '$cmpid'
 					and (a.managecampaign like '%,$operatorid,%' or b.manageround like '%,$operatorid,%')
-					
+
 					";
 					$data['campaigns_end'][$i]['roundlist'] = $this->M_data->select_sql($sql);
 				}
@@ -1755,17 +1839,17 @@ class Campaign extends CI_Controller {
 				from reccampaign a
 				LEFT OUTER JOIN recflow b ON a.campaignid = b.campaignid
 				WHere a.expdate >= '$day' AND a.status = 'W'
-				and (a.managecampaign like '%,$operatorid,%' or a.showtype = 'O' or a.showtype='I' or b.manageround like '%,$operatorid,%') 
+				and (a.managecampaign like '%,$operatorid,%' or a.showtype = 'O' or a.showtype='I' or b.manageround like '%,$operatorid,%')
 				and lower(a.position) like lower(N'%$name%')
 				order by a.createddate DESC";
 			$data['campaigns_active'] = $this->M_data->select_sql($sql);
-			
-			for ($i=0; $i < count($data['campaigns_active']); $i++) { 
+
+			for ($i=0; $i < count($data['campaigns_active']); $i++) {
 				$match = array('campaignid' => $data['campaigns_active'][$i]['campaignid'] );
 				$data['campaigns_active'][$i]['round'] =	$this->Campaign_model->select("roundid,sorting,roundname,roundtype",'recflow',$match,'');
 
 				$data['campaigns_active'][$i]['round'][0]['count_round'] = $this->Candidate_model->count_round_hs($from,$where,$data['campaigns_active'][$i]['campaignid'])[0]['count'];
-				for ($j=1; $j < count($data['campaigns_active'][$i]['round']); $j++) { 
+				for ($j=1; $j < count($data['campaigns_active'][$i]['round']); $j++) {
 					$data['campaigns_active'][$i]['round'][$j]['count_round'] = $this->total_round($data['campaigns_active'][$i]['campaignid'],$data['campaigns_active'][$i]['round'][$j]['roundid'],'Transfer');
 				}
 
@@ -1786,16 +1870,19 @@ class Campaign extends CI_Controller {
 				$sql = "SELECT b.roundid, b.sorting
 					from reccampaign a
 					LEFT OUTER JOIN recflow b ON a.campaignid = b.campaignid
-					WHere a.expdate >= '$day' 
+					WHere a.expdate >= '$day'
 					and b.campaignid = '$cmpid'
 					and (a.managecampaign like '%,$operatorid,%' or b.manageround like '%,$operatorid,%')
-					
+
 					";
 				$data['campaigns_active'][$i]['roundlist'] = $this->M_data->select_sql($sql);
 			}
 			echo json_encode($data['campaigns_active']);
 		}
-		
+
 	}
+
+
+
 }
 ?>

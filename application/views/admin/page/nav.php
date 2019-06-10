@@ -5,7 +5,7 @@
         <li class="active"><a data-toggle="tab" href="#menu1" class="menu1-nav" >Tiêu chí lọc hồ sơ</a></li>
     </ul>
 </div>
-<div style="background-color: white;">   
+<div style="background-color: white;">
     <div class="tab-content">
         <div id="home" class="tab-pane fade ">
             <div class="search-div">
@@ -16,7 +16,7 @@
             <div class="clear-border dash-horizontal" ></div>
             <!-- <label class="label-edit">Chỉnh sửa</label> -->
             <div class="side-menu scroll-auto2" >
-                <nav class="navbar navbar-default white border0" role="navigation" >  
+                <nav class="navbar navbar-default white border0" role="navigation" >
                     <div class="side-menu-container">
                         <ul class="nav navbar-nav nav-check-save filter-load">
                           <?php foreach ($filter as $key) { ?>
@@ -28,9 +28,9 @@
                             </li>
                           <?php } ?>
                         </ul>
-                    </div>  
+                    </div>
                 </nav>
-            </div>    
+            </div>
         </div>
         <div id="menu1" class="tab-pane fade in active">
             <div class="search-div">
@@ -40,13 +40,13 @@
             <div class="dash-horizontal"></div>
 
             <div class="checkbox label-check">
-                <label><input type="checkbox" id="check_filter" onchange="filter(this.value)" checked="true">Chọn tất cả hồ sơ (<?php echo $total_candidate; ?>)</label> 
+                <label><input type="checkbox" id="check_filter" onchange="filter(this.value)" checked="true">Chọn tất cả hồ sơ (<?php echo $total_candidate; ?>)</label>
             </div>
             <div class="checkbox label-check">
-                <label><input type="checkbox" id="check_filter_2" onchange="filterRecruit(this.value)" >Hồ sơ đã tuyển dụng</label> 
+                <label><input type="checkbox" id="check_filter_2" onchange="filterRecruit(this.value)" >Hồ sơ đã tuyển dụng</label>
             </div>
             <div class="checkbox label-check">
-                <label><input type="checkbox" id="check_filter_3" onchange="filterNotRecruit(this.value)" >Hồ sơ chưa tuyển dụng</label> 
+                <label><input type="checkbox" id="check_filter_3" onchange="filterNotRecruit(this.value)" >Hồ sơ chưa tuyển dụng</label>
             </div>
             <div class="side-menu scroll-auto">
                 <nav class="navbar navbar-default white border0" role="navigation">
@@ -56,32 +56,39 @@
                               <a data-toggle="collapse" href="#dropdown-lvl1" class="nav-list-hs weight600 gray-nav">Tiêu chí quản lý
                                   <span class="fa fa-angle-right floatright"></span>
                               </a>
+                              <?php
+                                    if ($checknemu == NULL) {
+                                        $checknemu = ['gender' => '','placeofbirth' => '' , 'agefrom'=> '' , 'ageto' => '', 'heightto' => '', 'heightfrom'=> '',  'weightto' => '', 'weightfrom'=> '' , 'ethnic' => '', 'nationality' => '' , 'cityori' => '' , 'citycurr' => '' , 'district' => '' , 'currbenefitto' => '' , 'currbenefitfrom' => '' , 'desbenefitto' => '' , 'desbenefitfrom' => '' , 'experfrom' => '' , 'experto' => '', 'knowledge' => '' , 'language' => '' , 'software' => '' , 'profilesrc' => '', 'maritalstatus' => '' , 'talentfrom' => '' , 'talentto' => '' , 'updatefrom' => '' , 'updateto' => '' ,  'blocked' => '' , 'rateto' => '' , 'ratefrom' => '' , 'tag' => '' , 'tagrandom' => '' , 'sort' => ''];
+                                    }
+                              // var_dump($checknemu);
+                               ?>
                               <div id="dropdown-lvl1" class="panel-collapse collapse white <?php echo ($checknemu != NULL && $checknemu['rateto'] != '' || $checknemu['ratefrom'] != '' || $checknemu['talentto'] != '' || $checknemu['talentfrom'] != '' || $checknemu['blocked'] != '' || $checkTrung == '1' )? "in" : ""; ?>">
                                   <!-- <div class="checkbox div-label-check" >
-                                     <label><input type="checkbox" value="">Tất cả tiêu chí quản lý</label> 
+                                     <label><input type="checkbox" value="">Tất cả tiêu chí quản lý</label>
                                  </div> -->
                                  <div class="checkbox div-label-check width100" >
-                                     <label style="width: 50%"><input type="checkbox" <?php echo ($checknemu['rateto'] != '' || $checknemu['ratefrom'] != '')? "checked" : "";?> id="chk_diem" onchange="filter()" >Điểm hồ sơ</label> 
-                                     <input type="text" name="" class="div-input" placeholder="Đến" maxlength="3" id="diem_den" value="<?php echo ($checknemu['rateto'] != '')? $checknemu['rateto'] : "";?>" >
+                                     <label style="width: 50%"><input type="checkbox" <?php echo ($checknemu['rateto'] != '' || $checknemu['ratefrom'] != '')? "checked" : "";?> id="chk_diem" onchange="filter()" >Điểm hồ sơ</label>
+                                     <input type="text" name="" class="div-input" placeholder="Từ" maxlength="3" style="margin-right: 10px"  id="diem_tu" value="<?php echo ($checknemu['rateto'] != '')? $checknemu['rateto'] : "";?>" >
+                                     <input type="text" name="" class="div-input" placeholder="Đến" maxlength="3" id="diem_den" value="<?php echo ($checknemu['ratefrom'] != '')? $checknemu['ratefrom'] : "";?>" >
                                  </div>
                                  <div class="checkbox div-label-check" >
-                                     <label style="width: 50%"><input type="checkbox" value="" id="chk_tiemnang" onchange="filter()" <?php echo ($checknemu['talentto'] != '' || $checknemu['talentfrom'] != '')? "checked" : "";?> >Hồ sơ tiềm năng </label> 
+                                     <label style="width: 50%"><input type="checkbox" value="" id="chk_tiemnang" onchange="filter()" <?php echo ($checknemu['talentto'] != '' || $checknemu['talentfrom'] != '')? "checked" : "";?> >Hồ sơ tiềm năng </label>
                                      <input type="text" name="" class="div-input tiemnang" style="margin-right: 10px" maxlength="1" placeholder="Từ" id="tiemnang_tu" value="<?php echo ($checknemu['talentfrom'] != '')? $checknemu['talentfrom'] : "";?>" >
                                      <input type="text" name="" class="div-input tiemnang" placeholder="Đến" id="tiemnang_den" maxlength="1" value="<?php echo ($checknemu['talentto'] != '')? $checknemu['talentto'] : "";?>" >
                                  </div>
                                  <div class="checkbox div-label-check" >
-                                     <label><input type="checkbox" value="" id="chk_chan" onchange="filter()" <?php echo ($checknemu['blocked'] != '')? "checked" : "";?>>Hồ sơ bị chặn </label> 
+                                     <label><input type="checkbox" value="" id="chk_chan" onchange="filter()" <?php echo ($checknemu['blocked'] != '')? "checked" : "";?>>Hồ sơ bị chặn </label>
                                  </div>
                                  <div class="checkbox div-label-check" >
-                                     <label><input type="checkbox" value="on" id="chk_trung" onchange="filterTrung()"  <?php echo ($checkTrung == '1')? "checked" : "";?> >Hồ sơ bị trùng </label> 
+                                     <label><input type="checkbox" value="on" id="chk_trung" onchange="filterTrung()"  <?php echo ($checkTrung == '1')? "checked" : "";?> >Hồ sơ bị trùng </label>
                                  </div>
                                  <div class="checkbox div-label-check" >
-                                     <label style="width: 50%"><input type="checkbox" value="" id="chk_lastupdate" onchange="filter()" <?php echo ($checknemu['updateto'] != '' || $checknemu['updatefrom'] != '')? "checked" : "";?> >Ngày cập nhật </label> 
+                                     <label style="width: 50%"><input type="checkbox" value="" id="chk_lastupdate" onchange="filter()" <?php echo ($checknemu['updateto'] != '' || $checknemu['updatefrom'] != '')? "checked" : "";?> >Ngày cập nhật </label>
                                      <input type="text" name="" class="div-input tiemnang thoigian" style="margin-right: 10px" placeholder="Từ" id="update_tu" value="<?php echo ($checknemu['updatefrom'] != '')? date_format(date_create($checknemu['updatefrom']),"d-m-Y") : "";?>" >
                                      <input type="text" name="" class="div-input tiemnang thoigian" placeholder="Đến" id="update_den" value="<?php echo ($checknemu['updateto'] != '')? date_format(date_create($checknemu['updateto']),"d-m-Y") : "";?>" >
                                  </div>
                                  <!-- <div class="checkbox div-label-check" >
-                                     <label><input type="checkbox" value="">Hồ sơ có lịch sử tương tác (6)</label> 
+                                     <label><input type="checkbox" value="">Hồ sơ có lịch sử tương tác (6)</label>
                                  </div> -->
                               </div>
                           </li>
@@ -92,15 +99,15 @@
                               </a>
                               <div id="dropdown-lvl2" class="panel-collapse collapse white <?php echo ($checknemu['profilesrc'] != '')? "in" : ""; ?>">
                                   <!-- <div class="checkbox div-label-check" >
-                                     <label><input type="checkbox" value="">Chọn tất cả hồ sơ (10)</label> 
+                                     <label><input type="checkbox" value="">Chọn tất cả hồ sơ (10)</label>
                                  </div> -->
-                                 <?php  $arr = explode('/', $checknemu['profilesrc']); 
+                                 <?php  $arr = explode('/', $checknemu['profilesrc']);
                                       for($i = 0; $i < count($profilesrc); $i++) {
-                                   ?> 
+                                   ?>
                                  <div class="checkbox div-label-check" >
                                      <label><input type="checkbox" id="<?php echo 'src'.$i?>" onchange="filter()" value="<?php echo $profilesrc[$i]['profilesrc']?>"
                                       <?php
-                                      if($checknemu['profilesrc'] != '') 
+                                      if($checknemu['profilesrc'] != '')
                                         for($h = 0; $h < count($arr)-1; $h++)
                                         {
                                           if($profilesrc[$i]['profilesrc'] == $arr[$h])
@@ -111,7 +118,7 @@
                                           }
                                         }
                                       ?>
-                                      ><?php echo $profilesrc[$i]['profilesrc'].' ('.$profilesrc[$i]['sl'].')' ?></label> 
+                                      ><?php echo $profilesrc[$i]['profilesrc'].' ('.$profilesrc[$i]['sl'].')' ?></label>
                                  </div>
                                  <?php } ?>
                                  <input type="hidden" id="countprofile" value="<?php echo count($profilesrc) ?>">
@@ -125,14 +132,14 @@
                                   Vị trí <span class="fa fa-angle-right floatright"></span>
                               </a>
                               <div id="dropdown-lvl3" class="panel-collapse collapse white <?php echo ($checknemu['tag'] != '')? "in" : ""; ?>">
-                                   <?php 
-                                   for ($x=0; $x < count($tag); $x++) { 
+                                   <?php
+                                   for ($x=0; $x < count($tag); $x++) {
                                     ?>
                                     <div class="checkbox div-label-check" >
                                              <label><input type="checkbox" id="<?php echo 'tag'.$x?>" onchange="filter()" value="<?php echo $tag[$x]['tagid']?>"
                                                 <?php
 
-                                              if($checknemu['tag'] != '') 
+                                              if($checknemu['tag'] != '')
                                               {
                                                 $arrtag = explode('/', $checknemu['tag']);
                                                 for($h = 0; $h < count($arrtag)-1; $h++)
@@ -145,7 +152,7 @@
                                                 }
                                               }
                                               ?>
-                                              ><?php echo $tag[$x]['title']; ?></label> 
+                                              ><?php echo $tag[$x]['title']; ?></label>
                                          </div>
                                    <?php
                                    } ?>
@@ -159,13 +166,13 @@
                               </a>
                               <div id="dropdown-lvl4" class="panel-collapse collapse white <?php echo (($checknemu['currbenefitto'] != '') || ($checknemu['currbenefitfrom'] != '') || ($checknemu['desbenefitto'] != '') || ($checknemu['desbenefitfrom'] != ''))? "in" : ""; ?>">
                                   <div class="checkbox div-label-check width100 middle" >
-                                         <label style="width: 50%"><input type="checkbox" id="chk_thunhapht" <?php echo (($checknemu['currbenefitfrom'] != '') || ($checknemu['currbenefitto'] != ''))? "checked": ""; ?> onchange="filter()">Thu nhập hiện tại</label> 
+                                         <label style="width: 50%"><input type="checkbox" id="chk_thunhapht" <?php echo (($checknemu['currbenefitfrom'] != '') || ($checknemu['currbenefitto'] != ''))? "checked": ""; ?> onchange="filter()">Thu nhập hiện tại</label>
                                          <input type="text" name="" class="div-input so" style="margin-right: 10px; margin-left: 7px" placeholder="Từ" id="tn_httu" value="<?php echo ($checknemu['currbenefitfrom'] != '')? $checknemu['currbenefitfrom'] : ""; ?>" >
                                          <input type="text" name="" class="div-input so" placeholder="Đến" id="tn_htden" value="<?php echo ($checknemu['currbenefitto'] != '')? $checknemu['currbenefitto'] : ""; ?>" >
                                      </div>
                                      <div class="checkbox div-label-check width100 middle" >
                                          <label style="width: 50%"><input type="checkbox" id="chk_thunhapmm" onchange="filter()"
-                                          <?php echo (($checknemu['desbenefitto'] != '') || ($checknemu['desbenefitfrom'] != ''))? "checked": ""; ?> >Thu nhập mong muốn</label> 
+                                          <?php echo (($checknemu['desbenefitto'] != '') || ($checknemu['desbenefitfrom'] != ''))? "checked": ""; ?> >Thu nhập mong muốn</label>
                                          <input type="text" id="tn_mmtu" class="div-input so" style="margin-right: 10px; margin-left: 7px" placeholder="Từ" value="<?php echo ($checknemu['desbenefitfrom'] != '')? $checknemu['desbenefitfrom'] : ""; ?>" >
                                          <input type="text" id="tn_mmden" class="div-input so" placeholder="Đến" value="<?php echo ($checknemu['desbenefitto'] != '')? $checknemu['desbenefitto'] : ""; ?>" >
                                      </div>
@@ -178,12 +185,12 @@
                             </a>
                             <div id="dropdown-lvl5" class="panel-collapse collapse white <?php echo (($checknemu['experfrom'] != '') || ($checknemu['experto'] != ''))? "in" : "";?>">
                               <div class="checkbox div-label-check" >
-                                 <label><input type="checkbox" id="chk_chuacokm" onchange="kinhnghiem(this)" value="C" <?php echo ($checknemu['experfrom'] == 'C')? "checked" : "";?>>Chưa có kinh nghiệm</label> 
+                                 <label><input type="checkbox" id="chk_chuacokm" onchange="kinhnghiem(this)" value="C" <?php echo ($checknemu['experfrom'] == 'C')? "checked" : "";?>>Chưa có kinh nghiệm</label>
                               </div>
                               <div class="checkbox div-label-check width100 middle" >
                                  <label><input type="checkbox" id="chk_cokm" onchange="kinhnghiem(this)" value="D" <?php echo (($checknemu['experfrom'] != 'C' && $checknemu['experfrom'] != '') ||($checknemu['experto'] != ''))? "checked" : "";?>>Đã có kinh nghiệm</label>
                                  <input type="text" name="" class="div-input" style="margin-right: 10px; margin-left: 7px" placeholder="Từ" id="kinhnghiem_tu" maxlength="2" value="<?php echo ($checknemu['experfrom'] != '')? $checknemu['experfrom'] : ""; ?>" >
-                                  <input type="text" name="" class="div-input" placeholder="Đến" maxlength="2" id="kinhnghiem_den" value="<?php echo ($checknemu['experto'] != '')? $checknemu['experto'] : ""; ?>" > 
+                                  <input type="text" name="" class="div-input" placeholder="Đến" maxlength="2" id="kinhnghiem_den" value="<?php echo ($checknemu['experto'] != '')? $checknemu['experto'] : ""; ?>" >
                               </div>
                             </div>
                           </li>
@@ -193,15 +200,15 @@
                               </a>
                               <div id="dropdown-lvl6" class="panel-collapse collapse white <?php echo ($checknemu['knowledge'] != '')? "in" : ""; ?>">
                                   <div class="checkbox div-label-check" >
-                                       <label><input type="checkbox" id="chk_hs_co_tthv" onchange="hocvan(this)" value="1" <?php echo ($checknemu['knowledge'] == '1')? "checked" : ""; ?>>Hồ sơ có thông tin học vấn</label> 
+                                       <label><input type="checkbox" id="chk_hs_co_tthv" onchange="hocvan(this)" value="1" <?php echo ($checknemu['knowledge'] == '1')? "checked" : ""; ?>>Hồ sơ có thông tin học vấn</label>
                                    </div>
-                                   <?php 
-                                   for ($x=0; $x < count($hocvan); $x++) { 
+                                   <?php
+                                   for ($x=0; $x < count($hocvan); $x++) {
                                     ?>
                                     <div class="checkbox div-label-check" >
                                              <label><input type="checkbox" id="<?php echo 'hv'.$x?>" onchange="hocvan(this)" value="<?php echo $hocvan[$x]['certificate']?>"
                                                 <?php
-                                              if($checknemu['knowledge'] != '1' && $checknemu['knowledge'] != '') 
+                                              if($checknemu['knowledge'] != '1' && $checknemu['knowledge'] != '')
                                               {
                                                 $arrhocvan = explode('/', $checknemu['knowledge']);
                                                 for($h = 0; $h < count($arrhocvan)-1; $h++)
@@ -214,7 +221,7 @@
                                                 }
                                               }
                                               ?>
-                                              ><?php echo $hocvan[$x]['certificate']; ?></label> 
+                                              ><?php echo $hocvan[$x]['certificate']; ?></label>
                                          </div>
                                    <?php
                                    } ?>
@@ -227,14 +234,14 @@
                               </a>
                               <div id="dropdown-lvl7" class="panel-collapse collapse white <?php echo ($checknemu['language'] != '')? "in" : ""; ?>">
                                   <div class="checkbox div-label-check" style="padding-right: 10px;">
-                                       <label><input type="checkbox" id="chk_hs_co_ttnn" onchange="ngoaingu(this)" value="1" <?php echo ($checknemu['language'] == '1')? "checked" : ""; ?>>Hồ sơ có thông tin trình độ ngoại ngữ</label> 
+                                       <label><input type="checkbox" id="chk_hs_co_ttnn" onchange="ngoaingu(this)" value="1" <?php echo ($checknemu['language'] == '1')? "checked" : ""; ?>>Hồ sơ có thông tin trình độ ngoại ngữ</label>
                                    </div>
-                                   <?php for ($x=0; $x < count($ngoaingu); $x++) { 
+                                   <?php for ($x=0; $x < count($ngoaingu); $x++) {
                                     ?>
                                     <div class="checkbox div-label-check" >
                                              <label><input type="checkbox" id="<?php echo 'nn'.$x?>" onchange="ngoaingu(this)" value="<?php echo $ngoaingu[$x]['language']?>"
                                                <?php
-                                              if($checknemu['language'] != '1' && $checknemu['language'] != '') 
+                                              if($checknemu['language'] != '1' && $checknemu['language'] != '')
                                               {
                                                 $arrngoaingu = explode('/', $checknemu['language']);
                                                 for($h = 0; $h < count($arrngoaingu)-1; $h++)
@@ -247,7 +254,7 @@
                                                 }
                                               }
                                               ?>
-                                              ><?php echo $ngoaingu[$x]['language']; ?></label> 
+                                              ><?php echo $ngoaingu[$x]['language']; ?></label>
                                          </div>
                                    <?php
                                    } ?>
@@ -260,14 +267,14 @@
                               </a>
                               <div id="dropdown-lvl8" class="panel-collapse collapse white <?php echo ($checknemu['software'] != '')? "in" : ""; ?>">
                                   <div class="checkbox div-label-check" >
-                                       <label><input type="checkbox" id="chk_hs_co_ttth" onchange="tinhoc(this)" value="1" <?php echo ($checknemu['software'] == '1')? "checked" : ""; ?>>Hồ sơ có thông tin trình độ tin học</label> 
+                                       <label><input type="checkbox" id="chk_hs_co_ttth" onchange="tinhoc(this)" value="1" <?php echo ($checknemu['software'] == '1')? "checked" : ""; ?>>Hồ sơ có thông tin trình độ tin học</label>
                                    </div>
-                                   <?php for ($x=0; $x < count($tinhoc); $x++) { 
+                                   <?php for ($x=0; $x < count($tinhoc); $x++) {
                                     ?>
                                     <div class="checkbox div-label-check" >
                                              <label><input type="checkbox" id="<?php echo 'th'.$x?>" onchange="tinhoc(this)" value="<?php echo $tinhoc[$x]['software']?>"
                                               <?php
-                                              if($checknemu['software'] != '1' && $checknemu['software'] != '') 
+                                              if($checknemu['software'] != '1' && $checknemu['software'] != '')
                                               {
                                                 $arrtinhoc = explode('/', $checknemu['software']);
                                                 for($h = 0; $h < count($arrtinhoc)-1; $h++)
@@ -280,7 +287,7 @@
                                                 }
                                               }
                                               ?>
-                                              ><?php echo $tinhoc[$x]['software']; ?></label> 
+                                              ><?php echo $tinhoc[$x]['software']; ?></label>
                                          </div>
                                    <?php
                                    } ?>
@@ -295,28 +302,28 @@
                                <?php echo (($checknemu['gender'] != '')||($checknemu['placeofbirth'] != '')||($checknemu['agefrom'] != '')||($checknemu['ageto'] != '')||($checknemu['heightto'] != '')||($checknemu['heightfrom'] != '')||($checknemu['weightto'] != '')||($checknemu['weightfrom'] != '')||($checknemu['ethnic'] != '')||($checknemu['nationality'] != '')||($checknemu['cityori'] != '')||($checknemu['citycurr'] != '')||($checknemu['district'] != ''))? "in" : ""; ?>
                                ">
                                   <div class="checkbox div-label-check width100" >
-                                       <label style="width: 50%"><input type="checkbox" id="chk_tuoi" onchange="filter()" <?php echo(($checknemu['agefrom'] != '')||($checknemu['ageto'] != ''))? "checked" : "";?>>Tuổi</label> 
+                                       <label style="width: 50%"><input type="checkbox" id="chk_tuoi" onchange="filter()" <?php echo(($checknemu['agefrom'] != '')||($checknemu['ageto'] != ''))? "checked" : "";?>>Tuổi</label>
                                        <input type="text" name="" class="div-input" id="tuoi-tu" maxlength="2" style="margin-right: 10px" placeholder="Từ" value="<?php echo ($checknemu['agefrom'] != '')? $checknemu['agefrom'] : "";?>" >
                                        <input type="text" name="" class="div-input" id="tuoi-den" maxlength="2" placeholder="Đến" value="<?php echo ($checknemu['ageto'] != '')? $checknemu['ageto'] : "";?>" >
                                    </div>
                                    <div class="checkbox div-label-check" >
-                                     <label><input type="checkbox" value="M" id="chk_nam" onchange="gioitinh(this)" <?php echo ($checknemu['gender'] == 'M')? "checked": ""; ?>>Nam</label> 
+                                     <label><input type="checkbox" value="M" id="chk_nam" onchange="gioitinh(this)" <?php echo ($checknemu['gender'] == 'M')? "checked": ""; ?>>Nam</label>
                                  </div>
                                  <div class="checkbox div-label-check" >
-                                     <label><input type="checkbox" value="F" id="chk_nu" onchange="gioitinh(this)" <?php echo ($checknemu['gender'] == 'F')? "checked": ""; ?>>Nữ</label> 
+                                     <label><input type="checkbox" value="F" id="chk_nu" onchange="gioitinh(this)" <?php echo ($checknemu['gender'] == 'F')? "checked": ""; ?>>Nữ</label>
                                  </div>
                                     <div class="checkbox div-label-check width100" >
-                                       <label style="width: 50%"><input type="checkbox" id="chk_chieucao" onchange="filter()" <?php echo(($checknemu['heightfrom'] != '')||($checknemu['heightto'] != ''))? "checked" : "";?>>Chiều cao (Cm)</label> 
+                                       <label style="width: 50%"><input type="checkbox" id="chk_chieucao" onchange="filter()" <?php echo(($checknemu['heightfrom'] != '')||($checknemu['heightto'] != ''))? "checked" : "";?>>Chiều cao (Cm)</label>
                                        <input type="text" name="" class="div-input" style="margin-right: 10px" maxlength="3" id="caotu" placeholder="Từ" value="<?php echo ($checknemu['heightfrom'] != '')? $checknemu['heightfrom'] : "";?>" >
                                        <input type="text" name="" class="div-input" placeholder="Đến" maxlength="3" id="caoden" value="<?php echo ($checknemu['heightto'] != '')? $checknemu['heightto'] : "";?>" >
                                    </div>
                                    <div class="checkbox div-label-check width100" >
-                                       <label style="width: 50%"><input type="checkbox" id="chk_cannang" onchange="filter()" <?php echo(($checknemu['weightfrom'] != '')||($checknemu['weightto'] != ''))? "checked" : "";?>>Cân nặng (Kg)</label> 
+                                       <label style="width: 50%"><input type="checkbox" id="chk_cannang" onchange="filter()" <?php echo(($checknemu['weightfrom'] != '')||($checknemu['weightto'] != ''))? "checked" : "";?>>Cân nặng (Kg)</label>
                                        <input type="text" name="" class="div-input" maxlength="3" style="margin-right: 10px" placeholder="Từ" id="nangtu" value="<?php echo ($checknemu['weightfrom'] != '')? $checknemu['weightfrom'] : "";?>" >
                                        <input type="text" name="" class="div-input" maxlength="3" placeholder="Đến" id="nangden" value="<?php echo ($checknemu['weightto'] != '')? $checknemu['weightto'] : "";?>" >
                                    </div>
                                    <div class="checkbox div-label-check width100" >
-                                       <label style="width: 50%"><input type="checkbox" id="chk_noisinh" onchange="filter()" <?php echo ($checknemu['placeofbirth'] != '')? "checked" : "";?>>Nơi Sinh</label> 
+                                       <label style="width: 50%"><input type="checkbox" id="chk_noisinh" onchange="filter()" <?php echo ($checknemu['placeofbirth'] != '')? "checked" : "";?>>Nơi Sinh</label>
                                        <select class="js-example-basic-single floatright select2" id="noisinh-ad" onchange="filter()">
                                            <option value="0"  >Chọn tỉnh thành</option>
                                           <?php foreach ($city as $key ) {
@@ -327,18 +334,18 @@
                                         </select>
                                    </div>
                                    <div class="checkbox div-label-check width100" style="margin-top: 5px;">
-                                       <label style="width: 50%"><input type="checkbox" id="chk_dantoc" onchange="filter()" <?php echo ($checknemu['ethnic'] != '')? "checked" : "";?>>Dân tộc</label> 
+                                       <label style="width: 50%"><input type="checkbox" id="chk_dantoc" onchange="filter()" <?php echo ($checknemu['ethnic'] != '')? "checked" : "";?>>Dân tộc</label>
                                        <input type="text" name="" class="div-input2"  placeholder="" id="dantoc-ad" value="<?php echo ($checknemu['ethnic'] != '')? $checknemu['ethnic'] : "";?>" >
                                    </div>
                                    <div class="checkbox div-label-check width100" >
-                                       <label style="width: 50%"><input type="checkbox" id="chk_quoctich" onchange="filter()" <?php echo ($checknemu['nationality'] != '')? "checked" : "";?>>Quốc tịch</label> 
+                                       <label style="width: 50%"><input type="checkbox" id="chk_quoctich" onchange="filter()" <?php echo ($checknemu['nationality'] != '')? "checked" : "";?>>Quốc tịch</label>
                                        <select class="div-input2" id="quoctich-ad" onchange="filter()">
                                           <option value="Việt Nam">Việt Nam</option>
                                           <option value="Khác" <?php echo ($checknemu['nationality'] == 'Khác')? "selected":"";?>>Khác</option>
                                        </select>
                                    </div>
                                    <div class="checkbox div-label-check width100" >
-                                       <label style="width: 50%"><input type="checkbox" id="chk_tp_thgtru" onchange="filter()" <?php echo ($checknemu['cityori'] != '')? "checked" : "";?>>Thành phố thường trú</label> 
+                                       <label style="width: 50%"><input type="checkbox" id="chk_tp_thgtru" onchange="filter()" <?php echo ($checknemu['cityori'] != '')? "checked" : "";?>>Thành phố thường trú</label>
                                        <select class="js-example-basic-single floatright select2" id="tp_thgtru" onchange="filter()">
                                            <option value="0"  >Chọn tỉnh thành</option>
                                           <?php foreach ($city as $key ) {
@@ -349,7 +356,7 @@
                                         </select>
                                    </div>
                                    <div class="checkbox div-label-check width100" >
-                                       <label style="width: 50%"><input type="checkbox" id="chk_tp_dgsg" onchange="filter()" <?php echo ($checknemu['citycurr'] != '')? "checked" : "";?>>Thành phố đang sống</label> 
+                                       <label style="width: 50%"><input type="checkbox" id="chk_tp_dgsg" onchange="filter()" <?php echo ($checknemu['citycurr'] != '')? "checked" : "";?>>Thành phố đang sống</label>
                                        <select class="js-example-basic-single floatright select2" name="noisinh" onchange="selectcity(this.value,'')" id="tp_dgsg">
                                            <option value="0"  >Chọn tỉnh thành</option>
                                           <?php foreach ($city as $key ) {
@@ -360,8 +367,8 @@
                                         </select>
                                    </div>
                                     <div class="checkbox div-label-check width100 disabled" id="quanhuyen-nav11" >
-                                       <label style="width: 50%"><input type="checkbox" onchange="filter()" id="quanhuyen-nav12" disabled 
-                                        <?php echo ($checknemu['district'] != '')? "checked" : "";?>>Quận huyện đang sống</label> 
+                                       <label style="width: 50%"><input type="checkbox" onchange="filter()" id="quanhuyen-nav12" disabled
+                                        <?php echo ($checknemu['district'] != '')? "checked" : "";?>>Quận huyện đang sống</label>
                                        <select class="js-example-basic-single select2" name="quanhuyen" style="width: 100%" id="quanhuyen-nav" required onchange="filter()">
                                         <option value="0" id="chonqh-nav1" >Chọn quận huyện</option>
                                       </select>
@@ -374,26 +381,26 @@
                               </a>
                               <div id="dropdown-lvl10" class="panel-collapse collapse white <?php echo ($checknemu['maritalstatus'] != '')? "in" : ""; ?>">
                                   <div class="checkbox div-label-check" >
-                                     <label><input type="checkbox" value="S" id="chk_chuacogd" onchange="giadinh(this)" <?php echo ($checknemu['maritalstatus'] == 'S')? "checked" : ""; ?> >Chưa có gia đình</label> 
+                                     <label><input type="checkbox" value="S" id="chk_chuacogd" onchange="giadinh(this)" <?php echo ($checknemu['maritalstatus'] == 'S')? "checked" : ""; ?> >Chưa có gia đình</label>
                                  </div>
                                  <div class="checkbox div-label-check" >
-                                     <label><input type="checkbox" value="M" id="chk_cogd" onchange="giadinh(this)" <?php echo ($checknemu['maritalstatus'] == 'M')? "checked" : ""; ?> >Đã có gia đình</label> 
+                                     <label><input type="checkbox" value="M" id="chk_cogd" onchange="giadinh(this)" <?php echo ($checknemu['maritalstatus'] == 'M')? "checked" : ""; ?> >Đã có gia đình</label>
                                  </div>
                               </div>
                           </li>
                           <li  id="dropdown" class="li-nemu white">
                               <a data-toggle="collapse" href="#dropdown-lvl11" class="nav-list-hs weight600 gray-nav">
-                                   Tags <span class="fa fa-angle-right floatright"></span>    
+                                   Tags <span class="fa fa-angle-right floatright"></span>
                               </a>
                               <div id="dropdown-lvl11" class="panel-collapse collapse white <?php echo ($checknemu['tagrandom'] != '')? "in" : ""; ?>">
-                                   <?php 
-                                   for ($x=0; $x < count($tagrandom); $x++) { 
+                                   <?php
+                                   for ($x=0; $x < count($tagrandom); $x++) {
                                     ?>
                                     <div class="checkbox div-label-check" >
                                              <label><input type="checkbox" id="<?php echo 'tagr'.$x?>" onchange="filter()" value="<?php echo $tagrandom[$x]['tagid']?>"
                                                 <?php
 
-                                              if($checknemu['tagrandom'] != '') 
+                                              if($checknemu['tagrandom'] != '')
                                               {
                                                 $arrtag = explode('/', $checknemu['tagrandom']);
                                                 for($h = 0; $h < count($arrtag)-1; $h++)
@@ -406,7 +413,7 @@
                                                 }
                                               }
                                               ?>
-                                              ><?php echo $tagrandom[$x]['title']; ?></label> 
+                                              ><?php echo $tagrandom[$x]['title']; ?></label>
                                          </div>
                                    <?php
                                    } ?>
@@ -447,7 +454,7 @@
             <div class="col-md-5">
                 <label class="weight350">Áp dụng E-mail</label>
             </div>
-            <div class="col-md-7"> 
+            <div class="col-md-7">
                <label class="weight350 width100"><i class="fa fa-minus-circle" style="color: #F5821F"></i> &nbsp; Tin tức DXG</label>
                <label class="weight350 width100"><i class="fa fa-minus-circle" style="color: #F5821F"></i> &nbsp; Tin tức Tuyển dụng (Nhân sự)</label>
                <label class="weight350"><i class="fa fa-plus-circle" style="color: #5FA2DD"></i></label> &nbsp;
@@ -463,8 +470,8 @@
       <div class="modal-footer pad-tb10" >
         <label class="model-share"><input type="checkbox" id="chk_share_tieuchi" > &nbsp; Chia sẻ tiêu chí lọc</label>
         <button type="button" class="btn btn-admin orange"  data-dismiss="modal">Hủy</button>
-        
-        <input type="button" onclick="save_filter()" class="btn btn-admin blue" value="Lưu">  
+
+        <input type="button" onclick="save_filter()" class="btn btn-admin blue" value="Lưu">
       </div>
     </form>
     </div>
@@ -495,16 +502,16 @@
   }
 </style>
 <script type="text/javascript">
-  
+
   function editFilter(id){
-      $('#iframe_filter').attr('src','<?php echo base_url() ?>admin/handling/editFilter/'+id);  
-     
+      $('#iframe_filter').attr('src','<?php echo base_url() ?>admin/handling/editFilter/'+id);
+
       $('#editFilter').modal('show');
   }
   $(document).keypress(function(event){
     var keycode = (event.keyCode ? event.keyCode : event.which);
     if(keycode == '13'){
-        $(".btn_search").trigger('click'); 
+        $(".btn_search").trigger('click');
     }
   });
   $('.thoigian').datetimepicker({
@@ -539,14 +546,14 @@
     function gioitinh(obj)
     {
         var value = obj.value;
-        
+
         if(value == 'M')
         {
           $("#chk_nu").prop("checked",false);
         }
         if(value == 'F')
         {
-          $("#chk_nam").prop('checked', false); 
+          $("#chk_nam").prop('checked', false);
         }
         filter();
     }
@@ -554,14 +561,14 @@
     {
 
         var value = obj.value;
-        
+
         if(value == 'S')
         {
           $("#chk_cogd").prop("checked",false);
         }
         if(value == 'M')
         {
-          $( "#chk_chuacogd").prop('checked', false); 
+          $( "#chk_chuacogd").prop('checked', false);
         }
         filter();
     }
@@ -569,14 +576,14 @@
     {
 
         var value = obj.value;
-        
+
         if(value == 'C')
         {
           $("#chk_cokm").prop("checked",false);
         }
         if(value == 'D')
         {
-          $( "#chk_chuacokm").prop('checked', false); 
+          $( "#chk_chuacokm").prop('checked', false);
         }
         filter();
     }
@@ -584,7 +591,7 @@
     {
 
         var value = obj.value;
-       
+
         if(value == '1')
         {
           for(var i = 0; i < $('#counthocvan').val() ; i++ )
@@ -594,7 +601,7 @@
         }
         else
         {
-          $( "#chk_hs_co_tthv").prop('checked', false); 
+          $( "#chk_hs_co_tthv").prop('checked', false);
         }
         filter();
     }
@@ -611,7 +618,7 @@
         }
         else
         {
-          $( "#chk_hs_co_ttnn").prop('checked', false); 
+          $( "#chk_hs_co_ttnn").prop('checked', false);
         }
         filter();
     }
@@ -619,7 +626,7 @@
     {
 
         var value = obj.value;
-       
+
         if(value == '1')
         {
           for(var i = 0; i < $('#counttinhoc').val() ; i++ )
@@ -629,13 +636,13 @@
         }
         else
         {
-          $( "#chk_hs_co_ttth").prop('checked', false); 
+          $( "#chk_hs_co_ttth").prop('checked', false);
         }
         filter();
     }
-    
+
     function filter(check = '')
-    { 
+    {
       if ($('#check_filter').is(':checked')){
         check = 'on';
       }
@@ -649,7 +656,7 @@
       var value = {'gender' : '','placeofbirth' : '' , 'agefrom': '' , 'ageto' : '', 'heightto' : '', 'heightfrom': '',  'weightto' : '', 'weightfrom': '' , 'ethnic' : '', 'nationality' : '' , 'cityori' : '' , 'citycurr' : '' , 'district' : '' , 'currbenefitto' : '' , 'currbenefitfrom' : '' , 'desbenefitto' : '' , 'desbenefitfrom' : '' , 'experfrom' : '' , 'experto' : '', 'knowledge' : '' , 'language' : '' , 'software' : '' , 'profilesrc' : '', 'maritalstatus' : '' , 'talentfrom' : '' , 'talentto' : '' , 'updatefrom' : '' , 'updateto' : '' ,  'blocked' : '' , 'rateto' : '' , 'ratefrom' : '' , 'tag' : '' , 'tagrandom' : '' , 'sort' : ''};
        if($('#chk_chuacogd').is(':checked'))
        {
-          value['maritalstatus'] = 'S'; 
+          value['maritalstatus'] = 'S';
        }
        if($('#chk_cogd').is(':checked'))
        {
@@ -657,7 +664,7 @@
        }
        if($('#chk_nam').is(':checked'))
        {
-          value['gender'] = 'M'; 
+          value['gender'] = 'M';
        }
        if($('#chk_nu').is(':checked'))
        {
@@ -670,14 +677,14 @@
             value['placeofbirth'] = $('#noisinh-ad').val();
          }
          else {
-          $( "#chk_noisinh").prop('checked', false); 
+          $( "#chk_noisinh").prop('checked', false);
          }
        }
        if($('#chk_tuoi').is(':checked'))
        {
           if(($('#tuoi-tu').val() == '') && ($('#tuoi-den').val() == ''))
           {
-            $( "#chk_tuoi").prop('checked', false); 
+            $( "#chk_tuoi").prop('checked', false);
           }
           else
           {
@@ -689,7 +696,7 @@
        {
           if(($('#caotu').val() == '') && ($('#caoden').val() == ''))
           {
-            $( "#chk_chieucao").prop('checked', false); 
+            $( "#chk_chieucao").prop('checked', false);
           }
           else
           {
@@ -701,7 +708,7 @@
        {
           if(($('#nangtu').val() == '') && ($('#nangden').val() == ''))
           {
-            $( "#chk_cannang").prop('checked', false); 
+            $( "#chk_cannang").prop('checked', false);
           }
           else
           {
@@ -712,7 +719,7 @@
        if($('#chk_dantoc').is(':checked'))
        {
           if($('#dantoc-ad').val() == ''){
-            $( "#chk_dantoc").prop('checked', false); 
+            $( "#chk_dantoc").prop('checked', false);
           } else {
             value['ethnic'] = $('#dantoc-ad').val();
           }
@@ -720,7 +727,7 @@
        if($('#chk_quoctich').is(':checked'))
        {
           if($('#quoctich-ad').val() == ''){
-            $( "#chk_quoctich").prop('checked', false); 
+            $( "#chk_quoctich").prop('checked', false);
           } else {
             value['nationality'] = $('#quoctich-ad').val();
           }
@@ -728,7 +735,7 @@
        if($('#chk_tp_thgtru').is(':checked'))
        {
           if(($('#tp_thgtru').val() == '') || ($('#tp_thgtru').val() == 0) ){
-            $( "#chk_tp_thgtru").prop('checked', false); 
+            $( "#chk_tp_thgtru").prop('checked', false);
           } else {
             value['cityori'] = $('#tp_thgtru').val();
           }
@@ -736,16 +743,16 @@
        if($('#chk_tp_dgsg').is(':checked'))
        {
           if(($('#tp_dgsg').val() == '') || ($('#tp_dgsg').val() == 0) ){
-            $( "#chk_tp_dgsg").prop('checked', false); 
+            $( "#chk_tp_dgsg").prop('checked', false);
           } else {
             value['citycurr'] = $('#tp_dgsg').val();
           }
        }
        if($('#quanhuyen-nav12').is(':checked'))
-       {  
+       {
 
           if(($('#quanhuyen-nav').val() == '') || ($('#quanhuyen-nav').val() == 0) ){
-            $( "#quanhuyen-nav12").prop('checked', false); 
+            $( "#quanhuyen-nav12").prop('checked', false);
           } else {
             if($('#quanhuyen-nav').val() == null){
               value['district'] = $('#quanhuyen_filter').val();
@@ -758,37 +765,37 @@
        {
           if(($('#tn_httu').val() == '' ) && ($('#tn_htden').val() == ''))
           {
-            $( "#chk_thunhapht").prop('checked', false); 
+            $( "#chk_thunhapht").prop('checked', false);
           }
           else
           {
             value['currbenefitfrom'] = $('#tn_httu').val();
 
             value['currbenefitto'] = $('#tn_htden').val();
-          
+
           }
        }
        if($('#chk_thunhapmm').is(':checked'))
        {
           if(($('#tn_mmtu').val() == '') && ($('#tn_mmden').val() == ''))
           {
-            $( "#chk_thunhapmm").prop('checked', false); 
+            $( "#chk_thunhapmm").prop('checked', false);
           }
           else
           {
-            value['desbenefitfrom'] = $('#tn_mmtu').val(); 
+            value['desbenefitfrom'] = $('#tn_mmtu').val();
             value['desbenefitto'] = $('#tn_mmden').val();
           }
        }
        if($('#chk_chuacokm').is(':checked'))
        {
-          value['experfrom'] = 'C'; 
+          value['experfrom'] = 'C';
        }
        if($('#chk_cokm').is(':checked'))
        {
           if(($('#kinhnghiem_tu').val() == '') && ($('#kinhnghiem_den').val() == ''))
           {
-            $( "#chk_cokm").prop('checked', false); 
+            $( "#chk_cokm").prop('checked', false);
           }
           else
           {
@@ -857,7 +864,7 @@
        {
           if(($('#tiemnang_tu').val() == '') && ($('#tiemnang_den').val() == ''))
           {
-            $( "#chk_tiemnang").prop('checked', false); 
+            $( "#chk_tiemnang").prop('checked', false);
           }
           else
           {
@@ -869,7 +876,7 @@
        {
           if(($('#update_tu').val() == '') && ($('#update_den').val() == ''))
           {
-            $( "#chk_lastupdate").prop('checked', false); 
+            $( "#chk_lastupdate").prop('checked', false);
           }
           else
           {
@@ -885,7 +892,7 @@
        {
           if(($('#diem_tu').val() == '') && ($('#diem_den').val() == ''))
           {
-            $( "#chk_diem").prop('checked', false); 
+            $( "#chk_diem").prop('checked', false);
           }
           else
           {
@@ -905,43 +912,43 @@
           data: {value: value, check_all:check},
         })
         .done(function(data) {
-            $('.demhs').text(data['total_rows'] +' Hồ sơ');  
-            $('.pagination-page').empty().html(data['phantrang']); 
+            $('.demhs').text(data['total_rows'] +' Hồ sơ');
+            $('.pagination-page').empty().html(data['phantrang']);
             for(var i in data)
             {
               if (typeof data[i] === 'object') {
                  var gt = "";
-                if(data[i]['gender'] == "M") gt = "Nam"; else gt = "Nữ"; 
-                
+                if(data[i]['gender'] == "M") gt = "Nam"; else gt = "Nữ";
+
                 var chieucao = "";
                 if(data[i]['height'] == 0) chieucao = ""; else chieucao = data[i]['height']+"cm, ";
 
                 var cannang = "";
                 if(data[i]['weight'] == 0) cannang = ""; else cannang = data[i]['weight']+"kg, ";
                 var kinhnghiem = "";
-                
+
                 var bangcap = "";
                 if(data[i]['certificate'] == "") bangcap = ""; else bangcap = data[i]['certificate']+", ";
                 var ngonngu = "";
                 if(data[i]['countlanguage'] == 0)
                 { ngonngu = ""; }
-                else if(data[i]['countlanguage'] == 1) 
+                else if(data[i]['countlanguage'] == 1)
                 { ngonngu = data[i]['language']+", "; }
                 else ngonngu = data[i]['language']+"+"+(data[i]['countlanguage']-1)+", ";
                 var phanmem = "";
                 if(data[i]['countsoftware'] == 0) phanmem = "";
                 else if(data[i]['countsoftware'] == 1) phanmem = data[i]['software']+", ";
-                else phanmem = data[i]['software']+"+"+(data[i]['countsoftware']-1)+", "; 
+                else phanmem = data[i]['software']+"+"+(data[i]['countsoftware']-1)+", ";
                 var star = '';
                 if(data[i]['istalent'] == 0) {
-                star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-gray fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9"></span></span>'; 
+                star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-gray fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9"></span></span>';
                  } else {
                 star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-orange fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9">'+data[i]['istalent'] +'</span></span>';
                 }
-                var dss = ''; 
+                var dss = '';
                 if(data[i]['blocked'] == 'Y') { dss ='<div class="col-md-3 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; }
                 else {
-                  dss = '<div class="col-md-4 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; 
+                  dss = '<div class="col-md-4 padding-lr0 " id="ds'+data[i]['candidateid']+'">';
                 }
                 var bb = '';
                  if(data[i]['blocked'] == 'Y') { bb = '<i class="fa fa-ban color-red " ></i>'; }
@@ -970,7 +977,7 @@
 
                 hm+= ''+gt+', '+data[i]['dateofbirth2']+' tuổi, '+chieucao+''+cannang+''+data[i]['kinhnghiem']+''+data[i]['thunhap']+''+bangcap+''+ngonngu+''+phanmem+'...';
                 hm+= '</label> <span class="highr">'+data[i]['tagsrandom']+'</span></td></tr> </table></div></a>';
-                 
+
                 $('.candidate-load').append(hm);
               }
               // console.log(data.length);
@@ -982,14 +989,14 @@
           alert('thatbai');
           console.log("error");
         });
-    
+
     }
     function selectcity(obj,get=''){
       var $id = obj;
       $('.gicungdc').remove();
       $('#quanhuyen-nav11').addClass("disabled");
       $('#quanhuyen-nav12').attr('disabled','disabled');
-      $( "#quanhuyen-nav12").prop('checked', false); 
+      $( "#quanhuyen-nav12").prop('checked', false);
       if($id != '0')
       {
         $('#quanhuyen-nav11').removeClass("disabled");
@@ -1004,7 +1011,7 @@
         })
         .done(function(data) {
              for(var i in data)
-             {  
+             {
                 if(get != 0 && get == data[i].id_district)
                 {
                   $('#chonqh-nav1').after('<option class="gicungdc" value="'+data[i].id_district+'" selected>'+data[i].name+'</option>');
@@ -1012,7 +1019,7 @@
                 else
                 {
                   $('#chonqh-nav1').after('<option class="gicungdc" value="'+data[i].id_district+'">'+data[i].name+'</option>');
-                } 
+                }
               }
           })
         .fail(function() {
@@ -1051,12 +1058,12 @@
     $(this).val($(this).val().replace(/[^0-9,]/g, ''));});
     $("input[id='tn_mmden']").on('input', function (e) {
     $(this).val($(this).val().replace(/[^0-9,]/g, ''));});
-     
+
     $("input[id='kinhnghiem_tu']").on('input', function (e) {
     $(this).val($(this).val().replace(/[^0-9]/g, ''));});
     $("input[id='kinhnghiem_den']").on('input', function (e) {
-    $(this).val($(this).val().replace(/[^0-9]/g, ''));}); 
-     
+    $(this).val($(this).val().replace(/[^0-9]/g, ''));});
+
     $("input[id='diem_tu']").on('input', function (e) {
     $(this).val($(this).val().replace(/[^0-9]/g, ''));
       if($(this).val() > 100) { $(this).val(100); }
@@ -1064,7 +1071,7 @@
     $("input[id='diem_den']").on('input', function (e) {
     $(this).val($(this).val().replace(/[^0-9]/g, ''));
       if($(this).val() > 100) { $(this).val(100); }
-    }); 
+    });
     $("input[id='tiemnang_tu']").on('input', function (e) {
     $(this).val($(this).val().replace(/[^0-9]/g, ''));});
     $("input[id='tiemnang_den']").on('input', function (e) {
@@ -1073,28 +1080,28 @@
      $('.so').on('input', function(e){
       if ($(this).val() == '') {
               $(this).val();
-        }        
+        }
     $(this).val(formatCurrency(this.value.replace(/[,VNĐ]/g,'')));
     }).on('keypress',function(e){
         if ($(this).val() == 0)
           $(this).val('');
         if(!$.isNumeric(String.fromCharCode(e.which))) e.preventDefault();
-    }).on('paste', function(e){    
-        var cb = e.originalEvent.clipboardData || window.clipboardData;      
+    }).on('paste', function(e){
+        var cb = e.originalEvent.clipboardData || window.clipboardData;
         if(!$.isNumeric(cb.getData('text'))) e.preventDefault();
     });
     function formatCurrency(number){
         var n = number.split('').reverse().join("");
-        var n2 = n.replace(/\d\d\d(?!$)/g, "$&,");    
+        var n2 = n.replace(/\d\d\d(?!$)/g, "$&,");
         return  n2.split('').reverse().join('');
     }
     function save_filter()
     {
       var value = {'gender' : '','placeofbirth' : '' , 'age': '' , 'height' : '',  'weight' : '', 'ethnic' : '', 'nationality' : '' , 'cityori' : '' , 'citycurr' : '' , 'district' : '' , 'currentbenefit' : '' , 'desirebenefit' : '' , 'experience' : '' , 'knowledge' : '' , 'language' : '' , 'software' : '' , 'maritalstatus' : '' , 'istalent' : '' , 'lastupdate' : '' , 'blocked' : '' , 'rate' : '' , 'tag' : '' , 'tagrandom' : ''};
-      
+
        if($('#chk_nam').is(':checked'))
        {
-          value['gender'] = 'candidate/gender/S/=/M/'; 
+          value['gender'] = 'candidate/gender/S/=/M/';
        }
        if($('#chk_nu').is(':checked'))
        {
@@ -1102,7 +1109,7 @@
        }
         if($('#chk_chuacogd').is(':checked'))
        {
-          value['maritalstatus'] = 'candidate/maritalstatus/S/=/S/'; 
+          value['maritalstatus'] = 'candidate/maritalstatus/S/=/S/';
        }
        if($('#chk_cogd').is(':checked'))
        {
@@ -1115,14 +1122,14 @@
             value['placeofbirth'] = 'candidate/placeofbirth/S/=/'+$('#noisinh-ad').val()+'/';
          }
          else {
-          $( "#chk_noisinh").prop('checked', false); 
+          $( "#chk_noisinh").prop('checked', false);
          }
        }
        if($('#chk_tuoi').is(':checked'))
        {
           if(($('#tuoi-tu').val() == '') && ($('#tuoi-den').val() == ''))
           {
-            $( "#chk_tuoi").prop('checked', false); 
+            $( "#chk_tuoi").prop('checked', false);
           }
           else
           {
@@ -1136,7 +1143,7 @@
        {
           if(($('#caotu').val() == '') && ($('#caoden').val() == ''))
           {
-            $( "#chk_chieucao").prop('checked', false); 
+            $( "#chk_chieucao").prop('checked', false);
           }
           else
           {
@@ -1150,7 +1157,7 @@
        {
           if(($('#nangtu').val() == '') && ($('#nangden').val() == ''))
           {
-            $( "#chk_cannang").prop('checked', false); 
+            $( "#chk_cannang").prop('checked', false);
           }
           else
           {
@@ -1163,16 +1170,16 @@
        if($('#chk_dantoc').is(':checked'))
        {
           if($('#dantoc-ad').val() == ''){
-            $( "#chk_dantoc").prop('checked', false); 
+            $( "#chk_dantoc").prop('checked', false);
           } else {
-            
+
             value['ethnic'] = 'candidate/ethnic/S/=/'+$('#dantoc-ad').val()+'/';
           }
        }
        if($('#chk_quoctich').is(':checked'))
        {
           if($('#quoctich-ad').val() == ''){
-            $( "#chk_quoctich").prop('checked', false); 
+            $( "#chk_quoctich").prop('checked', false);
           } else {
             value['nationality'] = 'candidate/nationality/S/=/'+$('#quoctich-ad').val()+'/';
           }
@@ -1180,7 +1187,7 @@
        if($('#chk_tp_thgtru').is(':checked'))
        {
           if(($('#tp_thgtru').val() == '') || ($('#tp_thgtru').val() == 0) ){
-            $( "#chk_tp_thgtru").prop('checked', false); 
+            $( "#chk_tp_thgtru").prop('checked', false);
           } else {
             value['cityori'] = 'canaddress/cityori/S/=/'+$('#tp_thgtru').val()+'/';
           }
@@ -1188,7 +1195,7 @@
        if($('#chk_tp_dgsg').is(':checked'))
        {
           if(($('#tp_dgsg').val() == '') || ($('#tp_dgsg').val() == 0) ){
-            $( "#chk_tp_dgsg").prop('checked', false); 
+            $( "#chk_tp_dgsg").prop('checked', false);
           } else {
             value['citycurr'] = 'canaddress/citycurr/S/=/'+$('#tp_dgsg').val()+'/';
           }
@@ -1196,9 +1203,9 @@
        if($('#quanhuyen-nav12').is(':checked'))
        {
           if(($('#quanhuyen-nav').val() == '') || ($('#quanhuyen-nav').val() == 0) ){
-            $( "#quanhuyen-nav12").prop('checked', false); 
+            $( "#quanhuyen-nav12").prop('checked', false);
           } else {
-          
+
             value['district'] = 'canaddress/district/S/=/'+$('#quanhuyen-nav').val()+'/';
           }
        }
@@ -1206,7 +1213,7 @@
        {
           if(($('#tn_httu').val() == '') && ($('#tn_htden').val() == ''))
           {
-            $( "#chk_thunhapht").prop('checked', false); 
+            $( "#chk_thunhapht").prop('checked', false);
           }
           else
           {
@@ -1220,7 +1227,7 @@
        {
           if(($('#tn_mmtu').val() == '') && ($('#tn_mmden').val() == ''))
           {
-            $( "#chk_thunhapmm").prop('checked', false); 
+            $( "#chk_thunhapmm").prop('checked', false);
           }
           else
           {
@@ -1271,7 +1278,7 @@
        }
        if($('#chk_hs_co_ttth').is(':checked'))
        {
-         
+
           value['software'] = 'cansoftware/software/S/IN/1/';
        }
        else
@@ -1344,7 +1351,7 @@
        else
        {
           value['share'] = '0';
-       } 
+       }
         $.ajax({
           url: '<?php echo base_url()?>admin/handling/savefilter',
           type: 'POST',
@@ -1364,11 +1371,11 @@
           console.log("complete");
         });
     }
-    
+
     function loadfilter(obj)
     {
       var id = obj;
-    
+
         $.ajax({
           url: '<?php echo base_url()?>admin/handling/loadfilter',
           type: 'POST',
@@ -1458,7 +1465,7 @@
            $('#dropdown-lvl11').removeClass('in');
            for(var i in data)
            {
-              if(data[i]['fieldname'] == 'desirebenefit') 
+              if(data[i]['fieldname'] == 'desirebenefit')
               {
                 $("#chk_thunhapmm").prop("checked",true);
                 $('#tn_mmtu').val(data[i]['filterfrom']);
@@ -1466,8 +1473,8 @@
                 $('#dropdown-lvl4').addClass('in');
                 continue;
               }
-              
-              if(data[i]['fieldname'] == 'currentbenefit') 
+
+              if(data[i]['fieldname'] == 'currentbenefit')
               {
                 $("#chk_thunhapht").prop("checked",true);
                 $('#tn_httu').val(data[i]['filterfrom']);
@@ -1475,14 +1482,14 @@
                 $('#dropdown-lvl4').addClass('in');
                 continue;
               }
-              
+
                if(data[i]['fieldname'] == 'experience')
               {
                 if(data[i]['filterfrom'] == 'C')
                 {
                   $("#chk_chuacokm").prop("checked",true);
                 }
-                else{ 
+                else{
                   $("#chk_cokm").prop("checked",true);
                   $('#kinhnghiem_tu').val(data[i]['filterfrom']);
                   $('#kinhnghiem_den').val(data[i]['filterto']);
@@ -1502,7 +1509,7 @@
               }
               if(data[i]['fieldname'] == 'knowledge')
               {
-                   
+
                     if(data[i]['filterfrom'] == '1')
                     {
                       $("#chk_hs_co_tthv").prop("checked",true);
@@ -1555,7 +1562,7 @@
                     $('#dropdown-lvl8').addClass('in');
                    continue;
               }
-              if(data[i]['fieldname'] == 'age') 
+              if(data[i]['fieldname'] == 'age')
               {
                 $("#chk_tuoi").prop("checked",true);
                 $('#tuoi-tu').val(data[i]['filterfrom']);
@@ -1563,7 +1570,7 @@
                 $('#dropdown-lvl9').addClass('in');
                 continue;
               }
-              if(data[i]['fieldname'] == 'height') 
+              if(data[i]['fieldname'] == 'height')
               {
                 $("#chk_chieucao").prop("checked",true);
                 $('#caotu').val(data[i]['filterfrom']);
@@ -1571,8 +1578,8 @@
                 $('#dropdown-lvl9').addClass('in');
                 continue;
               }
-              
-              if(data[i]['fieldname'] == 'weight') 
+
+              if(data[i]['fieldname'] == 'weight')
               {
                 $("#chk_cannang").prop("checked",true);
                 $('#nangtu').val(data[i]['fliterfrom']);
@@ -1580,7 +1587,7 @@
                 $('#dropdown-lvl9').addClass('in');
                 continue;
               }
-              
+
               if(data[i]['fieldname'] == 'placeofbirth')
               {
                 $("#chk_noisinh").prop("checked",true);
@@ -1666,7 +1673,7 @@
                 $('#dropdown-lvl11').addClass('in');
                 continue;
               }
-              if(data[i]['fieldname'] == 'maritalstatus') 
+              if(data[i]['fieldname'] == 'maritalstatus')
               {
                   if(data[i]['filterfrom'] == 'S') {
                      $("#chk_chuacogd").prop("checked",true);
@@ -1676,19 +1683,19 @@
                  $('#dropdown-lvl10').addClass('in');
                  continue;
               }
-              if(data[i]['fieldname'] == 'istalent') 
+              if(data[i]['fieldname'] == 'istalent')
               {
                 $("#chk_tiemnang").prop("checked",true);
                 $('#dropdown-lvl1').addClass('in');
                 continue;
               }
-              if(data[i]['fieldname'] == 'blocked') 
+              if(data[i]['fieldname'] == 'blocked')
               {
                 $("#chk_chan").prop("checked",true);
                 $('#dropdown-lvl1').addClass('in');
                 continue;
               }
-              if(data[i]['fieldname'] == 'rate') 
+              if(data[i]['fieldname'] == 'rate')
               {
                 $("#chk_diem").prop("checked",true);
                 $('#diemtu').val(data[i]['filterfrom']);
@@ -1696,7 +1703,7 @@
                 $('#dropdown-lvl1').addClass('in');
                 continue;
               }
-              if(data[i]['fieldname'] == 'lastupdate') 
+              if(data[i]['fieldname'] == 'lastupdate')
               {
                 $("#chk_lastupdate").prop("checked",true);
                 $('#update_tu').val(data[i]['filterfrom']);
@@ -1723,12 +1730,12 @@
       $('.gicungdc').remove();
       $('#quanhuyen-nav11').addClass("disabled");
       $('#quanhuyen-nav12').attr('disabled','disabled');
-      $( "#quanhuyen-nav12").prop('checked', false); 
+      $( "#quanhuyen-nav12").prop('checked', false);
       if($id != '0')
       {
         $('#quanhuyen-nav11').removeClass("disabled");
         $('#quanhuyen-nav12').removeAttr('disabled','disabled');
-        $( "#quanhuyen-nav12").prop('checked', true); 
+        $( "#quanhuyen-nav12").prop('checked', true);
       }
 
         $.ajax({
@@ -1739,7 +1746,7 @@
         })
         .done(function(data) {
              for(var i in data)
-             {  
+             {
                 if(get != 0 && get == data[i].id_district)
                 {
                   $('#chonqh-nav1').after('<option class="gicungdc" value="'+data[i].id_district+'" selected>'+data[i].name+'</option>');
@@ -1747,7 +1754,7 @@
                 else
                 {
                   $('#chonqh-nav1').after('<option class="gicungdc" value="'+data[i].id_district+'">'+data[i].name+'</option>');
-                } 
+                }
               }
           })
         .fail(function() {
@@ -1777,7 +1784,7 @@
     .fail(function() {
       console.log("error");
     });
-    
+
   }
   function searchname()
   {
@@ -1793,43 +1800,43 @@
       data: {name: name1},
     })
     .done(function(data) {
-      $('.demhs').text(data['total_rows'] +' Hồ sơ');  
-      $('.pagination-page').empty().html(data['phantrang']); 
+      $('.demhs').text(data['total_rows'] +' Hồ sơ');
+      $('.pagination-page').empty().html(data['phantrang']);
       for(var i in data)
           {
             if (typeof data[i] === 'object') {
               var gt = "";
-              if(data[i]['gender'] == "M") gt = "Nam"; else gt = "Nữ"; 
-              
+              if(data[i]['gender'] == "M") gt = "Nam"; else gt = "Nữ";
+
               var chieucao = "";
               if(data[i]['height'] == 0) chieucao = ""; else chieucao = data[i]['height']+"cm, ";
 
               var cannang = "";
               if(data[i]['weight'] == 0) cannang = ""; else cannang = data[i]['weight']+"kg, ";
               var kinhnghiem = "";
-              
+
               var bangcap = "";
               if(data[i]['certificate'] == "") bangcap = ""; else bangcap = data[i]['certificate']+", ";
               var ngonngu = "";
               if(data[i]['countlanguage'] == 0)
               { ngonngu = ""; }
-              else if(data[i]['countlanguage'] == 1) 
+              else if(data[i]['countlanguage'] == 1)
               { ngonngu = data[i]['language']+", "; }
               else ngonngu = data[i]['language']+"+"+(data[i]['countlanguage']-1)+", ";
               var phanmem = "";
               if(data[i]['countsoftware'] == 0) phanmem = "";
               else if(data[i]['countsoftware'] == 1) phanmem = data[i]['software']+", ";
-              else phanmem = data[i]['software']+"+"+(data[i]['countsoftware']-1)+", "; 
+              else phanmem = data[i]['software']+"+"+(data[i]['countsoftware']-1)+", ";
               var star = '';
               if(data[i]['istalent'] == 0) {
-              star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-gray fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9"></span></span>'; 
+              star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-gray fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9"></span></span>';
                } else {
               star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-orange fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9">'+data[i]['istalent'] +'</span></span>';
               }
-              var dss = ''; 
+              var dss = '';
               if(data[i]['blocked'] == 'Y') { dss ='<div class="col-md-3 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; }
               else {
-                dss = '<div class="col-md-4 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; 
+                dss = '<div class="col-md-4 padding-lr0 " id="ds'+data[i]['candidateid']+'">';
               }
               var bb = '';
                if(data[i]['blocked'] == 'Y') { bb = '<i class="fa fa-ban color-red " ></i>'; }
@@ -1858,7 +1865,7 @@
 
                 hm+= ''+gt+', '+data[i]['dateofbirth2']+' tuổi, '+chieucao+''+cannang+''+data[i]['kinhnghiem']+''+data[i]['thunhap']+''+bangcap+''+ngonngu+''+phanmem+'...';
                 hm+= '</label> <span class="highr">'+data[i]['tagsrandom']+'</span></td></tr> </table></div></a>';
-                 
+
                 $('.candidate-load').append(hm);
             }
           }
@@ -1866,7 +1873,7 @@
     .fail(function() {
       console.log("error");
     });
-    
+
   }
 
   $(document).ready(function() {
@@ -1883,7 +1890,7 @@
       }
     }
   });
-  
+
 
   function filterRecruit(check) {
     if(check == 'on'){
@@ -1902,43 +1909,43 @@
       data: {},
     })
     .done(function(data) {
-      $('.demhs').text(data['total_rows'] +' Hồ sơ');        
-      $('.pagination-page').empty().html(data['phantrang']);  
+      $('.demhs').text(data['total_rows'] +' Hồ sơ');
+      $('.pagination-page').empty().html(data['phantrang']);
       for(var i in data)
       {
         if (typeof data[i] === 'object') {
           var gt = "";
-          if(data[i]['gender'] == "M") gt = "Nam"; else gt = "Nữ"; 
-          
+          if(data[i]['gender'] == "M") gt = "Nam"; else gt = "Nữ";
+
           var chieucao = "";
           if(data[i]['height'] == 0) chieucao = ""; else chieucao = data[i]['height']+"cm, ";
 
           var cannang = "";
           if(data[i]['weight'] == 0) cannang = ""; else cannang = data[i]['weight']+"kg, ";
           var kinhnghiem = "";
-          
+
           var bangcap = "";
           if(data[i]['certificate'] == "") bangcap = ""; else bangcap = data[i]['certificate']+", ";
           var ngonngu = "";
           if(data[i]['countlanguage'] == 0)
           { ngonngu = ""; }
-          else if(data[i]['countlanguage'] == 1) 
+          else if(data[i]['countlanguage'] == 1)
           { ngonngu = data[i]['language']+", "; }
           else ngonngu = data[i]['language']+"+"+(data[i]['countlanguage']-1)+", ";
           var phanmem = "";
           if(data[i]['countsoftware'] == 0) phanmem = "";
           else if(data[i]['countsoftware'] == 1) phanmem = data[i]['software']+", ";
-          else phanmem = data[i]['software']+"+"+(data[i]['countsoftware']-1)+", "; 
+          else phanmem = data[i]['software']+"+"+(data[i]['countsoftware']-1)+", ";
           var star = '';
           if(data[i]['istalent'] == 0) {
-          star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-gray fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9"></span></span>'; 
+          star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-gray fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9"></span></span>';
            } else {
           star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-orange fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9">'+data[i]['istalent'] +'</span></span>';
           }
-          var dss = ''; 
+          var dss = '';
           if(data[i]['blocked'] == 'Y') { dss ='<div class="col-md-3 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; }
           else {
-            dss = '<div class="col-md-4 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; 
+            dss = '<div class="col-md-4 padding-lr0 " id="ds'+data[i]['candidateid']+'">';
           }
           var bb = '';
            if(data[i]['blocked'] == 'Y') { bb = '<i class="fa fa-ban color-red " ></i>'; }
@@ -1967,15 +1974,15 @@
 
             hm+= ''+gt+', '+data[i]['dateofbirth2']+' tuổi, '+chieucao+''+cannang+''+data[i]['kinhnghiem']+''+data[i]['thunhap']+''+bangcap+''+ngonngu+''+phanmem+'...';
             hm+= '</label> <span class="highr">'+data[i]['tagsrandom']+'</span></td></tr> </table></div></a>';
-             
+
             $('.candidate-load').append(hm);
         }
-      }  
+      }
     })
     .fail(function() {
       console.log("error");
     });
-    
+
   }
   function filterNotRecruit(check) {
     if(check == 'on'){
@@ -1994,43 +2001,43 @@
       data: {},
     })
     .done(function(data) {
-      $('.demhs').text(data['total_rows'] +' Hồ sơ');  
-      $('.pagination-page').empty().html(data['phantrang']);  
+      $('.demhs').text(data['total_rows'] +' Hồ sơ');
+      $('.pagination-page').empty().html(data['phantrang']);
       for(var i in data)
       {
         if (typeof data[i] === 'object') {
           var gt = "";
-          if(data[i]['gender'] == "M") gt = "Nam"; else gt = "Nữ"; 
-          
+          if(data[i]['gender'] == "M") gt = "Nam"; else gt = "Nữ";
+
           var chieucao = "";
           if(data[i]['height'] == 0) chieucao = ""; else chieucao = data[i]['height']+"cm, ";
 
           var cannang = "";
           if(data[i]['weight'] == 0) cannang = ""; else cannang = data[i]['weight']+"kg, ";
           var kinhnghiem = "";
-          
+
           var bangcap = "";
           if(data[i]['certificate'] == "") bangcap = ""; else bangcap = data[i]['certificate']+", ";
           var ngonngu = "";
           if(data[i]['countlanguage'] == 0)
           { ngonngu = ""; }
-          else if(data[i]['countlanguage'] == 1) 
+          else if(data[i]['countlanguage'] == 1)
           { ngonngu = data[i]['language']+", "; }
           else ngonngu = data[i]['language']+"+"+(data[i]['countlanguage']-1)+", ";
           var phanmem = "";
           if(data[i]['countsoftware'] == 0) phanmem = "";
           else if(data[i]['countsoftware'] == 1) phanmem = data[i]['software']+", ";
-          else phanmem = data[i]['software']+"+"+(data[i]['countsoftware']-1)+", "; 
+          else phanmem = data[i]['software']+"+"+(data[i]['countsoftware']-1)+", ";
           var star = '';
           if(data[i]['istalent'] == 0) {
-          star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-gray fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9"></span></span>'; 
+          star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-gray fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9"></span></span>';
            } else {
           star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-orange fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9">'+data[i]['istalent'] +'</span></span>';
           }
-          var dss = ''; 
+          var dss = '';
           if(data[i]['blocked'] == 'Y') { dss ='<div class="col-md-3 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; }
           else {
-            dss = '<div class="col-md-4 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; 
+            dss = '<div class="col-md-4 padding-lr0 " id="ds'+data[i]['candidateid']+'">';
           }
           var bb = '';
            if(data[i]['blocked'] == 'Y') { bb = '<i class="fa fa-ban color-red " ></i>'; }
@@ -2059,17 +2066,17 @@
 
             hm+= ''+gt+', '+data[i]['dateofbirth2']+' tuổi, '+chieucao+''+cannang+''+data[i]['kinhnghiem']+''+data[i]['thunhap']+''+bangcap+''+ngonngu+''+phanmem+'...';
             hm+= '</label> <span class="highr">'+data[i]['tagsrandom']+'</span></td></tr> </table></div></a>';
-             
+
             $('.candidate-load').append(hm);
         }
-      }  
+      }
     })
     .fail(function() {
       console.log("error");
     });
-    
+
   }
-  
+
   function filterTrung()
   {
     if ($('#chk_trung').is(':checked')){
@@ -2085,43 +2092,43 @@
       data: {check:checkOn},
     })
     .done(function(data) {
-      $('.demhs').text(data['total_rows'] +' Hồ sơ');  
-      $('.pagination-page').empty().html(data['phantrang']); 
+      $('.demhs').text(data['total_rows'] +' Hồ sơ');
+      $('.pagination-page').empty().html(data['phantrang']);
       for(var i in data)
           {
             if (typeof data[i] === 'object') {
               var gt = "";
-              if(data[i]['gender'] == "M") gt = "Nam"; else gt = "Nữ"; 
-              
+              if(data[i]['gender'] == "M") gt = "Nam"; else gt = "Nữ";
+
               var chieucao = "";
               if(data[i]['height'] == 0) chieucao = ""; else chieucao = data[i]['height']+"cm, ";
 
               var cannang = "";
               if(data[i]['weight'] == 0) cannang = ""; else cannang = data[i]['weight']+"kg, ";
               var kinhnghiem = "";
-              
+
               var bangcap = "";
               if(data[i]['certificate'] == "") bangcap = ""; else bangcap = data[i]['certificate']+", ";
               var ngonngu = "";
               if(data[i]['countlanguage'] == 0)
               { ngonngu = ""; }
-              else if(data[i]['countlanguage'] == 1) 
+              else if(data[i]['countlanguage'] == 1)
               { ngonngu = data[i]['language']+", "; }
               else ngonngu = data[i]['language']+"+"+(data[i]['countlanguage']-1)+", ";
               var phanmem = "";
               if(data[i]['countsoftware'] == 0) phanmem = "";
               else if(data[i]['countsoftware'] == 1) phanmem = data[i]['software']+", ";
-              else phanmem = data[i]['software']+"+"+(data[i]['countsoftware']-1)+", "; 
+              else phanmem = data[i]['software']+"+"+(data[i]['countsoftware']-1)+", ";
               var star = '';
               if(data[i]['istalent'] == 0) {
-              star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-gray fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9"></span></span>'; 
+              star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-gray fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9"></span></span>';
                } else {
               star = '<span class="fa-stack fa-1x"><i class="fa fa-star color-orange fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9">'+data[i]['istalent'] +'</span></span>';
               }
-              var dss = ''; 
+              var dss = '';
               if(data[i]['blocked'] == 'Y') { dss ='<div class="col-md-3 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; }
               else {
-                dss = '<div class="col-md-4 padding-lr0 " id="ds'+data[i]['candidateid']+'">'; 
+                dss = '<div class="col-md-4 padding-lr0 " id="ds'+data[i]['candidateid']+'">';
               }
               var bb = '';
                if(data[i]['blocked'] == 'Y') { bb = '<i class="fa fa-ban color-red " ></i>'; }
@@ -2150,7 +2157,7 @@
 
                 hm+= ''+gt+', '+data[i]['dateofbirth2']+' tuổi, '+chieucao+''+cannang+''+data[i]['kinhnghiem']+''+data[i]['thunhap']+''+bangcap+''+ngonngu+''+phanmem+'...';
                 hm+= '</label> <span class="highr">'+data[i]['tagsrandom']+'</span></td></tr> </table></div></a>';
-                 
+
                 $('.candidate-load').append(hm);
             }
           }
@@ -2158,6 +2165,6 @@
     .fail(function() {
       console.log("error");
     });
-    
+
   }
 </script>

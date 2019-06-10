@@ -357,7 +357,7 @@ class Handling extends CI_Controller {
  	{
  		$frm = $this->input->post();
 		$data['email'] = $frm['email'];
-		$data['telephone'] = $frm['dt1'].",".$frm['dt2'];
+		$data['telephone'] = ','.$frm['dt1'].",".$frm['dt2'].',';
 		$data['emergencycontact'] = $frm['dtkhancap'];
 		$this->Login_model->updateCandidate($this->session->userdata('user')['candidateid'],$data);
 		$this->cache->delete('candidate');

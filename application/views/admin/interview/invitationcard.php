@@ -64,7 +64,7 @@
 					<label>Xác nhận thư mời</label>
 					<?php if ($status == 'C'){ ?>
 						<p>Bạn đã xác nhận thư mời phỏng vấn. Vui lòng đến đúng thời gian phỏng vấn như trên.</p>
-					<?php }{ ?>
+					<?php }else{ ?>
 						<form id="form_confirm">
 							<input type="hidden" name="candidateid" value="<?php echo isset($interview['candidateid'])? $interview['candidateid'] :''  ?>">
                             <input type="hidden" name="campaignid" value="<?php echo isset($interview['campaignid'])? $interview['campaignid'] :''  ?>">
