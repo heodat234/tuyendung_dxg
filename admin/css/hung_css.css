@@ -1,0 +1,278 @@
+.width_full{
+  width: 100%;
+}
+.background_white{
+  background: white;
+}
+.height_40{
+  height: 40px;
+}
+.height_660{
+  height: 660px;
+}
+.height_700{
+  height: 700px;
+}
+.border_ece{
+  border: 0.5px solid #ececec;
+}
+.border_0{
+  border: 0px;
+}
+.navbar-nav {
+ margin: 0; 
+}
+li.active_news{
+  background: rgba(114,175,210,.3);
+}
+
+.main_user{
+	background-color: #ecf0f5; 
+	min-height: 932px;
+}
+.font_size_15{
+	font-size: 15px;
+}
+#myBtn {
+	width:75px;
+	height:75px;
+    position: fixed; 
+    bottom: 20px; 
+    right: 30px; 
+    z-index: 99; 
+    border: none; 
+    outline: none; 
+    color: white; 
+    cursor: pointer; 
+    padding: 19px; 
+    border-radius: 50%; 
+    font-size: 30px; 
+    padding-left: 25px;
+}
+
+.panel_box_user{
+	padding: 0 15px 10px;
+}
+.height-145{
+	min-height: 145px;
+}
+.title_user {
+	color: #000000;
+	font-family: Arial;
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 17px;
+	text-align: left;
+	padding-top: 8px;
+	padding-right: 4px;
+	padding-left: 4px;
+	margin-bottom: 2px;
+}
+.body_user {
+	color: #000000;
+	font-family: ArialMT;
+	font-size: 14px;
+	font-weight: 400;
+	text-align: left;
+	padding-left: 4px;
+	padding-top: 5px;
+	opacity: .8;
+}
+.body_user_1 {
+	color: #999999;
+	font-family: ArialMT;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 17px;
+	text-align: left;
+	padding-left: 4px;
+}
+.color-flag-recruite{
+	color: #A0BA82;
+}
+
+.box_profile_tn{
+	text-align: center;
+	display: table; 
+	height: 100%;
+	margin-top: 3%;
+}
+.profile_tn{
+	display: table-cell;
+	vertical-align: middle;
+}
+.profile_tn > img{
+	width: 60px; 
+	height: 60px;
+}
+.profile_tn > p{
+	text-align: center;
+	padding-top: 8px;
+}
+.page_header{
+	background: #5FA2DD;
+	min-height: 100px;
+	padding: 10px;
+	padding-left: 25px;
+}
+.logo_as{
+	margin-top: 10px; 
+}
+.logo_as >img{
+	width: 40px;
+}
+.logo_as >label{
+	font-size : 20px;
+	font-weight: 400;
+	color: #fff;
+	opacity: .7;
+}
+.header_title{
+	font-weight: 700;
+	font-size: 26px;
+	color: #fff;
+	margin-top: 10px;
+}
+.fa-close{
+	color: #fff;
+	margin-right: 15px;
+	font-size: 20px;
+}
+.page_header_profile{
+	background: #EFF5FB;
+	min-height: 100px;
+	padding-left: 25px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	font-size: 16px;
+	font-weight: 400;
+}
+.header_pro{
+	opacity: .7;
+}
+.body_as{
+	background: #fff;
+	padding: 5px 25px 10px 35px;
+	border: 1px solid #f8f8f8;
+}
+.btn_as{
+	float: right;
+	margin-right: 25px;
+	margin-top: 10px;
+}
+.btn_as >button{
+	width: 35px;
+	height: 35px;
+	background: #F6F6F6;
+	border: #E4E4E4;
+}
+.btn_as >button >i.fa-trash-o{
+	color: #E15B6C;
+}
+.btn_as >button >i.fa-lock{
+	color: #F8A762;
+}
+.btn_as >button >i.fa-print{
+	color: #ADB3B8;
+}
+.desc_as{
+	width: 100%;
+	font-size: 16px;
+}
+.btn_start{
+	background: #5FA2DD;
+	color: #fff;
+	width: 130px;
+	font-size: 16px;
+}
+.time_as{
+	float: right;
+}
+.time_as > p >span{
+	color: #005AA6;
+	font-size: 26px;
+}
+.title_ques{
+	font-size: 20px;
+	font-weight: 400;
+	margin-top: 20px;
+}
+.question_as{
+	margin-top: 20px;
+}
+.question_as > label{
+	font-size: 16px;
+}
+.answer_as > div{
+	margin-bottom: 10px;
+	font-size: 16px;
+}
+.checkbox-inline >input{
+	margin-top: 6px !important;
+}
+.footer_as{
+	min-height: 70px;
+	border: 1px solid #f6f6f6;
+}
+.footer_as > div{
+	float: right;
+	padding: 15px;
+}
+.titleAppoint{
+	width: 100%;
+}
+.manage_pv{
+	margin-top: 8px;
+}
+.manage_pv >div >img{
+	width: 30px; 
+	height: 30px;
+}
+.manage_pv > span{
+	text-align: center;
+	padding-top: 8px;
+}
+.padding_0{
+	padding-left: 0;
+	padding-right: 0;
+}
+.margin_top_15{
+	margin-top: 15px;
+}
+.border_left_ddd{
+	border-left: 1px solid #ddd;
+}
+.paginate {
+	line-height: 1; 
+	margin-top: -51px;
+}
+.pagination-page{
+    margin-bottom:20px;
+    /*float:left;*/
+    /*width:100%;*/
+    display: inline-block;
+}
+.pagination-page a,
+.pagination-page strong{
+    float:left;
+    min-width:30px;
+    padding:0px 5px;
+    height:30px;
+    text-align:center;
+    line-height:30px;
+    border:solid 1px #ddd;
+    border-right:none;
+    font-size:12px;
+}
+.pagination-page a:last-child,
+.pagination-page strong:last-child{
+    border-right:solid 1px #ddd;
+}
+.pagination-page strong{
+    background:#5fade0;
+    color:#FFF;
+    border-color:#5fade0;
+}
+.pagination-page a:hover{
+    background:#f5f5f6
+}
