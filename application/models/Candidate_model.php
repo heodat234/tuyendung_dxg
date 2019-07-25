@@ -141,4 +141,23 @@ class Candidate_model extends CI_Model{
         $this->db->where($match);
         return $this->db->get()->row_array();
     }
+
+    function first_row($table = '' , $where = '', $select='', $order = '')
+    {
+        $this->db->select($select);
+        $this->db->where($where);
+        if($order != '') $this->db->order_by($order,'desc');
+        return $this->db->get($table)->first_row('array');
+    }
+
+    public function yearexperirence($candidateid)
+    {
+        $kinhnghiem = $this->first_row('canexperience',array('candidateid' => $candidateid),'DATEDIFF (year, min(canexperience.datefrom), GETDATE()) as namkm','');
+        if($kinhnghiem != null)
+        {
+            return $kinhnghiem['namkm'];
+        }else{
+            return false;
+        }
+    }
 }

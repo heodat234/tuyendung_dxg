@@ -73,27 +73,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 include"config.php";
-// $db['default'] = array(
-// 	'dsn'	=> '',
-// 	'hostname' => 'test.tavicosoft.com',
-// 	'username' => 'rct',
-// 	'password' => 'Sa@123456',
-// 	'database' => 'TVCRCT',
-// 	'dbdriver' => 'sqlsrv',
-// 	'dbprefix' => '',
-// 	'pconnect' => FALSE,
-// 	'db_debug' => FALSE,
-// 	'cache_on' => FALSE,
-// 	'cachedir' => '',
-// 	'char_set' => 'utf8',
-// 	'dbcollat' => 'utf8_general_ci',
-// 	'swap_pre' => '',
-// 	'encrypt' => FALSE,
-// 	'compress' => FALSE,
-// 	'stricton' => FALSE,
-// 	'failover' => array(),
-// 	'save_queries' => TRUE
-// );
+$db['default'] = array(
+	'dsn'	=> '',
+	'hostname' => 'test.tavicosoft.com',
+	'username' => 'rct',
+	'password' => 'Sa@123456',
+	'database' => 'TVCRCT',
+	'dbdriver' => 'sqlsrv',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => FALSE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
 $db['sqlsvr12'] = array(
 	'dsn'	=> '',
 	'hostname' => '10.10.1.105/dxgsqlprincipal',
@@ -115,26 +115,5 @@ $db['sqlsvr12'] = array(
 	'stricton' => FALSE,
 	'failover' => array(),
 	'save_queries' => TRUE
-);
-$db['default'] = array(
-    'dsn'   => '',
-    'hostname' => 'localhost\sqlexpress,1433',
-    'username' => 'sa',
-    'password' => 'Heodat2304',
-    'database' => 'DXG',
-    'dbdriver' => 'sqlsrv',
-    'dbprefix' => '',
-    'pconnect' => FALSE,
-    'db_debug' => FALSE,
-    'cache_on' => FALSE,
-    'cachedir' => '',
-    'char_set' => 'utf8',
-    'dbcollat' => 'utf8_general_ci',
-    'swap_pre' => '',
-    'encrypt' => FALSE,
-    'compress' => FALSE,
-    'stricton' => FALSE,
-    'failover' => array(),
-    'save_queries' => TRUE
 );
 ?>

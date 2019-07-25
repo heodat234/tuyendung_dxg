@@ -362,19 +362,19 @@ class User extends CI_Controller {
 			"data"    => []
 		);
         // var_dump($this->Data_model->count_row('operator',array('email'=>$push['email'],'operatorid !='=>$post['operatorid']));exit;
-        if ($this->Data_model->count_row('operator',array('displayname'=>$push['displayname'],'operatorid !='=>$post['operatorid'])) > 0) {
-            $resp = array(
-                "success" => false,
-                "message" => "Tên đăng nhập đã tồn tại",
-                "data"    => -1
-            );
-        }else if ($this->Data_model->count_row('operator',array('email'=>$push['email'],'operatorid !='=>$post['operatorid'])) >0) {
-            $resp = array(
-                "success" => false,
-                "message" => "Địa chỉ email đã tồn tại",
-                "data"    => -1
-            );
-        }else{
+        // if ($this->Data_model->count_row('operator',array('displayname'=>$push['displayname'],'operatorid !='=>$post['operatorid'])) > 0) {
+        //     $resp = array(
+        //         "success" => false,
+        //         "message" => "Tên đăng nhập đã tồn tại",
+        //         "data"    => -1
+        //     );
+        // }else if ($this->Data_model->count_row('operator',array('email'=>$push['email'],'operatorid !='=>$post['operatorid'])) >0) {
+        //     $resp = array(
+        //         "success" => false,
+        //         "message" => "Địa chỉ email đã tồn tại",
+        //         "data"    => -1
+        //     );
+        // }else{
     		$rslt = $this->M_data->update('operator',array('operatorid'=>$post['operatorid']),$push);
 
     		if (isset($f['avatar'])&&!empty($f['avatar'])&&$rslt) {
@@ -394,7 +394,7 @@ class User extends CI_Controller {
     		if ($check==1) {
     			$this->session->unset_userdata('user_admin');
     		}
-        }
+        // }
 		echo json_encode($resp);
 	}
 

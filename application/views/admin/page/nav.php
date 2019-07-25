@@ -58,11 +58,11 @@
                               </a>
                               <?php
                                     if ($checknemu == NULL) {
-                                        $checknemu = ['gender' => '','placeofbirth' => '' , 'agefrom'=> '' , 'ageto' => '', 'heightto' => '', 'heightfrom'=> '',  'weightto' => '', 'weightfrom'=> '' , 'ethnic' => '', 'nationality' => '' , 'cityori' => '' , 'citycurr' => '' , 'district' => '' , 'currbenefitto' => '' , 'currbenefitfrom' => '' , 'desbenefitto' => '' , 'desbenefitfrom' => '' , 'experfrom' => '' , 'experto' => '', 'knowledge' => '' , 'language' => '' , 'software' => '' , 'profilesrc' => '', 'maritalstatus' => '' , 'talentfrom' => '' , 'talentto' => '' , 'updatefrom' => '' , 'updateto' => '' ,  'blocked' => '' , 'rateto' => '' , 'ratefrom' => '' , 'tag' => '' , 'tagrandom' => '' , 'sort' => ''];
+                                        $checknemu = ['gender' => '','placeofbirth' => '' , 'agefrom'=> '' , 'ageto' => '', 'heightto' => '', 'heightfrom'=> '',  'weightto' => '', 'weightfrom'=> '' , 'ethnic' => '', 'nationality' => '' , 'cityori' => '' , 'citycurr' => '' , 'district' => '' , 'currbenefitto' => '' , 'currbenefitfrom' => '' , 'desbenefitto' => '' , 'desbenefitfrom' => '' , 'experfrom' => '' , 'experto' => '', 'knowledge' => '' , 'language' => '' , 'software' => '' , 'profilesrc' => '', 'maritalstatus' => '' , 'talentfrom' => '' , 'talentto' => '' , 'updatefrom' => '' , 'updateto' => '' ,  'blocked' => '' , 'rateto' => '' , 'ratefrom' => '' , 'tag' => '' , 'tagrandom' => '' , 'sort' => '','check_history' => ''];
                                     }
                               // var_dump($checknemu);
                                ?>
-                              <div id="dropdown-lvl1" class="panel-collapse collapse white <?php echo ($checknemu != NULL && $checknemu['rateto'] != '' || $checknemu['ratefrom'] != '' || $checknemu['talentto'] != '' || $checknemu['talentfrom'] != '' || $checknemu['blocked'] != '' || $checkTrung == '1' )? "in" : ""; ?>">
+                              <div id="dropdown-lvl1" class="panel-collapse collapse white <?php echo ($checknemu != NULL && $checknemu['rateto'] != '' || $checknemu['ratefrom'] != '' || $checknemu['talentto'] != '' || $checknemu['talentfrom'] != '' || $checknemu['blocked'] != '' || $checkTrung == '1' || $checknemu['check_history'] != '' )? "in" : ""; ?>">
                                   <!-- <div class="checkbox div-label-check" >
                                      <label><input type="checkbox" value="">Tất cả tiêu chí quản lý</label>
                                  </div> -->
@@ -87,9 +87,9 @@
                                      <input type="text" name="" class="div-input tiemnang thoigian" style="margin-right: 10px" placeholder="Từ" id="update_tu" value="<?php echo ($checknemu['updatefrom'] != '')? date_format(date_create($checknemu['updatefrom']),"d-m-Y") : "";?>" >
                                      <input type="text" name="" class="div-input tiemnang thoigian" placeholder="Đến" id="update_den" value="<?php echo ($checknemu['updateto'] != '')? date_format(date_create($checknemu['updateto']),"d-m-Y") : "";?>" >
                                  </div>
-                                 <!-- <div class="checkbox div-label-check" >
-                                     <label><input type="checkbox" value="">Hồ sơ có lịch sử tương tác (6)</label>
-                                 </div> -->
+                                    <div class="checkbox div-label-check" >
+                                        <label><input type="checkbox" value="" id="chk_history" onchange="filter()" <?php echo ($checknemu['check_history'] != '')? "checked" : "";?>>Hồ sơ có lịch sử tương tác</label>
+                                    </div>
                               </div>
                           </li>
 
@@ -653,7 +653,7 @@
           $('#check_filter').prop('checked', true);
         }
       }
-      var value = {'gender' : '','placeofbirth' : '' , 'agefrom': '' , 'ageto' : '', 'heightto' : '', 'heightfrom': '',  'weightto' : '', 'weightfrom': '' , 'ethnic' : '', 'nationality' : '' , 'cityori' : '' , 'citycurr' : '' , 'district' : '' , 'currbenefitto' : '' , 'currbenefitfrom' : '' , 'desbenefitto' : '' , 'desbenefitfrom' : '' , 'experfrom' : '' , 'experto' : '', 'knowledge' : '' , 'language' : '' , 'software' : '' , 'profilesrc' : '', 'maritalstatus' : '' , 'talentfrom' : '' , 'talentto' : '' , 'updatefrom' : '' , 'updateto' : '' ,  'blocked' : '' , 'rateto' : '' , 'ratefrom' : '' , 'tag' : '' , 'tagrandom' : '' , 'sort' : ''};
+      var value = {'gender' : '','placeofbirth' : '' , 'agefrom': '' , 'ageto' : '', 'heightto' : '', 'heightfrom': '',  'weightto' : '', 'weightfrom': '' , 'ethnic' : '', 'nationality' : '' , 'cityori' : '' , 'citycurr' : '' , 'district' : '' , 'currbenefitto' : '' , 'currbenefitfrom' : '' , 'desbenefitto' : '' , 'desbenefitfrom' : '' , 'experfrom' : '' , 'experto' : '', 'knowledge' : '' , 'language' : '' , 'software' : '' , 'profilesrc' : '', 'maritalstatus' : '' , 'talentfrom' : '' , 'talentto' : '' , 'updatefrom' : '' , 'updateto' : '' ,  'blocked' : '' , 'rateto' : '' , 'ratefrom' : '' , 'tag' : '' , 'tagrandom' : '' , 'sort' : '', 'check_history' : ''};
        if($('#chk_chuacogd').is(':checked'))
        {
           value['maritalstatus'] = 'S';
@@ -904,6 +904,10 @@
        {
           value['sort'] = $('#chonsx').text();
        }
+        if($('#chk_history').is(':checked'))
+        {
+          value['check_history'] = 'Y';
+        }
         $('.candidate-load').empty();
         $.ajax({
           url: '<?php echo base_url()?>admin/handling/filter_candidate',

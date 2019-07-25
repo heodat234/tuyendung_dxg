@@ -223,9 +223,14 @@ class Handling extends CI_Controller {
 	public function lichsu_detail($campaignid)
 	{
 		$this->datamenu['ls'] = "active";
-		$sql = "SELECT * FROM reccampaign WHERE campaignid = $campaignid ";
-		$m_data['campaigns'] = $this->Candidate_model->select_sql($sql)[0];
 
+        $candidateid = $this->session->userdata('user')['candidateid'];
+		$sql = "SELECT a.*, b.position,b.expdate FROM profilehistory a LEFT JOIN reccampaign b ON a.campaignid = b.campaignid WHERE a.campaignid = $campaignid AND a.candidateid = $candidateid";
+		$m_data['campaigns'] = $this->Candidate_model->select_sql($sql)[0];
+        // echo "<pre>";
+        // print_r($m_data['campaigns']);
+        // echo "</pre>";
+        // exit();
 		$this->data['menu'] = $this->load->view('home/menu',$this->datamenu,true);
 		$this->data['temp'] = $this->load->view('page/lichsu_detail',$m_data,true);
 		$this->load->view('home/master',$this->data);
@@ -333,20 +338,22 @@ class Handling extends CI_Controller {
  	public function update_profile()
  	{
  		$frm = $this->input->post();
-		$data['lastname'] = $frm['ten'];
-		$data['firstname'] = $frm['ho'];
-		$data['dateofbirth'] =  date("Y-m-d", strtotime($frm['ngaysinh1']));
-		$data['gender'] = $frm['gender'];
-		$data['placeofbirth'] = $frm['noisinh'];
-		$data['ethnic'] = $frm['ethnic'];
-		$data['nationality'] = $frm['quoctich'];
-		$data['nativeland'] = $frm['nativeland'];
-		$data['religion'] = $frm['religion'];
-		$data['height'] = $frm['chieucao'];
-		$data['weight'] = $frm['cannang'];
-		$data['idcard'] = $frm['cmnd'];
-		$data['dateofissue'] =  date("Y-m-d", strtotime($frm['dateofissue']));
-		$data['placeofissue'] = $frm['placeofissue'];
+		$data['lastname']         = trim($frm['ten']);
+		$data['firstname']        = trim($frm['ho']);
+        $data['name']             = $data['firstname'].' '.$data['lastname'];
+		$data['dateofbirth']      =  date("Y-m-d", strtotime($frm['ngaysinh1']));
+		$data['gender']           = $frm['gender'];
+		$data['placeofbirth']     = $frm['noisinh'];
+		$data['ethnic']           = $frm['ethnic'];
+		$data['nationality']      = $frm['quoctich'];
+		$data['nativeland']       = $frm['nativeland'];
+		$data['religion']         = $frm['religion'];
+        $data['maritalstatus']    = $frm['maritalstatus'];
+		$data['height']           = $frm['chieucao'];
+		$data['weight']           = $frm['cannang'];
+		$data['idcard']           = $frm['cmnd'];
+		$data['dateofissue']      =  date("Y-m-d", strtotime($frm['dateofissue']));
+		$data['placeofissue']     = $frm['placeofissue'];
 
 		$this->Login_model->updateCandidate($this->session->userdata('user')['candidateid'],$data);
 	     // header('location:hoso_canhan');
@@ -357,7 +364,15 @@ class Handling extends CI_Controller {
  	{
  		$frm = $this->input->post();
 		$data['email'] = $frm['email'];
-		$data['telephone'] = ','.$frm['dt1'].",".$frm['dt2'].',';
+
+        if (trim($frm['dt1']) == '' && trim($frm['dt2']) == '') {
+            $data['telephone'] = '';
+        }else if (trim($frm['dt1']) == '' && trim($frm['dt2']) != '') {
+            $data['telephone'] = ','.$frm['dt2'].',';
+        }else{
+            $data['telephone'] = ','.$frm['dt1'].',';
+        }
+		// $data['telephone'] = ','.$frm['dt1'].",".$frm['dt2'].',';
 		$data['emergencycontact'] = $frm['dtkhancap'];
 		$this->Login_model->updateCandidate($this->session->userdata('user')['candidateid'],$data);
 		$this->cache->delete('candidate');

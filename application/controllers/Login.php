@@ -150,12 +150,12 @@ class Login extends CI_Controller {
 		$a_UserInfo['roleid'] 		= 1;
 		$a_UserInfo['idcard'] 		= $frm['cmnd'];
 		$a_UserInfo['password']		= md5($frm['pass']);
-		$a_UserInfo['operatorname'] = $frm['firstname'];
+		$a_UserInfo['operatorname'] = $frm['lastname'];
 		$data['email'] = $frm['email'];
 		$data['idcard'] = $frm['cmnd'];
 		$data['firstname'] = $frm['firstname'];
 		$data['lastname'] = $frm['lastname'];
-		$data['name'] = trim($frm['lastname'])." ".trim($frm['firstname']);
+		$data['name'] = trim($frm['firstname'])." ".trim($frm['lastname']);
 		$data['gender'] = $frm['gender'];
 		$data['dateofbirth'] =  date("Y-m-d", strtotime($frm['birthday'] ));
 		$data['profilesrc'] = "Web portal";

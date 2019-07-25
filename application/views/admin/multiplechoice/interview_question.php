@@ -1626,10 +1626,8 @@
 					  	</div>
 					</div>
 				</div>
-                <?php if($status == 'C'){ ?>
-                    <p class="colorcyan">Tất cả các câu trả lời đã được lưu.</p>
-                    <p class="colorcyan">Xin chân thành cảm ơn!!! </p>
-                <?php }else{ ?>
+
+
 				<form id="form_ans">
 					<input type="hidden" name="interviewerid" value="<?php echo $interviewerid ?>">
 					<input type="hidden" name="interviewid" value="<?php echo $interviewid ?>">
@@ -1676,11 +1674,10 @@
         		</div>
         		<div class="footer_as">
         			<div>
-        				<button type="submit" class="btn btn_start" id="btn_end"><i></i> Kết thúc</button>
+        				<button type="button" class="btn btn_start" id="btn_end"><i></i> Kết thúc</button>
         			</div>
         		</div>
         	</form>
-        <?php } ?>
 	</section>
 </div>
 
@@ -1757,17 +1754,18 @@
 	$(document).ready(function() {
 		$('.select2').select2();
 	});
-	$('#form_ans').on('submit',function(){
-		var cur = $(this);
+	$('#btn_end').on('click',function(){
+		// alert('test');
+		var cur = $('#form_ans');
 		var button = $('#btn_end');
 		var icon   = button.find('i');
-		console.log(button);
+		// console.log(button);
 		icon.addClass('fa fa-spin fa-spinner');
 
-		var form = new FormData($(this)[0]);
-		for(let[key,value] of form.entries()){
-			console.log(key+'->'+value);
-		}
+		var form = new FormData($('#form_ans')[0]);
+		// for(let[key,value] of form.entries()){
+		// 	console.log(key+'->'+value);
+		// }
 		$.ajax({
 			url: '<?php echo base_url("admin/multiplechoice/save_answer")?>',
 			type: 'POST',
@@ -1778,7 +1776,7 @@
           	processData:false,
 		})
 		.done(function(e) {
-			console.log(e);
+			// console.log(e);
 			//alert("Tất cả các câu trả lời đã được lưu.");
 			cur.before('<p class="colorcyan">Tất cả các câu trả lời đã được lưu.</p>\
 					<p class="colorcyan">Xin chân thành cảm ơn!!! </p>');
@@ -1789,7 +1787,7 @@
 			icon.removeClass();
 			console.log(error);
 		})
-		return false;
+		// return false;
 	});
 	function loadAppointment(interviewid) {
 		window.open('<?php echo base_url() ?>admin/multiplechoice/makingAppointment/'+interviewid);

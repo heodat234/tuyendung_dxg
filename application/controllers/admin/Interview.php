@@ -963,8 +963,19 @@ class Interview extends CI_Controller {
         $this->Data_model->insert('asmtanswer',$data);
 
         $interviewerid = $frm['interviewerid'];
+        $new_date       = '';
         if ($interviewerid == '') {
-            $mailtemplate = $this->Mail_model->select('mailprofile',array('mailprofileid' => 8));
+            if($frm['check'] == 1){
+                $mailtemplate = $this->Mail_model->select('mailprofile',array('mailprofileid' => 8));
+            }else if($frm['check'] == 2){
+                $mailtemplate = $this->Mail_model->select('mailprofile',array('mailprofileid' => 21));
+                $date       =  date_format(date_create($data['ansdatetime']),"d/m/Y");
+                $from       =  date_format(date_create($data['ansdatetime']),"H:i");
+                $to         =  date_format(date_create($data['ansdatetime2']),"H:i");
+                $new_date   = $from.' → '.$to.' '.$date;
+            }else{
+                $mailtemplate = $this->Mail_model->select('mailprofile',array('mailprofileid' => 22));
+            }
         }else{
             $mailtemplate = $this->Mail_model->select('mailprofile',array('mailprofileid' => 9));
         }
@@ -1003,8 +1014,14 @@ class Interview extends CI_Controller {
         foreach ($manage as $key) {
             $match                      = array('operatorid' => $key);
             $operator                   = $this->Candidate_model->selectBySelect('*','operator',$match)[0];
-            $chuoi_tim              = array('[Tên Ứng viên]','[Tên]','[Vị trí]');
-            $chuoi_thay_the         = array($name,$lastname,$position);
+            if($frm['check'] == 2 && $interviewerid == ''){
+                $chuoi_tim              = array('[Tên Ứng viên]','[Tên]','[Vị trí]','[Ngày giờ phỏng vấn]');
+                $chuoi_thay_the         = array($name,$lastname,$position,$new_date);
+            }else{
+                $chuoi_tim              = array('[Tên Ứng viên]','[Tên]','[Vị trí]');
+                $chuoi_thay_the         = array($name,$lastname,$position);
+            }
+
             $mail['emailsubject']   = str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($subject));
             $mail['emailbody']      = str_replace($chuoi_tim,$chuoi_thay_the, html_entity_decode($body));
             $mail['toemail']        = $operator['email'];

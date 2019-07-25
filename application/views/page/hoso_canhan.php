@@ -304,12 +304,29 @@
             <label for="inputPassword" class="col-sm-4 col-form-label">NGUYÊN QUÁN (NATIVELAND)</label>
             <div class="col-sm-6">
                <input class="kttext" type="text" placeholder="" name="nativeland" value="<?php echo $candidate['nativeland'] ?>">
+                <!-- <select class="seletext js-example-basic-single" name="nativeland">
+                    <option value="0" >Chọn tỉnh thành</option>
+                <?php foreach ($city as $key ) { ?>
+                    <option value="<?php echo $key['name'] ?>" <?php if($key['name'] == $candidate['nativeland']) echo "selected";?> ><?php echo $key['name'] ?></option>
+                  <?php } ?>
+                </select> -->
             </div>
           </div>
           <div class="form-group row kcform-more">
             <label for="inputPassword" class="col-sm-4 col-form-label">TÔN GIÁO (RELIGION)</label>
             <div class="col-sm-6">
                <input class="kttext" type="text" placeholder="" name="religion" value="<?php echo $candidate['religion'] ?>">
+            </div>
+          </div>
+           <div class="form-group row kcform-more">
+            <label for="inputPassword" class="col-sm-4 col-form-label">TÌNH TRẠNG HÔN NHÂN (MARITAL STATUS)</label>
+            <div class="col-sm-6">
+                <select class="seletext js-example-basic-single" name="maritalstatus">
+                    <option value="S" <?php echo ($candidate['maritalstatus'] == 'S')? 'selected' : '' ?> >Độc thân</option>
+                    <option value="M" <?php echo ($candidate['maritalstatus'] == 'M')? 'selected' : '' ?> >Đã kết hôn</option>
+                    <option value="W" <?php echo ($candidate['maritalstatus'] == 'W')? 'selected' : '' ?> >Góa</option>
+                    <option value="D" <?php echo ($candidate['maritalstatus'] == 'D')? 'selected' : '' ?> >Ly dị</option>
+                </select>
             </div>
           </div>
           <div class="form-group row kcform-more">
@@ -443,7 +460,7 @@
             <label for="inputPassword" class="col-sm-4 col-form-label">ĐIỆN THOẠI CÁ NHÂN (PESONAL CONTACT)</label>
             <div class="col-sm-8">
                <?php
-                    $pizza  = $candidate['telephone'];
+                    $pizza  = trim($candidate['telephone'],",");
                     $pieces = explode(",", $pizza);
                     $p1 = isset($pieces[0])? $pieces[0] : "" ;
                     $p2 = isset($pieces[1])? $pieces[1] : "" ;

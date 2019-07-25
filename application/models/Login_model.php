@@ -1,25 +1,25 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Login_model extends CI_Model{
-	
+
 	/* Gán tên bảng cần xử lý*/
 	private $table = 'operator';
-	// 
+	//
 	function __construct(){
         parent::__construct();
         $this->load->database();
         $this->primaryKey = 'id';
-    } 
+    }
     public function insert_id()
     {
         $query = 'SELECT SCOPE_IDENTITY() AS last_id';
- 
+
         $query = $this->db->query($query);
         $query = $query->row();
         return $query->last_id;
     }
     //kiểm tra thông tin đăng nhập thường
     function a_fCheckUser( $username, $pass ){
-    	$sql = "SELECT * FROM operator where (( email = '$username' OR displayname = '$username') and password ='$pass' and candidateid != 0)";
+    	$sql = "SELECT * FROM operator where (( email = '$username' OR displayname = '$username') and password ='$pass' and candidateid != 0 and status != 'C')";
             $query = $this->db->query($sql)->result_array();
     	if(count($query) >0){
     		return $query;
@@ -83,7 +83,7 @@ class Login_model extends CI_Model{
         $a_User =   $this->db->insert($this->table,$data);
         return $this->insert_id();
     }
-    //sửa tài khoản 
+    //sửa tài khoản
     public function editUser($data)
     {
         $a_User =   $this->db->where('id', $data['id'])
@@ -171,7 +171,7 @@ class Login_model extends CI_Model{
             $this->db->order_by("candidateid", "desc");
             $this->db->limit(1);
             $this->db->from('candidate');
-            return $this->db->get()->row_array(); 
+            return $this->db->get()->row_array();
         }
         public function checktagsprofile($match)
         {
@@ -180,5 +180,5 @@ class Login_model extends CI_Model{
             $this->db->where($match);
             return $this->db->get()->row_array();
         }
-     
+
 }

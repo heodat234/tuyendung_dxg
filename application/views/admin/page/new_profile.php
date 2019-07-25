@@ -212,7 +212,7 @@
 									            <br><br>
 												<div class="width100">
 													<label for="text" class="width20 col-xs-3 label-profile">Hồ sơ tải lên</label>
-													<div class="width80 col-xs-9 padding-lr0"">
+													<div class="width80 col-xs-9 padding-lr0">
 									                    <div class="col-sm-2">
 									                    	<label id="browsebutton1" class="btn btn-default input-group-addon btn-tailen" for="my-file-selector1" style="background-color:white">
 										                        <input id="my-file-selector1" name="fileCV" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;">
@@ -294,6 +294,18 @@
 													</div>
 												</div>
 												<br><br>
+                                                <div class="width100">
+                                                    <label for="text" class="width20 col-xs-3 label-profile">Tình trạng hôn nhân</label>
+                                                    <div class="col-xs-3 width30 padding-lr0">
+                                                        <select class="textbox2 js-example-basic-single" name="maritalstatus">
+                                                            <option value="S" <?php echo (isset($can_detail['maritalstatus']) && $can_detail['maritalstatus'] == 'S')? 'selected' : '' ?> >Độc thân</option>
+                                                            <option value="M" <?php echo (isset($can_detail['maritalstatus']) && $can_detail['maritalstatus'] == 'M')? 'selected' : '' ?>>Đã kết hôn</option>
+                                                            <option value="W" <?php echo (isset($can_detail['maritalstatus']) && $can_detail['maritalstatus'] == 'W')? 'selected' : '' ?>>Góa</option>
+                                                            <option value="D" <?php echo (isset($can_detail['maritalstatus']) && $can_detail['maritalstatus'] == 'D')? 'selected' : '' ?>>Ly dị</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <br><br>
 												<div class="width100">
 													<label for="text" class="width20 col-xs-3 label-profile">Chiều cao (Cm)</label>
 													<div class="col-xs-3 width30 padding-lr0">

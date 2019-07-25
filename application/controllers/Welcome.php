@@ -20,20 +20,7 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
-    //     $serverName = "localhost";
-    // $connectionOptions = array(
-    //     "Database" => "DXG",
-    //     "Uid" => "sa",
-    //     "PWD" => "Heodat2304"
-    // );
-    // //Establishes the connection
-    // $conn = sqlsrv_connect($serverName, $connectionOptions);
-    // if($conn)
-    //     var_dump($conn);
-		$otherdb = $this->load->database('mssqlDXG', TRUE);
-
-        $sql = "SELECT * FROM [DXG].[dbo].[candidate] ";
-        $query = $otherdb->query($sql)->num_rows();
-        var_dump($query);
+		phpinfo();
+		
 	}
 }

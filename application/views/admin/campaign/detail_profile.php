@@ -254,6 +254,24 @@
 						            </div>
 
 						         </div>
+                                <div class="width100 row rowedit h-auto">
+                                    <label for="text" class="width20 col-xs-4 label-profile">Tình Trạng Hôn Nhân</label>
+                                    <div class="width30 col-xs-3 padding-lr0">
+                                        <?php
+                                            $maritalstatus = "";
+                                            if(isset($candidate['maritalstatus']) && $candidate['maritalstatus'] == 'S') {
+                                                $maritalstatus = "Độc thân";
+                                            }else if(isset($candidate['maritalstatus']) && $candidate['maritalstatus'] == 'M') {
+                                                $maritalstatus = "Đã kết hôn";
+                                            }else if(isset($candidate['maritalstatus']) && $candidate['maritalstatus'] == 'W') {
+                                                $maritalstatus = "Góa";
+                                            }else if(isset($candidate['maritalstatus']) && $candidate['maritalstatus'] == 'D'){
+                                                $maritalstatus = "Ly dị";
+                                            }
+                                        ?>
+                                     <label class="fontArial colorgray labelcontent" ><?php echo $maritalstatus ?></label>
+                                    </div>
+                                </div>
 						          <div class="width100 row rowedit h-auto">
 						            <label for="text" class="width20 col-xs-3 label-profile">Dân Tộc</label>
 						            <div class="width20 col-xs-3 padding-lr0">
@@ -820,6 +838,19 @@
 						             <label for="text" class="width20 col-xs-3 label-profile">Nguyên Quán</label>
 						             <div class="col-xs-3 width30 padding-lr0">
 						             	<input type="text" name="nativeland" class="textbox2" value="<?php echo isset($candidate_noibo['nativeland'])? $candidate_noibo['nativeland'] : "";  ?>">
+                                        <!-- <select class="textbox2 js-example-basic-single" name="nativeland" style="width: 195px">
+                                             <option value="0" style="width: 195px" >Chọn tỉnh thành</option>
+                                            <?php foreach ($city as $key ) {
+                                                if( isset($candidate_noibo['nativeland']) && $key['name'] == $candidate_noibo['nativeland'] )
+                                                {
+                                            ?>
+                                            <option value="<?php echo $key['name'] ?>" selected><?php echo $key['name'] ?></option>
+                                            <?php
+                                                } else {
+                                            ?>
+                                              <option value="<?php echo $key['name'] ?>"><?php echo $key['name'] ?></option>
+                                              <?php } } ?>
+                                        </select> -->
 						             </div>
 						         </div>
 						         <br><br>
@@ -830,6 +861,18 @@
 						             </div>
 						         </div>
 						         <br><br>
+                                 <div class="width100">
+                                     <label for="text" class="width20 col-xs-3 label-profile">Tình trạng hôn nhân</label>
+                                     <div class="col-xs-3 width30 padding-lr0">
+                                        <select class="textbox2 js-example-basic-single" name="maritalstatus" style="width: 100%">
+                                            <option value="S" <?php echo (isset($candidate_noibo['maritalstatus']) && $candidate_noibo['maritalstatus'] == 'S')? 'selected' : '' ?> >Độc thân</option>
+                                            <option value="M" <?php echo (isset($candidate_noibo['maritalstatus']) && $candidate_noibo['maritalstatus'] == 'M')? 'selected' : '' ?> >Đã kết hôn</option>
+                                            <option value="W" <?php echo (isset($candidate_noibo['maritalstatus']) && $candidate_noibo['maritalstatus'] == 'W')? 'selected' : '' ?> >Góa</option>
+                                            <option value="D" <?php echo (isset($candidate_noibo['maritalstatus']) && $candidate_noibo['maritalstatus'] == 'D')? 'selected' : '' ?> >Ly dị</option>
+                                        </select>
+                                     </div>
+                                 </div>
+                                 <br><br>
 						         <div class="width100">
 						             <label for="text" class="width20 col-xs-3 label-profile">Chiều cao (Cm)</label>
 						             <div class="col-xs-3 width30 padding-lr0">
@@ -1630,7 +1673,20 @@
 							         <div class="width100">
 							             <label for="text" class="width20 col-xs-3 label-profile">Nguyên Quán</label>
 							             <div class="col-xs-3 width30 padding-lr0">
-							             	<input type="text" name="nativeland" class="textbox2" value="<?php echo isset($value_con['nativeland'])? $value_con['nativeland'] : "";  ?>">
+							             	<!-- <input type="text" name="nativeland" class="textbox2" value="<?php echo isset($value_con['nativeland'])? $value_con['nativeland'] : "";  ?>"> -->
+                                            <select class="textbox2 js-example-basic-single" name="nativeland" style="width: 195px">
+                                                 <option value="0" style="width: 195px" >Chọn tỉnh thành</option>
+                                                <?php foreach ($city as $key ) {
+                                                    if( isset($value_con['nativeland']) && $key['name'] == $value_con['nativeland'] )
+                                                    {
+                                                ?>
+                                                <option value="<?php echo $key['name'] ?>" selected><?php echo $key['name'] ?></option>
+                                                <?php
+                                                    } else {
+                                                ?>
+                                                  <option value="<?php echo $key['name'] ?>"><?php echo $key['name'] ?></option>
+                                                  <?php } } ?>
+                                            </select>
 							             </div>
 							         </div>
 							         <br><br>
@@ -1641,6 +1697,18 @@
 							             </div>
 							         </div>
 							         <br><br>
+                                     <div class="width100">
+                                         <label for="text" class="width20 col-xs-3 label-profile">Tình trạng hôn nhân</label>
+                                         <div class="col-xs-3 width30 padding-lr0">
+                                            <select class="textbox2 js-example-basic-single" name="maritalstatus" style="width: 100%">
+                                                <option value="S" <?php echo (isset($value_con['maritalstatus']) && $value_con['maritalstatus'] == 'S')? 'selected' : '' ?> >Độc thân</option>
+                                                <option value="M" <?php echo (isset($value_con['maritalstatus']) && $value_con['maritalstatus'] == 'M')? 'selected' : '' ?> >Đã kết hôn</option>
+                                                <option value="W" <?php echo (isset($value_con['maritalstatus']) && $value_con['maritalstatus'] == 'W')? 'selected' : '' ?> >Góa</option>
+                                                <option value="D" <?php echo (isset($value_con['maritalstatus']) && $value_con['maritalstatus'] == 'D')? 'selected' : '' ?> >Ly dị</option>
+                                            </select>
+                                         </div>
+                                     </div>
+                                     <br><br>
 							         <div class="width100">
 							             <label for="text" class="width20 col-xs-3 label-profile">Chiều cao (Cm)</label>
 							             <div class="col-xs-3 width30 padding-lr0">
@@ -2926,14 +2994,14 @@
 	      })
 	}
 
-	function luu_canhan($candidateid)
+	function luu_canhan(candidateid)
 	{
 		// var candidate_id = $('#candidate_noibo').val();
 		$.ajax({
 			url: '<?php echo base_url()?>admin/handling/update_canhan/'+candidateid,
 			type: 'POST',
 			dataType: 'JSON',
-			data: $('#form_canhan').serialize(),
+			data: $('#form_canhan_'+candidateid).serialize(),
 		})
 		.done(function() {
 			alert("Lưu thành công!");
@@ -2945,14 +3013,14 @@
 			console.log("complete");
 		});
 	}
-	function luu_diachi($candidateid)
+	function luu_diachi(candidateid)
 	{
 		// var candidate_id = $('#candidate_noibo').val();
 		$.ajax({
 			url: '<?php echo base_url()?>admin/handling/update_diachi/'+candidateid,
 			type: 'POST',
 			dataType: 'JSON',
-			data: $('#form_diachi').serialize(),
+			data: $('#form_diachi_'+candidateid).serialize(),
 		})
 		.done(function() {
 			alert("Lưu thành công!");

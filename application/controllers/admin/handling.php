@@ -33,12 +33,19 @@ class Handling extends CI_Controller {
         $this->sess  = $this->session->userdata('user_admin');
         $this->day       = date('Y-m-d H:i:s');
 	}
+
+    public function selectSQL()
+    {
+        $sql = $this->input->get('sql');
+        // var_dump($sql);
+        $result = $this->Campaign_model->select_sql($sql);
+        echo "<pre>";
+        print_r($result);
+        echo "</pre>";
+    }
     public function refresh()
     {
-        // session_destroy();
-        // redirect(base_url('login.html'));
-        // $pieces = explode(",",trim(',234234,55555,',','));
-        // var_dump($pieces);exit;
+
         $result = $this->Campaign_model->select_sql("SELECT candidateid,telephone FROM candidate ");
         foreach ($result as $value) {
             $temp = ','.$value['telephone'].',';
@@ -176,15 +183,93 @@ class Handling extends CI_Controller {
         $orderby    = array('colname'=>'tb.createddate','typesort'=>'desc');
         $sql                = "SELECT tb.*, operator.operatorname, document.filename FROM cancomment tb LEFT JOIN operator ON tb.createdby = operator.operatorid LEFT JOIN document ON tb.createdby = document.referencekey AND document.tablename = 'operator'  WHERE tb.candidateid = $id ORDER BY tb.createddate DESC";
         $history_cmt        = $this->Campaign_model->select_sql($sql);
-        $sql                = "SELECT tb.*, operator.operatorname, document.filename FROM profilehistory tb LEFT JOIN operator ON tb.createdby = operator.operatorid LEFT JOIN document ON tb.createdby = document.referencekey AND document.tablename = 'operator'  WHERE tb.candidateid = $id ORDER BY tb.createddate DESC";
+        $sql                = "SELECT tb.*, operator.operatorname, document.filename,ca.position as campaignname FROM profilehistory tb LEFT JOIN operator ON tb.createdby = operator.operatorid LEFT JOIN document ON tb.createdby = document.referencekey AND document.tablename = 'operator' LEFT JOIN reccampaign ca ON tb.campaignid = ca.campaignid  WHERE tb.candidateid = $id ORDER BY tb.createddate DESC";
         $history_profile        = $this->Campaign_model->select_sql($sql);
+
+
+        // history assessment
+        $join[2]            = array('table'=> 'operator c','match' =>'tb.updatedby = c.operatorid');
+        $join[3]            = array('table'=> 'asmtheader d','match' =>'tb.asmttemp = d.asmttemp');
+        $join[4]            = array('table'=> 'reccampaign','match' =>'tb.campaignid = reccampaign.campaignid');
+        $orderby1           = array('colname'=>'tb.lastupdate','typesort'=>'desc');
+        $history_profile3   = $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate, d.asmtname, d.shuffleqty, d.targetscore,reccampaign.position as campaignname',array('tb.candidateid'=>$id,'sysform !=' => 'N'),'','assessment tb',$join,'',$orderby1,'','');
+        for ($j=0; $j < count($history_profile3) ; $j++) {
+            $asmttemp = $history_profile3[$j]['asmttemp'];
+            $asmtid = $history_profile3[$j]['asmtid'];
+            $sql = "SELECT COUNT(DISTINCT section) as count_section, count(questionid) as count_question FROM asmtquestion WHERE asmttemp = '$asmttemp'";
+            $result         = $this->Campaign_model->select_sql($sql);
+            $history_profile3[$j]['count_section']      = ($result)[0]['count_section'];
+            $history_profile3[$j]['count_question']     = ($result)[0]['count_question'];
+            //answer
+            $sql = "SELECT COUNT(DISTINCT answerid) as count_answer FROM asmtanswer WHERE asmtid = '$asmtid'";
+            $result         = $this->Campaign_model->select_sql($sql);
+            $history_profile3[$j]['count_answer']       = ($result)[0]['count_answer'];
+
+            //tính điểm trả lời
+            $sql = "SELECT SUM(b.score) as total  FROM asmtanswer a LEFT JOIN asmtoption b ON a.questionid = b.questionid AND a.optionid = b.optionid WHERE a.asmtid =  '$asmtid' AND b.isright = '1'";
+            $history_profile3[$j]['score_answer']       = (int)$this->Campaign_model->select_sql($sql)[0]['total'];
+
+            //tính tổng điểm phiếu
+            $asmtid = $history_profile3[$j]['asmtid'];
+            $sql = "SELECT SUM(b.score) as total FROM genquest a LEFT JOIN asmtoption b ON a.questionid = b.questionid WHERE a.asmtid =  '$asmtid' AND b.isright = '1'";
+            $history_profile3[$j]['score_genquest']         = (int)$this->Campaign_model->select_sql($sql)[0]['total'];
+        }
+        unset($join[3]);
+        unset($join[4]);
+
+        // history interview
+        $join[3]            = array('table'=> 'recflow','match' =>'tb.roundid = recflow.roundid');
+        $join[4]            = array('table'=> 'reccampaign','match' =>'tb.campaignid = reccampaign.campaignid');
+        $history_profile4   = $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate,recflow.roundname',array('tb.candidateid'=>$id),'','interview tb',$join,'',$orderby1,'','');
+        $orderby1           = array('colname'=>'a.createddate','typesort'=>'desc');
+        for ($i=0; $i < count($history_profile4); $i++) {
+            $join1[0]       = array('table'=> "codedictionary b","match" =>"CAST(a.interviewer as nvarchar) = b.code AND b.category = 'ERP' ");
+            $join1[1]       = array('table'=> 'document c','match' =>"a.interviewer = CAST(c.referencekey as bigInt) AND c.tablename = 'operator' ");
+            $join1[2]       = array('table'=> 'assessment d','match' =>'a.inv_asmtid = d.asmtid');
+            $join1[3]       = array('table'=> 'asmtanswer e','match' =>'a.inv_asmtid = e.asmtid');
+            $history_profile4[$i]['interviewer'] = $this->Data_model->select_row_option('a.interviewer, a.inv_asmtid, a.scr_asmtid, d.status, b.ref1 as operatorname, c.filename, e.optionid, e.ansdatetime, e.ansdatetime2',array('a.interviewid'=>$history_profile4[$i]['interviewid']),'','interviewer a',$join1,'',$orderby1,'','');
+
+            $sql = "SELECT
+                b.name,
+                b.email,
+                b.imagelink,
+                c.position,
+                d.status as status_asmt,
+                e.optionid, e.ansdatetime,
+                e.ansdatetime2
+            FROM interview a
+            LEFT JOIN candidate b ON a.candidateid = b.candidateid
+            LEFT JOIN reccampaign c ON a.campaignid = c.campaignid
+            LEFT JOIN assessment d ON a.inv_asmtid = d.asmtid
+            LEFT JOIN asmtanswer e ON a.inv_asmtid = e.asmtid
+            WHERE a.interviewid = ".$history_profile4[$i]['interviewid'];
+
+            $result = $this->Campaign_model->select_sql($sql);
+            $history_profile4[$i]['interview_his'] = $result[0];
+        }
+        unset($join[3]);
+        unset($join[4]);
+
+        $join[3]            = array('table'=> 'assessment d','match' =>'tb.off_asmtid = d.asmtid');
+        $join[4]            = array('table'=> 'asmtanswer e','match' =>'tb.off_asmtid = e.asmtid');
+        $join[5]            = array('table'=> 'reccampaign','match' =>'tb.campaignid = reccampaign.campaignid');
+        $history_profile5   = $this->Data_model->select_row_option('tb.*, operator.operatorname, document.filename, c.operatorname as nameupdate,d.status, e.optionid, e.anstext,reccampaign.position as campaignname',array('tb.candidateid'=>$id),'','offer tb',$join,'',$orderby,'','');
+        unset($join[3]);
+        unset($join[4]);
+        unset($join[5]);
+
+        // echo "<pre>";
+        // print_r($history_profile4);
+        // echo "</pre>";exit;
+
+
         //mail
         if ($mail != '') {
             $history_profile1   = $this->Data_model->select_row_option('tb.emailsubject,tb.mailid, tb.createddate, tb.isshare, operator.operatorname, document.filename,document.subject',array('tb.toemail'=>$mail),'','mailtable tb',$join,'',$orderby,'','');
-
-            $this->data2['history'] = array_merge($history_cmt, $history_profile, $history_profile1);
+            // $this->data2['history'] = array_merge($this->data2['history'], $history_profile1);
+            $this->data2['history'] = array_merge($history_cmt, $history_profile, $history_profile1, $history_profile3,$history_profile4,$history_profile5);
         }else{
-            $this->data2['history'] = array_merge($history_cmt, $history_profile);
+            $this->data2['history'] = array_merge($history_cmt, $history_profile,$history_profile3,$history_profile4,$history_profile5);
         }
         // var_dump($history_profile1);exit;
         function cmp($a, $b) {
@@ -256,7 +341,7 @@ class Handling extends CI_Controller {
             $this->data2['tags_noibo']          = $this->Candidate_model->join_tag($id_mergewith);
             $this->data2['tagstrandom_noibo']   = $this->Candidate_model->join_tag_random($id_mergewith);
             $this->data2['vt_noibo']            = $vt1['position'].' - '.$vt1['company'];
-            // var_dump($this->data2['document_noibo']);exit;
+            // var_dump($this->data2['candidate_noibo']);exit;
             if ($id_mergewith != Null) {
                 $sql0 = "SELECT DISTINCT a.lastupdate as a, b.lastupdate as b, c.lastupdate as c, d.lastupdate as d, f.lastupdate as f, g.lastupdate as g, h.lastupdate as h, j.lastupdate as j,e.lastupdate as e
                 FROM candidate a
@@ -668,6 +753,11 @@ class Handling extends CI_Controller {
               break; }
         }
 
+        if($frm['check_history'] != '')
+        {
+            $where[] = "candidate.candidateid IN (SELECT tt.candidateid FROM profilehistory tt INNER JOIN (SELECT a.candidateid, MAX(a.createddate) AS MaxDateTime FROM profilehistory a LEFT JOIN recflow b ON a.roundid = b.roundid WHERE b.roundtype IN ('Offer','Recruite') AND a.candidateid NOT IN (SELECT candidateid FROM profilehistory WHERE actiontype = 'Recruite') GROUP BY a.candidateid) groupedtt ON tt.candidateid = groupedtt.candidateid AND tt.createddate = groupedtt.MaxDateTime )";
+        }
+
         $check_all = $this->input->post('check_all');
         if ($check_all != 'on') {
 
@@ -684,6 +774,8 @@ class Handling extends CI_Controller {
             $condition = 'AND '.implode('AND ', $where);
             $condition = $condition.' '.$where_before;
         } else { $condition = $where_before;}
+
+        // var_dump($condition);exit;
         if(count($join) > 0)
         {
             $jointable = implode(' ', $join);
@@ -1006,8 +1098,16 @@ class Handling extends CI_Controller {
         unset($frm['tags']);
         $tag['tagsrandom']  = $frm['tagsrandom'];
         unset($frm['tagsrandom']);
-        $frm['name']        = $frm['firstname'].' '.$frm['lastname'];
-        $frm['telephone']   = ','.$frm['phone1'].','.$frm['phone2'].',';
+        $frm['name']        = trim($frm['firstname']).' '.trim($frm['lastname']);
+
+        if (trim($frm['phone1']) == '' && trim($frm['phone2']) == '') {
+            $frm['telephone'] = '';
+        }else if (trim($frm['phone1']) == '' && trim($frm['phone2']) != '') {
+            $frm['telephone'] = ','.$frm['phone2'].',';
+        }else{
+            $frm['telephone'] = ','.$frm['phone1'].',';
+        }
+        // $frm['telephone']   = ','.$frm['phone1'].','.$frm['phone2'].',';
         // var_dump($frm['telephone']);exit;
         unset($frm['phone1']);
         unset($frm['phone2']);
@@ -1632,7 +1732,7 @@ class Handling extends CI_Controller {
             $data['mergewith']      = $frm['candidateid'];
             $data['lastname']       = $frm['lastname'];
             $data['firstname']      = $frm['firstname'];
-            $data['name']           = $frm['firstname']." ".$frm['lastname'];
+            $data['name']           = trim($frm['firstname'])." ".trim($frm['lastname']);
             $data['profilesrc']     = $frm['profilesrc'];
             $data['snid']           = $frm['snid'];
 
@@ -1736,7 +1836,7 @@ class Handling extends CI_Controller {
 
             $data['lastname']   = $frm['lastname'];
             $data['firstname']  = $frm['firstname'];
-            $data['name']       = $frm['firstname']." ".$frm['lastname'];
+            $data['name']       = trim($frm['firstname'])." ".trim($frm['lastname']);
             $data['profilesrc'] = $frm['profilesrc'];
             $data['snid']       = $frm['snid'];
             // if ($this->Candidate_model->checkMail_internal( $frm['email'], $this->toInt($id) )) {
@@ -1842,6 +1942,7 @@ class Handling extends CI_Controller {
     function update_canhan($id)
     {
         $frm = $this->input->post();
+        // var_dump($frm);exit;
         $data['dateofbirth'] = date("Y-m-d", strtotime($frm['dateofbirth']));
         $data['gender'] = $frm['gender'];
         $data['placeofbirth'] = $frm['placeofbirth'];
@@ -1849,6 +1950,7 @@ class Handling extends CI_Controller {
         $data['nationality'] = $frm['nationality'];
         $data['nativeland'] = $frm['nativeland'];
         $data['religion']   = $frm['religion'];
+        $data['maritalstatus'] = $frm['maritalstatus'];
         $data['height'] = $frm['height'];
         $data['weight'] = $frm['weight'];
         $data['dateofissue'] = date("Y-m-d", strtotime($frm['dateofissue']));
@@ -1911,8 +2013,14 @@ class Handling extends CI_Controller {
         $data1['street']    = $frm['street2'];
         $data1['addressno'] = $frm['addressno2'];
         // var_dump($data0);exit;
-
-        $data2['telephone'] = ','.$frm['phone1'].','.$frm['phone2'].',';
+        if (trim($frm['phone1']) == '' && trim($frm['phone2']) == '') {
+            $data2['telephone'] = '';
+        }else if (trim($frm['phone1']) == '' && trim($frm['phone2']) != '') {
+            $data2['telephone'] = ','.$frm['phone2'].',';
+        }else{
+            $data2['telephone'] = ','.$frm['phone1'].',';
+        }
+        // $data2['telephone'] = ','.$frm['phone1'].','.$frm['phone2'].',';
         $data2['emergencycontact'] = $frm['emergencycontact'];
 
         $match2 =  array('candidateid' => $id);

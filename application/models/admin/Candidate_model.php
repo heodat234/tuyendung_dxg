@@ -1,14 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Candidate_model extends CI_Model{
-	
+
 	function __construct(){
         parent::__construct();
         $this->load->database();
-    } 
+    }
     public function insert_id()
     {
         $query = 'SELECT SCOPE_IDENTITY() AS last_id';
- 
+
         $query = $this->db->query($query);
         $query = $query->row();
         return $query->last_id;
@@ -22,7 +22,7 @@ class Candidate_model extends CI_Model{
             return true;
         }else{ return false;}
     }
-    
+
     public function selectTableById($table,$id)
     {
         $this->db->select()->where('candidateid', $id);
@@ -142,21 +142,21 @@ class Candidate_model extends CI_Model{
             {
                 $data[$i]['tagsrandom'] = implode(", ",$a2);
             }
-            
+
             $roww = $this->db->query("select COUNT(DISTINCT campaignid) as slchiendich from profilehistory where candidateid = '".$candidate[$i]['candidateid']."'")->result_array();
             $data[$i]['count_campaign'] = $roww[0]['slchiendich'];
 
             $id = $candidate[$i]['candidateid'];
-            $sql0 = "SELECT DISTINCT a.lastupdate as a, b.lastupdate as b, c.lastupdate as c, d.lastupdate as d, f.lastupdate as f, g.lastupdate as g, h.lastupdate as h, j.lastupdate as j,e.lastupdate as e 
-                FROM candidate a 
-                Left JOIN (SELECT top 1 * FROM canaddress WHERE candidateid = $id ORDER BY lastupdate DESC) b ON a.candidateid = b.candidateid 
-                Left JOIN (SELECT top 1 * FROM canexperience WHERE candidateid = $id ORDER BY lastupdate DESC) c ON a.candidateid = c.candidateid 
-                Left JOIN (SELECT top 1 * FROM canknowledge WHERE candidateid = $id ORDER BY lastupdate DESC) d ON a.candidateid = d.candidateid 
-                Left JOIN cansocial e ON a.candidateid = e.candidateid 
-                Left JOIN (SELECT top 1 * FROM canlanguage WHERE candidateid = $id ORDER BY lastupdate DESC) f ON a.candidateid = f.candidateid 
-                Left JOIN (SELECT top 1 * FROM cansoftware WHERE candidateid = $id ORDER BY lastupdate DESC) g ON a.candidateid = g.candidateid 
-                Left JOIN (SELECT top 1 * FROM canreference WHERE candidateid = $id ORDER BY lastupdate DESC) h ON a.candidateid = h.candidateid 
-                Left JOIN (SELECT top 1 * FROM document WHERE referencekey = $id ORDER BY lastupdate DESC) j ON a.candidateid = j.referencekey AND j.tablename = 'candidate'  
+            $sql0 = "SELECT DISTINCT a.lastupdate as a, b.lastupdate as b, c.lastupdate as c, d.lastupdate as d, f.lastupdate as f, g.lastupdate as g, h.lastupdate as h, j.lastupdate as j,e.lastupdate as e
+                FROM candidate a
+                Left JOIN (SELECT top 1 * FROM canaddress WHERE candidateid = $id ORDER BY lastupdate DESC) b ON a.candidateid = b.candidateid
+                Left JOIN (SELECT top 1 * FROM canexperience WHERE candidateid = $id ORDER BY lastupdate DESC) c ON a.candidateid = c.candidateid
+                Left JOIN (SELECT top 1 * FROM canknowledge WHERE candidateid = $id ORDER BY lastupdate DESC) d ON a.candidateid = d.candidateid
+                Left JOIN cansocial e ON a.candidateid = e.candidateid
+                Left JOIN (SELECT top 1 * FROM canlanguage WHERE candidateid = $id ORDER BY lastupdate DESC) f ON a.candidateid = f.candidateid
+                Left JOIN (SELECT top 1 * FROM cansoftware WHERE candidateid = $id ORDER BY lastupdate DESC) g ON a.candidateid = g.candidateid
+                Left JOIN (SELECT top 1 * FROM canreference WHERE candidateid = $id ORDER BY lastupdate DESC) h ON a.candidateid = h.candidateid
+                Left JOIN (SELECT top 1 * FROM document WHERE referencekey = $id ORDER BY lastupdate DESC) j ON a.candidateid = j.referencekey AND j.tablename = 'candidate'
                 WHERE a.candidateid = $id ORDER BY j.lastupdate DESC";
             $query = $this->db->query($sql0)->result_array();
             rsort($query[0]);
@@ -174,7 +174,7 @@ class Candidate_model extends CI_Model{
         // echo "<pre>";
         // print_r($array);
         // echo "</pre>";exit;
-        return $array; 
+        return $array;
     }
 
     public function list_candidate_trung($candidate)
@@ -272,29 +272,29 @@ class Candidate_model extends CI_Model{
             {
                 $data[$i]['tagsrandom'] = implode(", ",$a2);
             }
-            
+
             $roww = $this->db->query("select COUNT(DISTINCT campaignid) as slchiendich from profilehistory where candidateid = '".$candidate[$i]['candidateid']."'")->result_array();
             $data[$i]['count_campaign'] = $roww[0]['slchiendich'];
 
             $id = $candidate[$i]['candidateid'];
-            $sql0 = "SELECT DISTINCT a.lastupdate as a, b.lastupdate as b, c.lastupdate as c, d.lastupdate as d, f.lastupdate as f, g.lastupdate as g, h.lastupdate as h, j.lastupdate as j,e.lastupdate as e 
-                FROM candidate a 
-                Left JOIN (SELECT top 1 * FROM canaddress WHERE candidateid = $id ORDER BY lastupdate DESC) b ON a.candidateid = b.candidateid 
-                Left JOIN (SELECT top 1 * FROM canexperience WHERE candidateid = $id ORDER BY lastupdate DESC) c ON a.candidateid = c.candidateid 
-                Left JOIN (SELECT top 1 * FROM canknowledge WHERE candidateid = $id ORDER BY lastupdate DESC) d ON a.candidateid = d.candidateid 
-                Left JOIN cansocial e ON a.candidateid = e.candidateid 
-                Left JOIN (SELECT top 1 * FROM canlanguage WHERE candidateid = $id ORDER BY lastupdate DESC) f ON a.candidateid = f.candidateid 
-                Left JOIN (SELECT top 1 * FROM cansoftware WHERE candidateid = $id ORDER BY lastupdate DESC) g ON a.candidateid = g.candidateid 
-                Left JOIN (SELECT top 1 * FROM canreference WHERE candidateid = $id ORDER BY lastupdate DESC) h ON a.candidateid = h.candidateid 
-                Left JOIN (SELECT top 1 * FROM document WHERE referencekey = $id ORDER BY lastupdate DESC) j ON a.candidateid = j.referencekey AND j.tablename = 'candidate'  
+            $sql0 = "SELECT DISTINCT a.lastupdate as a, b.lastupdate as b, c.lastupdate as c, d.lastupdate as d, f.lastupdate as f, g.lastupdate as g, h.lastupdate as h, j.lastupdate as j,e.lastupdate as e
+                FROM candidate a
+                Left JOIN (SELECT top 1 * FROM canaddress WHERE candidateid = $id ORDER BY lastupdate DESC) b ON a.candidateid = b.candidateid
+                Left JOIN (SELECT top 1 * FROM canexperience WHERE candidateid = $id ORDER BY lastupdate DESC) c ON a.candidateid = c.candidateid
+                Left JOIN (SELECT top 1 * FROM canknowledge WHERE candidateid = $id ORDER BY lastupdate DESC) d ON a.candidateid = d.candidateid
+                Left JOIN cansocial e ON a.candidateid = e.candidateid
+                Left JOIN (SELECT top 1 * FROM canlanguage WHERE candidateid = $id ORDER BY lastupdate DESC) f ON a.candidateid = f.candidateid
+                Left JOIN (SELECT top 1 * FROM cansoftware WHERE candidateid = $id ORDER BY lastupdate DESC) g ON a.candidateid = g.candidateid
+                Left JOIN (SELECT top 1 * FROM canreference WHERE candidateid = $id ORDER BY lastupdate DESC) h ON a.candidateid = h.candidateid
+                Left JOIN (SELECT top 1 * FROM document WHERE referencekey = $id ORDER BY lastupdate DESC) j ON a.candidateid = j.referencekey AND j.tablename = 'candidate'
                 WHERE a.candidateid = $id ORDER BY j.lastupdate DESC";
             $query = $this->db->query($sql0)->result_array();
             rsort($query[0]);
             $data[$i]['update'] = $query[0][0];
             // var_dump($data);exit;
         }
-        
-        return $data; 
+
+        return $data;
     }
 
     function first_row($table = '' , $where = '', $select='', $order = '')
@@ -307,9 +307,9 @@ class Candidate_model extends CI_Model{
     public function filter_table($from='', $where='', $start = '0', $limit ='100', $order = 'candidate.lastupdate desc')
     {
         $sql = "SELECT candidate.candidateid, candidate.email, candidate.idcard, candidate.name, candidate.gender, candidate.dateofbirth, candidate.height, candidate.weight, candidate.currentbenefit, candidate.desirebenefit, candidate.istalent, candidate.imagelink, candidate.profilesrc, candidate.blocked, candidate.unsubcribe, candidate.mergewith FROM candidate ".$from." WHERE candidate.mergewith = '0' AND candidate.status='A' ".$where." GROUP BY candidate.candidateid, candidate.email, candidate.idcard, candidate.name, candidate.gender, candidate.dateofbirth, candidate.height, candidate.weight, candidate.currentbenefit, candidate.desirebenefit, candidate.istalent, candidate.imagelink, candidate.profilesrc, candidate.blocked, candidate.unsubcribe,candidate.mergewith, candidate.lastupdate ORDER BY ".$order." OFFSET ".$start." ROWS FETCH NEXT ".$limit." ROWS ONLY";
-        // var_dump($sql);
+        // var_dump($sql);exit;
         $query = $this->db->query($sql);
-        
+
             if (!$query) {
                 return $this->db->error();
             }else{
@@ -320,7 +320,7 @@ class Candidate_model extends CI_Model{
     {
         $sql = "SELECT candidate.candidateid, candidate.email, candidate.name, candidate.gender, candidate.dateofbirth, candidate.height, candidate.weight, candidate.currentbenefit, candidate.desirebenefit, candidate.istalent, candidate.imagelink, candidate.profilesrc, candidate.blocked, candidate.unsubcribe, candidate.mergewith FROM candidate ".$from." WHERE candidate.candidateid NOT IN (SELECT tt.candidateid FROM profilehistory tt INNER JOIN (SELECT ph.candidateid, MAX(ph.createddate) AS MaxDateTime FROM profilehistory ph WHERE ph.campaignid = ".$campaignid." AND ph.actiontype != 'Recruite'  GROUP BY ph.candidateid) groupedtt ON tt.candidateid = groupedtt.candidateid AND tt.createddate = groupedtt.MaxDateTime) AND candidate.mergewith = '0' AND candidate.status='A' ".$where." GROUP BY candidate.candidateid, candidate.email, candidate.name, candidate.gender, candidate.dateofbirth, candidate.height, candidate.weight, candidate.currentbenefit, candidate.desirebenefit, candidate.istalent, candidate.imagelink, candidate.profilesrc, candidate.blocked, candidate.unsubcribe, candidate.mergewith, candidate.lastupdate ORDER BY ".$order." OFFSET ".$start." ROWS FETCH NEXT ".$limit." ROWS ONLY";
         $query = $this->db->query($sql);
-        
+
             if (!$query) {
                 return $this->db->error();
             }else{
@@ -331,7 +331,7 @@ class Candidate_model extends CI_Model{
     {
         $sql = "SELECT TOP 500 candidate.candidateid, candidate.email, candidate.name, candidate.gender, candidate.dateofbirth, candidate.height, candidate.weight, candidate.currentbenefit, candidate.desirebenefit, candidate.istalent, candidate.imagelink, candidate.profilesrc, candidate.blocked, candidate.unsubcribe, candidate.mergewith FROM candidate  WHERE candidate.candidateid NOT IN (SELECT tt.candidateid FROM profilehistory tt INNER JOIN (SELECT ph.candidateid, MAX(ph.createddate) AS MaxDateTime FROM profilehistory ph WHERE ph.campaignid = ".$campaignid." AND ph.actiontype != 'Recruite' AND ph.actiontype != 'Apply' GROUP BY ph.candidateid) groupedtt ON tt.candidateid = groupedtt.candidateid AND tt.createddate = groupedtt.MaxDateTime) AND candidate.candidateid IN (SELECT candidateid from profilehistory where campaignid = ".$campaignid." and actiontype = 'Apply') AND candidate.mergewith = '0' AND candidate.status='A'  GROUP BY candidate.candidateid, candidate.email, candidate.name, candidate.gender, candidate.dateofbirth, candidate.height, candidate.weight, candidate.currentbenefit, candidate.desirebenefit, candidate.istalent, candidate.imagelink, candidate.profilesrc, candidate.blocked, candidate.unsubcribe, candidate.mergewith, candidate.lastupdate ORDER BY candidate.lastupdate desc";
         $query = $this->db->query($sql);
-        
+
             if (!$query) {
                 return $this->db->error();
             }else{
@@ -345,9 +345,9 @@ class Candidate_model extends CI_Model{
         }else{
             $sql = "SELECT candidate.candidateid, candidate.email, candidate.name, candidate.gender, candidate.dateofbirth, candidate.height, candidate.weight, candidate.currentbenefit, candidate.desirebenefit, candidate.istalent, candidate.imagelink, candidate.profilesrc, candidate.blocked, candidate.unsubcribe, candidate.mergewith FROM candidate  WHERE candidate.candidateid NOT IN (SELECT candidateid from profilehistory where actiontype = 'Recruite') AND candidate.mergewith = '0' AND candidate.status='A'  GROUP BY candidate.candidateid, candidate.email, candidate.name, candidate.gender, candidate.dateofbirth, candidate.height, candidate.weight, candidate.currentbenefit, candidate.desirebenefit, candidate.istalent, candidate.imagelink, candidate.profilesrc, candidate.blocked, candidate.unsubcribe, candidate.mergewith, candidate.lastupdate ORDER BY candidate.lastupdate desc OFFSET ".$start." ROWS FETCH NEXT ".$limit." ROWS ONLY";
         }
-    
+
         $query = $this->db->query($sql);
-        
+
         if (!$query) {
             return $this->db->error();
         }else{
@@ -357,27 +357,27 @@ class Candidate_model extends CI_Model{
 
     public function list_filter($from='', $where='', $start = 0, $limit = 100, $order )
     {
-        return $this->list_candidate($this->filter_table($from, $where, $start, $limit , $order)); 
+        return $this->list_candidate($this->filter_table($from, $where, $start, $limit , $order));
     }
     public function list_filter_campaign($from='', $where='',$campaignid='', $start = '', $limit ='', $order)
     {
-        return $this->list_candidate($this->filter_table_campaign($from, $where, $campaignid, $start, $limit, $order)); 
+        return $this->list_candidate($this->filter_table_campaign($from, $where, $campaignid, $start, $limit, $order));
     }
     public function list_filter_apply($campaignid='')
     {
-        return $this->list_candidate($this->filter_campaign_apply($campaignid)); 
+        return $this->list_candidate($this->filter_campaign_apply($campaignid));
     }
     public function list_filter_recruit($check, $start = '', $limit ='')
     {
-        return $this->list_candidate($this->filter_campaign_recruit($check,$start,$limit)); 
+        return $this->list_candidate($this->filter_campaign_recruit($check,$start,$limit));
     }
     public function list_trung($from='', $where='', $start = 0, $limit = 100, $order )
     {
-        return $this->list_candidate_trung($this->filter_table($from, $where, $start, $limit , $order)); 
+        return $this->list_candidate_trung($this->filter_table($from, $where, $start, $limit , $order));
     }
     // public function selectAllCan()
-    // {   
-    //     return $this->list_candidate($this->filter_table()); 
+    // {
+    //     return $this->list_candidate($this->filter_table());
     // }
     public function InsertData($table,$data)
     {
@@ -402,7 +402,7 @@ class Candidate_model extends CI_Model{
 
             foreach ($join as $key => $value) {
                 // var_dump($value['table']);
-                $this->db->join($value['table'],$value['match'], 'LEFT');       
+                $this->db->join($value['table'],$value['match'], 'LEFT');
             }
         }
         $this->db->where($where);
@@ -428,7 +428,7 @@ class Candidate_model extends CI_Model{
     {
         $sql = "SELECT count(DISTINCT candidate.candidateid) as count from candidate $from WHERE candidate.mergewith = 0 AND candidate.status = 'A' $where ";
         $query = $this->db->query($sql);
-        
+
             if (!$query) {
                 return $this->db->error();
             }else{
@@ -464,13 +464,13 @@ class Candidate_model extends CI_Model{
                             ->where('email', $mail)
                             ->get('candidate')
                             ->row_array();
-        if($a_User != null) 
+        if($a_User != null)
         {
             if( $a_User['candidateid'] == $id)
             {
-                return false;    
-            } 
-            else 
+                return false;
+            }
+            else
             {
              return true;
             }
@@ -501,7 +501,7 @@ class Candidate_model extends CI_Model{
     {
         $sql = "SELECT count(*) as count FROM candidate ".$from." WHERE candidate.candidateid NOT IN (SELECT tt.candidateid FROM profilehistory tt INNER JOIN (SELECT ph.candidateid, MAX(ph.createddate) AS MaxDateTime FROM profilehistory ph WHERE ph.campaignid = ".$campaignid." AND ph.actiontype != 'Recruite'  GROUP BY ph.candidateid) groupedtt ON tt.candidateid = groupedtt.candidateid AND tt.createddate = groupedtt.MaxDateTime) AND candidate.status='A' ".$where." ";
         $query = $this->db->query($sql);
-        
+
             if (!$query) {
                 return $this->db->error();
             }else{
@@ -559,7 +559,7 @@ class Candidate_model extends CI_Model{
         $this->db->where('tagtransaction.tablename','candidate');
         $this->db->where('tagtransaction.categoryid','position');
         $this->db->where('tagtransaction.recordid',$id);
-        return $this->db->get()->result_array();  
+        return $this->db->get()->result_array();
     }
     public function select_sugg_tag($select,$where)
     {
@@ -570,7 +570,7 @@ class Candidate_model extends CI_Model{
         $this->db->group_by($select);
         return $this->db->get()->result_array();
     }
-    
+
     public function yearexperirence($candidateid)
     {
         $kinhnghiem = $this->first_row('canexperience',array('candidateid' => $candidateid),'DATEDIFF (year, min(canexperience.datefrom), GETDATE()) as namkm','');
