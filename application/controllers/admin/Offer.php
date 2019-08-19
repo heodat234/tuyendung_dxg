@@ -59,19 +59,48 @@ class Offer extends CI_Controller {
         if ($offerid == '') {
             exit;
         }else{
-            $sql = "SELECT a.*, candidate.name,candidate.email, candidate.idcard, candidate.dateofissue, candidate.placeofissue,candidate.dateofbirth,candidate.placeofbirth,candidate.telephone, reccampaign.position as position_campaign, canaddress.address, b.operatorname, c.filename, d.status,e.optionid, e.anstext, f.filename as avatar, g.letteroffermailtemp
+            $sql = "SELECT a.*, reccampaign.position as position_campaign, b.operatorname, c.filename, d.status,e.optionid, e.anstext, g.letteroffermailtemp
             FROM offer a
-            LEFT JOIN candidate ON a.candidateid = candidate.candidateid
             LEFT JOIN reccampaign ON a.campaignid = reccampaign.campaignid
-            LEFT JOIN canaddress ON a.candidateid = canaddress.candidateid
             LEFT JOIN operator b ON a.createdby = b.operatorid
             LEFT JOIN document c ON a.createdby = c.referencekey AND c.tablename = 'operator'
             LEFT JOIN assessment d ON a.off_asmtid = d.asmtid
             LEFT JOIN asmtanswer e ON a.off_asmtid = e.asmtid
-            LEFT JOIN document f ON a.candidateid = f.referencekey AND f.tablename = 'candidate'
             LEFT JOIN recflow g ON a.campaignid = g.campaignid AND a.roundid = g.roundid
             WHERE a.offerid = $offerid ";
             $result         = $this->Campaign_model->select_sql($sql);
+
+            $sql = "SELECT can.name,can.email,can.imagelink,can.idcard,can.dateofissue,can.placeofissue,can.dateofbirth,can.placeofbirth,can.telephone,ad.address FROM candidate can LEFT JOIN canaddress ad ON can.candidateid = ad.candidateid WHERE (can.candidateid = ".$result[0]['candidateid']." OR can.mergewith = ".$result[0]['candidateid'].") AND can.priority = 'Y' ";
+            $can = $this->Campaign_model->select_sql($sql);
+
+            if (count($can) > 0) {
+                $result[0]['name']              = $can[0]['name'];
+                $result[0]['email']             = $can[0]['email'];
+                $result[0]['idcard']            = $can[0]['idcard'];
+                $result[0]['dateofissue']       = $can[0]['dateofissue'];
+                $result[0]['placeofissue']      = $can[0]['placeofissue'];
+                $result[0]['dateofbirth']       = $can[0]['dateofbirth'];
+                $result[0]['placeofbirth']      = $can[0]['placeofbirth'];
+                $result[0]['telephone']         = $can[0]['telephone'];
+                $result[0]['avatar']            = $can[0]['imagelink'];
+                $result[0]['address']           = ($can[0]['address'] == '' && isset($can[1]['address'])) ? $can[1]['address'] : $can[0]['address'];
+            }else{
+                $sql1 = "SELECT can.name,can.email,can.imagelink,can.idcard,can.dateofissue,can.placeofissue,can.dateofbirth,can.placeofbirth,can.telephone,ad.address FROM candidate can LEFT JOIN canaddress ad ON can.candidateid = ad.candidateid WHERE can.candidateid = ".$result[0]['candidateid'];
+                $can1 = $this->Campaign_model->select_sql($sql1);
+                if (count($can1) > 0) {
+                    $result[0]['name']              = $can1[0]['name'];
+                    $result[0]['email']             = $can1[0]['email'];
+                    $result[0]['idcard']            = $can1[0]['idcard'];
+                    $result[0]['dateofissue']       = $can1[0]['dateofissue'];
+                    $result[0]['placeofissue']      = $can1[0]['placeofissue'];
+                    $result[0]['dateofbirth']       = $can1[0]['dateofbirth'];
+                    $result[0]['placeofbirth']      = $can1[0]['placeofbirth'];
+                    $result[0]['telephone']         = $can1[0]['telephone'];
+                    $result[0]['avatar']            = $can1[0]['imagelink'];
+                    $result[0]['address']           = ($can1[0]['address'] == '' && isset($can1[1]['address'])) ? $can1[1]['address'] : $can1[0]['address'];
+                }
+            }
+
             $data['offer']  = $result[0];
         }
         $join[1] = array('table'=> 'document','match' =>'tb.operatorid = document.referencekey');
@@ -297,7 +326,19 @@ class Offer extends CI_Controller {
                 $startdate = $thu.' ngày '.$can[2];
                 $candidateid_mail = $frm['profile_'.$i][0];
                 $roundname      = ($this->Campaign_model->select("roundname",'recflow',array('campaignid' => $campaignid,'roundid' => $roundid),''))[0]['roundname'];
-                $user           = $this->Campaign_model->select("candidateid,email,lastname,name",'candidate',array('candidateid' => $candidateid_mail),'');
+
+                $sql = "SELECT candidateid,email,lastname,name FROM candidate WHERE (candidateid = ".$candidateid_mail." OR mergewith = ".$candidateid_mail.") AND priority = 'Y' ";
+                $can = $this->Campaign_model->select_sql($sql);
+                if (count($can) > 0) {
+                    $user = $can;
+                }else{
+                    $sql1 = "SELECT candidateid,email,lastname,name FROM candidate WHERE candidateid = ".$candidateid_mail;
+                    $can1 = $this->Campaign_model->select_sql($sql1);
+                    if (count($can1) > 0) {
+                        $user = $can1;
+                    }
+                }
+                // $user           = $this->Campaign_model->select("candidateid,email,lastname,name",'candidate',array('candidateid' => $candidateid_mail),'');
                 if (isset($user[0])) {
                     $lastname   = $user[0]['lastname'];
                     $name       = $user[0]['name'];
@@ -373,23 +414,44 @@ class Offer extends CI_Controller {
 
         $docx = new DOCXTemplate('template.docx');
 
-        $sql = "SELECT a.*, candidate.name,candidate.email, candidate.idcard, candidate.dateofissue, candidate.placeofissue,candidate.dateofbirth,candidate.placeofbirth,candidate.telephone, reccampaign.position as position_campaign, canaddress.address
+        $sql = "SELECT a.*, reccampaign.position as position_campaign
             FROM offer a
-            LEFT JOIN candidate ON a.candidateid = candidate.candidateid
             LEFT JOIN reccampaign ON a.campaignid = reccampaign.campaignid
-            LEFT JOIN canaddress ON a.candidateid = canaddress.candidateid
-            LEFT JOIN operator b ON a.createdby = b.operatorid
             WHERE a.offerid = $id ";
         $result         = $this->Campaign_model->select_sql($sql);
-        if (count($result) > 1) {
-            if ($result[0]['address'] == "") {
-                $result = $result[1];
-            }else{
-                $result = $result[0];
-            }
+
+        $sql = "SELECT can.name,can.email,can.imagelink,can.idcard,can.dateofissue,can.placeofissue,can.dateofbirth,can.placeofbirth,can.telephone,ad.address FROM candidate can LEFT JOIN canaddress ad ON can.candidateid = ad.candidateid WHERE (can.candidateid = ".$result[0]['candidateid']." OR can.mergewith = ".$result[0]['candidateid'].") AND can.priority = 'Y' ";
+        $can = $this->Campaign_model->select_sql($sql);
+
+        if (count($can) > 0) {
+            $result[0]['name']              = $can[0]['name'];
+            $result[0]['email']             = $can[0]['email'];
+            $result[0]['idcard']            = $can[0]['idcard'];
+            $result[0]['dateofissue']       = $can[0]['dateofissue'];
+            $result[0]['placeofissue']      = $can[0]['placeofissue'];
+            $result[0]['dateofbirth']       = $can[0]['dateofbirth'];
+            $result[0]['placeofbirth']      = $can[0]['placeofbirth'];
+            $result[0]['telephone']         = $can[0]['telephone'];
+            $result[0]['avatar']            = $can[0]['imagelink'];
+            $result[0]['address']           = ($can[0]['address'] == '' && isset($can[1]['address'])) ? $can[1]['address'] : $can[0]['address'];
         }else{
-            $result = $result[0];
+            $sql1 = "SELECT can.name,can.email,can.imagelink,can.idcard,can.dateofissue,can.placeofissue,can.dateofbirth,can.placeofbirth,can.telephone,ad.address FROM candidate can LEFT JOIN canaddress ad ON can.candidateid = ad.candidateid WHERE can.candidateid = ".$result[0]['candidateid'];
+            $can1 = $this->Campaign_model->select_sql($sql1);
+            if (count($can1) > 0) {
+                $result[0]['name']              = $can1[0]['name'];
+                $result[0]['email']             = $can1[0]['email'];
+                $result[0]['idcard']            = $can1[0]['idcard'];
+                $result[0]['dateofissue']       = $can1[0]['dateofissue'];
+                $result[0]['placeofissue']      = $can1[0]['placeofissue'];
+                $result[0]['dateofbirth']       = $can1[0]['dateofbirth'];
+                $result[0]['placeofbirth']      = $can1[0]['placeofbirth'];
+                $result[0]['telephone']         = $can1[0]['telephone'];
+                $result[0]['avatar']            = $can1[0]['imagelink'];
+                $result[0]['address']           = ($can1[0]['address'] == '' && isset($can1[1]['address'])) ? $can1[1]['address'] : $can1[0]['address'];
+            }
         }
+
+        $result = $result[0];
 
         // echo "<pre>";
         // print_r($result);
@@ -471,8 +533,6 @@ class Offer extends CI_Controller {
         $docx->set('bac', ($result['grade'] == '')? '' : $result['grade']);
         $docx->set('phucapantrua', number_format((int)$result['avalue0']));
         $docx->set('phucapdt', number_format((int)$result['avalue1']));
-
-
 
         $docx->downloadAs('offer.docx');
     }

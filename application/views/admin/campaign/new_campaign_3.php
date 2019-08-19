@@ -866,7 +866,7 @@
 		      			<i class="fa fa-plus-circle fa-lg fa_pt" onclick="addPT(1)"></i>
 		      		</div>
 		      		<div class="col-xs-11">
-		      			<select class="seletext select2 js-example-basic" name="managecampaign[]" required="" id="select_type_pt_1" >
+		      			<select class="seletext select2 js-example-basic" name="managecampaign[]" required=""  >
 		      				<option value="">Tìm kiếm từ danh sách người dùng</option>
 		      				<?php foreach ($operator as $row): ?>
 		      					<option value="<?php echo $row['operatorid'] ?>" ><?php echo $row['operatorname'] ?></option>

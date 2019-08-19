@@ -6,11 +6,11 @@
 	            <div class="panel-group" id="accordion">
 				  	<div class="panel panel-default border-rad0">
 				  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse1" onclick="rotate(1)">
-					    	<div class="panel-heading rad-pad0 b-blue"> 
+					    	<div class="panel-heading rad-pad0 b-blue">
 					       		<i class="fa fa-angle-right a-tabcs rotate rotate_1 down"></i>
 					       		<div class="ul-nav">
 							       	<label class="tittle-tab">
-							       		Thông tin chung 
+							       		Thông tin chung
 							       	</label>
 					       		</div>
 					    	</div>
@@ -35,7 +35,7 @@
 						            <label for="text" class="col-xs-offset-1  col-xs-2 label-profile">Số lượng</label>
 						            <div class="col-xs-2 padding-lr0">
 						             	<input type="text" name="quantity" class="textbox" value="<?php echo $campaign['quantity'] ?>" required="">
-						            </div>   
+						            </div>
 						        </div>
 						        <div class="row form_campaign">
 						            <label for="text" class=" col-xs-2 label-profile">Phòng ban</label>
@@ -44,8 +44,8 @@
 						            </div>
 						            <label for="text" class="col-xs-offset-1  col-xs-2 label-profile">Thời hạn</label>
 						            <div class="col-xs-2 padding-lr0">
-						             	<input type="text" name="expdate" class="textbox thoihan" required="" value="<?php echo date_format(date_create($campaign['expdate']),"d/m/Y"); ?>"> 
-						            </div>   
+						             	<input type="text" name="expdate" class="textbox thoihan" required="" value="<?php echo date_format(date_create($campaign['expdate']),"d/m/Y"); ?>">
+						            </div>
 						        </div>
 						        <div class="row form_campaign">
 						            <label for="text" class=" col-xs-2 label-profile">Địa điểm làm việc</label>
@@ -59,7 +59,7 @@
 						             		<option value="I" <?php echo ($campaign['showtype'] == 'I')? 'selected' :'' ?> >Nội bộ</option>
 						             		<option value="P" <?php echo ($campaign['showtype'] == 'P')? 'selected' :'' ?> >Bảo mật</option>
 						             	</select>
-						            </div>   
+						            </div>
 						        </div>
 						        <div class="row form_campaign">
 						            <label for="text" class=" col-xs-2 label-profile">Tags</label>
@@ -82,10 +82,10 @@
 					    	</div>
 					   	</div>
 				  	</div>
-				  	
+
 				  	<div class="panel panel-default border-rad0">
 				  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse2" onclick="rotate(2)">
-					    	<div class="panel-heading rad-pad0 b-blue"> 
+					    	<div class="panel-heading rad-pad0 b-blue">
 					       			<i class="fa fa-angle-right a-tabcs rotate rotate_2 down"></i>
 					       		<div class="ul-nav">
 							       	<label class="tittle-tab">
@@ -107,7 +107,7 @@
 
 				  	<div class="panel panel-default border-rad0">
 				  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse3" onclick="rotate(3)">
-					    	<div class="panel-heading rad-pad0 b-blue"> 
+					    	<div class="panel-heading rad-pad0 b-blue">
 					       		<i class="fa fa-angle-right a-tabcs rotate rotate_3 down"></i>
 					       		<div class="ul-nav">
 							       	<label class="tittle-tab">
@@ -129,7 +129,7 @@
 
 				  	<div class="panel panel-default border-rad0">
 				  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse4" onclick="rotate(4)">
-					    	<div class="panel-heading rad-pad0 b-blue"> 
+					    	<div class="panel-heading rad-pad0 b-blue">
 					       		<i class="fa fa-angle-right a-tabcs rotate rotate_4 down"></i>
 					       		<div class="ul-nav">
 							       	<label class="tittle-tab">
@@ -151,7 +151,7 @@
 
 				  	<div class="panel panel-default border-rad0">
 				  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse5" onclick="rotate(5)">
-					    	<div class="panel-heading rad-pad0 b-blue"> 
+					    	<div class="panel-heading rad-pad0 b-blue">
 					       		<i class="fa fa-angle-right a-tabcs rotate rotate_5 down"></i>
 					       		<div class="ul-nav">
 							       	<label class="tittle-tab">
@@ -173,7 +173,7 @@
 
 				  	<div class="panel panel-default border-rad0">
 				  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse6" onclick="rotate(6)">
-					    	<div class="panel-heading rad-pad0 b-blue"> 
+					    	<div class="panel-heading rad-pad0 b-blue">
 					       		<i class="fa fa-angle-right a-tabcs rotate rotate_6 down"></i>
 					       		<div class="ul-nav">
 							       	<label class="tittle-tab">
@@ -195,7 +195,7 @@
 
 				  	<div class="panel panel-default border-rad0">
 				  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse7" onclick="rotate(7)">
-					    	<div class="panel-heading rad-pad0 b-blue"> 
+					    	<div class="panel-heading rad-pad0 b-blue">
 					       		<i class="fa fa-angle-right a-tabcs rotate rotate_7 down"></i>
 					       		<div class="ul-nav">
 							       	<label class="tittle-tab">
@@ -217,7 +217,7 @@
 				</div>
 				<div class="box_btn">
 					<div class="pull-right">
-						<button class="btn btn_tt" id="btn_update_1">Lưu</button>
+						<button type="button" class="btn btn_tt" id="btn_update_1">Lưu</button>
 					</div>
 				</div>
 			</form>
@@ -242,10 +242,7 @@
 		})
 		.fail(function() {
 			console.log("error");
-		})
-		.always(function() {
-			console.log("complete");
 		});
-		
+
 	});
 </script>

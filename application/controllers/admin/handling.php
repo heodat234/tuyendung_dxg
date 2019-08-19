@@ -173,10 +173,21 @@ class Handling extends CI_Controller {
 
 	public function hosochitiet($id = '', $tabActive = '1')
 	{
-        $sql                = "SELECT email,profilesrc FROM candidate WHERE candidateid = $id";
+        $sql                = "SELECT profilesrc FROM candidate WHERE candidateid = $id";
         $result             = ($this->Campaign_model->select_sql($sql))[0];
-        $mail               = $result['email'];
         $profilesrc         = $result['profilesrc'];
+
+        $sql = "SELECT email FROM candidate WHERE (candidateid = $id OR mergewith = $id) AND priority = 'Y' ";
+        $result1 = $this->Campaign_model->select_sql($sql);
+        if (count($result1) > 0) {
+            $mail               = $result1[0]['email'];
+        }else{
+            $sql2 = "SELECT email FROM candidate WHERE candidateid = $id ";
+            $result2 = $this->Campaign_model->select_sql($sql2);
+            if (count($result2) > 0) {
+                $mail               = $result2[0]['email'];
+            }
+        }
 
         $join[0]    = array('table'=> 'operator','match' =>'tb.createdby = operator.operatorid');
         $join[1]    = array('table'=> 'document','match' =>'tb.createdby = document.referencekey');
@@ -230,21 +241,34 @@ class Handling extends CI_Controller {
             $history_profile4[$i]['interviewer'] = $this->Data_model->select_row_option('a.interviewer, a.inv_asmtid, a.scr_asmtid, d.status, b.ref1 as operatorname, c.filename, e.optionid, e.ansdatetime, e.ansdatetime2',array('a.interviewid'=>$history_profile4[$i]['interviewid']),'','interviewer a',$join1,'',$orderby1,'','');
 
             $sql = "SELECT
-                b.name,
-                b.email,
-                b.imagelink,
+                a.candidateid,
                 c.position,
                 d.status as status_asmt,
                 e.optionid, e.ansdatetime,
                 e.ansdatetime2
             FROM interview a
-            LEFT JOIN candidate b ON a.candidateid = b.candidateid
             LEFT JOIN reccampaign c ON a.campaignid = c.campaignid
             LEFT JOIN assessment d ON a.inv_asmtid = d.asmtid
             LEFT JOIN asmtanswer e ON a.inv_asmtid = e.asmtid
             WHERE a.interviewid = ".$history_profile4[$i]['interviewid'];
 
             $result = $this->Campaign_model->select_sql($sql);
+
+            $sql = "SELECT name,email,imagelink FROM candidate WHERE (candidateid = ".$result[0]['candidateid']." OR mergewith = ".$result[0]['candidateid'].") AND priority = 'Y' ";
+            $can = $this->Campaign_model->select_sql($sql);
+            if (count($can) > 0) {
+                $result[0]['name']      = $can[0]['name'];
+                $result[0]['email']     = $can[0]['email'];
+                $result[0]['imagelink'] = $can[0]['imagelink'];
+            }else{
+                $sql1 = "SELECT name,email,imagelink FROM candidate WHERE candidateid = ".$result[0]['candidateid'];
+                $can1 = $this->Campaign_model->select_sql($sql1);
+                if (count($can1) > 0) {
+                    $result[0]['name']      = $can1[0]['name'];
+                    $result[0]['email']     = $can1[0]['email'];
+                    $result[0]['imagelink'] = $can1[0]['imagelink'];
+                }
+            }
             $history_profile4[$i]['interview_his'] = $result[0];
         }
         unset($join[3]);
@@ -366,7 +390,12 @@ class Handling extends CI_Controller {
         if ($id == -1) {
            $id = $id_mergewith;
         }
-        $this->data2['candidate_con']     = $this->Campaign_model->select_sql("SELECT * FROM candidate WHERE mergewith = $id AND candidateid NOT IN ($id)");
+        if ($id_mergewith == NULL) {
+            $sql = "SELECT * FROM candidate WHERE mergewith = $id AND candidateid NOT IN ($id)";
+        }else{
+            $sql = "SELECT * FROM candidate WHERE mergewith = $id AND candidateid NOT IN ($id,$id_mergewith)";
+        }
+        $this->data2['candidate_con']     = $this->Campaign_model->select_sql($sql);
         foreach ($this->data2['candidate_con'] as $key => $value) {
             $id_con                             = $value['candidateid'];
             $this->data2['canaddress_con'][$key]    = $this->Candidate_model->selectTableByIds('canaddress',$id_con);
@@ -916,7 +945,7 @@ class Handling extends CI_Controller {
                     LEFT JOIN canexperience c ON candidate.candidateid = c.candidateid
                     LEFT JOIN canreference d ON candidate.candidateid = d.candidateid
                     LEFT JOIN canlanguage e ON candidate.candidateid = e.candidateid ';
-        $where = "AND ((LOWER(candidate.name) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(candidate.email) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(a.certificate) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(b.software) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(c.company) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(c.position) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(d.name) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(d.position) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(d.company) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(e.language) LIKE LOWER(N'%".$frm['name']."%'))) $filter";
+        $where = "AND ((LOWER(candidate.name) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(candidate.email) LIKE LOWER(N'%".$frm['name']."%') OR candidate.telephone LIKE '%".$frm['name']."%' OR LOWER(a.certificate) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(b.software) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(c.company) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(c.position) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(d.name) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(d.position) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(d.company) LIKE LOWER(N'%".$frm['name']."%') OR LOWER(e.language) LIKE LOWER(N'%".$frm['name']."%'))) $filter";
             // $this->session->set_userdata('filter', $where);
             // $this->session->set_userdata('join', $join);
 
@@ -1076,9 +1105,7 @@ class Handling extends CI_Controller {
             $this->data2['software']    = $this->Candidate_model->selectTableByIds('cansoftware',$id);
             $this->data2['tags']        = $this->Candidate_model->join_tag($id);
             $this->data2['tagstrandom'] = $this->Candidate_model->join_tag_random($id);
-            // $this->data2['comment']       = $this->Candidate_model->first_row('cancomment',array('candidateid' => $id_mergewith, 'rate !=' => 0),'AVG(rate) AS scores','');
-            // $roww = $this->Candidate_model->query_sql("select COUNT(DISTINCT campaignid) as slchiendich from profilehistory where candidateid = '".$id."'");
-            // $this->data2['count_campaign'] = $roww[0]['slchiendich'];
+
         }
         // $data['temp'] = $this->load->view('admin/page/detail-profile',$this->data2,true);
         $a = array();
@@ -1103,12 +1130,12 @@ class Handling extends CI_Controller {
         if (trim($frm['phone1']) == '' && trim($frm['phone2']) == '') {
             $frm['telephone'] = '';
         }else if (trim($frm['phone1']) == '' && trim($frm['phone2']) != '') {
-            $frm['telephone'] = ','.$frm['phone2'].',';
+            $frm['telephone'] = ','.trim($frm['phone2']).',';
+        }else if (trim($frm['phone1']) != '' && trim($frm['phone2']) == ''){
+            $frm['telephone'] = ','.trim($frm['phone1']).',';
         }else{
-            $frm['telephone'] = ','.$frm['phone1'].',';
+             $frm['telephone'] = ','.trim($frm['phone1']).','.trim($frm['phone2']).',';
         }
-        // $frm['telephone']   = ','.$frm['phone1'].','.$frm['phone2'].',';
-        // var_dump($frm['telephone']);exit;
         unset($frm['phone1']);
         unset($frm['phone2']);
         if ($frm['candidateid'] == '0') {
@@ -2012,15 +2039,16 @@ class Handling extends CI_Controller {
         $data1['ward']      = $frm['ward2'];
         $data1['street']    = $frm['street2'];
         $data1['addressno'] = $frm['addressno2'];
-        // var_dump($data0);exit;
         if (trim($frm['phone1']) == '' && trim($frm['phone2']) == '') {
             $data2['telephone'] = '';
         }else if (trim($frm['phone1']) == '' && trim($frm['phone2']) != '') {
-            $data2['telephone'] = ','.$frm['phone2'].',';
+            $data2['telephone'] = ','.trim($frm['phone2']).',';
+        }else if (trim($frm['phone1']) != '' && trim($frm['phone2']) == ''){
+            $data2['telephone'] = ','.trim($frm['phone1']).',';
         }else{
-            $data2['telephone'] = ','.$frm['phone1'].',';
+             $data2['telephone'] = ','.trim($frm['phone1']).','.trim($frm['phone2']).',';
         }
-        // $data2['telephone'] = ','.$frm['phone1'].','.$frm['phone2'].',';
+
         $data2['emergencycontact'] = $frm['emergencycontact'];
 
         $match2 =  array('candidateid' => $id);
@@ -2435,6 +2463,59 @@ class Handling extends CI_Controller {
         else{
             echo json_encode(0);
         }
+    }
+
+    public function checkPriority()
+    {
+        $get = $this->input->get();
+        $data['priority'] = 'Y';
+        $data1['priority'] = 'N';
+        if ($get['priority'] == 'ca_nhan' && $get['candidateid'] != '') {
+            $match  = array('candidateid' => $get['candidateid'] );
+            $this->Candidate_model->UpdateData("candidate", $match,$data);
+            if ($get['candidateid_noibo'] != '0') {
+                $match1  = array('candidateid' => $get['candidateid_noibo'] );
+                $this->Candidate_model->UpdateData("candidate", $match1,$data1);
+            }
+            echo "1";
+        }else if ($get['priority'] == 'noi_bo' && $get['candidateid_noibo'] != '0'){
+            $match  = array('candidateid' => $get['candidateid_noibo'] );
+            $this->Candidate_model->UpdateData("candidate", $match,$data);
+            if ($get['candidateid'] != '') {
+                $match1  = array('candidateid' => $get['candidateid'] );
+                $this->Candidate_model->UpdateData("candidate", $match1,$data1);
+            }
+            echo "2";
+        }else
+            echo "3";
+
+    }
+
+    public function getCandidateForMail()
+    {
+        $post =  $this->input->post('check');
+        $arr_id = $arr_email = [];
+        foreach ($post as $key => $value) {
+            $sql = "SELECT candidateid,email FROM candidate WHERE (candidateid = $value OR mergewith = $value) AND priority = 'Y' ";
+            $result = $this->Campaign_model->select_sql($sql);
+            if (count($result) > 0) {
+                array_push($arr_id, $result[0]['candidateid']);
+                array_push($arr_email, $result[0]['email']);
+            }else{
+                $sql1 = "SELECT candidateid,email FROM candidate WHERE candidateid = $value ";
+                $result1 = $this->Campaign_model->select_sql($sql1);
+                if (count($result1) > 0) {
+                    array_push($arr_id, $result1[0]['candidateid']);
+                    array_push($arr_email, $result1[0]['email']);
+                }
+            }
+        }
+        $data['list_email']         = implode($arr_email, ',');
+        $data['list_candidateid']   = implode($arr_id, ',');
+        $data['arr_candidate']      = $arr_id;
+
+        echo json_encode($data);
+
     }
 }
 ?>

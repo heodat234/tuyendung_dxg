@@ -199,7 +199,7 @@
 					            	if (!empty($row['manager'])) {
 					            	foreach ($row['manager'] as $key) { ?>
 					            		<li>
-						            		<img src="<?php echo base_url() ?>public/image/bbye.jpg" alt="User Image" title="<?php echo $key['operatorname'] ?>">
+						            		<img src="<?php echo base_url() ?>public/image/bbye.jpg" alt="User Image" title="<?php echo isset($key['operatorname']) ? $key['operatorname'] : '' ?>">
 						            	</li>
 					            	<?php }} ?>
 

@@ -13,7 +13,7 @@
 		<div class="body_as">
 			<div class="row">
 				<div class="btn_as">
-					<button onclick="cancelAppointment()"><i class="fa fa-trash-o fa-lg"></i></button>
+					<button onclick="cancelAppointment()" <?php echo (isset($interview['status']) && $interview['status'] == 'D') ?'disabled' : '' ?> ><i class="fa fa-trash-o fa-lg"></i></button>
 					<button><i class="fa fa-print fa-lg"></i></button>
 				</div>
 			</div>
@@ -49,7 +49,7 @@
           				<?php foreach ($interviewer as $row):
           					if ($row['status_asmt'] == 'C') {
       							if ($row['optionid'] == '1') {
-      								$status = '<span class="body-blac5b">Chờ xác nhận</div>';
+      								$status = '<span class="body-blac5b">Đã xác nhận</div>';
       							}
       							else if($row['optionid'] == '2'){
       								$date 		=  date_format(date_create($row['ansdatetime']),"d/m/Y");
@@ -75,15 +75,16 @@
 	          					</div>
 	          				</div>
           				<?php endforeach ?>
-
-          				<div class="col-md-3 padding_0 manage_pv ql">
-          					<div class="col-md-3 padding_0">
-          						<img class="img-pv" src="<?php echo base_url() ?>public/image/bbye.jpg">
-          					</div>
-          					<div class="col-md-9 padding_0">
-          						<a href="javascript:void(0)" class="add_pt" onclick="addInterviewer(<?php echo $interview['interviewid'] ?>)"><span>Thêm người phỏng vấn</span></a>
-          					</div>
-          				</div>
+                     <?php if (isset($interview['status']) && $interview['status'] != 'D'): ?>
+             				<div class="col-md-3 padding_0 manage_pv ql">
+             					<div class="col-md-3 padding_0">
+             						<img class="img-pv" src="<?php echo base_url() ?>public/image/bbye.jpg">
+             					</div>
+             					<div class="col-md-9 padding_0">
+             						<a href="javascript:void(0)" class="add_pt" onclick="addInterviewer(<?php echo $interview['interviewid'] ?>)"><span>Thêm người phỏng vấn</span></a>
+             					</div>
+             				</div>
+                     <?php endif ?>
 					</div>
 				</div>
 				<div class="margin_top_15">
@@ -119,99 +120,69 @@
 						</div>
 					</div>
 				</div>
-				<div class="row desc_as">
-					<label>Phiếu phỏng vấn</label>
-					<div class="col-md-12">
+            <div class="row desc_as">
+               <?php if (isset($interview['status']) && $interview['status'] == 'D'){ ?>
+                  <label style="color: #E15B6C">Lịch phỏng vấn đã bị hủy</label>
+               <?php }else{ ?>
+                  <label>Phiếu phỏng vấn</label>
+                  <div class="col-md-12">
 
-          				<div class="pull-right hide">
-          					<div class="btn_as">
-								<button onclick="changeAssessment()"><i class="fa fa-pencil fa-lg"></i></button>
-							</div>
-          				</div>
-					</div>
-					<ul class="nav nav-tabs">
-						<?php if($interviewer_current&&!empty($interviewer_current)){
-						foreach ($interviewer_current as $key => $value) {?>
-                            <li>
-                            	<a href="#tab<?php echo($key)?>" data-toggle="tab">
-                            		<img class="img-pv" src="<?php echo base_url('public/image/'.$img_c =($value['current'][0]['filename']!='')?$value['current'][0]['filename'] : 'unknow.jpg' )?>"> <?php echo($value['current'][0]['operatorname'])?>
+                     <div class="pull-right hide">
+                        <div class="btn_as">
+                           <button onclick="changeAssessment()"><i class="fa fa-pencil fa-lg"></i></button>
+                        </div>
+                     </div>
+                  </div>
+                  <ul class="nav nav-tabs">
+                     <?php if($interviewer_current&&!empty($interviewer_current)){
+                        foreach ($interviewer_current as $key => $value) {?>
+                           <li>
+                              <a href="#tab<?php echo($key)?>" data-toggle="tab">
+                                 <img class="img-pv" src="<?php echo base_url('public/image/'.$img_c =($value['current'][0]['filename']!='')?$value['current'][0]['filename'] : 'unknow.jpg' )?>"> <?php echo($value['current'][0]['operatorname'])?>
 
-                            	</a>
-                            </li>
-
-                        <?php }}?>
-                        </ul>
-                    <div class="tab-content">
-                    	<?php if($interviewer_current&&!empty($interviewer_current)){
-						foreach ($interviewer_current as $key => $value) {?>
-							<div class="tab-pane fade" id="tab<?php echo($key)?>">
-
-					<?php if(isset($value['section'])&&!empty($value['section'])) foreach ($value['section'] as $sec) {?>
-					<div>
-						<div class="title_ques"><?php echo($sec['sectionname'])?></div>
-						<?php if(isset($sec['question'])&&!empty($sec['question'])) foreach ($sec['question'] as $ques) {?>
-						<div class="question_as">
-							<label><?php echo($ques['questioncontent'])?></label>
-							<?php if($ques['questiontype']=='scores'){?>
-							<div class="answer_as">
-								<div class="col-md-3">
-									<input type="textbox" required="" name="question[<?php echo($ques['questionid'])?>][ansnumeric]"  value="<?php echo number_format($ques['ansnumeric'])?>">
-								</div>
-								<div class="col-md-9">
-									<textarea name="question[<?php echo($ques['questionid'])?>][anstext]" class="width_100" rows="3" placeholder="dạng văn bản"><?php echo($ques['anstext'])?></textarea>
-									<!-- <input type="textbox" class="width_100" name="question[<?php echo($ques['questionid'])?>][anstext]" placeholder="Nhận xét" value="<?php echo($ques['anstext'])?>"> -->
-								</div>
-							</div>
-							<?php }elseif($ques['questiontype']=='text'){ ?>
-							<div class="answer_as">
-								<div class="col-md-12">
-									<textarea name="question[<?php echo($ques['questionid'])?>][anstext]" class="width_100" rows="4" placeholder="dạng văn bản"><?php echo($ques['anstext'])?></textarea>
-								</div>
-							</div>
-							<?php }?>
-						</div>
-						<?php }?>
-					</div>
-					<?php }?>
-							</div>
+                              </a>
+                           </li>
 
                         <?php }}?>
-                    </div>
-				</div>
-				<!-- <form id="form_ans">
-					<input type="hidden" name="interviewerid" value="<?php echo $interviewerid ?>">
-					<input type="hidden" name="interviewid" value="<?php echo $interviewid ?>">
-					<input type="hidden" name="asmtid" value="<?php echo(isset($asmtid)?$asmtid:'')?>">
-					<div class="row desc_as">
-						<label>Phiếu phỏng vấn</label>
+                  </ul>
+                  <div class="tab-content">
+                     <?php if($interviewer_current&&!empty($interviewer_current)){
+                        foreach ($interviewer_current as $key => $value) {?>
+                           <div class="tab-pane fade" id="tab<?php echo($key)?>">
 
-					</div>
-					<?php if(isset($section)&&!empty($section)) foreach ($section as $sec) {?>
-					<div>
-						<div class="title_ques">A. <?php echo($sec['sectionname'])?></div>
-						<?php if(isset($sec['question'])&&!empty($sec['question'])) foreach ($sec['question'] as $ques) {?>
-						<div class="question_as">
-							<label>1.	<?php echo($ques['question'])?></label>
-							<?php if($ques['questiontype']=='scores'){?>
-							<div class="answer_as">
-								<div class="col-md-3">
-									<input type="textbox" required="" name="question[<?php echo($ques['questionid'])?>][ansnumeric]" placeholder="Điểm số (<?php echo number_format($ques['scorefrom'])?>-><?php echo number_format($ques['scoreto'])?>)" value="<?php echo number_format($ques['ansnumeric'])?>">
-								</div>
-								<div class="col-md-9">
-									<input type="textbox" class="width_100" name="question[<?php echo($ques['questionid'])?>][anstext]" placeholder="Nhận xét" value="<?php echo($ques['anstext'])?>">
-								</div>
-							</div>
-							<?php }elseif($ques['questiontype']=='text'){ ?>
-							<div class="answer_as">
-								<div class="col-md-12">
-									<textarea name="question[<?php echo($ques['questionid'])?>][anstext]" class="width_100" rows="4" placeholder="dạng văn bản"><?php echo($ques['anstext'])?></textarea>
-								</div>
-							</div>
-							<?php }?>
-						</div>
-						<?php }?>
-					</div>
-					<?php }?> -->
+                              <?php if(isset($value['section'])&&!empty($value['section'])) foreach ($value['section'] as $sec) {?>
+                                 <div>
+                                    <div class="title_ques"><?php echo($sec['sectionname'])?></div>
+                                    <?php if(isset($sec['question'])&&!empty($sec['question'])) foreach ($sec['question'] as $ques) {?>
+                                       <div class="question_as">
+                                          <label><?php echo($ques['questioncontent'])?></label>
+                                          <?php if($ques['questiontype']=='scores'){?>
+                                             <div class="answer_as">
+                                                <div class="col-md-3">
+                                                   <input type="textbox" required="" name="question[<?php echo($ques['questionid'])?>][ansnumeric]"  value="<?php echo number_format($ques['ansnumeric'])?>">
+                                                </div>
+                                                <div class="col-md-9">
+                                                   <textarea name="question[<?php echo($ques['questionid'])?>][anstext]" class="width_100" rows="3" placeholder="dạng văn bản"><?php echo($ques['anstext'])?></textarea>
+                                                </div>
+                                             </div>
+                                          <?php }elseif($ques['questiontype']=='text'){ ?>
+                                             <div class="answer_as">
+                                                <div class="col-md-12">
+                                                   <textarea name="question[<?php echo($ques['questionid'])?>][anstext]" class="width_100" rows="4" placeholder="dạng văn bản"><?php echo($ques['anstext'])?></textarea>
+                                                </div>
+                                             </div>
+                                          <?php }?>
+                                       </div>
+                                    <?php }?>
+                                 </div>
+                              <?php }?>
+                           </div>
+
+                        <?php }}?>
+                  </div>
+               <?php } ?>
+            </div>
+
 			</div>
 		</div>
 		<div class="footer_as hide">
@@ -367,7 +338,7 @@
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Xác nhận xoá người phụ trách phỏng vấn</h4>
         </div>
-        <form method="post" action="<?php echo base_url() ?>admin/interview/removeInterviewer" enctype="multipart/form-data">
+        <form id="form_removeInterviewer" method="post" action="<?php echo base_url() ?>admin/interview/removeInterviewer" enctype="multipart/form-data">
           <div class=" modal_body_chuyen">
             <div class="body_cam col-xs-12 body_chuyen" id="body_loai">
               <div class="row" style="margin-right: 0px">
@@ -432,7 +403,7 @@
 		                        Bcc:
 		                      </div>
 		                      <div class="col-xs-11">
-		                        <input class="kttext width_100" type="text" name="bcc" >
+		                        <input class="kttext width_100" type="text" name="bcc" id="bcc_pv_2">
 		                      </div>
 		              </div>
 		        </div>
@@ -442,7 +413,7 @@
 	                        Mẫu thư:
 	                      </div>
 	                      <div class="col-xs-7">
-	                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,11)" style="width: 50%">
+	                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,17)" style="width: 50%">
 	                            <option value="">Chọn mẫu thư</option>
 	                          <?php foreach ($mailtemplate as $row): ?>
 	                            <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
@@ -451,7 +422,7 @@
 	                        <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
 	                      </div>
 	                      <div class="col-xs-3">
-	                        <p onclick="insertField(11)" class="plus-button" style="margin-left: 15px" id="clickPlus"><i class="fa fa-plus" aria-hidden="true"></i> Thêm trường dữ liệu</p>
+	                        <p onclick="insertField(17)" class="plus-button" style="margin-left: 15px" id="clickPlus"><i class="fa fa-plus" aria-hidden="true"></i> Thêm trường dữ liệu</p>
 	                      </div>
 	              	</div>
 
@@ -460,7 +431,7 @@
 		                        Tiêu đề:
 		                      </div>
 		                      <div class="col-xs-11">
-		                        <textarea class="textarea_profile" id="subjectmail11" rows="1" name="subject" required="">
+		                        <textarea class="textarea_profile" id="subjectmail17" rows="1" name="subject" required="">
 		                        </textarea>
 		                      </div>
 		            </div>
@@ -477,8 +448,8 @@
 	                    <div class="col-xs-1 guide-black cc">
 	                    </div>
 	                    <div class="col-xs-11">
-	                        <div class="width80 col-xs-9 padding-lr0 filename_label" id="filename_label11">
-	                        	<input type="hidden" id="preattach_11" name="preattach">
+	                        <div class="width80 col-xs-9 padding-lr0 filename_label" id="filename_label17">
+	                        	<input type="hidden" id="preattach_17" name="preattach">
 			                    <div class="col-md-3">
 			                      <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach[]" multiple="" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
 			                    </div>
@@ -497,7 +468,7 @@
           <div class="modal-footer modal_footer_cam">
             <label class="share_chuyen"><input type="checkbox" name="isshare" value="N"> Không chia sẻ nội dung này</label>
             <button type="button" class="btn btn_thoat btn_thoat1" data-dismiss="modal">Hủy</button>
-            <button type="submit" class="btn btn_tt btn_tt1">Tiến hành</button>
+            <button type="button" class="btn btn_tt btn_tt1" id="btn_removeInterviewer">Tiến hành</button>
           </div>
         </form>
     </div>
@@ -511,7 +482,7 @@
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Xác nhận Huỷ lịch phỏng vấn</h4>
         </div>
-        <form method="post" action="<?php echo base_url() ?>admin/interview/cancelAppointment" enctype="multipart/form-data">
+        <form id="form_cancel" method="post" action="<?php echo base_url() ?>admin/interview/cancelAppointment" enctype="multipart/form-data">
           <div class=" modal_body_chuyen">
             <div class="body_cam col-xs-12 body_chuyen" id="body_loai">
               <div class="row" style="margin-right: 0px">
@@ -547,7 +518,7 @@
 	                        Gửi đến:
 	                      </div>
 	                      <div class="col-xs-11">
-	                        <input class="kttext width_100" type="text" name="to" value="<?php echo $interview['email'] ?>">
+	                        <input class="kttext width_100" type="text" name="to" value="<?php echo $interview['email'] ?>" id="to_cancel_pv">
 	                      </div>
 	              </div>
 	              <div class="rowedit2">
@@ -555,7 +526,7 @@
 	                        Cc:
 	                      </div>
 	                      <div class="col-xs-11">
-	                        <input class="kttext width_100" type="text" name="cc" id="cc_cancle_pv" >
+	                        <input class="kttext width_100" type="text" name="cc" id="cc_cancel_pv" >
 	                      </div>
 	              </div>
 	              <div class="rowedit2">
@@ -563,7 +534,7 @@
 	                        Bcc:
 	                      </div>
 	                      <div class="col-xs-11">
-	                        <input class="kttext width_100"type="text" name="bcc" >
+	                        <input class="kttext width_100"type="text" name="bcc" id="bcc_cancel_pv">
 	                      </div>
 	              </div>
 	            </div>
@@ -573,7 +544,7 @@
 	                        Mẫu thư:
 	                      </div>
 	                      <div class="col-xs-7">
-	                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,3)" style="width: 50%">
+	                        <select class="js-example-basic-2 select2" name="status3" required="" onchange="changeTemplate(this.value,15)" style="width: 50%">
 	                            <option value="">Chọn mẫu thư</option>
 	                          <?php foreach ($mailtemplate as $row): ?>
 	                            <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
@@ -582,7 +553,7 @@
 	                        <i class="fa fa-info-circle info-circle-font-awesome" aria-hidden="true"></i>
 	                      </div>
 	                      <div class="col-xs-3">
-	                        <p onclick="insertField(3)" class="plus-button" style="margin-left: 15px" id="clickPlus"><i class="fa fa-plus" aria-hidden="true"></i> Thêm trường dữ liệu</p>
+	                        <p onclick="insertField(15)" class="plus-button" style="margin-left: 15px" id="clickPlus"><i class="fa fa-plus" aria-hidden="true"></i> Thêm trường dữ liệu</p>
 	                      </div>
 	              </div>
 
@@ -591,7 +562,7 @@
 	                        Tiêu đề:
 	                      </div>
 	                      <div class="col-xs-11">
-	                        <textarea class="textarea_profile" id="subjectmail3" rows="1" name="subject" required="">
+	                        <textarea class="textarea_profile" id="subjectmail15" rows="1" name="subject" required="">
 	                        </textarea>
 	                      </div>
 	              </div>
@@ -608,7 +579,8 @@
 	                    <div class="col-xs-1 guide-black cc">
 	                    </div>
 	                    <div class="col-xs-11">
-	                        <div class="width80 col-xs-9 padding-lr0 filename_label">
+	                        <div class="width80 col-xs-9 padding-lr0 filename_label" id="filename_label15">
+                              <input type="hidden" id="preattach_15" name="preattach">
 			                    <div class="col-md-3">
 			                      <label class="fontArial colorcyan labelcontent browsebutton1"><input id="my-file-selector1" name="attach[]" multiple="" type="file" accept=".pdf,.doc,.docx,.xlsx" style="display:none;"><i class="fa fa-paperclip"></i> Tài liệu đính kèm</label>
 			                    </div>
@@ -626,7 +598,7 @@
           <div class="modal-footer modal_footer_cam">
             <label class="share_chuyen"><input type="checkbox" name="isshare" value="N"> Không chia sẻ nội dung này</label>
             <button type="button" class="btn btn_thoat btn_thoat1" data-dismiss="modal">Hủy</button>
-            <button type="submit" class="btn btn_tt btn_tt1" >Tiến hành</button>
+            <button type="button" class="btn btn_tt btn_tt1" id="btn_cancel_pv" >Tiến hành</button>
           </div>
         </form>
     </div>
@@ -723,7 +695,7 @@
 	                        Mẫu thư:
 	                      </div>
 	                      <div class="col-xs-9">
-	                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,4)">
+	                        <select class="js-example-basic-2" name="status3" required="" onchange="changeTemplate(this.value,16)">
 	                            <option value="">Chọn mẫu thư</option>
 	                          <?php foreach ($mailtemplate as $row): ?>
 	                            <option value="<?php echo $row['mailprofileid'] ?>"><?php echo $row['profilename'] ?></option>
@@ -738,7 +710,7 @@
 	                        Tiêu đề:
 	                      </div>
 	                      <div class="col-xs-11">
-	                        <textarea class="textarea_profile" id="subjectmail4" rows="1" name="subject" required="">
+	                        <textarea class="textarea_profile" id="subjectmail16" rows="1" name="subject" required="">
 	                        </textarea>
 	                      </div>
 	              </div>
@@ -890,96 +862,95 @@
 	}
 
 	function insertPV1(roundid) {
-		$('#my-file-selector1').val();
-        $(".dom_file").remove();
-	    $('#roundid_pt').val(roundid);
-	    $('#insertPV1').modal('show');
+      $('#my-file-selector1').val();
+      $(".dom_file").remove();
+      $('#roundid_pt').val(roundid);
+      $('#insertPV1').modal('show');
 	}
-	function addPV1(i) {
-	    var j = i+1;
-	    var value = $('#select_type_pt_'+i).val();
-	    var name = $('#select_type_pt_'+i).find(":selected").text();
-	    if (value != '') {
-	      var row = $('#body_cam_pt_'+i).clone().attr('id', 'body_cam_pt_'+j).after('#body_cam_pt_'+i);
-	      $('.modal_body_cam_pt').append(row);
-	      $('#body_cam_pt_'+j).contents().find('.fa_pt').attr('onclick', 'addPV1('+j+')');
-	      $('#body_cam_pt_'+j).contents().find('.seletext').attr('id', 'select_type_pt_'+j);
-	      $('#body_cam_pt_'+j).contents().find('#show_name_pt_'+i).attr('id', 'show_name_pt_'+j);
-	      $('#body_cam_pt_'+j).children().attr('id', 'btn_event_pt_'+j);
-	      $('.select_2').select2({ width: '100%' });
-	      $('.select_2').last().next().next().remove();
+   function addPV1(i) {
+      var j = i+1;
+      var value = $('#select_type_pt_'+i).val();
+      var name = $('#select_type_pt_'+i).find(":selected").text();
+      if (value != '') {
+         var row = $('#body_cam_pt_'+i).clone().attr('id', 'body_cam_pt_'+j).after('#body_cam_pt_'+i);
+         $('.modal_body_cam_pt').append(row);
+         $('#body_cam_pt_'+j).contents().find('.fa_pt').attr('onclick', 'addPV1('+j+')');
+         $('#body_cam_pt_'+j).contents().find('.seletext').attr('id', 'select_type_pt_'+j);
+         $('#body_cam_pt_'+j).contents().find('#show_name_pt_'+i).attr('id', 'show_name_pt_'+j);
+         $('#body_cam_pt_'+j).children().attr('id', 'btn_event_pt_'+j);
+         $('.select_2').select2({ width: '100%' });
+         $('.select_2').last().next().next().remove();
 
-	      $('#show_name_pt_'+i).text(name).removeClass('hide');
-	      $('#select_type_pt_'+i).hide();
-	      $('#btn_event_pt_'+i).empty().html('<i class="fa fa-minus-circle fa-lg" onclick="subPV1('+i+')"></i>');
-	    }else{
-	      alert('Bạn chưa chọn người phỏng vấn');
-	    }
-	  }
+         $('#show_name_pt_'+i).text(name).removeClass('hide');
+         $('#select_type_pt_'+i).hide();
+         $('#btn_event_pt_'+i).empty().html('<i class="fa fa-minus-circle fa-lg" onclick="subPV1('+i+')"></i>');
+      }else{
+         alert('Bạn chưa chọn người phỏng vấn');
+      }
+   }
 	function subPV1(i) {
-	    $('#body_cam_pt_'+i).remove();
+	   $('#body_cam_pt_'+i).remove();
 	}
 	function subColPV1(id) {
-	    $('#col_pt1_'+id).remove();
-	    var manageround = $('#managePV').val();
-	    manageround1 = manageround.replace(id+',', '');
-	    $('#managePV').val(manageround1);
+      $('#col_pt1_'+id).remove();
+      var manageround = $('#managePV').val();
+      manageround1 = manageround.replace(id+',', '');
+      $('#managePV').val(manageround1);
 
-	    var operator = $('#operator_js').text();
-	    operator = (JSON.parse(operator));
-	    for(var j in operator ){
-	      if (id == operator[j]['operatorid']) {
-	        var temp = operator[j]['email'];
-	        var listmail = $('#email_to_pv').val();
-	        listmail1 = listmail.replace(temp+',', '');
-	        $('#email_to_pv').val(listmail1);
-	      }
-	    }
+      var operator = $('#operator_js').text();
+      operator = (JSON.parse(operator));
+      for(var j in operator ){
+      if (id == operator[j]['operatorid']) {
+      var temp = operator[j]['email'];
+      var listmail = $('#email_to_pv').val();
+      listmail1 = listmail.replace(temp+',', '');
+      $('#email_to_pv').val(listmail1);
+      }
+      }
 	}
-	$('#savePT1').click(function(event) {
-	    var operator = $('#operator_js').text();
-	    operator = (JSON.parse(operator));
-	    var data = $('#formPV1').serializeArray();
-	    var row = '';
-	    var str = '';
-	    var email = $('#email_to_pv').val();
-	    for(var i in data){
-	      if (data[i].value == '')
-	      {
-	        continue;
-	      }
-	      for(var j in operator ){
-	        if (data[i].value == operator[j]['operatorid']) {
-	          row ='<div class="col-md-12" id="col_pt1_'+data[i].value+'" style="margin-bottom:5px"><div class="col-md-6 padding_0 manage_pv ql">';
-	          row += '<div class="col-md-3 padding_0" onclick="subColPV1('+data[i].value+')""><img class="img-pv" src="<?php echo base_url().'public/image/' ?>'+operator[j]['filename']+'"><div class="del_ql"><i class="fa fa-minus-circle fa-lg"></i></div></div>';
-	          row += '<span class="body-blac5a" padding_0 style="font-size:16px;">'+operator[j]['operatorname']+'</span></div>';
-	          row += '<div class="col-md-6" style="margin-top: 10px;float: right;"><select class="js-example-basic-2" name="pv[]" required="" style="width: 100%">';
-	            <?php foreach ($asmt_pv as $key): ?>
-	               row += '<option value="<?php echo $key['asmttemp'] ?>"><?php echo $key['asmtname'] ?></option>';
-	            <?php endforeach ?>
-	            row += '</select></div></div>';
-	          $('#col_add_pt').before(row);
+   $('#savePT1').click(function(event) {
+      var operator = $('#operator_js').text();
+      operator = (JSON.parse(operator));
+      var data = $('#formPV1').serializeArray();
+      var row = '';
+      var str = '';
+      var email = $('#email_to_pv').val();
+      for(var i in data){
+         if (data[i].value == '')
+         {
+            continue;
+         }
+         for(var j in operator ){
+            if (data[i].value == operator[j]['operatorid']) {
+               row ='<div class="col-md-12" id="col_pt1_'+data[i].value+'" style="margin-bottom:5px"><div class="col-md-6 padding_0 manage_pv ql">';
+               row += '<div class="col-md-3 padding_0" onclick="subColPV1('+data[i].value+')""><img class="img-pv" src="<?php echo base_url().'public/image/' ?>'+operator[j]['filename']+'"><div class="del_ql"><i class="fa fa-minus-circle fa-lg"></i></div></div>';
+               row += '<span class="body-blac5a" padding_0 style="font-size:16px;">'+operator[j]['operatorname']+'</span></div>';
+               row += '<div class="col-md-6" style="margin-top: 10px;float: right;"><select class="js-example-basic-2" name="pv[]" required="" style="width: 100%">';
+               <?php foreach ($asmt_pv as $key): ?>
+                  row += '<option value="<?php echo $key['asmttemp'] ?>"><?php echo $key['asmtname'] ?></option>';
+               <?php endforeach ?>
+               row += '</select></div></div>';
+               $('#col_add_pt').before(row);
 
-	          var temp = operator[j]['email'];
-	            email += temp+', ';
-
-	        }
-	      }
-	      str += data[i].value + ',';
-	    }
-	    $('#email_to_pv').val(email);
-	    var manageround = $('#managePV').val();
-	    if(manageround != ''){
-	      manageround += str;
-	    }else{
-	      manageround = str;
-	    }
-	    $('#managePV').val(manageround);
-	    $('#insertPV1').modal('hide');
-	});
+               var temp = operator[j]['email'];
+               email += temp+', ';
+            }
+         }
+         str += data[i].value + ',';
+      }
+      $('#email_to_pv').val(email);
+      var manageround = $('#managePV').val();
+      if(manageround != ''){
+         manageround += str;
+      }else{
+         manageround = str;
+      }
+      $('#managePV').val(manageround);
+      $('#insertPV1').modal('hide');
+   });
 
 	function cancelAppointment(argument) {
-		$('.profile_tn').html('<img src="http://recruit.tavicosoft.com/public/image/<?php echo $interview['imagelink'] ?>" ><p class="guide-black"><?php echo $interview['name'] ?></p>');
+		$('.profile_tn').html('<img src="<?php echo base_url().'public/image/'.$img_a = ($interview['imagelink']!='')? $interview['imagelink'] : 'unknow.jpg'; ?>" ><p class="guide-black"><?php echo $interview['name'] ?></p>');
 		var loca = $('.location_time').contents().clone();
 		$('.loca_2').empty().append(loca);
 		var notes = $('.notes_int').contents().clone();
@@ -992,22 +963,27 @@
 		for (var i = 0; i < inter.length; i++) {
 			var temp = inter[i]['email'];
 			email_cc += temp+', ';
-
+         var img_b = 'unknow.jpg';
+         if (inter[i]['filename'] != null) {
+            img_b = inter[i]['filename'];
+         }
 			interviewer += '<div class="col-md-4 padding_0 manage_pv ql"><div class="col-md-3 ">';
-			interviewer += '<img  src="<?php echo base_url() ?>public/image/'+inter[i]['filename']+'"></div>';
+			interviewer += '<img  src="<?php echo base_url() ?>public/image/'+img_b+'"></div>';
 			interviewer += '<div class="col-md-9 padding_0"><div class="body-blac5a">'+inter[i]['operatorname']+'</div></div></div>';
 
 		}
-        interviewer += '</div>';
-        $('#cc_cancle_pv').val(email_cc);
-        $('.loca_2').append(interviewer);
+      interviewer += '</div>';
+      $('#cc_cancel_pv').val(email_cc);
+      $('.loca_2').append(interviewer);
 
-        $('#my-file-selector1').val();
-        $(".dom_file").remove();
+      $('#my-file-selector1').val();
+      $(".dom_file").remove();
+
+      parent.parent.initializeSelect2($(".select2"));
 		$('#cancelAppointment').modal('show');
 	}
 	function removeInterviewer(interviewerid) {
-		$('.profile_tn').html('<img src="http://recruit.tavicosoft.com/public/image/<?php echo $interview['imagelink'] ?>" ><p class="guide-black"><?php echo $interview['name'] ?></p>');
+		$('.profile_tn').html('<img src="<?php echo base_url().'public/image/'.$img_a = ($interview['imagelink']!='')? $interview['imagelink'] : 'unknow.jpg'; ?>" ><p class="guide-black"><?php echo $interview['name'] ?></p>');
 		var loca = $('.location_time').contents().clone();
 		$('.loca_2').empty().append(loca);
 		var notes = $('.notes_int').contents().clone();
@@ -1026,8 +1002,12 @@
 			}else{
 				email_cc += temp+', ';
 			}
+         var img_b = 'unknow.jpg';
+         if (inter[i]['filename'] != null) {
+            img_b = inter[i]['filename'];
+         }
 			interviewer += '<div class="col-md-4 padding_0 manage_pv ql"><div class="col-md-3 ">';
-			interviewer += '<img  src="<?php echo base_url() ?>public/image/'+inter[i]['filename']+'"></div>';
+			interviewer += '<img  src="<?php echo base_url() ?>public/image/'+img_b+'"></div>';
 			interviewer += '<div class="col-md-9 padding_0"><div class="body-blac5a">'+inter[i]['operatorname']+'</div></div></div>';
 
 		}
@@ -1042,7 +1022,7 @@
 		$('#removeInterviewer').modal('show');
 	}
 	function changeAssessment(argument) {
-		$('.profile_tn').html('<img src="http://recruit.tavicosoft.com/public/image/<?php echo $interview['imagelink'] ?>" ><p class="guide-black"><?php echo $interview['name'] ?></p>');
+		$('.profile_tn').html('<img src="<?php echo base_url().'public/image/'.$img_a = ($interview['imagelink']!='')? $interview['imagelink'] : 'unknow.jpg'; ?>" ><p class="guide-black"><?php echo $interview['name'] ?></p>');
 		var loca = $('.location_time').contents().clone();
 		$('.loca_2').empty().append(loca);
 		var notes = $('.notes_int').contents().clone();
@@ -1055,8 +1035,12 @@
 		for (var i = 0; i < inter.length; i++) {
 			var temp = inter[i]['operatorname']+'('+inter[i]['email']+')';
 			email_cc += temp+', ';
+         var img_b = 'unknow.jpg';
+         if (inter[i]['filename'] != null) {
+            img_b = inter[i]['filename'];
+         }
 			interviewer += '<div class="col-md-4 padding_0 manage_pv ql"><div class="col-md-3 ">';
-			interviewer += '<img  src="<?php echo base_url() ?>public/image/'+inter[i]['filename']+'"></div>';
+			interviewer += '<img  src="<?php echo base_url() ?>public/image/'+img_b+'"></div>';
 			interviewer += '<div class="col-md-9 padding_0"><div class="body-blac5a">'+inter[i]['operatorname']+'</div></div></div>';
 
 		}
@@ -1069,5 +1053,41 @@
         $(".dom_file").remove();
 		parent.$('#changeAssessment').modal('show');
 	}
+
+   $('#btn_cancel_pv').click(function() {
+      for (instance in CKEDITOR.instances) {
+         CKEDITOR.instances[instance].updateElement();
+      }
+      if (!checkListEmail($('#to_cancel_pv').val())) {
+         alert('Email gửi đến không đúng định dạng');
+         return;
+      }else if (!checkListEmail($('#cc_cancel_pv').val())) {
+         alert('Email CC không đúng định dạng');
+         return;
+      }else if (!checkListEmail($('#bcc_cancel_pv').val())) {
+         alert('Email BCC không đúng định dạng');
+         return;
+      }else{
+         $('#form_cancel').submit();
+      }
+   });
+
+   $('#btn_removeInterviewer').click(function() {
+      for (instance in CKEDITOR.instances) {
+         CKEDITOR.instances[instance].updateElement();
+      }
+      if (!checkListEmail($('#to_pv_2').val())) {
+         alert('Email gửi đến không đúng định dạng');
+         return;
+      }else if (!checkListEmail($('#cc_pv_2').val())) {
+         alert('Email CC không đúng định dạng');
+         return;
+      }else if (!checkListEmail($('#bcc_pv_2').val())) {
+         alert('Email BCC không đúng định dạng');
+         return;
+      }else{
+         $('#form_removeInterviewer').submit();
+      }
+   });
 
 </script>

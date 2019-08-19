@@ -312,11 +312,11 @@
 														      <table   class="table table-striped table-bordered" >
 													            <thead class="fontstyle">
 													              <tr >
-													                <th id="th" class="middle2" width="20%">Từ - Đến</th>
-													                <th id="th" class="middle2" width="20%">Cty/ Địa chỉ/ ĐT</th>
-													                <th id="th" width="13%">CV khi nghỉ</th>
-													                <th id="th" width="17%">NV/ Trách nhiệm</th>
-													                 <th id="th" class="middle2" width="20%">Lý do nghỉ</th>
+													                <th id="th" class="middle2" width="12%">Từ - Đến</th>
+													                <th id="th" class="middle2" width="15%">Cty/ Địa chỉ/ ĐT</th>
+													                <th id="th" width="15%">CV khi nghỉ</th>
+													                <th id="th" width="45%">NV/ Trách nhiệm</th>
+													                 <th id="th" class="middle2" width="13%">Lý do nghỉ</th>
 													              </tr>
 													            </thead>
 													            <tbody class="fontstyle text-center">
@@ -780,11 +780,11 @@
 														      <table   class="table table-striped table-bordered" >
 													            <thead class="fontstyle">
 													              <tr >
-													                <th id="th" class="middle2" width="20%">Từ - Đến</th>
-													                <th id="th" class="middle2" width="20%">Cty/ Địa chỉ/ ĐT</th>
-													                <th id="th" width="13%">CV khi nghỉ</th>
-													                <th id="th" width="17%">NV/ Trách nhiệm</th>
-													                 <th id="th" class="middle2" width="20%">Lý do nghỉ</th>
+													                <th id="th" class="middle2" width="12%">Từ - Đến</th>
+													                <th id="th" class="middle2" width="15%">Cty/ Địa chỉ/ ĐT</th>
+													                <th id="th" width="15%">CV khi nghỉ</th>
+													                <th id="th" width="45%">NV/ Trách nhiệm</th>
+													                 <th id="th" class="middle2" width="13%">Lý do nghỉ</th>
 													              </tr>
 													            </thead>
 													            <tbody class="fontstyle text-center">
@@ -1249,11 +1249,11 @@
 															      <table   class="table table-striped table-bordered" >
 														            <thead class="fontstyle">
 														              <tr >
-														                <th id="th" class="middle2" width="20%">Từ - Đến</th>
-														                <th id="th" class="middle2" width="20%">Cty/ Địa chỉ/ ĐT</th>
-														                <th id="th" width="13%">CV khi nghỉ</th>
-														                <th id="th" width="17%">NV/ Trách nhiệm</th>
-														                 <th id="th" class="middle2" width="20%">Lý do nghỉ</th>
+														                <th id="th" class="middle2" width="12%">Từ - Đến</th>
+														                <th id="th" class="middle2" width="15%">Cty/ Địa chỉ/ ĐT</th>
+														                <th id="th" width="15%">CV khi nghỉ</th>
+														                <th id="th" width="45%">NV/ Trách nhiệm</th>
+														                 <th id="th" class="middle2" width="13%">Lý do nghỉ</th>
 														              </tr>
 														            </thead>
 														            <tbody class="fontstyle text-center">

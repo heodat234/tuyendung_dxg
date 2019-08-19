@@ -3,7 +3,7 @@
     <section class="content">
       	<div class="row">
 			<section class="col-lg-3 col-md-3 col-xs-3 connectedSortable" >
-			     	<?php 
+			     	<?php
 			   			 echo isset($nav)? $nav : "";
 			   		 ?>
 			</section>
@@ -12,7 +12,7 @@
 					<div class="row rowedit">
 						<div class="col-md-6">
 							<div class="row">
-								<div class="col-md-8">	
+								<div class="col-md-8">
 									<div class="header-content">
 										<span class="color-ccc">Chọn: </span><span class="color-blue"><button id="checkAll" class="btn-none">Tất cả </button></span>|<span class="color-blue"><button id="uncheckAll" class="btn-none"> Bỏ chọn</button></span> &nbsp; &nbsp; &nbsp; &nbsp;   <span class="color-ccc">Sắp xếp:</span><span class="color-blue">
 										</span>
@@ -36,7 +36,7 @@
 						<div class="col-md-6 hovbtn">
 							<button type="button" class="btn-icon-header"><i class="fa fa-print color-ccc" ></i></button>
 							<button type="button" class="btn-icon-header margin-r7" id="btn_sendMail" onclick="sendMail()" disabled ><i class="fa fa-envelope-o color-ccc" ></i></button>
-							<div class=""> 
+							<div class="">
 								<button type="button" class="btn-icon-header margin-r7" id="starbtn" data-toggle="dropdown" disabled><i class="fa fa-star color-ccc"></i></button>
 								<div class="dropdown-menu star-pos">
 									<a type="button" onclick="talent(0)" class="btn-none">
@@ -73,12 +73,12 @@
 					</div>
 					<div class="dash-horizontal"></div>
 					<label class="demhs"><?php echo $total_candidate; ?> Hồ sơ</label>
-					<form id="form_candidate">	
+					<form id="form_candidate">
 						<div class="row rowedit pad-t5 candidate-load scroll-full">
-							<?php 
+							<?php
 							 for($i = 0; $i < count($candidate); $i++)
 							{
-								
+
 								?>
 								<a href="<?php echo base_url()?>admin/handling/profile/<?php echo $candidate[$i]['candidateid'].'/'.$pages ?>" class="hover-profile ">
 									<div class="col-md-6 profile dash-horizontal pad-l0 pad-r5 min-h152 ">
@@ -108,7 +108,7 @@
 														<div class="col-md-3 padding-lr0 " id="ds<?php echo $candidate[$i]['candidateid']?>">
 															<?php } else { ?>
 														<div class="col-md-4 padding-lr0 " id="ds<?php echo $candidate[$i]['candidateid']?>">
-														<?php } ?>	
+														<?php } ?>
 															<span class="webportal"><?php echo $candidate[$i]['profilesrc'] ?> </span>
 														</div>
 														<div id="talent<?php echo $candidate[$i]['candidateid']?>" class="col-md-1 padding-lr0 ">
@@ -116,12 +116,12 @@
 																<span class="fa-stack fa-1x nohover">
 																  <i class="fa fa-star color-gray fa-stack-2x nohover size18" ></i>
 																  <span class="fa fa-stack-1x color-white nohover size9" ></span>
-																</span> 
+																</span>
 																<?php } else {?>
 																<span class="fa-stack fa-1x nohover">
 																  <i class="fa fa-star color-orange fa-stack-2x nohover size18"></i>
 																  <span class="fa fa-stack-1x color-white nohover size9"><?php echo $candidate[$i]['istalent'] ?></span>
-																</span> 
+																</span>
 																<?php } ?>
 														</div>
 														<div class="col-md-1 padding-lr0 icon-block" id="block<?php echo $candidate[$i]['candidateid']?>">
@@ -137,10 +137,10 @@
 													<label class="tuyendung-label2"><?php echo $candidate[$i]['tags'];?></label>
 													<?php } ?>
 													<label class="tuyendung-label3">
-														<?php echo ($candidate[$i]['gender'] == "M")? "Nam" : "Nữ"?>, <?php echo getAge($candidate[$i]['dateofbirth']);?> tuổi, <?php echo ($candidate[$i]['height'] == 0)? "" : $candidate[$i]['height']."cm, ";?><?php echo ($candidate[$i]['weight'] == 0)? "" : $candidate[$i]['weight']."kg, ";?><?php if($candidate[$i]['yearexperirence'] != null){    
+														<?php echo ($candidate[$i]['gender'] == "M")? "Nam" : "Nữ"?>, <?php echo getAge($candidate[$i]['dateofbirth']);?> tuổi, <?php echo ($candidate[$i]['height'] == 0)? "" : $candidate[$i]['height']."cm, ";?><?php echo ($candidate[$i]['weight'] == 0)? "" : $candidate[$i]['weight']."kg, ";?><?php if($candidate[$i]['yearexperirence'] != null){
 											                  echo ($candidate[$i]['yearexperirence'] == 0)? "kinh nghiệm dưới 1 năm, " : $candidate[$i]['yearexperirence']." năm kinh nghiệm, ";
-											              }              
-											              ?><?php echo ($candidate[$i]['desirebenefit'] == 0)? "" : number_format($candidate[$i]['desirebenefit'])." VND, "?><?php echo ($candidate[$i]['certificate'] == "")? "" :$candidate[$i]['certificate'].", ";?><?php 
+											              }
+											              ?><?php echo ($candidate[$i]['desirebenefit'] == 0)? "" : number_format($candidate[$i]['desirebenefit'])." VND, "?><?php echo ($candidate[$i]['certificate'] == "")? "" :$candidate[$i]['certificate'].", ";?><?php
 											              	  if($candidate[$i]['countlanguage'] == 0) echo "";
 											              	  else if($candidate[$i]['countlanguage'] == 1) echo $candidate[$i]['language'].", ";
 											              	  else echo $candidate[$i]['language']."+".($candidate[$i]['countlanguage']-1).", ";
@@ -158,7 +158,7 @@
 									</div>
 								</a>
 							<?php } ?>
-						
+
 						</div>
 					</form>
 					<button type="button" class="btn-themhoso" data-toggle="modal" data-target="#insertProfile"> Thêm Hồ Sơ</button>
@@ -167,8 +167,8 @@
 							<?php echo isset($phantrang)? $phantrang : '' ?>
 						</div>
 					</div>
-				</div>    	
-			</section>	
+				</div>
+			</section>
   		</div>
     </section>
 </div>
@@ -193,28 +193,28 @@
 	      	$('#blockbtn').removeAttr('disabled');
 	      	$('#btn_sendMail').removeAttr('disabled');
 	      	$('#btn-merge').removeAttr('disabled');
-	 	 // } 
+	 	 // }
 	 	 // else {
 	   //   	$('.checkcandidate').prop('checked', false);
 	   //   	$('#starbtn').attr('disabled', 'disabled');
 	   //   	$('#blockbtn').attr('disabled', 'disabled');
 	   //   	$('#btn_sendMail').attr('disabled', 'disabled');
-	 	 // }       
+	 	 // }
 		});
 		$("#uncheckAll").click(function(){
 	 	 // if ($('.checkcandidate').is(':checked')) {
 	      	$('.checkcandidate').prop('checked',false);
 	      	$('#starbtn').attr('disabled','disabled');
 	    	$('#blockbtn').attr('disabled','disabled');
-	    	$('#btn_sendMail').attr('disabled', 'disabled');  
-	    	$('#btn-merge').attr('disabled','disabled');	
-	 	 // } 
+	    	$('#btn_sendMail').attr('disabled', 'disabled');
+	    	$('#btn-merge').attr('disabled','disabled');
+	 	 // }
 	 	 // else {
 	     	// $('.checkcandidate').prop('checked', true);
 	     	// $('#starbtn').removeAttr('disabled');
 	     	// $('#blockbtn').removeAttr('disabled');
 	     	// $('#btn_sendMail').removeAttr('disabled');
-	 	 //}       
+	 	 //}
 		});
 		$('#btn-merge').hide();
 		$("#chk_trung").click(function(){
@@ -224,7 +224,7 @@
 				$('#btn-merge').hide();
 			}
 		});
-		
+
  	});
 
  	function checkbox_1() {
@@ -238,19 +238,19 @@
 				$('#btn-merge').removeAttr('disabled');
 				count = 1;
 			}
-		  
+
 		});
 		if(count == 0){
 			$('#starbtn').attr('disabled',true);
 			$('#blockbtn').attr('disabled',true);
 			$('#btn_sendMail').attr('disabled',true);
 			$('#btn-merge').attr('disabled',true);
-		}	
+		}
 	}
 
 	function talent(obj)
 	{
-		var id = obj; 
+		var id = obj;
 		$.ajax({
 			url: '<?php echo base_url()?>admin/handling/talent/'+id,
 			type: 'POST',
@@ -258,17 +258,17 @@
 			data:  $('#form_candidate').serialize(),
 		})
 		.done(function(data) {
-			
+
 			for(var i in data)
-			{	
+			{
 				var t = '';
 				$('#talent'+data[i]).empty();
 				if(id == 0) {
 					t = '<span class="fa-stack fa-1x"> <i class="fa fa-star color-gray fa-stack-2x nohover size18"></i><span class="fa fa-stack-1x color-white size9" ></span></span> ';
 				} else {
 					t =	'<span class="fa-stack fa-1x"> <i class="fa fa-star color-orange fa-stack-2x nohover size18" ></i><span class="fa fa-stack-1x color-white size9">'+id+'</span></span> ';
-				}		
-				$('#talent'+data[i]).append(t);			
+				}
+				$('#talent'+data[i]).append(t);
 			}
 		})
 		.fail(function() {
@@ -280,7 +280,7 @@
 	}
 	function block(obj)
 	{
-		var id = obj; 
+		var id = obj;
 		$.ajax({
 			url: '<?php echo base_url()?>admin/handling/block/'+id,
 			type: 'POST',
@@ -289,19 +289,19 @@
 		})
 		.done(function(data) {
 			for(var i in data)
-			{	
+			{
 				var t = '';
 				$('#block'+data[i]).empty();
 				if(id == 'Y') {
 					t = '<i class="fa fa-ban color-red " ></i>';
 					$('#block'+data[i]).append(t);
 					$('#ds'+data[i]).removeClass('col-md-4');
-					$('#ds'+data[i]).addClass('col-md-3');	
+					$('#ds'+data[i]).addClass('col-md-3');
 				} else {
 					$('#ds'+data[i]).removeClass('col-md-3');
-					$('#ds'+data[i]).addClass('col-md-4');	
-				}		
-					
+					$('#ds'+data[i]).addClass('col-md-4');
+				}
+
 			}
 		})
 		.fail(function() {
@@ -313,25 +313,22 @@
 	}
 
 	function sendMail() {
-		var list_candidate = JSON.parse($('#list_candidate').text()) ;
 		parent.$('#email_to').val();
-		var form = $('#form_candidate').serializeArray();
-		var email = candidateid = '';
-		for (var i = 0; i < form.length; i++) {
-			for(var j =0;j < list_candidate.length; j++){
-				if (form[i].value == list_candidate[j]['candidateid']) {
-		            if (email == '') {
-		            	email += list_candidate[j]['email'];
-		            }else{
-		            	email += ', '+list_candidate[j]['email'];
-		            }
-		        }
-		    }
-		    candidateid += form[i]['value']+ ',';
-		}
-		$('#candidateid_mail').val(candidateid);
-		$('#email_to').val(email);
-		$('#modalMail').modal('show');
+        $.ajax({
+            url: '<?php echo base_url() ?>admin/handling/getCandidateForMail',
+            type: 'POST',
+            dataType: 'json',
+            data: $('#form_candidate').serialize(),
+        })
+        .done(function(data) {
+            $('#candidateid_mail').val(data['list_candidateid']);
+            $('#email_to').val(data['list_email']);
+            $('#modalMail').modal('show');
+        })
+        .fail(function() {
+            console.log("error");
+        });
+
 	}
 
 	function modalMerge() {
@@ -352,7 +349,7 @@
 			        	row += '<div class="col-xs-4 candidate_chuyen" style="height: 130px"><div><img src="<?php echo base_url() ?>public/image/'+image+'" class="img_chuyen"></div><label>'+name+'</label><div id="check_'+id+'"><input type="radio" value="'+id+'" name="checkMerge[]" onclick="changeHsChinh('+id+')"></div></div><input type="hidden" name="id[]" value="'+id+'">';
 			        }
 		        }
-				
+
 			}
 		}
 		$('#body_chuyen_ghep').empty().append(row);

@@ -251,13 +251,6 @@ class Multiplechoice extends CI_Controller {
 				$count++;
 			}
 		}
-
-		// // var_dump($ques);
-		// foreach ($section as $key => $value) {
-		// 	var_dump($value);
-		// 	echo "<br><br>";
-		// }
-		// var_dump($section);
 		$_data['section'] = $section;
 
 		if ($active == '2') {
@@ -452,6 +445,20 @@ class Multiplechoice extends CI_Controller {
 				WHERE a.asmtid = '$asmtid'";
 
 			$result = $this->M_data->select_sql($sql);
+
+            $sql = "SELECT name,email FROM candidate WHERE (candidateid = ".$result[0]['candidateid']." OR mergewith = ".$result[0]['candidateid'].") AND priority = 'Y' ";
+            $can = $this->Campaign_model->select_sql($sql);
+            if (count($can) > 0) {
+                $result[0]['can_name'] = $can[0]['name'];
+                $result[0]['can_email'] = $can[0]['email'];
+            }else{
+                $sql1 = "SELECT name,email FROM candidate WHERE candidateid = ".$result[0]['candidateid'];
+                $can1 = $this->Campaign_model->select_sql($sql1);
+                if (count($can1) > 0) {
+                    $result[0]['can_name'] = $can1[0]['name'];
+                    $result[0]['can_email'] = $can1[0]['email'];
+                }
+            }
 			$data['assessment'] = $result[0];
 		}else{
 			$data['assessment']['status'] = '';
@@ -586,17 +593,29 @@ class Multiplechoice extends CI_Controller {
 	public function interview_question($interviewid, $interviewerid='')
 	{
         if ($interviewid != 0) {
-            $sql = "SELECT tt.*,
-            			candidate.name,
-            			candidate.email,
-            			candidate.imagelink,
-            			reccampaign.position
+            $sql = "SELECT tt.*,reccampaign.position
             		FROM interview tt
-            		LEFT JOIN candidate ON tt.candidateid = candidate.candidateid
             		LEFT JOIN reccampaign ON tt.campaignid = reccampaign.campaignid
             		WHERE tt.interviewid = $interviewid";
 
             $result = $this->Campaign_model->select_sql($sql);
+
+            $sql = "SELECT name,email,imagelink FROM candidate WHERE (candidateid = ".$result[0]['candidateid']." OR mergewith = ".$result[0]['candidateid'].") AND priority = 'Y' ";
+            $can = $this->Campaign_model->select_sql($sql);
+            if (count($can) > 0) {
+                $result[0]['name']      = $can[0]['name'];
+                $result[0]['email']     = $can[0]['email'];
+                $result[0]['imagelink'] = $can[0]['imagelink'];
+            }else{
+                $sql1 = "SELECT name,email,imagelink FROM candidate WHERE candidateid = ".$result[0]['candidateid'];
+                $can1 = $this->Campaign_model->select_sql($sql1);
+                if (count($can1) > 0) {
+                    $result[0]['name']      = $can1[0]['name'];
+                    $result[0]['email']     = $can1[0]['email'];
+                    $result[0]['imagelink'] = $can1[0]['imagelink'];
+                }
+            }
+
             $this->data2['interview'] = $result[0];
             $this->data2['interviewerid'] = $interviewerid;
             $this->data2['interviewid'] = $interviewid;
@@ -717,7 +736,12 @@ class Multiplechoice extends CI_Controller {
         if ($id == -1) {
            $id = $id_mergewith;
         }
-        $this->data2['candidate_con']     = $this->Campaign_model->select_sql("SELECT * FROM candidate WHERE mergewith = $id AND candidateid NOT IN ($id_mergewith)");
+        if ($id_mergewith == NULL) {
+            $sql = "SELECT * FROM candidate WHERE mergewith = $id AND candidateid NOT IN ($id)";
+        }else{
+            $sql = "SELECT * FROM candidate WHERE mergewith = $id AND candidateid NOT IN ($id,$id_mergewith)";
+        }
+        $this->data2['candidate_con']     = $this->Campaign_model->select_sql($sql);
         foreach ($this->data2['candidate_con'] as $key => $value) {
             $id_con                             = $value['candidateid'];
             $this->data2['address_con'][$key]    = $this->Candidate_model->selectTableByIds('canaddress',$id_con);
@@ -765,26 +789,39 @@ class Multiplechoice extends CI_Controller {
 	public function makingAppointment($interviewid)
 	{
 		$join[1] = array('table'=> 'document','match' =>'tb.operatorid = document.referencekey');
-	    $o_data['operator'] = $this->Data_model->select_row_option('tb.operatorname,tb.operatorid,tb.email, document.filename',array('tb.hidden' => 1),'','operator tb',$join,'','','','');
-        $o_data['mailtemplate'] = $this->Campaign_model->select("mailprofileid,profilename",'mailprofile',array('profiletype' => '0'),'');
-        $o_data['asmt_pv'] = $data['asmt_pv']     = $this->Campaign_model->select("asmttemp,asmtname",'asmtheader',array('asmtstatus' => 'W','asmttype' => '1'),'');
+	   $o_data['operator'] = $this->Data_model->select_row_option('tb.operatorname,tb.operatorid,tb.email, document.filename',array('tb.hidden' => 1),'','operator tb',$join,'','','','');
+      $o_data['mailtemplate'] = $this->Campaign_model->select("mailprofileid,profilename",'mailprofile',array('profiletype' => '0'),'');
+      $data['mailtemplate'] = $o_data['mailtemplate'];
+      $o_data['asmt_pv'] = $data['asmt_pv']     = $this->Campaign_model->select("asmttemp,asmtname",'asmtheader',array('asmtstatus' => 'W','asmttype' => '1'),'');
         $o_data['category'] = $this->Campaign_model->select("category,code,description,ref1,ref2",'codedictionary',array('status' => 'W'),'');
-		$sql = "SELECT a.*,
-					b.name,
-					b.email,
-					b.imagelink,
-					c.position,
+		$sql = "SELECT a.*, c.position,
 					d.status as status_asmt,
 					e.optionid, e.ansdatetime,
 					e.ansdatetime2
 				FROM interview a
-				LEFT JOIN candidate b ON a.candidateid = b.candidateid
 				LEFT JOIN reccampaign c ON a.campaignid = c.campaignid
 				LEFT JOIN assessment d ON a.inv_asmtid = d.asmtid
 				LEFT JOIN asmtanswer e ON a.inv_asmtid = e.asmtid
 				WHERE a.interviewid = $interviewid";
 
 		$result = $this->Campaign_model->select_sql($sql);
+
+        $sql = "SELECT name,email,imagelink FROM candidate WHERE (candidateid = ".$result[0]['candidateid']." OR mergewith = ".$result[0]['candidateid'].") AND priority = 'Y' ";
+        $can = $this->Campaign_model->select_sql($sql);
+        if (count($can) > 0) {
+            $result[0]['name']      = $can[0]['name'];
+            $result[0]['email']     = $can[0]['email'];
+            $result[0]['imagelink'] = $can[0]['imagelink'];
+        }else{
+            $sql1 = "SELECT name,email,imagelink FROM candidate WHERE candidateid = ".$result[0]['candidateid'];
+            $can1 = $this->Campaign_model->select_sql($sql1);
+            if (count($can1) > 0) {
+                $result[0]['name']      = $can1[0]['name'];
+                $result[0]['email']     = $can1[0]['email'];
+                $result[0]['imagelink'] = $can1[0]['imagelink'];
+            }
+        }
+
 		$data['interview'] = $result[0];
 
 		$join1[0]         = array('table'=> "codedictionary b","match" =>" CAST(a.interviewer as nvarchar) = b.code AND b.category = 'ERP' ");
@@ -792,12 +829,10 @@ class Multiplechoice extends CI_Controller {
         $join1[2] = array('table' => 'assessment d','match' =>'a.inv_asmtid = d.asmtid');
         $join1[3] = array('table' => 'asmtanswer e','match' =>'a.inv_asmtid = e.asmtid');
 
-    	$data['interviewer'] = $this->Data_model->select_row_option('a.interviewerid,a.inv_asmtid,a.scr_asmtid,  b.ref1 as operatorname, b.ref2 as email, c.filename, d.status as status_asmt, e.optionid, e.ansdatetime, e.ansdatetime2 ',array('a.interviewid'=>$interviewid),'','interviewer a',$join1,'','','','');
+    	$data['interviewer'] = $this->Data_model->select_row_option('a.interviewer,a.interviewerid,a.inv_asmtid,a.scr_asmtid,  b.ref1 as operatorname, b.ref2 as email, c.filename, d.status as status_asmt, e.optionid, e.ansdatetime, e.ansdatetime2 ',array('a.interviewid'=>$interviewid),'','interviewer a',$join1,'','','','');
 
     	for ($i=0; $i < count($data['interviewer']); $i++) {
     		$interviewerid = $data['interviewer'][$i]['interviewerid'];
-    		// echo $interviewerid;
-    		//for interview question
 			$sql = "SELECT a.scr_asmtid as asmtid, b.asmttemp, c.filename, d.ref1 as operatorname
 					FROM interviewer a
 					LEFT OUTER JOIN assessment b ON a.scr_asmtid = b.asmtid
@@ -1056,8 +1091,19 @@ class Multiplechoice extends CI_Controller {
             }else{
                 echo json_encode($resp);
             }
-            $match                      = array('candidateid' => $post['candidateid']);
-            $candidate                  = $this->Candidate_model->selectBySelect('*','candidate',$match)[0];
+            // $match                      = array('candidateid' => $post['candidateid']);
+            // $candidate                  = $this->Candidate_model->selectBySelect('*','candidate',$match)[0];
+            $sql = "SELECT name,email,lastname FROM candidate WHERE (candidateid = ".$post['candidateid']." OR mergewith = ".$post['candidateid'].") AND priority = 'Y' ";
+            $can = $this->Campaign_model->select_sql($sql);
+            if (count($can) > 0) {
+                $candidate = $can[0];
+            }else{
+                $sql1 = "SELECT name,email,lastname FROM candidate WHERE candidateid = ".$post['candidateid'];
+                $can1 = $this->Campaign_model->select_sql($sql1);
+                if (count($can1) > 0) {
+                    $candidate = $can1[0];
+                }
+            }
             $lastname                   = $candidate['lastname'];
             $name                       = $candidate['name'];
             $match                      = array('campaignid' => $post['campaignid']);

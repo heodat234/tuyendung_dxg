@@ -3,6 +3,21 @@
 <input type="hidden" name="check[]" id="checkoneid" value="<?php echo $candidateid ?>" >
 </form>
 <input type="hidden" id="candidateemail" value="<?php echo ($candidate['email'] != '')? $candidate['email'] : $candidate_noibo['email']?>">
+
+<form id="form_checkPriority">
+    <?php if (isset($candidate['priority']) && $candidate['priority'] == 'Y') { ?>
+        <input type="hidden" name="checkPriorityId" value="<?=$candidate['candidateid'] ?>" >
+        <input type="hidden" name="checkPriorityMail" value="<?=$candidate['email'] ?>" >
+    <?php }elseif (isset($candidate_noibo['priority']) && $candidate_noibo['priority'] == 'Y') { ?>
+        <input type="hidden" name="checkPriorityId" value="<?=$candidate_noibo['candidateid'] ?>" >
+        <input type="hidden" name="checkPriorityMail" value="<?=$candidate_noibo['email'] ?>" >
+    <?php }else{
+        $mail_check = ($candidate['email'] != '')? $candidate['email'] : $candidate_noibo['email'];
+    ?>
+        <input type="hidden" name="checkPriorityId" value="<?=$candidateid ?>" >
+        <input type="hidden" name="checkPriorityMail" value="<?=$mail_check ?>" >
+    <?php } ?>
+</form>
 <div style="background-color: white">
 	<div class="row rowedit">
 		<?php $unsubcribe = ($candidate['unsubcribe'] != '')? $candidate['unsubcribe'] : $candidate_noibo['unsubcribe'];
@@ -107,10 +122,15 @@
     <!-- ket thuc phan heading cua tab 1 thong tin ung vien -->
     <!-- <div class="pull-right"><button class="btn btn-info" id="btn_tab_canhan">Đóng/Mở</button></div> -->
     <div id="collapse1" class="panel-collapse collapse in">
-      <div class="panel-body tab-collapse" style="margin-top: 20px">
+      <div class="panel-body tab-collapse" style="margin-top: 30px">
       	 <div class="tab-content">
 
         	<div id="total" class="tab-pane <?php echo ($tabActive == '1')?'in active' : '' ?>">
+                <div style="margin: -40px 0 10px 15px">
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="priority[]" class="checkbox_priority" value="ca_nhan" <?php echo (isset($candidate['priority']) && $candidate['priority'] == 'Y' )? 'checked' : '' ?> >Ưu tiên</label>
+                    </div>
+                </div>
         		<div style="margin-bottom: 15px;margin-left: 15px">Ngày cập nhật mới nhất: <?php echo ($lastupdate[0][0] != '')? date_format(date_create($lastupdate[0][0]),"d/m/Y H:i:s") : '' ?></div>
         		<div class="panel-group bor-mar-b0">
 					<div class="panel panel-default border-rad0">
@@ -174,6 +194,8 @@
 				                    <div class="col-sm-5">
 				                      <?php if (isset($document) && !empty($document)){
 				                        $url = $document['url'];
+                                        $url               = str_replace("[", '', $url);
+                                        $url               = str_replace("]", '', $url);
 				                        $name = $document['filename'];
 				                      }else{$url =''; $name = '';}?>
 				                        <label class="fontArial colorcyan labelcontent" ><a id="label1"  class="fontstyle" target="_blank" href="<?php echo $url; ?>"><?php echo $name; ?> </a></label>
@@ -357,7 +379,7 @@
 						          <div class="width100 row rowedit h-auto">
 						            <label for="text" class="width20 col-xs-3 label-profile">Điện thoại</label>
 						            <div class="width80 col-xs-9 padding-lr0">
-						             <label class="fontArial colorgray labelcontent" ><?php echo $candidate['telephone'];?></label>
+						             <label class="fontArial colorgray labelcontent" ><?php echo trim($candidate['telephone'],",");?></label>
 						            </div>
 						        </div>
 						         <div class="width100 row rowedit h-auto">
@@ -428,11 +450,11 @@
 							      <table   class="table table-striped table-bordered" >
 						            <thead class="fontstyle">
 						              <tr >
-						                <th id="th" class="middle2" width="20%">Từ - Đến</th>
-						                <th id="th" class="middle2" width="20%">Cty/ Địa chỉ/ ĐT</th>
-						                <th id="th" width="13%">CV khi nghỉ</th>
-						                <th id="th" width="23%">NV/ Trách nhiệm</th>
-						                 <th id="th" class="middle2" width="17%">Lý do nghỉ</th>
+						                <th id="th" class="middle2" width="12%">Từ - Đến</th>
+						                <th id="th" class="middle2" width="15%">Cty/ Địa chỉ/ ĐT</th>
+						                <th id="th" width="15%">CV khi nghỉ</th>
+						                <th id="th" width="45%">NV/ Trách nhiệm</th>
+						                 <th id="th" class="middle2" width="13%">Lý do nghỉ</th>
 						              </tr>
 						            </thead>
 						            <tbody class="fontstyle text-center">
@@ -636,6 +658,11 @@
        		 <!-- ket thuc id tab cá nhân -->
 
        		<div id="personal" class="tab-pane <?php echo ($tabActive != '1')?'in active' : '' ?>">
+                <div style="margin: -40px 0 10px 15px">
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="priority[]" class="checkbox_priority" value="noi_bo" <?php echo (isset($candidate_noibo['priority']) && $candidate_noibo['priority'] == 'Y' ) ? 'checked' : '' ?> >Ưu tiên</label>
+                    </div>
+                </div>
        			<div style="margin-bottom: 15px;margin-left: 15px">Ngày cập nhật mới nhất: <?php echo ($lastupdate_noibo[0][0] != '')? date_format(date_create($lastupdate_noibo[0][0]),"d/m/Y H:i:s") : '' ?></div>
         		<div class="panel-group bor-mar-b0">
 					<div class="panel panel-default border-rad0" id="tab1">
@@ -660,7 +687,7 @@
 						             </div>
 						             <label for="text" class="col-xs-3 width20 col-xs-3 label-profile">Email</label>
 						             <div class="col-xs-3 width30 padding-lr0">
-						             	<input type="text" class="textbox" name="email" value="<?php echo isset($candidate_noibo['email'])? $candidate_noibo['email'] : "";?>" >
+						             	<input type="email" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" class="textbox" name="email" value="<?php echo isset($candidate_noibo['email'])? $candidate_noibo['email'] : "";?>" >
 						             </div>
 						         </div>
 						         <br><br>
@@ -1179,12 +1206,12 @@
 					          <table   class="table table-striped table-bordered" >
 						            <thead class="fontstyle">
 						              <tr >
-						                <th id="th" class="middle2" width="20%">Từ - Đến</th>
-						                <th id="th" class="middle2" width="20%">Cty/ Địa chỉ/ ĐT</th>
-						                <th id="th" width="13%">CV khi nghỉ</th>
-						                <th id="th" width="23%">NV/ Trách nhiệm</th>
-						                 <th id="th" class="middle2" width="17%">Lý do nghỉ</th>
-						                 <th id="th" width="10%"></th>
+						                <th id="th" class="middle2" width="12%">Từ - Đến</th>
+						                <th id="th" class="middle2" width="15%">Cty/ Địa chỉ/ ĐT</th>
+						                <th id="th" width="15%">CV khi nghỉ</th>
+						                <th id="th" width="40%">NV/ Trách nhiệm</th>
+						                 <th id="th" class="middle2" width="13%">Lý do nghỉ</th>
+						                 <th id="th" width="5%"></th>
 						              </tr>
 						            </thead>
 						            <tbody class="fontstyle text-center">
@@ -1497,7 +1524,7 @@
 							             </div>
 							             <label for="text" class="col-xs-3 width20 col-xs-3 label-profile">Email</label>
 							             <div class="col-xs-3 width30 padding-lr0">
-							             	<input type="text" class="textbox" name="email" value="<?php echo isset($value['email'])? $value['email'] : "";?>" >
+							             	<input type="email" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" class="textbox" name="email" value="<?php echo isset($value['email'])? $value['email'] : "";?>" >
 							             </div>
 							         </div>
 							         <br><br>
@@ -2016,12 +2043,12 @@
 						          <table   class="table table-striped table-bordered" >
 							            <thead class="fontstyle">
 							              <tr >
-							                <th id="th" class="middle2" width="20%">Từ - Đến</th>
-							                <th id="th" class="middle2" width="20%">Cty/ Địa chỉ/ ĐT</th>
-							                <th id="th" width="13%">CV khi nghỉ</th>
-							                <th id="th" width="23%">NV/ Trách nhiệm</th>
-							                 <th id="th" class="middle2" width="17%">Lý do nghỉ</th>
-							                 <th id="th" width="10%"></th>
+							                <th id="th" class="middle2" width="12%">Từ - Đến</th>
+							                <th id="th" class="middle2" width="15%">Cty/ Địa chỉ/ ĐT</th>
+							                <th id="th" width="15%">CV khi nghỉ</th>
+							                <th id="th" width="40%">NV/ Trách nhiệm</th>
+							                 <th id="th" class="middle2" width="13%">Lý do nghỉ</th>
+							                 <th id="th" width="5%"></th>
 							              </tr>
 							            </thead>
 							            <tbody class="fontstyle text-center">
@@ -2887,21 +2914,18 @@
 	        data: {id_city : $id},
 	      })
 	      .done(function(data) {
-	                 for(var i in data)
-	                 {
-	                  if(get != 0 && get == data[i].id_district)
-	                  {
-	                    $('#chonqh-ad1_'+candidateid).after('<option class="gicungdc" value="'+data[i].id_district+'" selected>'+data[i].name+'</option>');
-	                  }
-	                  else
-	                  {
-	                    $('#chonqh-ad1_'+candidateid).after('<option class="gicungdc" value="'+data[i].id_district+'">'+data[i].name+'</option>');
-	                  }
-	                  }
-	                if ($('#addressno1_'+candidateid).val() == '') {
-	                	$('#toanha88_'+candidateid).val('');
-	                }
-	              })
+            for(var i in data)
+            {
+               if(get != 0 && get == data[i].id_district){
+                  $('#chonqh-ad1_'+candidateid).after('<option class="gicungdc" value="'+data[i].id_district+'" selected>'+data[i].name+'</option>');
+               }else{
+                  $('#chonqh-ad1_'+candidateid).after('<option class="gicungdc" value="'+data[i].id_district+'">'+data[i].name+'</option>');
+               }
+            }
+            if ($('#addressno1_'+candidateid).val() == '') {
+               $('#toanha88_'+candidateid).val('');
+            }
+         })
 	      .fail(function() {
 	        alert('thatbai');
 	        console.log("error");
@@ -3114,71 +3138,71 @@
 		});
 
 	}
-	$('#uploadCV').click(function(event) {
-		$.ajax({
-      url: '<?php echo base_url()?>admin/handling/updateCV',
-      type: 'POST',
-      dataType: 'json',
-      data: new FormData($('#form_CV')[0]),
-      contentType: false,
-      processData: false
+   $('#uploadCV').click(function(event) {
+      $.ajax({
+         url: '<?php echo base_url()?>admin/handling/updateCV',
+         type: 'POST',
+         dataType: 'json',
+         data: new FormData($('#form_CV')[0]),
+         contentType: false,
+         processData: false
 
-    })
-    .done(function(data) {
-      if (data == 1) {
-      	alert('Tải lên CV thành công');
-        parent.location.reload();
-      }
-    })
-    .fail(function() {
-      console.log("error");
-    })
-    .always(function() {
-      console.log("complete");
-    });
+      })
+      .done(function(data) {
+         if (data == 1) {
+            alert('Tải lên CV thành công');
+            parent.location.reload();
+         }
+      })
+      .fail(function() {
+         console.log("error");
+      })
+      .always(function() {
+         console.log("complete");
+      });
 
-  });
+   });
 	//them xoa sua quan he gia dinh
-  function editmodal(idform){
+   function editmodal(idform){
       var data = "";
       data = $("#"+idform+"").serialize();
       var data2 = parseQuery(data);
 
-       parent.$('#them11').text("Lưu");
-       parent.$('#myModal11').modal('show');
-       parent.$('#hoten11').val(data2.hoten);
-       parent.$('#nn11').val(data2.nghenghiep);
-       parent.$('#checkup').val(data2.recordid);
-       parent.$('#namsinh11').val(data2.namsinh);
-       parent.$('#quanhe11').val(data2.quanhe);
+      parent.$('#them11').text("Lưu");
+      parent.$('#myModal11').modal('show');
+      parent.$('#hoten11').val(data2.hoten);
+      parent.$('#nn11').val(data2.nghenghiep);
+      parent.$('#checkup').val(data2.recordid);
+      parent.$('#namsinh11').val(data2.namsinh);
+      parent.$('#quanhe11').val(data2.quanhe);
       parent.$('#candidate_main_relationship').val(data2.candidateid_main);
       parent.$('#candidate_sub_relationship').val(data2.candidateid_sub);
-  }
+   }
 
-  function showmodel11(id_main,id_sub)
-  {
-	parent.$('#them11').text("Thêm");
-	parent.$('#myModal11').modal('show');
-	parent.$('#hoten11').val("");
-	parent.$('#nn11').val("");
-	parent.$('#checkup').val("0");
-	parent.$('#namsinh11').val("0");
-	parent.$('#quanhe11').val("0");
-	parent.$('#candidate_main_relationship').val(id_main);
-	parent.$('#candidate_sub_relationship').val(id_sub);
-  }
-  function delmodal(idform){
-    var data = "";
-    data = $("#"+idform+"").serialize();
-    var data2 = parseQuery(data);
-    parent.$('#myModaldel').modal('show');
-    parent.$('#checkup1d').val(data2.recordid);
-    parent.$('#candidate_main_del_relationship').val(data2.candidateid_main);
-    parent.$('#candidate_sub_del_relationship').val(data2.candidateid_sub);
-  }
+   function showmodel11(id_main,id_sub)
+   {
+   	parent.$('#them11').text("Thêm");
+   	parent.$('#myModal11').modal('show');
+   	parent.$('#hoten11').val("");
+   	parent.$('#nn11').val("");
+   	parent.$('#checkup').val("0");
+   	parent.$('#namsinh11').val("0");
+   	parent.$('#quanhe11').val("0");
+   	parent.$('#candidate_main_relationship').val(id_main);
+   	parent.$('#candidate_sub_relationship').val(id_sub);
+   }
+   function delmodal(idform){
+      var data = "";
+      data = $("#"+idform+"").serialize();
+      var data2 = parseQuery(data);
+      parent.$('#myModaldel').modal('show');
+      parent.$('#checkup1d').val(data2.recordid);
+      parent.$('#candidate_main_del_relationship').val(data2.candidateid_main);
+      parent.$('#candidate_sub_del_relationship').val(data2.candidateid_sub);
+   }
 
- // them xoa sua kinh nghiem lam việc
-  function editmodal2(idform){
+   // them xoa sua kinh nghiem lam việc
+   function editmodal2(idform){
       var data = "";
       data = $("#"+idform+"").serialize();
       var data2 = parseQuery(data);
@@ -3189,72 +3213,69 @@
       parent.$('#tuden6').val(data2.denngay);
       parent.$('#checkup2').val(data2.recordid);
       parent.$('#cty2').val(data2.cty);
-       parent.$('#chucvu2').val(data2.vitri);
-        parent.$('#nhiemvu2').val(data2.nhiemvu);
-       parent.$('#lydonghi2').val(data2.lydo);
-       parent.$('#dc2').val(data2.diachi);
-       parent.$('#sdt2').val(data2.sdt);
-       parent.$('#candidate_main_experience').val(data2.candidateid_main);
-    	parent.$('#candidate_sub_experience').val(data2.candidateid_sub);
-  }
-  function showmodel2(id_main,id_sub){
-
+      parent.$('#chucvu2').val(data2.vitri);
+      parent.$('#nhiemvu2').val(data2.nhiemvu);
+      parent.$('#lydonghi2').val(data2.lydo);
+      parent.$('#dc2').val(data2.diachi);
+      parent.$('#sdt2').val(data2.sdt);
+      parent.$('#candidate_main_experience').val(data2.candidateid_main);
+      parent.$('#candidate_sub_experience').val(data2.candidateid_sub);
+   }
+   function showmodel2(id_main,id_sub){
       parent.$('#them12').text("Thêm");
-
       parent.$('#myModal2').modal('show');
-       parent.$('#tuden5').val("");
+      parent.$('#tuden5').val("");
       parent.$('#tuden6').val("");
       parent.$('#checkup2').val("0");
       parent.$('#cty2').val("");
-       parent.$('#chucvu2').val("");
-        parent.$('#nhiemvu2').val("");
-       parent.$('#lydonghi2').val("");
-       parent.$('#dc2').val("");
-       parent.$('#sdt2').val("");
-        parent.$('#candidate_main_experience').val(id_main);
-    	parent.$('#candidate_sub_experience').val(id_sub);
-  }
-  function delmodal2(idform){
+      parent.$('#chucvu2').val("");
+      parent.$('#nhiemvu2').val("");
+      parent.$('#lydonghi2').val("");
+      parent.$('#dc2').val("");
+      parent.$('#sdt2').val("");
+      parent.$('#candidate_main_experience').val(id_main);
+      parent.$('#candidate_sub_experience').val(id_sub);
+   }
+   function delmodal2(idform){
       var data = "";
       data = $("#"+idform+"").serialize();
       var data2 = parseQuery(data);
       parent.$('#myModaldel2').modal('show');
       parent.$('#checkup2d').val(data2.recordid);
-       parent.$('#candidate_main_del_experience').val(data2.candidateid_main);
-    	parent.$('#candidate_sub_del_experience').val(data2.candidateid_sub);
-
-  }
- // them xoa sua nguoi tham chieu
-  function editmodal3(idform){
+      parent.$('#candidate_main_del_experience').val(data2.candidateid_main);
+      parent.$('#candidate_sub_del_experience').val(data2.candidateid_sub);
+   }
+   // them xoa sua nguoi tham chieu
+   function editmodal3(idform){
       var data = "";
       data = $("#"+idform+"").serialize();
       var data2 = parseQuery(data);
 
       parent.$('#them3').text("Lưu");
       parent.$('#myModal3').modal('show');
-     parent.$('#hoten3').val(data2.hoten);
+      parent.$('#hoten3').val(data2.hoten);
       parent.$('#chucvu3').val(data2.vitri);
       parent.$('#checkup3').val(data2.recordid);
       parent.$('#congty3').val(data2.cty);
-       parent.$('#lienhe3').val(data2.lienhe);
-        parent.$('#candidate_main_reference').val(data2.candidateid_main);
-    	parent.$('#candidate_sub_reference').val(data2.candidateid_sub);
-  }
-  function showmodel3(id_main,id_sub){
+      parent.$('#lienhe3').val(data2.lienhe);
+      parent.$('#candidate_main_reference').val(data2.candidateid_main);
+      parent.$('#candidate_sub_reference').val(data2.candidateid_sub);
+   }
+   function showmodel3(id_main,id_sub){
 
       parent.$('#them3').text("Thêm");
 
       parent.$('#myModal3').modal('show');
-       parent.$('#hoten3').val("");
+      parent.$('#hoten3').val("");
       parent.$('#chucvu3').val("");
       parent.$('#checkup3').val("0");
       parent.$('#congty3').val("");
-       parent.$('#lienhe3').val("");
-       parent.$('#candidate_main_reference').val(id_main);
-    	parent.$('#candidate_sub_reference').val(id_sub);
-  }
+      parent.$('#lienhe3').val("");
+      parent.$('#candidate_main_reference').val(id_main);
+      parent.$('#candidate_sub_reference').val(id_sub);
+   }
 
-  function delmodal3(idform){
+   function delmodal3(idform){
       var data = "";
       data = $("#"+idform+"").serialize();
       var data2 = parseQuery(data);
@@ -3262,8 +3283,8 @@
       parent.$('#checkup3d').val(data2.recordid);
       parent.$('#candidate_main_del_reference').val(data2.candidateid_main);
     	parent.$('#candidate_sub_del_reference').val(data2.candidateid_sub);
-  }
- // them xoa sua trinh do hoc van
+   }
+   // them xoa sua trinh do hoc van
    function editmodal4(idform){
       var data = "";
       data = $("#"+idform+"").serialize();
@@ -3380,7 +3401,7 @@
       parent.$('#candidate_main_language').val(id_main);
       parent.$('#candidate_sub_language').val(id_sub);
   }
-  function delmodal6(idform){
+   function delmodal6(idform){
       var data = "";
       data = $("#"+idform+"").serialize();
       var data2 = parseQuery(data);
@@ -3390,7 +3411,7 @@
       parent.$('#candidate_main_del_language').val(data2.candidateid_main);
       parent.$('#candidate_sub_del_language').val(data2.candidateid_sub);
 
-  }
+   }
   //them xoa sua pm
    function editmodal7(idform){
       var data = "";
@@ -3407,20 +3428,17 @@
       parent.$('#candidate_main_software').val(data2.candidateid_main);
       parent.$('#candidate_sub_software').val(data2.candidateid_sub);
 
-  }
-  function showmodel7(id_main,id_sub){
-
+   }
+   function showmodel7(id_main,id_sub){
       parent.$('#them7').text("Thêm");
-
       parent.$('#myModal7').modal('show');
       parent.$('#pm7').val("");
       parent.$('#trinhdo7').val("0");
       parent.$('#checkup7').val("0");
-     parent.$('#candidate_main_software').val(id_main);
+      parent.$('#candidate_main_software').val(id_main);
       parent.$('#candidate_sub_software').val(id_sub);
-
   }
-  function delmodal7(idform){
+   function delmodal7(idform){
       var data = "";
       data = $("#"+idform+"").serialize();
       var data2 = parseQuery(data);
@@ -3428,74 +3446,94 @@
       parent.$('#checkup7d').val(data2.recordid);
       parent.$('#candidate_main_del_software').val(data2.candidateid_main);
       parent.$('#candidate_sub_del_software').val(data2.candidateid_sub);
-  }
+   }
 
   	function sendMail() {
-  		var form 			= $('#form_checkone').serializeArray();
+  		var form 			= $('#form_checkPriority').serializeArray();
 		var candidateid 	= form[0].value;
-		var mail 			= $('#candidateemail').val();
+		var mail 			= form[1].value;
 		parent.$('#candidateid_mail').val(candidateid);
 		parent.$('#email_to').val(mail);
 		parent.$('#modalMail').modal('show');
 	}
 
-	var substringMatcher = function(strs) {
-	  return function findMatches(q, cb) {
-	    var matches, substringRegex;
+   var substringMatcher = function(strs) {
+      return function findMatches(q, cb) {
+         var matches, substringRegex;
+         matches = [];
 
-	    // an array that will be populated with substring matches
-	    matches = [];
+         substrRegex = new RegExp(q, 'i');
 
-	    // regex used to determine if a string contains the substring `q`
-	    substrRegex = new RegExp(q, 'i');
+         $.each(strs, function(i, str) {
+            if (substrRegex.test(str)) {
+               matches.push(str);
+            }
+         });
 
-	    // iterate through the pool of strings and for any string that
-	    // contains the substring `q`, add it to the `matches` array
-	    $.each(strs, function(i, str) {
-	      if (substrRegex.test(str)) {
-	        matches.push(str);
-	      }
-	    });
+         cb(matches);
+      };
+   };
 
-	    cb(matches);
-	  };
-	};
-
-
-
-	function showMailView(mailid) {
+   function showMailView(mailid) {
       $.ajax({
-        url: '<?php echo base_url() ?>admin/email/get_mail_byId',
-        type: 'POST',
-        dataType: 'json',
-        data: {mailid: mailid},
+         url: '<?php echo base_url() ?>admin/email/get_mail_byId',
+         type: 'POST',
+         dataType: 'json',
+         data: {mailid: mailid},
       })
       .done(function(data) {
-        parent.$('#idMailFrom_1').text(data[0]['operatorname']);
-        parent.$('#idMailTo_1').text(data[0]['toemail']);
-        parent.$('#idMailCc_1').text(data[0]['cc']);
-        parent.$('#idMailDate_1').text(data[0]['date']);
-        parent.$('#idMailSubject_1').text(data[0]['emailsubject']);
-        parent.$('#idMailBody_1').empty().append(data[0]['emailbody']);
-        parent.$('#modalMailView1').modal('show');
+         parent.$('#idMailFrom_1').text(data[0]['operatorname']);
+         parent.$('#idMailTo_1').text(data[0]['toemail']);
+         parent.$('#idMailCc_1').text(data[0]['cc']);
+         parent.$('#idMailDate_1').text(data[0]['date']);
+         parent.$('#idMailSubject_1').text(data[0]['emailsubject']);
+         parent.$('#idMailBody_1').empty().append(data[0]['emailbody']);
+         parent.$('#modalMailView1').modal('show');
       })
       .fail(function() {
-        console.log("error");
+         console.log("error");
       });
+   }
 
-    }
+   function loadAssessment(asmtid) {
+      window.open('<?php echo base_url() ?>admin/multiplechoice/pageAssessment/'+asmtid+'/0');
+   }
 
-    function loadAssessment(asmtid) {
-        window.open('<?php echo base_url() ?>admin/multiplechoice/pageAssessment/'+asmtid+'/0');
-    }
+   function loadAppointment(interviewid) {
+      window.open('<?php echo base_url() ?>admin/multiplechoice/makingAppointment/'+interviewid);
+   }
 
-    function loadAppointment(interviewid) {
-        window.open('<?php echo base_url() ?>admin/multiplechoice/makingAppointment/'+interviewid);
-    }
+   function loadOffer(offerid) {
+      window.open('<?php echo base_url() ?>admin/offer/offer/'+offerid+'/10');
+   }
 
-    function loadOffer(offerid) {
-        window.open('<?php echo base_url() ?>admin/offer/offer/'+offerid+'/10');
-    }
+   $(".checkbox_priority").on('click', function() {
+      var $box = $(this);
+      if ($box.is(":checked")) {
+         var candidateid         = '<?php echo $candidate['candidateid'] ?>';
+         var candidateid_noibo   = '<?php echo isset($candidate_noibo['candidateid'])? $candidate_noibo['candidateid'] : 0 ?>';
+         $.ajax({
+            url: '<?php echo base_url() ?>admin/handling/checkPriority',
+            type: 'GET',
+            dataType: 'html',
+            data: {priority: $box.val(), candidateid : candidateid, candidateid_noibo: candidateid_noibo},
+         })
+         .done(function(data) {
+            alert('Đặt quyền ưu tiên thành công');
+            window.location.reload();
+         })
+         .fail(function() {
+            console.log("error");
+         });
+
+
+         var group = "input:checkbox[name='" + $box.attr("name") + "']";
+         $(group).prop("checked", false);
+         $box.prop("checked", true);
+      } else {
+         $box.prop("checked", false);
+      }
+   });
 </script>
 <style type="text/css">
 	.tt-input

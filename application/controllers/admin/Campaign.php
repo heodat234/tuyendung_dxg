@@ -149,7 +149,7 @@ class Campaign extends CI_Controller {
 		$sql = "SELECT DISTINCT a.*
 				from reccampaign a
 				LEFT OUTER JOIN recflow b ON a.campaignid = b.campaignid
-				WHere a.expdate < '$day' AND a.status = 'W'
+				WHere a.expdate < '$day' OR a.status = 'C'
 				and (a.managecampaign like '%,$operatorid,%' or a.showtype = 'O' or a.showtype='I' or b.manageround like '%,$operatorid,%') order by a.lastupdate DESC";
 		$data['campaigns_end'] = $this->M_data->select_sql($sql);
 
@@ -494,10 +494,21 @@ class Campaign extends CI_Controller {
 
 
 		if ($id != '-1') {
-			$sql                = "SELECT email,profilesrc FROM candidate WHERE candidateid = $id";
+			$sql                = "SELECT profilesrc FROM candidate WHERE candidateid = $id";
 	        $result             = ($this->Campaign_model->select_sql($sql))[0];
-	        $mail               = $result['email'];
 	        $profilesrc         = $result['profilesrc'];
+
+            $sql = "SELECT email FROM candidate WHERE (candidateid = $id OR mergewith = $id) AND priority = 'Y' ";
+            $result1 = $this->Campaign_model->select_sql($sql);
+            if (count($result1) > 0) {
+                $mail               = $result1[0]['email'];
+            }else{
+                $sql2 = "SELECT email FROM candidate WHERE candidateid = $id ";
+                $result2 = $this->Campaign_model->select_sql($sql2);
+                if (count($result2) > 0) {
+                    $mail               = $result2[0]['email'];
+                }
+            }
 
 			$this->data2['id'] 	= $id;
 			$join[0] 			= array('table'=> 'operator','match' =>'tb.createdby = operator.operatorid');
@@ -551,27 +562,35 @@ class Campaign extends CI_Controller {
 	        	$history_profile4[$i]['interviewer'] = $this->Data_model->select_row_option('a.interviewer, a.inv_asmtid, a.scr_asmtid, d.status, b.ref1 as operatorname, c.filename, e.optionid, e.ansdatetime, e.ansdatetime2',array('a.interviewid'=>$history_profile4[$i]['interviewid']),'','interviewer a',$join1,'',$orderby1,'','');
 
                 $sql = "SELECT
-                    b.name,
-                    b.email,
-                    b.imagelink,
+                    a.candidateid,
                     c.position,
                     d.status as status_asmt,
                     e.optionid, e.ansdatetime,
                     e.ansdatetime2
                 FROM interview a
-                LEFT JOIN candidate b ON a.candidateid = b.candidateid
                 LEFT JOIN reccampaign c ON a.campaignid = c.campaignid
                 LEFT JOIN assessment d ON a.inv_asmtid = d.asmtid
                 LEFT JOIN asmtanswer e ON a.inv_asmtid = e.asmtid
                 WHERE a.interviewid = ".$history_profile4[$i]['interviewid'];
 
-
                 $result = $this->Campaign_model->select_sql($sql);
-                $history_profile4[$i]['interview_his'] = $result[0];
 
-                // $sql1= "SELECT * FROM asmtanswer WHERE asmtid = 690";
-                // $result = $this->Campaign_model->select_sql($sql1);
-                // $history_profile4[$i]['asmtanswer'] = $result[0];
+                $sql = "SELECT name,email,imagelink FROM candidate WHERE (candidateid = ".$result[0]['candidateid']." OR mergewith = ".$result[0]['candidateid'].") AND priority = 'Y' ";
+                $can = $this->Campaign_model->select_sql($sql);
+                if (count($can) > 0) {
+                    $result[0]['name']      = $can[0]['name'];
+                    $result[0]['email']     = $can[0]['email'];
+                    $result[0]['imagelink'] = $can[0]['imagelink'];
+                }else{
+                    $sql1 = "SELECT name,email,imagelink FROM candidate WHERE candidateid = ".$result[0]['candidateid'];
+                    $can1 = $this->Campaign_model->select_sql($sql1);
+                    if (count($can1) > 0) {
+                        $result[0]['name']      = $can1[0]['name'];
+                        $result[0]['email']     = $can1[0]['email'];
+                        $result[0]['imagelink'] = $can1[0]['imagelink'];
+                    }
+                }
+                $history_profile4[$i]['interview_his'] = $result[0];
 	        }
 
             // echo "<pre>";
@@ -671,29 +690,37 @@ class Campaign extends CI_Controller {
             $this->data2['tags_noibo']          = $this->Candidate_model->join_tag($id_mergewith);
             $this->data2['tagstrandom_noibo']   = $this->Candidate_model->join_tag_random($id_mergewith);
 
-
             //hồ sơ con khác
 	        if ($id == -1) {
 	           $id = $id_mergewith;
 	        }
-	        $this->data2['candidate_con']     = $this->Campaign_model->select_sql("SELECT * FROM candidate WHERE mergewith = $id AND candidateid NOT IN ($id)");
-	        foreach ($this->data2['candidate_con'] as $key => $value) {
-	            $id_con                             = $value['candidateid'];
-	            $this->data2['canaddress_con'][$key]    = $this->Candidate_model->selectTableByIds('canaddress',$id_con);
-	            $this->data2['family_con'][$key]        = $this->Candidate_model->selectTableByIds('cansocial',$id_con);
-	            $this->data2['experience_con'][$key]    = $this->Candidate_model->selectTableByIds('canexperience',$id_con);
-	            $this->data2['reference_con'][$key]     = $this->Candidate_model->selectTableByIds('canreference',$id_con);
-	            $this->data2['knowledge_con'][$key]     = $this->Candidate_model->selectTableByIds('canknowledge',$id_con);
-	            $this->data2['language_con'][$key]      = $this->Candidate_model->selectTableByIds('canlanguage',$id_con);
-	            $this->data2['software_con'][$key]      = $this->Candidate_model->selectTableByIds('cansoftware',$id_con);
-	            $this->data2['document_con'][$key]      = $this->Candidate_model->first_row('document',array('referencekey'=>$id_con,'tablename' => 'candidate'),'filename,url','lastupdate');
-	            $vt1                                    = $this->Candidate_model->selectTableGroupBy('position,company','canexperience',$id_con,'dateto');
-	            $this->data2['tags_con'][$key]          = $this->Candidate_model->join_tag($id_con);
-	            $this->data2['tagstrandom_con'][$key]   = $this->Candidate_model->join_tag_random($id_con);
-	            $this->data2['vt_con'][$key]            = $vt1['position'].' - '.$vt1['company'];
+            if ($id_mergewith == NULL) {
+                $sql = "SELECT * FROM candidate WHERE mergewith = $id AND candidateid NOT IN ($id)";
+            }else{
+                $sql = "SELECT * FROM candidate WHERE mergewith = $id AND candidateid NOT IN ($id,$id_mergewith)";
+            }
+	        $this->data2['candidate_con']     = $this->Campaign_model->select_sql($sql);
+            if (count($this->data2['candidate_con']) > 0) {
+                foreach ($this->data2['candidate_con'] as $key => $value) {
+                    $id_con                             = $value['candidateid'];
+                    $this->data2['canaddress_con'][$key]    = $this->Candidate_model->selectTableByIds('canaddress',$id_con);
+                    $this->data2['family_con'][$key]        = $this->Candidate_model->selectTableByIds('cansocial',$id_con);
+                    $this->data2['experience_con'][$key]    = $this->Candidate_model->selectTableByIds('canexperience',$id_con);
+                    $this->data2['reference_con'][$key]     = $this->Candidate_model->selectTableByIds('canreference',$id_con);
+                    $this->data2['knowledge_con'][$key]     = $this->Candidate_model->selectTableByIds('canknowledge',$id_con);
+                    $this->data2['language_con'][$key]      = $this->Candidate_model->selectTableByIds('canlanguage',$id_con);
+                    $this->data2['software_con'][$key]      = $this->Candidate_model->selectTableByIds('cansoftware',$id_con);
+                    $this->data2['document_con'][$key]      = $this->Candidate_model->first_row('document',array('referencekey'=>$id_con,'tablename' => 'candidate'),'filename,url','lastupdate');
+                    $vt1                                    = $this->Candidate_model->selectTableGroupBy('position,company','canexperience',$id_con,'dateto');
+                    $this->data2['tags_con'][$key]          = $this->Candidate_model->join_tag($id_con);
+                    $this->data2['tagstrandom_con'][$key]   = $this->Candidate_model->join_tag_random($id_con);
+                    $this->data2['vt_con'][$key]            = $vt1['position'].' - '.$vt1['company'];
 
-	        }
-	        // var_dump($this->data2['canaddress_con']);exit;
+                }
+            }else{
+                $this->data2['candidate_con'] = [];
+            }
+
 		}else{
 			$this->data2['id'] 			= '';
 		}
@@ -1389,11 +1416,27 @@ class Campaign extends CI_Controller {
         $campaignid     = $this->input->post('campaignid');
     	$check 	        = $this->input->post('check');
         // var_dump($check);
-        $candidateid    = implode(',', $check);
+        // $candidateid    = implode(',', $check);
     	$match 			= array('campaignid' => $campaignid, );
 		$data['round']			=	$this->Campaign_model->select('roundid, roundname','recflow',$match,'');
 
-        $sql = "SELECT candidateid,name,email,imagelink FROM candidate  WHERE candidateid IN ($candidateid)";
+        $arr_id = [];
+        foreach ($check as $key => $value) {
+            $sql = "SELECT candidateid FROM candidate WHERE (candidateid = $value OR mergewith = $value) AND priority = 'Y' ";
+            $result = $this->Campaign_model->select_sql($sql);
+            if (count($result) > 0) {
+                array_push($arr_id, $result[0]['candidateid']);
+            }else{
+                $sql1 = "SELECT * FROM candidate WHERE candidateid = $value ";
+                $result1 = $this->Campaign_model->select_sql($sql1);
+                if (count($result1) > 0) {
+                    array_push($arr_id, $result1[0]['candidateid']);
+                }
+            }
+        }
+        $candidateid   = implode($arr_id, ',');
+
+        $sql = "SELECT candidateid,name,email,imagelink,mergewith FROM candidate  WHERE candidateid IN ($candidateid)";
         $data['candidate']         = $this->Campaign_model->select_sql($sql);
         // var_dump($result);exit;
 		echo json_encode($data);
@@ -1519,7 +1562,19 @@ class Campaign extends CI_Controller {
         foreach ($list_to as $key) {
         	$roundname 		= ($this->Campaign_model->select("roundname",'recflow',array('campaignid' => $campaignid,'roundid' => $roundid),''))[0]['roundname'];
     		$position 		= ($this->Campaign_model->select("position",'reccampaign',array('campaignid' => $campaignid),''))[0]['position'];
-    		$user 			= $this->Campaign_model->select("candidateid,email,lastname,name",'candidate',array('candidateid' => $candidate[$j]),'');
+
+            $sql = "SELECT candidateid,email,lastname,name FROM candidate WHERE (candidateid = ".$candidate[$j]." OR mergewith = ".$candidate[$j].") AND priority = 'Y' ";
+            $can = $this->Campaign_model->select_sql($sql);
+            if (count($can) > 0) {
+                $user = $can;
+            }else{
+                $sql1 = "SELECT candidateid,email,lastname,name FROM candidate WHERE candidateid = ".$candidate[$j];
+                $can1 = $this->Campaign_model->select_sql($sql1);
+                if (count($can1) > 0) {
+                    $user = $can1;
+                }
+            }
+    		// $user 			= $this->Campaign_model->select("candidateid,email,lastname,name",'candidate',array('candidateid' => $candidate[$j]),'');
     		if (isset($user[0])) {
     			$lastname 	= $user[0]['lastname'];
     			$name 		= $user[0]['name'];
@@ -1737,7 +1792,8 @@ class Campaign extends CI_Controller {
 
         $data['expdate']        = $frm['expdate'];
         $data['expeffect']      = $frm['expeffect'];
-        $this->Data_model->update('recartical',$match,$data);
+      $this->Data_model->update('recartical',$match,$data);
+
 		echo json_encode(1);
 	}
 	function updateRound2()

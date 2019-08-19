@@ -1,10 +1,24 @@
 <?php if ($id != ''):
 	$candidateid = ($candidate['candidateid'] != '')? $candidate['candidateid'] : $candidate_noibo['candidateid'];
 ?>
-	<form id="form_checkone">
+<form id="form_checkone">
 	<input type="hidden" name="campaignid" value="<?php echo $campaignid ?>">
  	<input type="hidden" name="roundid" value="<?php echo $roundid ?>">
 	<input type="hidden" name="check[]" id="checkoneid" value="<?php echo ($candidate['candidateid'] != '') ? $candidate['candidateid'] : $candidate_noibo['candidateid'] ?>" >
+</form>
+<form id="form_checkPriority">
+    <?php if (isset($candidate['priority']) && $candidate['priority'] == 'Y') { ?>
+        <input type="hidden" name="checkPriorityId" value="<?=$candidate['candidateid'] ?>" >
+        <input type="hidden" name="checkPriorityMail" value="<?=$candidate['email'] ?>" >
+    <?php }elseif (isset($candidate_noibo['priority']) && $candidate_noibo['priority'] == 'Y') { ?>
+        <input type="hidden" name="checkPriorityId" value="<?=$candidate_noibo['candidateid'] ?>" >
+        <input type="hidden" name="checkPriorityMail" value="<?=$candidate_noibo['email'] ?>" >
+    <?php }else{
+        $mail_check = ($candidate['email'] != '')? $candidate['email'] : $candidate_noibo['email'];
+    ?>
+        <input type="hidden" name="checkPriorityId" value="<?=$candidateid ?>" >
+        <input type="hidden" name="checkPriorityMail" value="<?=$mail_check ?>" >
+    <?php } ?>
 </form>
 <input type="hidden" id="candidatename" value="<?php echo ($candidate['name'] != '') ? $candidate['name'] : $candidate_noibo['name']?>">
 <input type="hidden" id="candidateimage" value="<?php echo ($candidate['imagelink'] != '') ? $candidate['imagelink'] : $candidate_noibo['imagelink']?>">
@@ -682,7 +696,7 @@
 							             </div>
 							             <label for="text" class="col-xs-3 width20 col-xs-3 label-profile">Email</label>
 							             <div class="col-xs-3 width30 padding-lr0">
-							             	<input type="text" class="textbox" name="email" value="<?php echo isset($candidate_noibo['email'])? $candidate_noibo['email'] : "";?>" >
+							             	<input type="email" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" class="textbox" name="email" value="<?php echo isset($candidate_noibo['email'])? $candidate_noibo['email'] : "";?>" >
 							             </div>
 							         </div>
 							         <br><br>
@@ -1518,7 +1532,7 @@
 								             </div>
 								             <label for="text" class="col-xs-3 width20 col-xs-3 label-profile">Email</label>
 								             <div class="col-xs-3 width30 padding-lr0">
-								             	<input type="text" class="textbox" name="email" value="<?php echo isset($value_con['email'])? $value_con['email'] : "";?>" >
+								             	<input type="email" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" class="textbox" name="email" value="<?php echo isset($value_con['email'])? $value_con['email'] : "";?>" >
 								             </div>
 								         </div>
 								         <br><br>
@@ -2760,9 +2774,11 @@
 		width: 32px;
 		height: 32px;
 	}
+    .tt-input
+    {
+        vertical-align: unset !important;
+    }
 </style>
-
-
 <script type="text/javascript">
 	function rotate(id) {
 		for (var i = 1; i <= 3; i++) {
@@ -2774,14 +2790,12 @@
 	}
 
 	$(document).ready(function(){
-
 		$('#ngaysinh123').datetimepicker({
 		   timepicker:false,
 		   format:'d-m-Y',
 		   defaultDate:'+1960/01/01',
 		   maxDate:'+1960/01/01'
 		});
-
 		$('#ngaycap1').datetimepicker({
 		  timepicker:false,
 		  maxDate:'+1970/01/01',
@@ -2789,9 +2803,8 @@
 		});
 
 		$('.js-example-basic-single').select2();
-	});
-	$(document).ready(function(){
-		$("#uploadCV").hide();
+
+        $("#uploadCV").hide();
         $('#browsebutton1 :file').change(function(e){
             var fileName = e.target.files[0].name;
             $("#label1").text(fileName);
@@ -2803,8 +2816,7 @@
             $("#label2").text(fileName);
             $("#label2").attr('href','#');
         });
-
-    });
+	});
 	$(document).ready(function(){
 		<?php if ($id != '') { ?>
 	    	if($('#city1').val() != '0')
@@ -2871,96 +2883,84 @@
 	    var $id = obj;
 	    $('.gicungdc').remove();
 	    $('.gicungdc2').remove();
-	      $.ajax({
-	        url: '<?php echo base_url()?>admin/handling/selectCity',
-	        type: 'POST',
-	        dataType: 'JSON',
-	        data: {id_city : $id},
-	      })
-	      .done(function(data) {
-	                 for(var i in data)
-	                 {
-	                  if(get != 0 && get == data[i].id_district)
-	                  {
+	       $.ajax({
+	           url: '<?php echo base_url()?>admin/handling/selectCity',
+	           type: 'POST',
+	           dataType: 'JSON',
+	           data: {id_city : $id},
+	        })
+	        .done(function(data) {
+                for(var i in data){
+                    if(get != 0 && get == data[i].id_district) {
 	                    $('#chonqh-ad1_'+candidateid).after('<option class="gicungdc" value="'+data[i].id_district+'" selected>'+data[i].name+'</option>');
-	                  }
-	                  else
-	                  {
-	                    $('#chonqh-ad1_'+candidateid).after('<option class="gicungdc" value="'+data[i].id_district+'">'+data[i].name+'</option>');
-	                  }
-	                  }
-	                if ($('#addressno1_'+candidateid).val() == '') {
-	                	$('#toanha88_'+candidateid).val('');
 	                }
-	              })
-	      .fail(function() {
-	        alert('thatbai');
-	        console.log("error");
-	      })
+	                else {
+	                    $('#chonqh-ad1_'+candidateid).after('<option class="gicungdc" value="'+data[i].id_district+'">'+data[i].name+'</option>');
+	                }
+                }
+                if ($('#addressno1_'+candidateid).val() == '') {
+                	$('#toanha88_'+candidateid).val('');
+                }
+	        })
+	        .fail(function() {
+	           // alert('thatbai');
+	           console.log("error");
+	        })
 	}
 	function comb_qh_px_1(obj,get,candidateid)
 	{
 	    var $id = obj;
 	    $('.gicungdc2').remove();
-	      $.ajax({
+	    $.ajax({
 	        url: '<?php echo base_url()?>admin/handling/selectDistrict',
 	        type: 'POST',
 	        dataType: 'JSON',
 	        data: {id_district : $id},
-	      })
-	      .done(function(data) {
-	             for(var i in data)
-	             {
-	              if(get != 0 && get == data[i].id_ward)
-	              {
-	                $('#chonpx-ad1_'+candidateid).after('<option class="gicungdc2" value="'+data[i].id_ward+'" selected>'+data[i].name+'</option>');
-	              }
-	              else
-	              {
-	                 $('#chonpx-ad1_'+candidateid).after('<option class="gicungdc2" value="'+data[i].id_ward+'">'+data[i].name+'</option>');
-	              }
-	              }
-	            if ($('#addressno1_'+candidateid).val() == '') {
-                	$('#toanha88_'+candidateid).val('');
+	    })
+	    .done(function(data) {
+            for(var i in data) {
+               if(get != 0 && get == data[i].id_ward) {
+                    $('#chonpx-ad1_'+candidateid).after('<option class="gicungdc2" value="'+data[i].id_ward+'" selected>'+data[i].name+'</option>');
+                }else {
+                    $('#chonpx-ad1_'+candidateid).after('<option class="gicungdc2" value="'+data[i].id_ward+'">'+data[i].name+'</option>');
                 }
-	          })
-	      .fail(function() {
-	        alert('thatbai');
-	        console.log("error");
-	      })
+            }
+            if ($('#addressno1_'+candidateid).val() == '') {
+            	$('#toanha88_'+candidateid).val('');
+            }
+        })
+        .fail(function() {
+        // alert('thatbai');
+           console.log("error");
+        })
 	}
 	function comb_tp_qh_2(obj,get,candidateid)
 	{
 	    var $id = obj;
-
 	    $('.gicungdc3').remove();
 	    $('.gicungdc4').remove();
-	      $.ajax({
+	    $.ajax({
 	        url: '<?php echo base_url()?>admin/handling/selectCity',
 	        type: 'POST',
 	        dataType: 'JSON',
 	        data: {id_city : $id},
 	      })
-	      .done(function(data) {
-             for(var i in data)
-             {
-	              if(get != 0 && get == data[i].id_district)
-	              {
+	    .done(function(data) {
+            for(var i in data){
+	            if(get != 0 && get == data[i].id_district){
 	                $('#chonqh-ad2_'+candidateid).after('<option class="gicungdc3" value="'+data[i].id_district+'" selected>'+data[i].name+'</option>');
-	              }
-	              else
-	              {
+	            }else {
 	                $('#chonqh-ad2_'+candidateid).after('<option class="gicungdc3" value="'+data[i].id_district+'">'+data[i].name+'</option>');
-	              }
-              }
+	            }
+            }
            	if ($('#addressno2_'+candidateid).val() == '') {
             	$('#toanha8_'+candidateid).val('');
             }
-          })
-	      .fail(function() {
-	        alert('thatbai');
+        })
+	    .fail(function() {
+	        // alert('thatbai');
 	        console.log("error");
-	      })
+	    })
 	}
 	function comb_qh_px_2(obj,get,candidateid)
 	{
@@ -2972,31 +2972,26 @@
 	        dataType: 'JSON',
 	        data: {id_district : $id},
 	    })
-	      .done(function(data) {
-	             for(var i in data)
-	             {
-	              if(get != 0 && get == data[i].id_ward)
-	              {
+	    .done(function(data) {
+	        for(var i in data){
+	            if(get != 0 && get == data[i].id_ward){
 	                $('#chonpx-ad2_'+candidateid).after('<option class="gicungdc4" value="'+data[i].id_ward+'" selected>'+data[i].name+'</option>');
-	              }
-	              else
-	              {
+	            }else{
 	                 $('#chonpx-ad2_'+candidateid).after('<option class="gicungdc4" value="'+data[i].id_ward+'">'+data[i].name+'</option>');
-	              }
-	              }
-	            if ($('#addressno2_'+candidateid).val() == '') {
-	            	$('#toanha8_'+candidateid).val('');
 	            }
-	          })
-	      .fail(function() {
-	        alert('thatbai');
+	        }
+	        if ($('#addressno2_'+candidateid).val() == '') {
+	            	$('#toanha8_'+candidateid).val('');
+	        }
+	    })
+	    .fail(function() {
+	        // alert('thatbai');
 	        console.log("error");
-	      })
+	    })
 	}
 
 	function luu_canhan(candidateid)
 	{
-		// var candidate_id = $('#candidate_noibo').val();
 		$.ajax({
 			url: '<?php echo base_url()?>admin/handling/update_canhan/'+candidateid,
 			type: 'POST',
@@ -3008,14 +3003,10 @@
 		})
 		.fail(function() {
 			console.log("error");
-		})
-		.always(function() {
-			console.log("complete");
 		});
 	}
 	function luu_diachi(candidateid)
 	{
-		// var candidate_id = $('#candidate_noibo').val();
 		$.ajax({
 			url: '<?php echo base_url()?>admin/handling/update_diachi/'+candidateid,
 			type: 'POST',
@@ -3027,11 +3018,7 @@
 		})
 		.fail(function() {
 			console.log("error");
-		})
-		.always(function() {
-			console.log("complete");
 		});
-
 	}
 
 	function talent_detail(obj)
@@ -3066,9 +3053,6 @@
 		})
 		.fail(function() {
 			console.log("error");
-		})
-		.always(function() {
-			console.log("complete");
 		});
 	}
 	function changeblock(obj)
@@ -3104,9 +3088,6 @@
 		})
 		.fail(function() {
 			console.log("error");
-		})
-		.always(function() {
-			console.log("complete");
 		});
 	}
 	function transfer(type, checkmail, mailtemp)
@@ -3124,7 +3105,6 @@
 			data: $('#form_checkone').serialize(),
 		})
 		.done(function(data) {
-
 			var option = '';
             var list_candidate = data['candidate'];
             data = data['round'];
@@ -3140,12 +3120,16 @@
 				}
 			}
 			var row = to_mail = '';
-			for (var i = 2; i < form.length; i++) {
-				var name = $('#candidatename').val();
-				var avatar = $('#candidateimage').val();
-				var email = $('#candidateemail').val();
-				row += '<div class="col-xs-4 candidate_chuyen"><div><img src="<?php echo base_url() ?>public/image/'+avatar+'" class="img_chuyen"></div><label>'+name+'</label></div><input type="hidden" name="id[]" value="'+form[i].value+'">';
-				to_mail += email ;
+			for (var j = 0; j < list_candidate.length; j++) {
+				var name = list_candidate[j]['name'];
+                var avatar = list_candidate[j]['imagelink'];
+                var email   = list_candidate[j]['email'];
+				row += '<div class="col-xs-4 candidate_chuyen"><div><img src="<?php echo base_url() ?>public/image/'+avatar+'" class="img_chuyen"></div><label>'+name+'</label></div><input type="hidden" name="id[]" value="'+form[2].value+'">';
+				if (to_mail == '') {
+                    to_mail += email;
+                }else{
+                    to_mail += ', '+ email;
+                }
 			}
 			if (type == 1) {
 				if (checkmail == 'Y') {
@@ -3182,7 +3166,6 @@
 			console.log("error");
 		});
 
-
 	}
 	function recruite() {
 		$.ajax({
@@ -3206,13 +3189,30 @@
 		var form = $('#form_checkone').serializeArray();
 		var campaignid = form[0].value;
 		var roundid = form[1].value;
+
+        var arr_candidate = [];
+        $.ajax({
+            url: '<?php echo base_url() ?>admin/campaign/selectRound',
+            type: 'POST',
+            dataType: 'json',
+            data: $('#form_checkone').serialize(),
+            async: false,
+        })
+        .done(function(data) {
+            arr_candidate = data['candidate'];
+        })
+        .fail(function() {
+            console.log("error");
+        });
 		var row ='';
 		var email = '';
 		var k = 1;
-		for (var i = 2; i < form.length; i++) {
-			var name = $('#candidatename').val();
-			var avatar = $('#candidateimage').val();
-			row += '<div class="body_cam col-xs-12 body_chuyen body_taophieu" ><div class="row"><div class="col-md-3 box_profile_tn"><div class="profile_tn"><input type="hidden" name="profile_'+k+'[]" value="'+form[i].value+'">';
+		for (var j = 0; j < arr_candidate.length; j++) {
+			var name = arr_candidate[j]['name'];
+            var avatar = arr_candidate[j]['imagelink'];
+            var email1   = arr_candidate[j]['email'];
+            var candidateid = (arr_candidate[j]['mergewith'] == 0) ? arr_candidate[j]['candidateid'] : arr_candidate[j]['mergewith'];
+			row += '<div class="body_cam col-xs-12 body_chuyen body_taophieu" ><div class="row"><div class="col-md-3 box_profile_tn"><div class="profile_tn"><input type="hidden" name="profile_'+k+'[]" value="'+candidateid+'">';
             row += '<img src="<?php echo base_url() ?>public/image/'+avatar+'"><p class="guide-black">'+name+'</p></div></div>';
             row += '<div class="col-md-9 border_left_ddd"><div class="rowedit2"><div class="col-xs-3 body-blac4">Mẫu phiếu trắc nghiệm: </div><div class="col-xs-8"><select class="js-example-basic-2 select2" name="profile_'+k+'[]" required="" style="width: 100%">';
             <?php foreach ($asmt_tn as $key): ?>
@@ -3225,9 +3225,9 @@
             row += '</select></div></div>';
             row += '<div class="rowedit2"><div class="col-xs-3 body-blac4">Thời hạn hoàn thành:</div><div class="col-xs-8"><input class="kttext datepicker" type="text"  name="profile_'+k+'[]" value="<?php echo date_format(date_create(),"d/m/Y H:i")  ?>"></div></div><div class="rowedit3"><div class="col-xs-3 body-blac4">Ghi chú:</div><div class="col-xs-8"><textarea name="profile_'+k+'[]" class="textarea_profile" rows="3" required=""></textarea></div></div></div></div></div>';
             if (email == '') {
-            	email += $('#candidateemail').val();
+            	email += email1;
             }else{
-            	email += ', '+$('#candidateemail').val();
+            	email += ', '+email1;
             }
             parent.parent.$('#count_candidate').val(k);
             k = Number(k)+1;
@@ -3249,26 +3249,41 @@
 		var form = $('#form_checkone').serializeArray();
 		var campaignid = form[0].value;
 		var roundid = form[1].value;
+
+        var arr_candidate = [];
+        $.ajax({
+            url: '<?php echo base_url() ?>admin/campaign/selectRound',
+            type: 'POST',
+            dataType: 'json',
+            data: $('#form_checkone').serialize(),
+            async: false,
+        })
+        .done(function(data) {
+            arr_candidate = data['candidate'];
+        })
+        .fail(function() {
+            console.log("error");
+        });
 		var row ='';
 		var email = '';
 		var k = 1;
-		for (var i = 2; i < form.length; i++) {
-			var name = $('#candidatename').val();
-			var avatar = $('#candidateimage').val();
+		for (var j = 0; j < arr_candidate.length; j++) {
+            var name = arr_candidate[j]['name'];
+            var avatar = arr_candidate[j]['imagelink'];
+            var email1   = arr_candidate[j]['email'];
+            var candidateid = (arr_candidate[j]['mergewith'] == 0) ? arr_candidate[j]['candidateid'] : arr_candidate[j]['mergewith'];
 			row += '<div class="body_cam col-xs-12 body_chuyen body_taopv" style="margin-top: 5px"><div class="row"><div class="col-md-3 box_profile_tn"><div class="profile_tn">';
-            row += '<img src="<?php echo base_url() ?>public/image/'+avatar+'"><p class="guide-black">'+name+'</p><input type="hidden" name="profile_'+k+'[]" value="'+form[i].value+'"><input type="hidden" name="profile_'+k+'[]" value="'+name+'"></div></div>';
+            row += '<img src="<?php echo base_url() ?>public/image/'+avatar+'"><p class="guide-black">'+name+'</p><input type="hidden" name="profile_'+k+'[]" value="'+candidateid+'"><input type="hidden" name="profile_'+k+'[]" value="'+name+'"></div></div>';
             row += '<div class="col-md-9 border_left_ddd"><div class="rowedit2"><div class="col-xs-3 body-blac4">Loại hình phỏng vấn:</div>';
             row += '<div class="col-xs-8"><select class="js-example-basic-2 select2" name="profile_'+k+'[]" required="" style="width: 100%"><option value="W">Phỏng vấn trực tiếp</option><option value="C">Phỏng vấn gián tiếp</option></select></div></div>';
             row += '<div class="rowedit2"><div class="col-xs-3 body-blac4">Thời gian:</div><div class="col-xs-3"><input class="kttext width_100 timepicker" type="text" name="profile_'+k+'[]" value="09:00"></div><div class="col-xs-3"><input class="kttext width_100 timepicker" type="text" name="profile_'+k+'[]" value="10:00"></div></div>';
             row += '<div class="rowedit2"><div class="col-xs-3 body-blac4">Địa điểm:</div><div class="col-xs-8"><input class="kttext width_100" type="text" name="profile_'+k+'[]" value="2W Ung Văn Khiêm, P.25, Quận Bình Thạnh, Tp. HCM"></div></div>';
             row += '<div class="rowedit3"><div class="col-xs-3 body-blac4">Nội dung:</div><div class="col-xs-8"><textarea name="profile_'+k+'[]" class="textarea_profile" rows="3" required=""></textarea></div></div>';
             row += '<div class="rowedit3"><div class="col-xs-3 body-blac4">Người phỏng vấn:</div><div class="col-xs-8"><div class="col-xs-6 manage_pv" id="col_add_pt_'+k+'"><div ><img src="<?php echo base_url() ?>public/image/unknow.jpg"><a href="javascript:void(0)" class="add_pt" onclick="insertPV('+k+')"><span> Thêm người phỏng vấn</span></a></div></div></div><input type="hidden" id="managePV_'+k+'" name="profile_'+k+'[]"></div>';
-
-
           	if (email == '') {
-            	email += $('#candidateemail').val();
+            	email += email1;
             }else{
-            	email += ', '+$('#candidateemail').val();
+            	email += ', '+email1;
             }
             parent.parent.$('#count_candidate_pv').val(k);
             k = Number(k)+1;
@@ -3280,13 +3295,11 @@
 		parent.parent.$('#campaignid_pv').val(campaignid);
 		parent.parent.$('#roundid_pv').val(roundid);
 		parent.parent.initializeSelect2(parent.parent.$(".select2"));
-
 		parent.parent.$('#createAppointment').modal('show');
 	}
 	function loadAppointment(interviewid) {
 		window.open('<?php echo base_url() ?>admin/multiplechoice/makingAppointment/'+interviewid);
 	}
-
 
 	function createInterviewer() {
 		parent.parent.$('#createInterviewer').modal('show');
@@ -3296,14 +3309,31 @@
 		var form = $('#form_checkone').serializeArray();
 		var campaignid = form[0].value;
 		var roundid = form[1].value;
+
+        var arr_candidate = [];
+        $.ajax({
+            url: '<?php echo base_url() ?>admin/campaign/selectRound',
+            type: 'POST',
+            dataType: 'json',
+            data: $('#form_checkone').serialize(),
+            async: false,
+        })
+        .done(function(data) {
+            arr_candidate = data['candidate'];
+        })
+        .fail(function() {
+            console.log("error");
+        });
 		var row ='';
 		var email = '';
 		var k = 1;
-		for (var i = 2; i < form.length; i++) {
-			var name = $('#candidatename').val();
-			var avatar = $('#candidateimage').val();
+		for (var j = 0; j < arr_candidate.length; j++) {
+            var name = arr_candidate[j]['name'];
+            var avatar = arr_candidate[j]['imagelink'];
+            var email1   = arr_candidate[j]['email'];
+            var candidateid = (arr_candidate[j]['mergewith'] == 0) ? arr_candidate[j]['candidateid'] : arr_candidate[j]['mergewith'];
 			row += '<div class="body_cam col-xs-12 body_chuyen body_offer"><div class="row" style="margin-right: 0px">';
-            row += '<div class="col-md-3 box_profile_tn"><div class="profile_tn"><img src="<?php echo base_url() ?>public/image/'+avatar+'"><p class="guide-black">'+name+'</p><input type="hidden" name="profile_'+k+'[]" value="'+form[i].value+'"><input type="hidden" name="profile_'+k+'[]" value="'+name+'"></div></div>';
+            row += '<div class="col-md-3 box_profile_tn"><div class="profile_tn"><img src="<?php echo base_url() ?>public/image/'+avatar+'"><p class="guide-black">'+name+'</p><input type="hidden" name="profile_'+k+'[]" value="'+candidateid+'"><input type="hidden" name="profile_'+k+'[]" value="'+name+'"></div></div>';
             row += '<div class="col-md-9 border_left_ddd"><div class="row"><div class="col-md-3 "><span>Ngày nhận việc</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 datetimepicker" name="profile_'+k+'[]" value="<?php echo date_format(date_create(),"d/m/Y") ?>"></div></div>';
             row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Thời gian thử việc</span></div><div class="col-md-9 padding_0"><div class="col-md-6 padding_0"><input type="text" class="so" name="profile_'+k+'[]" value="2"></div><div class="col-md-6"><input type="text"  name="" value="Tháng" readonly=""></div></div></div>';
             row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Từ ngày</span></div><div class="col-md-9 padding_0"><div class="col-md-4 padding_0"><input type="text" class="datetimepicker" name="profile_'+k+'[]" value="<?php echo date_format(date_create(),"d/m/Y") ?>"></div><div class="col-md-2 padding_0"><span>Đến ngày</span></div><div class="col-md-4"><input class="datetimepicker" type="text" name="profile_'+k+'[]" value="<?php echo date_format(date_create(),"d/m/Y") ?>"></div></div></div>';
@@ -3349,17 +3379,14 @@
             row += '<div class="row margin_top_15"><div class="col-md-3 "><span>Phụ cấp khác</span></div><div class="col-md-9 padding_0"><input type="text" class="width_90 so" name="profile_'+k+'[]" value="0"></div></div></div></div></div>';
 
           	if (email == '') {
-            	email += $('#candidateemail').val();
+            	email += email1;
             }else{
-            	email += ', '+$('#candidateemail').val();
+            	email += ', '+email1;
             }
             parent.parent.$('#count_candidate_offer').val(k);
             k = Number(k)+1;
 		}
 		parent.parent.loadCategoryOffer();
-        // if(mailtemp == 0){
-        //     mailtemp = 1;
-        // }
 		parent.parent.$('#mailid6').val(mailtemp).change();
 		parent.parent.$('#profile_offer').prepend(row);
 		parent.parent.$('#mail_to_offer').val(email);
@@ -3376,12 +3403,15 @@
 		var form 			= $('#form_checkone').serializeArray();
 		var campaignid 		= form[0].value;
 		var roundid 		= form[1].value;
-		var candidateid_mail 	= form[2].value;
-		var mail 			= $('#candidateemail').val();
+
+        var form_priority   = $('#form_checkPriority').serializeArray();
+        var candidateid     = form_priority[0].value;
+        var mail            = form_priority[1].value;
+
 		parent.parent.$('#email_to').val(mail);
 		parent.parent.$('#campaignid_mail').val(campaignid);
 		parent.parent.$('#roundid_mail').val(roundid);
-		parent.parent.$('#candidateid_mail').val(candidateid_mail);
+		parent.parent.$('#candidateid_mail').val(candidateid);
 		parent.parent.$('#modalMail').modal('show');
 	}
 	function showMailView(mailid) {
@@ -3409,29 +3439,15 @@
 	  return function findMatches(q, cb) {
 	    var matches, substringRegex;
 
-	    // an array that will be populated with substring matches
 	    matches = [];
-
-	    // regex used to determine if a string contains the substring `q`
 	    substrRegex = new RegExp(q, 'i');
-
-	    // iterate through the pool of strings and for any string that
-	    // contains the substring `q`, add it to the `matches` array
 	    $.each(strs, function(i, str) {
 	      if (substrRegex.test(str)) {
 	        matches.push(str);
 	      }
 	    });
-
 	    cb(matches);
 	  };
 	};
 
-
 </script>
-<style type="text/css">
-	.tt-input
-	{
-		vertical-align: unset !important;
-	}
-</style>

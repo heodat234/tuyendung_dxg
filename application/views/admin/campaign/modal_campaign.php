@@ -45,7 +45,7 @@
                           Bcc:
                         </div>
                         <div class="col-xs-11">
-                          <input class="kttext width_100" type="text" name="bcc" value="">
+                          <input class="kttext width_100" type="text" name="bcc" value="" id="email_bcc_tran">
                         </div>
                 </div>
               </div>
@@ -161,7 +161,7 @@
                           Bcc:
                         </div>
                         <div class="col-xs-11">
-                          <input class="kttext width_100" type="text" name="bcc" value="">
+                          <input class="kttext width_100" type="text" name="bcc" value="" id="email_bcc_dis">
                         </div>
                 </div>
               </div>
@@ -250,7 +250,7 @@
                         Gửi đến:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" id="email_to_tn_1" name="to" value="">
+                        <input class="kttext width_100" type="text" id="email_to_tn_1" name="to">
                       </div>
               </div>
               <div class="rowedit2">
@@ -258,7 +258,7 @@
                         Cc:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" name="cc" value="">
+                        <input class="kttext width_100" type="text" name="cc" id="email_cc_tn_1">
                       </div>
               </div>
               <div class="rowedit2">
@@ -266,7 +266,7 @@
                         Bcc:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100" type="text" name="bcc" value="">
+                        <input class="kttext width_100" type="text" name="bcc" id="email_bcc_tn_1">
                       </div>
               </div>
             </div>
@@ -294,7 +294,6 @@
                         Tiêu đề:
                       </div>
                       <div class="col-xs-11">
-                        <!-- <input class="kttext width_100 subjectmail" type="text" name="subject" value=""> -->
                         <textarea class="textarea_profile" id="subjectmail1" rows="1" name="subject" required="">
                         </textarea>
                       </div>
@@ -379,7 +378,7 @@
                         Cc:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100" type="text"  name="cc_1" >
+                        <input class="kttext width_100" type="text"  name="cc_1" id="email_cc_pv1">
                       </div>
               </div>
               <div class="rowedit2">
@@ -416,7 +415,6 @@
                         Tiêu đề:
                       </div>
                       <div class="col-xs-11">
-                        <!-- <input class="kttext width_100 subjectmail"  type="text" name="subject1" > -->
                         <textarea class="textarea_profile" id="subjectmail2" rows="1" name="subject1" required="">
                         </textarea>
                       </div>
@@ -461,7 +459,7 @@
                         Cc:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100" type="text"  name="cc_2" >
+                        <input class="kttext width_100" type="text"  name="cc_2" id="email_cc_pv2">
                       </div>
               </div>
               <div class="rowedit2">
@@ -469,7 +467,7 @@
                         Bcc:
                       </div>
                       <div class="col-xs-11">
-                        <input class="kttext width_100"  type="text" name="bcc_2" >
+                        <input class="kttext width_100"  type="text" name="bcc_2" id="email_bcc_pv2">
                       </div>
               </div>
             </div>
@@ -498,7 +496,6 @@
                         Tiêu đề:
                       </div>
                       <div class="col-xs-11">
-                        <!-- <input class="kttext width_100 subjectmail"  type="text" name="subject2"> -->
                         <textarea class="textarea_profile" id="subjectmail3" rows="1" name="subject2" required="">
                         </textarea>
                       </div>
@@ -573,9 +570,6 @@
             </div>
             <div class="col-xs-12 body_chuyen_2">
               <div class="rowedit3">
-                <!-- <div class="col-xs-1 guide-black" style="padding: 0px">
-                  Nội dung:
-                </div> -->
                 <textarea name="subject" class="hide" id="subject11"></textarea>
                 <div class="col-xs-12">
                   <textarea name="body11" class="textarea_profile" rows="10" required=""></textarea>
@@ -603,7 +597,7 @@
                           Cc:
                         </div>
                         <div class="col-xs-11">
-                          <input class="kttext width_100" type="text" name="cc" >
+                          <input class="kttext width_100" type="text" name="cc" id="mail_cc_offer">
                         </div>
                 </div>
                 <div class="rowedit2">
@@ -611,7 +605,7 @@
                           Bcc:
                         </div>
                         <div class="col-xs-11">
-                          <input class="kttext width_100" type="text"  name="bcc" value="">
+                          <input class="kttext width_100" type="text"  name="bcc" id="mail_bcc_offer">
                         </div>
                 </div>
               </div>
@@ -640,7 +634,6 @@
                           Tiêu đề:
                         </div>
                         <div class="col-xs-11">
-                          <!-- <input class="kttext width_100 subjectmail" type="text" name="subject" value=""> -->
                           <textarea class="textarea_profile" id="subjectmail4" rows="1" name="subject" required="">
                           </textarea>
                         </div>
@@ -677,7 +670,6 @@
           <div class="modal-footer modal_footer_cam">
             <label class="share_chuyen"><input type="checkbox" name="isshare" value="Y"> Không chia sẻ nội dung này</label>
             <button type="button" class="btn btn_thoat btn_thoat1" data-dismiss="modal">Hủy</button>
-            <!-- <button type="button" class="btn btn_thoat btn_thoat1">Lưu tạm</button> -->
             <button type="button" class="btn btn_tt btn_tt1" id="saveOffer"><i></i> Lưu</button>
           </div>
         </form>
@@ -719,7 +711,7 @@
                           Bcc:
                         </div>
                         <div class="col-xs-11">
-                          <input class="kttext width_100" type="text" name="bcc" value="">
+                          <input class="kttext width_100" type="text" name="bcc" id="email_bcc">
                         </div>
                 </div>
               </div>
@@ -926,614 +918,679 @@
   }
 </style>
 <script type="text/javascript">
-  function checkbox(id) {
-    var i = id.value;
-    // $('#check_mail1').toggleClass('hide');
-    if ($(id).prop('checked')) {
-      $('#check_mail'+i).removeClass('hide');
-    }else{
-      $('#check_mail'+i).addClass('hide');
-    }
-  }
-  $(document).ready(function(){
+
+   function IsInvalidEmail(email) {
+      email = email.trim();
+      var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9\.]{2,4})+$/;
+      if (!filter.test(email)) {
+         return false;
+      }
+      else{
+         return true;
+      }
+   }
+
+   function checkListEmail(listMail) {
+      listMail = listMail.trim();
+      if (listMail == '') {
+         return true;
+      }else{
+         var result = listMail.substring(0, listMail.length - 1);
+         var mang = result.split(',');
+         for(var i in mang){
+            if(!IsInvalidEmail(mang[i])){
+               return false;
+            }
+         }
+         return true;
+      }
+   }
+
+   function checkbox(id) {
+      var i = id.value;
+      if ($(id).prop('checked')) {
+         $('#check_mail'+i).removeClass('hide');
+      }else{
+         $('#check_mail'+i).addClass('hide');
+      }
+   }
+   $(document).ready(function(){
       $('.browsebutton1 :file').change(function(e){
-          $('#my-file-selector1').val();
-          $(".dom_file").remove();
-          var row = '';
-          for(var i = 0; i< e.target.files.length; i++){
+         $('#my-file-selector1').val();
+         $(".dom_file").remove();
+         var row = '';
+         for(var i = 0; i< e.target.files.length; i++){
             var fileName = e.target.files[i].name;
             row += '<div class="col-md-5 dom_file"><a class="fontstyle label1" href="#">'+fileName+'</a></div>';
-          }
-          $(".filename_label").append(row);
+         }
+         $(".filename_label").append(row);
       });
       $('.browsebutton2 :file').change(function(e){
-          $('#my-file-selector2').val();
-          $(".dom_file_1").remove();
-          var row = '';
-          for(var i = 0; i< e.target.files.length; i++){
+         $('#my-file-selector2').val();
+         $(".dom_file_1").remove();
+         var row = '';
+         for(var i = 0; i< e.target.files.length; i++){
             var fileName = e.target.files[i].name;
             row += '<div class="col-md-5 dom_file_1"><a class="fontstyle label1" href="#">'+fileName+'</a></div>';
-          }
-          $(".filename_label_1").append(row);
+         }
+         $(".filename_label_1").append(row);
       });
 
-  });
-
-  $(document).ready(function() {
       $('.js-example-basic-1').select2();
       $('.js-example-basic-2').select2();
       $('.js-example-basic').select2();
       $('.editor').each(function(e){
-        CKEDITOR.replace(this.name,{
-          disableAutoInline: true,
-          toolbarStartupExpanded : false,
-          toolbarCanCollapse: true,
-          filebrowserBrowseUrl: '<?php echo base_url('public/ckfinder/ckfinder.html') ?>',
-          filebrowserUploadUrl: '<?php echo base_url('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files') ?>',
-          filebrowserImageBrowseUrl : '<?php echo base_url('public/ckfinder/ckfinder.html?type=Images') ?>',
-          filebrowserFlashBrowseUrl : '<?php echo base_url('public/ckfinder/ckfinder.html?type=Flash') ?>',
-          filebrowserImageUploadUrl : '<?php echo base_url('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images') ?>',
-          filebrowserFlashUploadUrl : '<?php echo base_url('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash') ?>'
-        });
+         CKEDITOR.replace(this.name,{
+            disableAutoInline: true,
+            toolbarStartupExpanded : false,
+            toolbarCanCollapse: true,
+            filebrowserBrowseUrl: '<?php echo base_url('public/ckfinder/ckfinder.html') ?>',
+            filebrowserUploadUrl: '<?php echo base_url('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files') ?>',
+            filebrowserImageBrowseUrl : '<?php echo base_url('public/ckfinder/ckfinder.html?type=Images') ?>',
+            filebrowserFlashBrowseUrl : '<?php echo base_url('public/ckfinder/ckfinder.html?type=Flash') ?>',
+            filebrowserImageUploadUrl : '<?php echo base_url('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images') ?>',
+            filebrowserFlashUploadUrl : '<?php echo base_url('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash') ?>'
+         });
       });
       CKEDITOR.replace('body11',{
-          disableAutoInline: true,
-          toolbarStartupExpanded : false,
-          toolbarCanCollapse: true,
-          height: 500,
-          filebrowserBrowseUrl: '<?php echo base_url('public/ckfinder/ckfinder.html') ?>',
-          filebrowserUploadUrl: '<?php echo base_url('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files') ?>',
-          filebrowserImageBrowseUrl : '<?php echo base_url('public/ckfinder/ckfinder.html?type=Images') ?>',
-          filebrowserFlashBrowseUrl : '<?php echo base_url('public/ckfinder/ckfinder.html?type=Flash') ?>',
-          filebrowserImageUploadUrl : '<?php echo base_url('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images') ?>',
-          filebrowserFlashUploadUrl : '<?php echo base_url('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash') ?>'
-        });
+         disableAutoInline: true,
+         toolbarStartupExpanded : false,
+         toolbarCanCollapse: true,
+         height: 500,
+         filebrowserBrowseUrl: '<?php echo base_url('public/ckfinder/ckfinder.html') ?>',
+         filebrowserUploadUrl: '<?php echo base_url('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files') ?>',
+         filebrowserImageBrowseUrl : '<?php echo base_url('public/ckfinder/ckfinder.html?type=Images') ?>',
+         filebrowserFlashBrowseUrl : '<?php echo base_url('public/ckfinder/ckfinder.html?type=Flash') ?>',
+         filebrowserImageUploadUrl : '<?php echo base_url('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images') ?>',
+         filebrowserFlashUploadUrl : '<?php echo base_url('public/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash') ?>'
+      });
 
       $('#timecomplete').datetimepicker({
-            format:'d/m/Y h:i',
+         format:'d/m/Y h:i',
       });
 
       $('#timecomplete1').datetimepicker({
-        timepicker:false,
-        format:'d/m/Y',
+         timepicker:false,
+         format:'d/m/Y',
       });
       $('#timecomplete2').datetimepicker({
-        timepicker:false,
-        format:'d/m/Y',
+         timepicker:false,
+         format:'d/m/Y',
       });
       initializeSelect2($(".select2"));
+   });
 
+   function initializeSelect2(selectElementObj) {
+      selectElementObj.select2();
+   }
 
-  });
-  function initializeSelect2(selectElementObj) {
-    selectElementObj.select2();
-  }
+   $(document).on('click', '.so', function(e) {
+      if ($(this).val() == '') {
+         $(this).val(0);
+      }
+      $(this).number( true );
+   }).on('keypress', '.so',function(e){
+      if(!$.isNumeric(String.fromCharCode(e.which))) e.preventDefault();
+   }).on('paste', '.so', function(e){
+      var cb = e.originalEvent.clipboardData || window.clipboardData;
+      if(!$.isNumeric(cb.getData('text'))) e.preventDefault();
+   });
 
-  $(document).on('click', '.so', function(e) {
-    if ($(this).val() == '') {
-              $(this).val(0);
-        }
-    $(this).number( true );
-    }).on('keypress', '.so',function(e){
-        // if ($(this).val() == 0)
-        //   $(this).val('');
-        // $(this).number( true );
-        if(!$.isNumeric(String.fromCharCode(e.which))) e.preventDefault();
-    }).on('paste', '.so', function(e){
-        var cb = e.originalEvent.clipboardData || window.clipboardData;
-        if(!$.isNumeric(cb.getData('text'))) e.preventDefault();
-    });
-
-
-  $(document).on('click', '.datetimepicker', function() {
-    $( this ).datetimepicker({
-        timepicker:false,
-        format:'d/m/Y',
+   $(document).on('click', '.datetimepicker', function() {
+      $( this ).datetimepicker({
+         timepicker:false,
+         format:'d/m/Y',
       });
-  });
+   });
 
-  $(document).on('click', '.datepicker', function() {
-    $( this ).datetimepicker({
-        format:'d/m/Y H:i',
+   $(document).on('click', '.datepicker', function() {
+      $( this ).datetimepicker({
+         format:'d/m/Y H:i',
       });
-  });
-  $(document).on('click', '.timepicker', function() {
-    $( this ).datetimepicker({datepicker:false,format:'H:i',});
-  });
+   });
+   $(document).on('click', '.timepicker', function() {
+      $( this ).datetimepicker({datepicker:false,format:'H:i',});
+   });
 
-  $('#saveTransfer').click(function(event) {
-    for (instance in CKEDITOR.instances) {
-        CKEDITOR.instances[instance].updateElement();
-    }
-    $(this).find('i').addClass('fa fa-spin fa-spinner');
-    $.ajax({
-      url: '<?php echo base_url()?>admin/campaign/transfer/1',
-      type: 'POST',
-      dataType: 'json',
-      data: new FormData($('#formTransfer1')[0]),
-      contentType: false,
-      processData: false
-    })
-    .done(function(data) {
-      if (data == 1) {
-        alert('Chuyển vòng và gửi mail ứng viên thành công');
+   $('#saveTransfer').click(function(event) {
+      for (instance in CKEDITOR.instances) {
+         CKEDITOR.instances[instance].updateElement();
+      }
+
+      if (!checkListEmail($('#email_to_tran').val())) {
+         alert('Email gửi đến không đúng định dạng');
+         return;
+      }else if (!checkListEmail($('#email_cc_tran').val())) {
+         alert('Email CC không đúng định dạng');
+         return;
+      }else if (!checkListEmail($('#email_bcc_tran').val())) {
+         alert('Email BCC không đúng định dạng');
+         return;
       }else{
-        alert('Chuyển vòng thành công');
-      }
-      parent.parent.location.reload();
-    })
-    .fail(function() {
-      console.log("error");
-    })
-    .always(function() {
-      console.log("complete");
-    });
-
-  });
-  $('#saveDiscard').click(function(event) {
-    $(this).find('i').addClass('fa fa-spin fa-spinner');
-    $.ajax({
-      url: '<?php echo base_url()?>admin/campaign/transfer/0',
-      type: 'POST',
-      dataType: 'json',
-      data: new FormData($('#formDiscard')[0]),
-      contentType: false,
-      processData: false
-
-    })
-    .done(function(data) {
-      if (data == 1) {
-        alert('Loại và gửi mail ứng viên thành công');
-      }else{
-        alert('Loại ứng viên thành công');
-      }
-      parent.parent.location.reload();
-    })
-    .fail(function() {
-      console.log("error");
-    })
-    .always(function() {
-      console.log("complete");
-    });
-
-  });
-
-  function changeTemplate(id,check) {
-    $(".dom_file").remove();
-    // var mail = $('#mail_js').text();
-    // mail = (JSON.parse(mail));
-    $.ajax({
-      url: '<?php echo base_url() ?>admin/email/mailById',
-      type: 'POST',
-      dataType: 'json',
-      data: {mailid: id},
-    })
-    .done(function(mail) {
-        if (mail != 1) {
-          $('#presender'+check).val(mail[0]['presender']);
-          $('#subjectmail'+check).html(mail[0]['presubject']);
-          // console.log(mail[0]['prebody']);
-          CKEDITOR.instances['body'+check].setData(mail[0]['prebody']);
-
-          $('#preattach_'+check).val(mail[0]['preattach']);
-          if (mail[0]['preattach'] != '') {
-            preattach = JSON.parse(mail[0]['preattach']);
-            var row = '';
-            for(var j = 0; j< preattach.length; j++){
-                row += '<div class="col-md-5 dom_file"><a class="fontstyle label1" href="#">'+preattach[j]+'</a></div>';
-              }
-              $("#filename_label"+check).append(row);
-          }
-        }
-    })
-    .fail(function() {
-      console.log("error");
-    });
-  }
-
-  $('#saveMChoice').click(function(event) {
-    for (instance in CKEDITOR.instances) {
-        CKEDITOR.instances[instance].updateElement();
-    }
-    $(this).find('i').addClass('fa fa-spin fa-spinner');
-    $.ajax({
-      url: '<?php echo base_url()?>admin/campaign/saveAssessment',
-      type: 'POST',
-      dataType: 'json',
-      data: new FormData($('#formCreateMChoice')[0]),
-      contentType: false,
-      processData: false
-    })
-    .done(function(data) {
-      if (data == 1) {
-        alert('tạo phiếu trắc nghiệm thành công');
-        location.reload();
-      }
-    })
-    .fail(function() {
-      console.log("error");
-    })
-    .always(function() {
-      console.log("complete");
-    });
-
-  });
-
-  function insertPV(roundid) {
-    $('#roundid_pt').val(roundid);
-    $('#insertPV').modal('show');
-  }
-  function addPV(i) {
-    var j = i+1;
-    var value = $('#select_type_pt_'+i).val();
-    var name = $('#select_type_pt_'+i).find(":selected").text();
-    if (value != '') {
-      var row = $('#body_cam_pt_'+i).clone().attr('id', 'body_cam_pt_'+j).after('#body_cam_pt_'+i);
-      $('.modal_body_cam_pt').append(row);
-      $('#body_cam_pt_'+j).contents().find('.fa_pt').attr('onclick', 'addPV('+j+')');
-      $('#body_cam_pt_'+j).contents().find('.seletext').attr('id', 'select_type_pt_'+j);
-      $('#body_cam_pt_'+j).contents().find('#show_name_pt_'+i).attr('id', 'show_name_pt_'+j);
-      $('#body_cam_pt_'+j).children().attr('id', 'btn_event_pt_'+j);
-      $('.js-example-basic').select2({ width: '100%' });
-      $('.js-example-basic').last().next().next().remove();
-
-      $('#show_name_pt_'+i).text(name).removeClass('hide');
-      $('#select_type_pt_'+i).hide();
-      $('#btn_event_pt_'+i).empty().html('<i class="fa fa-minus-circle fa-lg" onclick="subPV('+i+')"></i>');
-    }else{
-      alert('Bạn chưa chọn người phỏng vấn');
-    }
-  }
-  function subPV(i) {
-    $('#body_cam_pt_'+i).remove();
-  }
-  function subColPV(id,roundid) {
-    $('#col_pt_'+id).remove();
-    var manageround = $('#managePV_'+roundid).val();
-    manageround1 = manageround.replace(id+',', '');
-    $('#managePV_'+roundid).val(manageround1);
-
-    // var operator = $('#operator_js').text();
-    // operator = (JSON.parse(operator));
-    // for(var j in operator ){
-    <?php foreach ($category as $cate){ ?>
-      if (id == '<?php echo $cate['code'] ?>') {
-        var temp = '<?php echo $cate['ref2'] ?>';
-        var listmail = $('#email_to_pv2').val();
-        listmail1 = listmail.replace(temp+',', '');
-        $('#email_to_pv2').val(listmail1);
-      }
-    <?php } ?>
-
-  }
-
-    $('#savePT').click(function(event) {
-        var roundid = $('#roundid_pt').val();
-        var data = $('#formPV').serializeArray();
-        var row = '';
-        var str = '';
-        var email = $('#email_to_pv2').val();
-        for(var i in data){
-            if (data[i].value == '')
-            {
-                continue;
+         $(this).find('i').addClass('fa fa-spin fa-spinner');
+         $.ajax({
+            url: '<?php echo base_url()?>admin/campaign/transfer/1',
+            type: 'POST',
+            dataType: 'json',
+            data: new FormData($('#formTransfer1')[0]),
+            contentType: false,
+            processData: false
+         })
+         .done(function(data) {
+            if (data == 1) {
+               alert('Chuyển vòng và gửi mail ứng viên thành công');
+            }else{
+               alert('Chuyển vòng thành công');
             }
-            <?php foreach ($category as $cate):
-                if ($cate['category'] != 'ERP') {continue;}?>
-                if (data[i].value == '<?php echo $cate['code'] ?>') {
-                    var name = '<?php echo $cate['ref1'] ?>';
-                    var email1 = '<?php echo $cate['ref2'] ?>';
-                    row ='<div class="col-md-12" id="col_pt_'+data[i].value+'" ><div class="col-md-6 manage_pv ql" style="margin-left: -30px;">';
-                    row += '<div class="col-md-3" ';
-                    row += 'onclick="subColPV(\'' +data[i].value+ '\','+roundid+')">';
-                    row += '<img src="<?php echo base_url().'public/image/bbye.jpg' ?>"><div class="del_ql"><i class="fa fa-minus-circle fa-lg"></i></div></div>';
-                    row += '<span class="body-blac4" style="font-size:16px;">'+name+'</span></div>';
-                    row += '<div class="col-md-6" style="margin-top: 10px;float: right;"><select class="js-example-basic-2 select2" name="pv[]" required="" style="width: 100%">';
-                    <?php foreach ($asmt_pv as $key): ?>
-                       row += '<option value="<?php echo $key['asmttemp'] ?>"><?php echo $key['asmtname'] ?></option>';
-                    <?php endforeach ?>
-                    row += '</select></div></div>';
-
-                    $('#col_add_pt_'+roundid).before(row);
-                    initializeSelect2($(".select2"));
-
-                    var temp = email1;
-                    email += temp+', ';
-                }
-            <?php endforeach ?>
-      // for(var j in operator ){
-
-      // }
-            str += data[i].value + ',';
-        }
-        $('#email_to_pv2').val(email);
-        var manageround = $('#managePV_'+roundid).val();
-        if(manageround != ''){
-          manageround += str;
-        }else{
-          manageround = str;
-        }
-        $('#managePV_'+roundid).val(manageround);
-
-        $('.option_add_'+roundid).remove();
-        var option = '';
-        var arr = manageround.split(',');
-        for(var k in arr){
-            <?php foreach ($category as $cate){ ?>
-                var name = '<?php echo $cate['ref1'] ?>';
-          // for(var j in operator ){
-                if (arr[k] == '<?php echo $cate['code'] ?>') {
-                  option += '<option class="option_add_'+roundid+'" value="'+arr[k]+'">'+name+'</option>';
-                  break;
-                }
-            <?php } ?>
-        }
-        $('#option_'+roundid).after(option);
-        $('#insertPV').modal('hide');
-    });
-
-
-
-  $('#saveAppointment').click(function(event) {
-    for (instance in CKEDITOR.instances) {
-        CKEDITOR.instances[instance].updateElement();
-    }
-    $(this).find('i').addClass('fa fa-spin fa-spinner');
-    $.ajax({
-      url: '<?php echo base_url()?>admin/interview/saveAppointment',
-      type: 'POST',
-      dataType: 'json',
-      data: new FormData($('#formAppointment')[0]),
-      contentType: false,
-      processData: false
-    })
-    .done(function(data) {
-      if (data == 1) {
-        alert('tạo lịch phỏng vấn thành công');
-        location.reload();
+            parent.parent.location.reload();
+         })
+         .fail(function() {
+            console.log("error");
+         })
+         .always(function() {
+            console.log("complete");
+         });
       }
-    })
-    .fail(function() {
-      console.log("error");
-    })
-    .always(function() {
-      console.log("complete");
-    });
 
-  });
+   });
+   $('#saveDiscard').click(function(event) {
+      for (instance in CKEDITOR.instances) {
+         CKEDITOR.instances[instance].updateElement();
+      }
 
-  $('#saveOffer').click(function(event) {
-    var check = $('#check_offer').val();
-    for (instance in CKEDITOR.instances) {
-        CKEDITOR.instances[instance].updateElement();
-    }
-    if ($('#tempid11').val() == 0) {
-      alert('Bạn chưa chọn mẫu in');
-    }else{
-      $(this).find('i').addClass('fa fa-spin fa-spinner');
+      if (!checkListEmail($('#email_to_dis').val())) {
+         alert('Email gửi đến không đúng định dạng');
+         return;
+      }else if (!checkListEmail($('#email_cc_dis').val())) {
+         alert('Email CC không đúng định dạng');
+         return;
+      }else if (!checkListEmail($('#email_bcc_dis').val())) {
+         alert('Email BCC không đúng định dạng');
+         return;
+      }else{
+         $(this).find('i').addClass('fa fa-spin fa-spinner');
+         $.ajax({
+            url: '<?php echo base_url()?>admin/campaign/transfer/0',
+            type: 'POST',
+            dataType: 'json',
+            data: new FormData($('#formDiscard')[0]),
+            contentType: false,
+            processData: false
+
+         })
+         .done(function(data) {
+            if (data == 1) {
+               alert('Loại và gửi mail ứng viên thành công');
+            }else{
+               alert('Loại ứng viên thành công');
+            }
+            parent.parent.location.reload();
+         })
+         .fail(function() {
+            console.log("error");
+         });
+      }
+   });
+
+   function changeTemplate(id,check) {
+      $(".dom_file").remove();
       $.ajax({
-        url: '<?php echo base_url()?>admin/offer/saveOffer',
-        type: 'POST',
-        dataType: 'json',
-        data: new FormData($('#formOffer')[0]),
-        contentType: false,
-        processData: false
+         url: '<?php echo base_url() ?>admin/email/mailById',
+         type: 'POST',
+         dataType: 'json',
+         data: {mailid: id},
       })
-      .done(function(data) {
-        if (data == 1) {
-          location.reload();
-          if (check == 0) {
-            if ($('#inputcheckmail_5').prop('checked')) {
-              alert('Tạo đề nghị và gửi email thành công');
-            }else{
-              alert('Tạo đề nghị thành công');
-            }
-          }else{
-            if ($('#inputcheckmail_5').prop('checked')) {
-              alert('Cập nhật đề nghị và gửi email thành công');
-            }else{
-              alert('Cập nhật đề nghị thành công');
-            }
-          }
+      .done(function(mail) {
+         if (mail != 1) {
+            $('#presender'+check).val(mail[0]['presender']);
+            $('#subjectmail'+check).html(mail[0]['presubject']);
+            CKEDITOR.instances['body'+check].setData(mail[0]['prebody']);
 
-        }
+            $('#preattach_'+check).val(mail[0]['preattach']);
+            if (mail[0]['preattach'] != '') {
+               preattach = JSON.parse(mail[0]['preattach']);
+               var row = '';
+               for(var j = 0; j< preattach.length; j++){
+                  row += '<div class="col-md-5 dom_file"><a class="fontstyle label1" href="#">'+preattach[j]+'</a></div>';
+               }
+               $("#filename_label"+check).append(row);
+            }
+         }
       })
       .fail(function() {
-        console.log("error");
+         console.log("error");
       });
-    }
-  });
+   }
 
-  $('#saveMail').click(function(event) {
-    for (instance in CKEDITOR.instances) {
-        CKEDITOR.instances[instance].updateElement();
-    }
-    $(this).find('i').addClass('fa fa-spin fa-spinner');
-    $.ajax({
-      url: '<?php echo base_url()?>admin/campaign/sendMail',
-      type: 'POST',
-      dataType: 'json',
-      data: new FormData($('#formMail')[0]),
-      contentType: false,
-      processData: false
-    })
-    .done(function(data) {
-      if (data == 1) {
-        // location.reload();
-        $('#saveMail').find('i').removeClass('fa fa-spin fa-spinner');
-        $('#modalMail').modal('hide');
-        alert('gửi mail thành công');
-
+   $('#saveMChoice').click(function(event) {
+      for (instance in CKEDITOR.instances) {
+         CKEDITOR.instances[instance].updateElement();
       }
-    })
-    .fail(function() {
-      alert('gửi mail thất bại');
-    });
+      if (!checkListEmail($('#email_to_tn_1').val())) {
+         alert('Email gửi đến không đúng định dạng');
+         return;
+      }else if (!checkListEmail($('#email_cc_tn_1').val())) {
+         alert('Email CC không đúng định dạng');
+         return;
+      }else if (!checkListEmail($('#email_bcc_tn_1').val())) {
+         alert('Email BCC không đúng định dạng');
+         return;
+      }else{
+         $(this).find('i').addClass('fa fa-spin fa-spinner');
+         $.ajax({
+            url: '<?php echo base_url()?>admin/campaign/saveAssessment',
+            type: 'POST',
+            dataType: 'json',
+            data: new FormData($('#formCreateMChoice')[0]),
+            contentType: false,
+            processData: false
+         })
+         .done(function(data) {
+            if (data == 1) {
+               alert('tạo phiếu trắc nghiệm thành công');
+               location.reload();
+            }
+         })
+         .fail(function() {
+            console.log("error");
+         });
+      }
+   });
 
-  });
+   function insertPV(roundid) {
+      $('#roundid_pt').val(roundid);
+      $('#insertPV').modal('show');
+   }
 
-  function changeDate(intdate) {
-    $('#events_pv').empty();
-    var campaignid = $('#campaignid_pv').val();
-    $.ajax({
-      url: '<?php echo base_url() ?>admin/interview/interviewByDate',
-      type: 'POST',
-      dataType: 'json',
-      data: {intdate: intdate, campaignid: campaignid},
-    })
-    .done(function(data) {
+   function addPV(i) {
+      var j = i+1;
+      var value = $('#select_type_pt_'+i).val();
+      var name = $('#select_type_pt_'+i).find(":selected").text();
+      if (value != '') {
+         var row = $('#body_cam_pt_'+i).clone().attr('id', 'body_cam_pt_'+j).after('#body_cam_pt_'+i);
+         $('.modal_body_cam_pt').append(row);
+         $('#body_cam_pt_'+j).contents().find('.fa_pt').attr('onclick', 'addPV('+j+')');
+         $('#body_cam_pt_'+j).contents().find('.seletext').attr('id', 'select_type_pt_'+j);
+         $('#body_cam_pt_'+j).contents().find('#show_name_pt_'+i).attr('id', 'show_name_pt_'+j);
+         $('#body_cam_pt_'+j).children().attr('id', 'btn_event_pt_'+j);
+         $('.js-example-basic').select2({ width: '100%' });
+         $('.js-example-basic').last().next().next().remove();
+
+         $('#show_name_pt_'+i).text(name).removeClass('hide');
+         $('#select_type_pt_'+i).hide();
+         $('#btn_event_pt_'+i).empty().html('<i class="fa fa-minus-circle fa-lg" onclick="subPV('+i+')"></i>');
+      }else{
+         alert('Bạn chưa chọn người phỏng vấn');
+      }
+   }
+   function subPV(i) {
+      $('#body_cam_pt_'+i).remove();
+   }
+   function subColPV(id,roundid) {
+      $('#col_pt_'+id).remove();
+      var manageround = $('#managePV_'+roundid).val();
+      manageround1 = manageround.replace(id+',', '');
+      $('#managePV_'+roundid).val(manageround1);
+      <?php foreach ($category as $cate){ ?>
+         if (id == '<?php echo $cate['code'] ?>') {
+            var temp = '<?php echo $cate['ref2'] ?>';
+            var listmail = $('#email_to_pv2').val();
+            listmail1 = listmail.replace(temp+',', '');
+            $('#email_to_pv2').val(listmail1);
+         }
+      <?php } ?>
+   }
+
+   $('#savePT').click(function(event) {
+      var roundid = $('#roundid_pt').val();
+      var data = $('#formPV').serializeArray();
       var row = '';
+      var str = '';
+      var email = $('#email_to_pv2').val();
       for(var i in data){
-        row += '<p><span style="font-weight: 700">'+data[i]['timefrom']+' → '+data[i]['timeto']+'</span> - '+data[i]['name']+' - ('+data[i]['interviewer']+')</p>';
+         if (data[i].value == '')
+         {
+            continue;
+         }
+         <?php foreach ($category as $cate){
+            if ($cate['category'] != 'ERP') {continue;}?>
+            if (data[i].value == '<?php echo $cate['code'] ?>') {
+               var name = '<?php echo $cate['ref1'] ?>';
+               var email1 = '<?php echo $cate['ref2'] ?>';
+               row ='<div class="col-md-12" id="col_pt_'+data[i].value+'" ><div class="col-md-6 manage_pv ql" style="margin-left: -30px;">';
+               row += '<div class="col-md-3" ';
+               row += 'onclick="subColPV(\'' +data[i].value+ '\','+roundid+')">';
+               row += '<img src="<?php echo base_url().'public/image/bbye.jpg' ?>"><div class="del_ql"><i class="fa fa-minus-circle fa-lg"></i></div></div>';
+               row += '<span class="body-blac4" style="font-size:16px;">'+name+'</span></div>';
+               row += '<div class="col-md-6" style="margin-top: 10px;float: right;"><select class="js-example-basic-2 select2" name="pv[]" required="" style="width: 100%">';
+               <?php foreach ($asmt_pv as $key): ?>
+                  row += '<option value="<?php echo $key['asmttemp'] ?>"><?php echo $key['asmtname'] ?></option>';
+               <?php endforeach ?>
+               row += '</select></div></div>';
+
+               $('#col_add_pt_'+roundid).before(row);
+               initializeSelect2($(".select2"));
+
+               var temp = email1;
+               email += temp+', ';
+            }
+         <?php } ?>
+         str += data[i].value + ',';
       }
-      if (row == '') {
-        row ='Chưa có lịch phỏng vấn';
+      $('#email_to_pv2').val(email);
+      var manageround = $('#managePV_'+roundid).val();
+      if(manageround != ''){
+         manageround += str;
+      }else{
+         manageround = str;
       }
-      $('#events_pv').prepend(row);
-    })
-    .fail(function() {
-      console.log("error");
-    });
+      $('#managePV_'+roundid).val(manageround);
 
-  }
-  function insertField(check) {
-    $('#check').val(check);
-    $('#insertSubject').modal('show');
-  }
-  function getField(id) {
-    var value = ' <span style="color:#3498db;">['+id.text+']&nbsp;</span> ';
-    var check = $('#check').val();
-    CKEDITOR.instances['body'+check].insertHtml(value);
-    $('#insertSubject').modal('hide');
-  }
-
-  function changeTemplateOffer(id,check) {
-    $.ajax({
-      url: '<?php echo base_url() ?>admin/printtemp/getTemplate',
-      type: 'POST',
-      dataType: 'json',
-      data: {tempid: id},
-    })
-    .done(function(data) {
-        $('#subject'+check).text(data['subject']);
-        CKEDITOR.instances['body'+check].setData(data['body']);
-    })
-    .fail(function() {
-      console.log("error");
-    })
-    .always(function() {
-      console.log("complete");
-    });
-
-  }
-  function insertFieldOffer(check) {
-    $('#checkOffer').val(check);
-    $('#insertOffer').modal('show');
-  }
-  function getFieldOffer(id) {
-    var value = ' <span style="color:#3498db;">['+id.text+']&nbsp;</span> ';
-    var check = $('#checkOffer').val();
-    CKEDITOR.instances['body'+check].insertHtml(value);
-    $('#insertOffer').modal('hide');
-  }
-  function loadCategory(id_trainer,id_reportto,id_level,id_position,id_department) {
-
-    // var count_trainer     =  $('#select_trainer option').length;
-    // var count_reportto    =  $('#select_reportto option').length;
-    var count_level       =  $('#select_level option').length;
-    var count_position    =  $('#select_position option').length;
-    var count_department  =  $('#select_department option').length;
-    $.ajax({
-      url: '<?php echo base_url('admin/offer/loadCategory') ?>',
-      type: 'POST',
-      dataType: 'json',
-      data: {},
-    })
-    .done(function(data) {
-      // console.log(data);
-      var row1 = row2 = row3 = row4 = row5 = '<option value="0">Vui lòng chọn</option>';
-      if (data['position'].length != count_position) {
-        for(var i in data['position']){
-          var key = data['position'][i];
-          row1 += '<option value="'+key['code']+'">'+key['code']+' - '+key['description']+'</option>';
-          row4 += '<option value="'+key['code']+'">'+key['description']+'</option>';
-        }
-
-        $('#select_trainer').empty().prepend(row1);
-        $('#select_reportto').empty().prepend(row1);
-        $('#select_position').empty().prepend(row4);
-
-        $('#select_trainer').val(id_trainer).change();
-        $('#select_reportto').val(id_reportto).change();
-        $('#select_position').val(id_position).change();
+      $('.option_add_'+roundid).remove();
+      var option = '';
+      var arr = manageround.split(',');
+      for(var k in arr){
+         <?php foreach ($category as $cate){ ?>
+            var name = '<?php echo $cate['ref1'] ?>';
+            if (arr[k] == '<?php echo $cate['code'] ?>') {
+               option += '<option class="option_add_'+roundid+'" value="'+arr[k]+'">'+name+'</option>';
+               break;
+            }
+         <?php } ?>
       }
-      if (data['capbac'].length != count_level) {
-        for(var i in data['capbac']){
-          var key = data['capbac'][i];
-          row2 += '<option value="'+key['code']+'">'+key['description']+'</option>';
-        }
+      $('#option_'+roundid).after(option);
+      $('#insertPV').modal('hide');
+   });
 
-        $('#select_level').empty().prepend(row2);
-
-        $('#select_level').val(id_level).change();
+   $('#saveAppointment').click(function(event) {
+      for (instance in CKEDITOR.instances) {
+         CKEDITOR.instances[instance].updateElement();
       }
-      if (data['dept'].length != count_department) {
-        for(var i in data['dept']){
-          var key = data['dept'][i];
-          row3 += '<option value="'+key['code']+'">'+key['description']+'</option>';
-        }
-
-        $('#select_department').empty().prepend(row3);
-
-        $('#select_department').val(id_department).change();
+      if (!checkListEmail($('#email_to_pv1').val())) {
+         alert('Email gửi đến (dành cho ứng viên) không đúng định dạng');
+         return;
+      }else if (!checkListEmail($('#email_cc_pv1').val())) {
+         alert('Email CC (dành cho ứng viên) không đúng định dạng');
+         return;
+      }else if (!checkListEmail($('#email_bcc_pv1').val())) {
+         alert('Email BCC (dành cho ứng viên) không đúng định dạng');
+         return;
       }
-
-    })
-    .fail(function() {
-      console.log("error");
-    });
-  }
-  var interval;
-
-  function loadCategoryOffer() {
-
-    interval = setInterval(function(){
-
-
-        var id_trainer    = $('#select_trainer').val();
-        var id_reportto   = $('#select_reportto').val();
-        var id_level      = $('#select_level').val();
-        var id_position   = $('#select_position').val();
-        var id_department = $('#select_department').val();
-        // console.log(id_trainer);
-        loadCategory(id_trainer,id_reportto,id_level,id_position,id_department); // this will run after every 5 seconds
-    }, 5000);
-  }
-  $('#createOffer').on('hidden.bs.modal', function () {
-    clearInterval(interval);
-  });
-
-  $('#saveMerge').click(function(event) {
-    $(this).find('i').addClass('fa fa-spin fa-spinner');
-    $.ajax({
-      url: '<?php echo base_url()?>admin/handling/mergeCandidate',
-      type: 'POST',
-      dataType: 'json',
-      data: new FormData($('#formMerge')[0]),
-      contentType: false,
-      processData: false
-    })
-    .done(function(data) {
-      if (data == 1) {
-        // location.reload();
-        $('#saveMerge').find('i').removeClass('fa fa-spin fa-spinner');
-        $('#modalMerge').modal('hide');
-        alert('Ghép ứng viên thành công');
-
+      else if (!checkListEmail($('#email_to_pv2').val())) {
+         alert('Email gửi đến (dành cho nguời tuyển dụng) không đúng định dạng');
+         return;
+      }else if (!checkListEmail($('#email_cc_pv2').val())) {
+         alert('Email CC (dành cho nguời tuyển dụng) không đúng định dạng');
+         return;
+      }else if (!checkListEmail($('#email_bcc_pv2').val())) {
+         alert('Email BCC (dành cho nguời tuyển dụng) không đúng định dạng');
+         return;
+      }else{
+         $(this).find('i').addClass('fa fa-spin fa-spinner');
+         $.ajax({
+            url: '<?php echo base_url()?>admin/interview/saveAppointment',
+            type: 'POST',
+            dataType: 'json',
+            data: new FormData($('#formAppointment')[0]),
+            contentType: false,
+            processData: false
+         })
+         .done(function(data) {
+            if (data == 1) {
+               alert('tạo lịch phỏng vấn thành công');
+               location.reload();
+            }
+         })
+         .fail(function() {
+            console.log("error");
+         });
       }
-    })
-    .fail(function() {
-      alert('Ghép ứng viên thất bại');
-    });
-  });
+   });
+
+   $('#saveOffer').click(function(event) {
+      var check = $('#check_offer').val();
+      for (instance in CKEDITOR.instances) {
+         CKEDITOR.instances[instance].updateElement();
+      }
+      if (!checkListEmail($('#mail_to_offer').val())) {
+         alert('Email gửi đến không đúng định dạng');
+         return;
+      }else if (!checkListEmail($('#mail_cc_offer').val())) {
+         alert('Email CC không đúng định dạng');
+         return;
+      }else if (!checkListEmail($('#mail_bcc_offer').val())) {
+         alert('Email BCC không đúng định dạng');
+         return;
+      }else if ($('#tempid11').val() == 0) {
+         alert('Bạn chưa chọn mẫu in');
+      }else{
+         $(this).find('i').addClass('fa fa-spin fa-spinner');
+         $.ajax({
+            url: '<?php echo base_url()?>admin/offer/saveOffer',
+            type: 'POST',
+            dataType: 'json',
+            data: new FormData($('#formOffer')[0]),
+            contentType: false,
+            processData: false
+         })
+         .done(function(data) {
+            if (data == 1) {
+               location.reload();
+               if (check == 0) {
+                  if ($('#inputcheckmail_5').prop('checked')) {
+                     alert('Tạo đề nghị và gửi email thành công');
+                  }else{
+                     alert('Tạo đề nghị thành công');
+                  }
+               }else{
+                  if ($('#inputcheckmail_5').prop('checked')) {
+                     alert('Cập nhật đề nghị và gửi email thành công');
+                  }else{
+                     alert('Cập nhật đề nghị thành công');
+                  }
+               }
+
+            }
+         })
+         .fail(function() {
+            console.log("error");
+         });
+      }
+   });
+
+   $('#saveMail').click(function(event) {
+      for (instance in CKEDITOR.instances) {
+         CKEDITOR.instances[instance].updateElement();
+      }
+      if (!checkListEmail($('#email_to').val())) {
+         alert('Email gửi đến không đúng định dạng');
+         return;
+      }else if (!checkListEmail($('#email_cc').val())) {
+         alert('Email CC không đúng định dạng');
+         return;
+      }else if (!checkListEmail($('#email_bcc').val())) {
+         alert('Email BCC không đúng định dạng');
+         return;
+      }else{
+         $(this).find('i').addClass('fa fa-spin fa-spinner');
+         $.ajax({
+            url: '<?php echo base_url()?>admin/campaign/sendMail',
+            type: 'POST',
+            dataType: 'json',
+            data: new FormData($('#formMail')[0]),
+            contentType: false,
+            processData: false
+         })
+         .done(function(data) {
+            if (data == 1) {
+               $('#saveMail').find('i').removeClass('fa fa-spin fa-spinner');
+               $('#modalMail').modal('hide');
+               alert('gửi mail thành công');
+            }
+         })
+         .fail(function() {
+            alert('gửi mail thất bại');
+         });
+      }
+   });
+
+   function changeDate(intdate) {
+      $('#events_pv').empty();
+      var campaignid = $('#campaignid_pv').val();
+      $.ajax({
+         url: '<?php echo base_url() ?>admin/interview/interviewByDate',
+         type: 'POST',
+         dataType: 'json',
+         data: {intdate: intdate, campaignid: campaignid},
+      })
+      .done(function(data) {
+         var row = '';
+         for(var i in data){
+            row += '<p><span style="font-weight: 700">'+data[i]['timefrom']+' → '+data[i]['timeto']+'</span> - '+data[i]['name']+' - ('+data[i]['interviewer']+')</p>';
+         }
+         if (row == '') {
+            row ='Chưa có lịch phỏng vấn';
+         }
+         $('#events_pv').prepend(row);
+      })
+      .fail(function() {
+         console.log("error");
+      });
+   }
+
+   function insertField(check) {
+      $('#check').val(check);
+      $('#insertSubject').modal('show');
+   }
+   function getField(id) {
+      var value = ' <span style="color:#3498db;">['+id.text+']&nbsp;</span> ';
+      var check = $('#check').val();
+      CKEDITOR.instances['body'+check].insertHtml(value);
+      $('#insertSubject').modal('hide');
+   }
+
+   function changeTemplateOffer(id,check) {
+      $.ajax({
+         url: '<?php echo base_url() ?>admin/printtemp/getTemplate',
+         type: 'POST',
+         dataType: 'json',
+         data: {tempid: id},
+      })
+      .done(function(data) {
+         $('#subject'+check).text(data['subject']);
+         CKEDITOR.instances['body'+check].setData(data['body']);
+      })
+      .fail(function() {
+         console.log("error");
+      })
+      .always(function() {
+         console.log("complete");
+      });
+   }
+
+   function insertFieldOffer(check) {
+      $('#checkOffer').val(check);
+      $('#insertOffer').modal('show');
+   }
+
+   function getFieldOffer(id) {
+      var value = ' <span style="color:#3498db;">['+id.text+']&nbsp;</span> ';
+      var check = $('#checkOffer').val();
+      CKEDITOR.instances['body'+check].insertHtml(value);
+      $('#insertOffer').modal('hide');
+   }
+
+   function loadCategory(id_trainer,id_reportto,id_level,id_position,id_department) {
+      var count_level       =  $('#select_level option').length;
+      var count_position    =  $('#select_position option').length;
+      var count_department  =  $('#select_department option').length;
+      $.ajax({
+         url: '<?php echo base_url('admin/offer/loadCategory') ?>',
+         type: 'POST',
+         dataType: 'json',
+         data: {},
+      })
+      .done(function(data) {
+         var row1 = row2 = row3 = row4 = row5 = '<option value="0">Vui lòng chọn</option>';
+         if (data['position'].length != count_position) {
+            for(var i in data['position']){
+               var key = data['position'][i];
+               row1 += '<option value="'+key['code']+'">'+key['code']+' - '+key['description']+'</option>';
+               row4 += '<option value="'+key['code']+'">'+key['description']+'</option>';
+            }
+
+            $('#select_trainer').empty().prepend(row1);
+            $('#select_reportto').empty().prepend(row1);
+            $('#select_position').empty().prepend(row4);
+
+            $('#select_trainer').val(id_trainer).change();
+            $('#select_reportto').val(id_reportto).change();
+            $('#select_position').val(id_position).change();
+         }
+         if (data['capbac'].length != count_level) {
+            for(var i in data['capbac']){
+               var key = data['capbac'][i];
+               row2 += '<option value="'+key['code']+'">'+key['description']+'</option>';
+            }
+
+            $('#select_level').empty().prepend(row2);
+
+            $('#select_level').val(id_level).change();
+         }
+         if (data['dept'].length != count_department) {
+            for(var i in data['dept']){
+               var key = data['dept'][i];
+               row3 += '<option value="'+key['code']+'">'+key['description']+'</option>';
+            }
+
+            $('#select_department').empty().prepend(row3);
+
+            $('#select_department').val(id_department).change();
+         }
+
+      })
+      .fail(function() {
+         console.log("error");
+      });
+   }
+   var interval;
+
+   function loadCategoryOffer() {
+
+      interval = setInterval(function(){
+         var id_trainer    = $('#select_trainer').val();
+         var id_reportto   = $('#select_reportto').val();
+         var id_level      = $('#select_level').val();
+         var id_position   = $('#select_position').val();
+         var id_department = $('#select_department').val();
+         loadCategory(id_trainer,id_reportto,id_level,id_position,id_department); // this will run after every 5 seconds
+      }, 5000);
+   }
+
+   $('#createOffer').on('hidden.bs.modal', function () {
+      clearInterval(interval);
+   });
+
+   $('#saveMerge').click(function(event) {
+      $(this).find('i').addClass('fa fa-spin fa-spinner');
+      $.ajax({
+         url: '<?php echo base_url()?>admin/handling/mergeCandidate',
+         type: 'POST',
+         dataType: 'json',
+         data: new FormData($('#formMerge')[0]),
+         contentType: false,
+         processData: false
+      })
+      .done(function(data) {
+         if (data == 1) {
+            $('#saveMerge').find('i').removeClass('fa fa-spin fa-spinner');
+            $('#modalMerge').modal('hide');
+            alert('Ghép ứng viên thành công');
+
+         }
+      })
+      .fail(function() {
+         alert('Ghép ứng viên thất bại');
+      });
+   });
 </script>

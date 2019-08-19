@@ -368,9 +368,11 @@ class Handling extends CI_Controller {
         if (trim($frm['dt1']) == '' && trim($frm['dt2']) == '') {
             $data['telephone'] = '';
         }else if (trim($frm['dt1']) == '' && trim($frm['dt2']) != '') {
-            $data['telephone'] = ','.$frm['dt2'].',';
+            $data['telephone'] = ','.trim($frm['dt2']).',';
+        }else if (trim($frm['dt1']) != '' && trim($frm['dt2']) == ''){
+            $data['telephone'] = ','.trim($frm['dt1']).',';
         }else{
-            $data['telephone'] = ','.$frm['dt1'].',';
+             $data['telephone'] = ','.trim($frm['dt1']).','.trim($frm['dt2']).',';
         }
 		// $data['telephone'] = ','.$frm['dt1'].",".$frm['dt2'].',';
 		$data['emergencycontact'] = $frm['dtkhancap'];

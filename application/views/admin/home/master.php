@@ -1,4 +1,4 @@
-<?php 
+<?php
 if($this->session->has_userdata('user_admin')) {
 ?>
 <!DOCTYPE html>
@@ -34,14 +34,14 @@ if($this->session->has_userdata('user_admin')) {
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="<?php echo base_url()?>public/admin/js/bootstrap-multiselect.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
-  <script src="<?php echo base_url()?>public/admin/js/bootstrap-tagsinput.js"></script>
-  <script src="<?php echo base_url()?>public/admin/js/typeahead.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
+  <script async type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script async type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+  <script async src="<?php echo base_url()?>public/admin/js/bootstrap-tagsinput.js"></script>
+  <script async src="<?php echo base_url()?>public/admin/js/typeahead.js"></script>
+  <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"></script>
   <script src="<?php echo base_url()?>public/datetimepicker-master/build/jquery.datetimepicker.full.min.js"></script>
-  <script src="<?php echo base_url()?>public/admin/js/jquery.number.js"></script>
-  <script src="<?php echo base_url()?>public/admin/js/morris.js"></script>
+  <script async src="<?php echo base_url()?>public/admin/js/jquery.number.js"></script>
+  <script async src="<?php echo base_url()?>public/admin/js/morris.js"></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
   <div class="wrapper">
@@ -56,23 +56,23 @@ if($this->session->has_userdata('user_admin')) {
     $.widget.bridge('uibutton', $.ui.button);
   </script>
   <div class="hide" id="url"><?php echo base_url() ?></div>
-  <script src="<?php echo base_url()?>public/admin/js/bootstrap.min.js"></script>
-  <script src="<?php echo base_url()?>public/ckeditor/ckeditor.js"></script>
-  <script src="<?php echo base_url()?>public/admin/js/moment.min.js"></script>
-  <script src="<?php echo base_url()?>public/admin/js/daterangepicker.js"></script>
-  <script src="<?php echo base_url()?>public/admin/js/bootstrap-datepicker.min.js"></script>
-  <script src="<?php echo base_url()?>public/admin/js/bootstrap3-wysihtml5.all.min.js"></script>
-  <script src="<?php echo base_url()?>public/admin/js/jquery.slimscroll.min.js"></script>
-  <script src="<?php echo base_url()?>public/admin/js/adminlte.min.js"></script>
+  <script async src="<?php echo base_url()?>public/admin/js/bootstrap.min.js"></script>
+  <script defer src="<?php echo base_url()?>public/ckeditor/ckeditor.js"></script>
+  <script async src="<?php echo base_url()?>public/admin/js/moment.min.js"></script>
+  <script async src="<?php echo base_url()?>public/admin/js/daterangepicker.js"></script>
+  <script async src="<?php echo base_url()?>public/admin/js/bootstrap-datepicker.min.js"></script>
+  <script async src="<?php echo base_url()?>public/admin/js/bootstrap3-wysihtml5.all.min.js"></script>
+  <script async src="<?php echo base_url()?>public/admin/js/jquery.slimscroll.min.js"></script>
+  <script async src="<?php echo base_url()?>public/admin/js/adminlte.min.js"></script>
   <!-- <script src="<?php echo base_url()?>public/admin/js/dashboard.js"></script> -->
-  <script src="<?php echo base_url()?>public/admin/js/demo.js"></script>
-  <script src="<?php echo base_url()?>public/admin/js/my-modal.js"></script>
+  <script async src="<?php echo base_url()?>public/admin/js/demo.js"></script>
+  <script async src="<?php echo base_url()?>public/admin/js/my-modal.js"></script>
   <script src="<?php echo base_url()?>public/admin/js/fullcalendar.min.js"></script>
   <!-- <script src="<?php echo base_url()?>public/admin/js/gcal.js"></script> -->
-  <script src="<?php echo base_url()?>public/admin/js/jquery-jvectormap-1.2.2.min.js"></script>
-  <script src="<?php echo base_url()?>public/admin/js/jquery-jvectormap-world-mill-en.js"></script>
-  <script src="<?php echo base_url()?>public/admin/js/jquery.sparkline.js"></script>
-  
+  <script async src="<?php echo base_url()?>public/admin/js/jquery-jvectormap-1.2.2.min.js"></script>
+  <script async src="<?php echo base_url()?>public/admin/js/jquery-jvectormap-world-mill-en.js"></script>
+  <script async src="<?php echo base_url()?>public/admin/js/jquery.sparkline.js"></script>
+
 
   <?php echo isset($script)? $script: ""; ?>
   <?php echo isset($modal_campaign)? $modal_campaign: ""; ?>
@@ -80,6 +80,6 @@ if($this->session->has_userdata('user_admin')) {
   <div style="display: none">Designed by Lê Thanh Hưng</div>
 </body>
 </html>
-<?php 
+<?php
 }else{redirect(base_url('login.html'));}
 ?>

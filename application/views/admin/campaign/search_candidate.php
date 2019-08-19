@@ -318,7 +318,8 @@
 					var name = list_candidate[j]['name'];
 					var avatar = list_candidate[j]['imagelink'];
 					var email 	= list_candidate[j]['email'];
-					row += '<div class="col-xs-4 candidate_chuyen"><div><img src="<?php echo base_url() ?>public/image/'+avatar+'" class="img_chuyen"></div><label>'+name+'</label></div><input type="hidden" name="id[]" value="'+list_candidate[j]['candidateid']+'">';
+                    var candidateid = (list_candidate[j]['mergewith'] == 0) ? list_candidate[j]['candidateid'] : list_candidate[j]['mergewith'];
+					row += '<div class="col-xs-4 candidate_chuyen"><div><img src="<?php echo base_url() ?>public/image/'+avatar+'" class="img_chuyen"></div><label>'+name+'</label></div><input type="hidden" name="id[]" value="'+candidateid+'">';
 					if (to_mail == '') {
 		            	to_mail += email;
 		            }else{
@@ -362,28 +363,26 @@
 		});
 	}
 	function sendMail() {
-		var list_candidate = JSON.parse($('#list_candidate').text()) ;
 		parent.$('#email_to').val();
 		var form = $('#form_candidate').serializeArray();
 		var campaignid = form[0].value;
 		var roundid = form[1].value;
-		var email = candidateid = '';
-		for (var i = 2; i < form.length; i++) {
-			for(var j =0;j < list_candidate.length; j++){
-				if (form[i].value == list_candidate[j]['candidateid']) {
-		            if (email == '') {
-		            	email += list_candidate[j]['email'];
-		            }else{
-		            	email += ', '+list_candidate[j]['email'];
-		            }
-		        }
-		    }
-		    candidateid += form[i]['value']+ ',';
-		}
-		parent.$('#candidateid_mail').val(candidateid);
-		parent.$('#campaignid_mail').val(campaignid);
-		parent.$('#roundid_mail').val(roundid);
-		parent.$('#email_to').val(email);
-		parent.$('#modalMail').modal('show');
+		$.ajax({
+            url: '<?php echo base_url() ?>admin/handling/getCandidateForMail',
+            type: 'POST',
+            dataType: 'json',
+            data: $('#form_candidate').serialize(),
+        })
+        .done(function(data) {
+            parent.$('#candidateid_mail').val(data.list_candidateid);
+            parent.$('#campaignid_mail').val(campaignid);
+            parent.$('#roundid_mail').val(roundid);
+            parent.$('#email_to').val(data.list_email);
+            parent.$('#modalMail').modal('show');
+        })
+        .fail(function() {
+            console.log("error");
+        });
+
 	}
 </script>

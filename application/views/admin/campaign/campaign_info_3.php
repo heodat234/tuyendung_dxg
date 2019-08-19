@@ -4,7 +4,7 @@
             <div class="panel-group" id="accordion">
 			  	<div class="panel panel-default border-rad0">
 			  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse1" onclick="rotate(1)">
-				    	<div class="panel-heading rad-pad0 b-blue"> 
+				    	<div class="panel-heading rad-pad0 b-blue">
 				       		<i class="fa fa-angle-right a-tabcs rotate rotate_1 down"></i>
 				       		<div class="ul-nav">
 						       	<label class="tittle-tab">
@@ -18,7 +18,7 @@
 				      		<p class="title_ql">Là những người có thể thấy được toàn bộ nội dung của mọi bước trong chiến dịch, bao gồm cả những nội dung được đánh dấu ẩn với người khác của Thành viên chiến dịch</p>
 				      		<?php
 				      		if ($manager != '') {
-				      		 foreach ($manager as $row){ 
+				      		 foreach ($manager as $row){
 				      		 	foreach ($operator as $op){
 				      				if ($row == $op['operatorid']) { ?>
 				      					<div class="col-xs-2 padding_le_ri_0 ql" id="col_ql_<?php echo $row ?>" onclick="subColQL(<?php echo $row ?>)">
@@ -32,7 +32,7 @@
 							      		</div>
 
 				      		<?php } } } } ?>
-				      		
+
 				      		<div class="col-xs-2 padding_le_ri_0" id="col_add_ql">
 				      			<div class="col-xs-3 padding_le_ri_0">
 				      				<img class="img_ql" src="<?php echo base_url() ?>public/image/bbye.jpg">
@@ -44,10 +44,10 @@
 				      	</div>
 				    </div>
 			  	</div>
-			  	
+
 			  	<div class="panel panel-default border-rad0">
 			  		<a data-toggle="collapse" data-parent="#accordion" href="#collapse2" onclick="rotate(2)">
-				    	<div class="panel-heading rad-pad0 b-blue"> 
+				    	<div class="panel-heading rad-pad0 b-blue">
 				       		<i class="fa fa-angle-right a-tabcs rotate rotate_2 down"></i>
 				       		<div class="ul-nav">
 						       	<label class="tittle-tab">
@@ -89,14 +89,14 @@
 				            		<span class="info-box-text"><?php echo $row1['roundname'] ?></span>
 				            	</div>
 			            	<?php $i++; }} ?>
-				            
+
 				        </div>
 				        <p class="title_qt">Điều chỉnh Quy trình:</p>
 				        <input type="hidden" id="count_round" name="count_round_form" value="8">
 				        <ul id="sortable" class="sortable-dragging sortable-placeholder">
 				        	<form id="form_round">
 				        		<input type="hidden" name="campaignid" id="campaignid_v3" value="<?php echo $campaignid ?>">
-				        		<?php $i = 1; foreach ($round as $row): 
+				        		<?php $i = 1; foreach ($round as $row):
 				        			if ($row['roundtype'] == 'Profile') {
 				        		?>
 				        			<li class="ui-state-disabled" data-index="1" data-position="1">
@@ -123,7 +123,7 @@
 										            </div>
 										            <label for="text" class=" col-xs-2 label-profile">Thời hạn vòng</label>
 										            <div class="col-xs-4  padding-lr0">
-										             	<input type="text" name="round1[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>"> 
+										             	<input type="text" name="round1[]" class="textbox thoihan" value="<?php echo date_format(date_create(),"d/m/Y"); ?>">
 										            </div>
 										        </div>
 										        <div class="row form_campaign">
@@ -132,7 +132,7 @@
 										        		<?php foreach ($row['manage'] as $mana): ?>
 										        			<div class="col-xs-2 padding_le_ri_0 ql" id="col_pt_<?php echo $mana['operatorid'] ?>" onclick="subColPT(<?php echo $mana['operatorid'] ?>,<?php echo $row['roundid'] ?>)">
 											        			<div class="col-xs-3 padding_le_ri_0">
-																	<img class="img_ql" src="<?php echo base_url().'public/image/'.$mana['filename'] ?>">
+																	<img class="img_ql" src="<?= base_url('public/image/')?><?= ($mana['filename'] != '')? $mana['filename'] : 'unknow.jpg' ?>">
 																	<div class="del_ql">
 																		<i class="fa fa-minus-circle fa-lg"></i>
 																	</div>
@@ -157,7 +157,7 @@
 										            <label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round1[]" value="Y"> Email Chuyển vòng</label>
 										            <div class="col-xs-4  padding-lr0">
 										             	<select class="textbox" name="round1[]">
-										             		<?php foreach ($mailtemplate as $mail): 
+										             		<?php foreach ($mailtemplate as $mail):
 										             			if ($row['transfmailtemp'] == $mail['mailprofileid']) { ?>
 										             				<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>
 										             			<?php }else{ ?>
@@ -170,7 +170,7 @@
 										            <label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round1[]" value="Y"> Email loại</label>
 										            <div class="col-xs-4  padding-lr0">
 										             	<select class="textbox" name="round1[]">
-										             		<?php foreach ($mailtemplate as $mail): 
+										             		<?php foreach ($mailtemplate as $mail):
 										             			if ($row['discmailtemp'] == $mail['mailprofileid']) { ?>
 										             				<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>
 										             			<?php }else{ ?>
@@ -207,7 +207,7 @@
 										            </div>
 										            <label for="text" class=" col-xs-2 label-profile">Thời hạn vòng</label>
 										            <div class="col-xs-4  padding-lr0">
-										             	<input type="text" name="round<?php echo $i ?>[]" class="textbox thoihan" value="<?php echo date_format(date_create($row['duedate']),"d/m/Y"); ?>"> 
+										             	<input type="text" name="round<?php echo $i ?>[]" class="textbox thoihan" value="<?php echo date_format(date_create($row['duedate']),"d/m/Y"); ?>">
 										            </div>
 										        </div>
 										        <div class="row form_campaign_1">
@@ -216,7 +216,7 @@
 										        		<?php foreach ($row['manage'] as $mana): ?>
 										        			<div class="col-xs-2 padding_le_ri_0 ql" id="col_pt_<?php echo $mana['operatorid'] ?>" onclick="subColPT(<?php echo $mana['operatorid'] ?>,<?php echo $row['roundid'] ?>)">
 											        			<div class="col-xs-3 padding_le_ri_0">
-																	<img class="img_ql" src="<?php echo base_url().'public/image/'.$mana['filename'] ?>">
+                                                                    <img class="img_ql" src="<?= base_url('public/image/')?><?= ($mana['filename'] != '')? $mana['filename'] : 'unknow.jpg' ?>">
 																	<div class="del_ql">
 																		<i class="fa fa-minus-circle fa-lg"></i>
 																	</div>
@@ -240,7 +240,7 @@
 							        		</div>
 							        	</div>
 						        	</li>
-				        		<?php }else { ?>	
+				        		<?php }else { ?>
 				        			<li id="round_<?php echo $i ?>" data-index="<?php echo $i ?>" data-position="<?php echo $i ?>">
 						        		<div class="v_<?php echo $i ?>" >
 							        		<div class="header_vong_cd">
@@ -277,7 +277,7 @@
 										            </script>
 										            <label for="text" class=" col-xs-2 label-profile">Thời hạn vòng</label>
 										            <div class="col-xs-4  padding-lr0">
-										             	<input type="text" name="round<?php echo $i ?>[]" class="textbox thoihan" value="<?php echo date_format(date_create($row['duedate']),"d/m/Y"); ?>"> 
+										             	<input type="text" name="round<?php echo $i ?>[]" class="textbox thoihan" value="<?php echo date_format(date_create($row['duedate']),"d/m/Y"); ?>">
 										            </div>
 										        </div>
 										        <div class="row form_campaign">
@@ -286,7 +286,7 @@
 										        		<?php foreach ($row['manage'] as $mana): ?>
 										        			<div class="col-xs-2 padding_le_ri_0 ql" id="col_pt_<?php echo $mana['operatorid'] ?>" onclick="subColPT(<?php echo $mana['operatorid'] ?>,<?php echo $row['roundid'] ?>)">
 											        			<div class="col-xs-3 padding_le_ri_0">
-																	<img class="img_ql" src="<?php echo base_url().'public/image/'.$mana['filename'] ?>">
+																	<img class="img_ql" src="<?= base_url('public/image/')?><?= ($mana['filename'] != '')? $mana['filename'] : 'unknow.jpg' ?>">
 																	<div class="del_ql">
 																		<i class="fa fa-minus-circle fa-lg"></i>
 																	</div>
@@ -311,7 +311,7 @@
 										            <label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round<?php echo $i ?>[]"> Email Chuyển vòng</label>
 										            <div class="col-xs-4  padding-lr0">
 										             	<select class="textbox" name="round<?php echo $i ?>[]">
-										             		<?php foreach ($mailtemplate as $mail): 
+										             		<?php foreach ($mailtemplate as $mail):
 										             			if ($row['transfmailtemp'] == $mail['mailprofileid']) { ?>
 										             				<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>
 										             			<?php }else{ ?>
@@ -324,7 +324,7 @@
 										            <label for="text" class=" col-xs-2 label-profile"><input type="checkbox" name="round<?php echo $i ?>[]"> Email loại</label>
 										            <div class="col-xs-4  padding-lr0">
 										             	<select class="textbox" name="round<?php echo $i ?>[]">
-										             		<?php foreach ($mailtemplate as $mail): 
+										             		<?php foreach ($mailtemplate as $mail):
 										             			if ($row['discmailtemp'] == $mail['mailprofileid']) { ?>
 										             				<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>
 										             			<?php }else{ ?>
@@ -340,7 +340,7 @@
 											            <label for="text" class=" col-xs-2 label-profile">Giới hạn mẫu phiếu trắc nghiệm</label>
 											            <div class="col-xs-4  padding-lr0">
 											             	<select class="textbox" name="round<?php echo $i ?>[]">
-											             		<?php foreach ($asmt_tn as $tn): 
+											             		<?php foreach ($asmt_tn as $tn):
 											             			if ($row['assessment'] == $tn['asmttemp']) { ?>
 											             				<option value="<?php echo $tn['asmttemp'] ?>" selected><?php echo $tn['asmtname'] ?></option>
 											             			<?php }else{ ?>
@@ -353,7 +353,7 @@
 											            <label for="text" class=" col-xs-2 label-profile">Email thông báo</label>
 											            <div class="col-xs-4  padding-lr0">
 											             	<select class="textbox" name="round<?php echo $i ?>[]">
-											             		<?php foreach ($mailtemplate as $mail): 
+											             		<?php foreach ($mailtemplate as $mail):
 										             			if ($row['asmtmailtemp'] == $mail['mailprofileid']) { ?>
 										             				<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>
 										             			<?php }else{ ?>
@@ -369,7 +369,7 @@
 											            <label for="text" class=" col-xs-2 label-profile">Giới hạn mẫu phiếu phỏng vấn</label>
 											            <div class="col-xs-4  padding-lr0">
 											             	<select class="textbox" name="round<?php echo $i ?>[]">
-											             		<?php foreach ($asmt_pv as $tn): 
+											             		<?php foreach ($asmt_pv as $tn):
 											             			if ($row['scorecard'] == $tn['asmttemp']) { ?>
 											             				<option value="<?php echo $tn['asmttemp'] ?>" selected><?php echo $tn['asmtname'] ?></option>
 											             			<?php }else{ ?>
@@ -382,7 +382,7 @@
 											            <label for="text" class=" col-xs-2 label-profile">Email thông báo Ứng viên</label>
 											            <div class="col-xs-4  padding-lr0">
 											             	<select class="textbox" name="round<?php echo $i ?>[]">
-											             		<?php foreach ($mailtemplate as $mail): 
+											             		<?php foreach ($mailtemplate as $mail):
 											             			if ($row['interviewmailtemp'] == $mail['mailprofileid']) { ?>
 											             				<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>
 											             			<?php }else{ ?>
@@ -395,7 +395,7 @@
 											            <label for="text" class=" col-xs-2 label-profile">Email thông báo Người PV</label>
 											            <div class="col-xs-4  padding-lr0">
 											             	<select class="textbox" name="round<?php echo $i ?>[]">
-											             		<?php foreach ($mailtemplate as $mail): 
+											             		<?php foreach ($mailtemplate as $mail):
 											             			if ($row['invitemailtemp'] == $mail['mailprofileid']) { ?>
 											             				<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>
 											             			<?php }else{ ?>
@@ -411,7 +411,7 @@
 											            <label for="text" class=" col-xs-2 label-profile">Email Đề nghị</label>
 											            <div class="col-xs-4  padding-lr0">
 											             	<select class="textbox" name="round<?php echo $i ?>[]">
-											             		<?php foreach ($mailtemplate as $mail): 
+											             		<?php foreach ($mailtemplate as $mail):
 											             			if ($row['letteroffermailtemp'] == $mail['mailprofileid']) { ?>
 											             				<option value="<?php echo $mail['mailprofileid'] ?>" selected><?php echo $mail['profilename'] ?></option>
 											             			<?php }else{ ?>
@@ -427,7 +427,7 @@
 				        		<?php } ?>
 
 				        		<?php $i++; endforeach ?>
-				        		
+
 				        	</form>
 				        </ul>
 				      </div>
@@ -496,7 +496,7 @@
 		      			<i class="fa fa-plus-circle fa-lg fa_pt" onclick="addPT(1)"></i>
 		      		</div>
 		      		<div class="col-xs-11">
-		      			<select class="seletext js-example-basic" name="managecampaign[]" required="" id="select_type_pt_1" >
+		      			<select class="seletext js-example-basic" name="managecampaign[]" required=""  >
 		      				<option value="">Tìm kiếm từ danh sách người dùng</option>
 		      				<?php foreach ($operator as $row): ?>
 		      					<option value="<?php echo $row['operatorid'] ?>" ><?php echo $row['operatorname'] ?></option>
@@ -546,7 +546,7 @@
 		var positions =[];
 		$('.updated').each(function() {
 			positions.push([$(this).attr('data-index'),$(this).attr('data-position')]);
-			
+
 			$(this).removeClass('updated');
 		});
 		console.log(positions);
@@ -570,7 +570,7 @@
 		}
 
 	}
-	
+
 	function copyRound(round) {
 		var count_round = Number($('#count_round').val());
 		var new_round = Number(round)+1;
@@ -588,7 +588,7 @@
 			$('#round_'+i).find('#manageround_'+i).attr('id', 'manageround_'+j);
 			$('#round_'+i).find('[name*="round"]').each(function(){
 			    $(this).attr('name','round'+j+'[]');
-			}); 
+			});
 			$('#round_'+i).attr('id', 'round_'+j);
 
 			$('#box_round_'+i).find('.info-box-number').text('V'+j);
@@ -613,9 +613,9 @@
 		$('#round_'+new_round).find('#manageround_'+round).attr('id', 'manageround_'+new_round);
 		$('#round_'+new_round).find('[name*="round"]').each(function(){
 		    $(this).attr('name','round'+new_round+'[]');
-		}); 
+		});
 
-		var new_count = count_round+1;		
+		var new_count = count_round+1;
 		$('#count_round').val(new_count);
 
 		var box = $('#box_round_'+round).clone().attr('id', 'box_round_'+new_round).after('#box_round_'+round);
@@ -646,7 +646,7 @@
 			$('#round_'+i).find('#manageround_'+i).attr('id', 'manageround_'+j);
 			$('#round_'+i).find('[name*="round"]').each(function(){
 			    $(this).attr('name','round'+j+'[]');
-			}); 
+			});
 			$('#round_'+i).attr('id', 'round_'+j);
 
 			$('#box_round_'+i).find('.info-box-number').text('V'+j);
@@ -658,7 +658,7 @@
 		$('#title_'+round).addClass('hide');
 		$('.input_title_'+round).removeClass('hide');
 	}
-	
+
 
 
 	$('.js-example-basic_ql').select2({ width: '100%' });
@@ -714,21 +714,21 @@
 			var row ='';
 			for(var i in data){
 				for(var j in operator ){
-					if (data[i] == operator[j]['operatorid']) { 
+					if (data[i] == operator[j]['operatorid']) {
 						row ='<div class="col-xs-2 padding_le_ri_0 ql" id="col_ql_'+data[i]+'" onclick="subColQL('+data[i]+')"><div class="col-xs-3 padding_le_ri_0">';
 						row += '<img class="img_ql" src="<?php echo base_url() ?>public/image/bbye.jpg"><div class="del_ql"><i class="fa fa-minus-circle fa-lg"></i></div></div>';
 						row += '<div class="col-xs-9 padding_le_ri_0"><p class="name_ql">'+operator[j]['operatorname']+'</p></div></div>';
 						$('#col_add_ql').before(row);
-					} 
-				}				      				
+					}
+				}
 			}
-			
+
 			$('#insertQL').modal('hide');
 		})
 		.fail(function() {
 			console.log("error");
 		});
-		
+
 	});
 
 	function insertPT(roundid) {
@@ -776,18 +776,18 @@
 		var str = '';
 		for(var i in data){
 			if (data[i].value == '')
-			{ 
+			{
 				continue;
 			}
 			for(var j in operator ){
-				if (data[i].value == operator[j]['operatorid']) { 
+				if (data[i].value == operator[j]['operatorid']) {
 					row ='<div class="col-xs-2 padding_le_ri_0 ql" id="col_pt_'+data[i].value+'" onclick="subColPT('+data[i].value+','+roundid+')"><div class="col-xs-3 padding_le_ri_0">';
 					row += '<img class="img_ql" src="<?php echo base_url() ?>public/image/bbye.jpg"><div class="del_ql"><i class="fa fa-minus-circle fa-lg"></i></div></div>';
 					row += '<div class="col-xs-9 padding_le_ri_0"><p class="name_ql">'+operator[j]['operatorname']+'</p></div></div>';
 					$('#col_add_pt_'+roundid).before(row);
-				} 
+				}
 			}
-			str += data[i].value + ',';				      				
+			str += data[i].value + ',';
 		}
 		var manageround = $('#manageround_'+roundid).val();
 		if(manageround != ''){
@@ -797,14 +797,14 @@
 		}
 		$('#manageround_'+roundid).val(manageround);
 		$('#insertPT').modal('hide');
-		
-		
-		
+
+
+
 	});
 
 	// $('#saveRound').click(function(event) {
 	// 	var campaignid = $('#campaignid_v3').val();
-		
+
 	// 	$.ajax({
 	// 		url: '<?php echo base_url() ?>admin/campaign/saveRound',
 	// 		type: 'POST',
@@ -820,6 +820,6 @@
 	// 	.always(function() {
 	// 		console.log("complete");
 	// 	});
-		
+
 	// });
 </script>

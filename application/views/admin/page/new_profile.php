@@ -1,4 +1,3 @@
-
 <div style="background-color: white">
 	<div class="row rowedit">
 		<div class="col-md-6 col-xs-6">
@@ -19,8 +18,7 @@
 	<div class="margin-t4 dash-horizontal"  ></div>
 	<?php if(!isset($candidate['imagelink']) || $candidate['imagelink'] == null) {?>
    		<img src="<?php echo base_url()?>public/image/avatar.jpg" alt="" id="anh1" class="image-avatar-ad" width="130px" height="130px">
-   	<?php }
-   	else { ?>
+   	<?php } else { ?>
    		<img src="<?php echo base_url()?>public/image/<?php echo $candidate['imagelink'] ?>" alt="" id="anh1" class="image-avatar-ad" width="130px" height="130px">
    	<?php } ?>
    	<div class="image-edit margin-bot-21" id="anh2" onclick="edit_anh()"><i class="fa fa-camera icon-camera" ></i></div>
@@ -36,20 +34,16 @@
 					foreach ($tags as $key) {
 						array_push($aa, $key['title']);
 					}
-
 					echo implode(", ", $aa);
-			}
-				?></label>
+			} ?></label>
 			<span class="highR">
 			<?php
 				if(isset($tagstrandom))
 				{
 					$aaa = array();
-					// var_dump($tagstrandom);exit;
 						foreach ($tagstrandom as $key) {
 							array_push($aaa, "#".$key['title']);
 						}
-
 						echo implode(", ", $aaa);
 				}
 			?>
@@ -770,7 +764,7 @@
 		</div>
 	</div>
 </div>
-								<!-- ket thuc tat ca tab 1 thong tin ung vien -->
+<!-- ket thuc tat ca tab 1 thong tin ung vien -->
 <div class="modal fade" id="edit_anh_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   	<div class="modal-dialog width-50" role="document">
     	<div class="modal-content">
@@ -819,11 +813,11 @@
 
               <select class="form-control height31" style="font-size: 14px" name="namsinh" id="namsinh11">
                  <option value="0">Chọn năm sinh</option>
-                <?php
-                   $date = getdate();
-                 for($i = $date['year']; $i > 1940; $i--) { ?>
-                  <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-                <?php } ?>
+                  <?php
+                     $date = getdate();
+                     for($i = $date['year']; $i > 1940; $i--) { ?>
+                        <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                  <?php } ?>
                 </select>
             </div>
           </div>
@@ -1342,6 +1336,10 @@
 	.select2-container {
 		width: 237px !important;
 	}
+   .tt-input
+   {
+      vertical-align: unset !important;
+   }
 </style>
 <script type="text/javascript">
 	$('#luu_1').click(function(event) {
@@ -1482,7 +1480,7 @@
 	    return query;
 	}
 
-    function editmodal(idform){
+   function editmodal(idform){
       var data = "";
       data = $("#"+idform+"").serialize();
       var data2 = parseQuery(data);
@@ -1514,126 +1512,126 @@
 	}
 
 	// them xoa sua kinh nghiem lam việc
-	  function editmodal2(idform){
-	      var data = "";
-	      data = $("#"+idform+"").serialize();
-	      var data2 = parseQuery(data);
+   function editmodal2(idform){
+      var data = "";
+      data = $("#"+idform+"").serialize();
+      var data2 = parseQuery(data);
 
-	      $('#them12').text("Lưu");
-	      $('#myModal2').modal('show');
-	      $('#tuden5').val(data2.tungay);
-	      $('#tuden6').val(data2.denngay);
-	      $('#checkup2').val(data2.recordid);
-	      $('#cty2').val(data2.cty);
-	       $('#chucvu2').val(data2.vitri);
-	        $('#nhiemvu2').val(data2.nhiemvu);
-	       $('#lydonghi2').val(data2.lydo);
-	       $('#dc2').val(data2.diachi);
-	       $('#sdt2').val(data2.sdt);
-	  }
-	  function showmodel2(){
+      $('#them12').text("Lưu");
+      $('#myModal2').modal('show');
+      $('#tuden5').val(data2.tungay);
+      $('#tuden6').val(data2.denngay);
+      $('#checkup2').val(data2.recordid);
+      $('#cty2').val(data2.cty);
+      $('#chucvu2').val(data2.vitri);
+      $('#nhiemvu2').val(data2.nhiemvu);
+      $('#lydonghi2').val(data2.lydo);
+      $('#dc2').val(data2.diachi);
+      $('#sdt2').val(data2.sdt);
+   }
+   function showmodel2(){
 
-	      $('#them12').text("Thêm");
+      $('#them12').text("Thêm");
 
-	      $('#myModal2').modal('show');
-	       $('#tuden5').val("");
-	      $('#tuden6').val("");
-	      $('#checkup2').val("0");
-	      $('#cty2').val("");
-	       $('#chucvu2').val("");
-	        $('#nhiemvu2').val("");
-	       $('#lydonghi2').val("");
-	       $('#dc2').val("");
-	       $('#sdt2').val("");
-	  }
-	  function delmodal2(idform){
-	      var data = "";
-	      data = $("#"+idform+"").serialize();
-	      var data2 = parseQuery(data);
-	      $('#myModaldel2').modal('show');
-	      $('#checkup2d').val(data2.recordid);
+      $('#myModal2').modal('show');
+      $('#tuden5').val("");
+      $('#tuden6').val("");
+      $('#checkup2').val("0");
+      $('#cty2').val("");
+      $('#chucvu2').val("");
+      $('#nhiemvu2').val("");
+      $('#lydonghi2').val("");
+      $('#dc2').val("");
+      $('#sdt2').val("");
+   }
+   function delmodal2(idform){
+      var data = "";
+      data = $("#"+idform+"").serialize();
+      var data2 = parseQuery(data);
+      $('#myModaldel2').modal('show');
+      $('#checkup2d').val(data2.recordid);
 
-	  }
+   }
 
 	// them xoa sua nguoi tham chieu
-	  function editmodal3(idform){
-	      var data = "";
-	      data = $("#"+idform+"").serialize();
-	      var data2 = parseQuery(data);
+   function editmodal3(idform){
+      var data = "";
+      data = $("#"+idform+"").serialize();
+      var data2 = parseQuery(data);
 
-	      $('#them3').text("Lưu");
-	      $('#myModal3').modal('show');
-	     $('#hoten3').val(data2.hoten);
-	      $('#chucvu3').val(data2.vitri);
-	      $('#checkup3').val(data2.recordid);
-	      $('#congty3').val(data2.cty);
-	       $('#lienhe3').val(data2.lienhe);
-	  }
-	  function showmodel3(){
+      $('#them3').text("Lưu");
+      $('#myModal3').modal('show');
+      $('#hoten3').val(data2.hoten);
+      $('#chucvu3').val(data2.vitri);
+      $('#checkup3').val(data2.recordid);
+      $('#congty3').val(data2.cty);
+      $('#lienhe3').val(data2.lienhe);
+   }
+   function showmodel3(){
 
-	      $('#them3').text("Thêm");
+      $('#them3').text("Thêm");
 
-	      $('#myModal3').modal('show');
-	       $('#hoten3').val("");
-	      $('#chucvu3').val("");
-	      $('#checkup3').val("0");
-	      $('#congty3').val("");
-	       $('#lienhe3').val("");
-	  }
+      $('#myModal3').modal('show');
+      $('#hoten3').val("");
+      $('#chucvu3').val("");
+      $('#checkup3').val("0");
+      $('#congty3').val("");
+      $('#lienhe3').val("");
+   }
 
-	  function delmodal3(idform){
-	      var data = "";
-	      data = $("#"+idform+"").serialize();
-	      var data2 = parseQuery(data);
-	      $('#myModaldel3').modal('show');
-	      $('#checkup3d').val(data2.recordid);
+   function delmodal3(idform){
+      var data = "";
+      data = $("#"+idform+"").serialize();
+      var data2 = parseQuery(data);
+      $('#myModaldel3').modal('show');
+      $('#checkup3d').val(data2.recordid);
 
-	  }
+   }
 
 	  // them xoa sua trinh do hoc van
-   function editmodal4(idform){
+     function editmodal4(idform){
       var data = "";
       data = $("#"+idform+"").serialize();
       var data2 = parseQuery(data);
 
       $('#them4').text("Lưu");
       $('#myModal4').modal('show');
-       $('#tuden1').val(data2.tu);
+      $('#tuden1').val(data2.tu);
       $('#tuden2').val(data2.den);
       $('#checkup4').val(data2.recordid);
       $('#truong4').val(data2.truong);
-       $('#noihoc4').val(data2.noihoc);
-       $('#nganhhoc4').val(data2.nganhhoc);
-       $('#trinhdo4').val(data2.chungchi);
-       if(data2.caonhat == "Y"){
+      $('#noihoc4').val(data2.noihoc);
+      $('#nganhhoc4').val(data2.nganhhoc);
+      $('#trinhdo4').val(data2.chungchi);
+      if(data2.caonhat == "Y"){
          $('#caonhat4').prop('checked',true);
-        } else {
-           $('#caonhat4').prop('checked',false);
-        }
-  }
-  function showmodel4(){
+      } else {
+         $('#caonhat4').prop('checked',false);
+      }
+   }
+   function showmodel4(){
 
       $('#them4').text("Thêm");
 
       $('#myModal4').modal('show');
-       $('#tuden1').val("");
+      $('#tuden1').val("");
       $('#tuden2').val("");
       $('#checkup4').val("0");
       $('#truong4').val("");
-       $('#noihoc4').val("");
-       $('#nganhhoc4').val("");
-       $('#trinhdo4').val("");
-       $('#caonhat4').prop('checked',false);
-  }
+      $('#noihoc4').val("");
+      $('#nganhhoc4').val("");
+      $('#trinhdo4').val("");
+      $('#caonhat4').prop('checked',false);
+   }
 
-  function delmodal4(idform){
+   function delmodal4(idform){
       var data = "";
       data = $("#"+idform+"").serialize();
       var data2 = parseQuery(data);
       $('#myModaldel4').modal('show');
       $('#checkup4d').val(data2.recordid);
 
-  }
+   }
    function editmodal5(idform){
       var data = "";
       data = $("#"+idform+"").serialize();
@@ -1641,33 +1639,33 @@
 
       $('#them5').text("Lưu");
       $('#myModal5').modal('show');
-       $('#tuden3').val(data2.tu);
+      $('#tuden3').val(data2.tu);
       $('#tuden4').val(data2.den);
       $('#checkup5').val(data2.recordid);
       $('#truong5').val(data2.truong);
-       $('#tghoc5').val(data2.tghoc);
-       $('#donvi5').val(data2.donvi);
-       $('#nganhhoc5').val(data2.nganhhoc);
-       $('#bangcap5').val(data2.chungchi);
+      $('#tghoc5').val(data2.tghoc);
+      $('#donvi5').val(data2.donvi);
+      $('#nganhhoc5').val(data2.nganhhoc);
+      $('#bangcap5').val(data2.chungchi);
 
-  }
-  function showmodel5(){
+   }
+   function showmodel5(){
 
       $('#them5').text("Thêm");
 
       $('#myModal5').modal('show');
-       $('#tuden3').val("");
+      $('#tuden3').val("");
       $('#tuden4').val("");
       $('#checkup5').val("0");
       $('#truong5').val("");
-       $('#tghoc5').val("");
-       $('#donvi5').val("Năm");
-       $('#nganhhoc5').val("");
-       $('#bangcap5').val("");
+      $('#tghoc5').val("");
+      $('#donvi5').val("Năm");
+      $('#nganhhoc5').val("");
+      $('#bangcap5').val("");
 
-  }
-  // them xoa sua ngoai ngu
-  function editmodal6(idform){
+   }
+   // them xoa sua ngoai ngu
+   function editmodal6(idform){
       var data = "";
       data = $("#"+idform+"").serialize();
       var data2 = parseQuery(data);
@@ -1681,8 +1679,8 @@
       $('#noi6').val(data2.rate2);
       $('#doc6').val(data2.rate3);
       $('#viet6').val(data2.rate4);
-  }
-  function showmodel6(){
+   }
+   function showmodel6(){
 
       $('#them6').text("Thêm");
 
@@ -1694,8 +1692,8 @@
       $('#doc6').val("0");
       $('#viet6').val("0");
 
-  }
-  function delmodal6(idform){
+   }
+   function delmodal6(idform){
       var data = "";
       data = $("#"+idform+"").serialize();
       var data2 = parseQuery(data);
@@ -1703,8 +1701,8 @@
 
       $('#checkup6d').val(data2.recordid);
 
-  }
-  //them xoa sua pm
+   }
+   //them xoa sua pm
    function editmodal7(idform){
       var data = "";
       data = $("#"+idform+"").serialize();
@@ -1718,8 +1716,8 @@
 
       $('#trinhdo7').val(data2.rate1);
 
-  }
-  function showmodel7(){
+   }
+   function showmodel7(){
 
       $('#them7').text("Thêm");
 
@@ -1727,23 +1725,23 @@
       $('#pm7').val("");
       $('#trinhdo7').val("0");
       $('#checkup7').val("0");
-  }
-  function delmodal7(idform){
+   }
+   function delmodal7(idform){
       var data = "";
       data = $("#"+idform+"").serialize();
       var data2 = parseQuery(data);
       $('#myModaldel7').modal('show');
       $('#checkup7d').val(data2.recordid);
-  }
+   }
 
-  	$('#new_country1 option[value="'+$("#countryPREMANENT").val()+'"]').prop('selected','selected');
-  	$('#new_country2 option[value="'+$("#countryCONTACT").val()+'"]').prop('selected','selected');
-  	$(document).ready(function() {
-  		comb_admin(<?php echo isset($address[1]['city'])? $address[1]['city'] : '1' ?>,<?php echo isset($address[1]['district'])? $address[1]['district'] : '0' ?>);
-  		comb_admin_qhpx(<?php echo isset($address[1]['district'])? $address[1]['district'] : '1' ?>,<?php echo isset($address[1]['ward'])? $address[1]['ward'] : '0' ?>);
-  		comb_admin2(<?php echo isset($address[0]['city'])? $address[0]['city'] : '1' ?>,<?php echo isset($address[0]['district'])? $address[0]['district'] : '0' ?>);
-  		comb_admin_qhpx2(<?php echo isset($address[0]['district'])? $address[0]['district'] : '1' ?>,<?php echo isset($address[0]['ward'])? $address[0]['ward'] : '0' ?>);
-  	});
+   $('#new_country1 option[value="'+$("#countryPREMANENT").val()+'"]').prop('selected','selected');
+   $('#new_country2 option[value="'+$("#countryCONTACT").val()+'"]').prop('selected','selected');
+   $(document).ready(function() {
+      comb_admin(<?php echo isset($address[1]['city'])? $address[1]['city'] : '1' ?>,<?php echo isset($address[1]['district'])? $address[1]['district'] : '0' ?>);
+      comb_admin_qhpx(<?php echo isset($address[1]['district'])? $address[1]['district'] : '1' ?>,<?php echo isset($address[1]['ward'])? $address[1]['ward'] : '0' ?>);
+      comb_admin2(<?php echo isset($address[0]['city'])? $address[0]['city'] : '1' ?>,<?php echo isset($address[0]['district'])? $address[0]['district'] : '0' ?>);
+      comb_admin_qhpx2(<?php echo isset($address[0]['district'])? $address[0]['district'] : '1' ?>,<?php echo isset($address[0]['ward'])? $address[0]['ward'] : '0' ?>);
+   });
 </script>
 <script type="text/javascript">
 	$(".so").on('input', function (e) {
@@ -1955,43 +1953,47 @@
 		});
 	}
 
+   function IsInvalidEmail(email) {
+      email = email.trim();
+      var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9\.]{2,4})+$/;
+      if (!filter.test(email)) {
+         return false;
+      }
+      else{
+         return true;
+      }
+   }
 	$('#btn_newProfile').on( "click", function() {
-
+      var email = $('#email').val();
+      var cmnd = $('#idcard').val();
+      var phone1 = $('#phone1').val();
+      var phone2 = $('#phone2').val();
 		if ($('#lastname').val() == "") { alert('Vui lòng nhập Họ tên đầy đủ!'); }
 		else if ($('#firstname').val() == "") { alert('Vui lòng nhập Họ tên đầy đủ!'); }
-		else if ($('#phone1').val() == 0 && $('#phone2').val() == 0) { alert('Vui lòng nhập số điện thoại!'); }
-        else
-            {
-                var email = $('#email').val();
-                var cmnd = $('#idcard').val();
-                var phone1 = $('#phone1').val();
-                var phone2 = $('#phone2').val();
-                $.ajax({
-                    url: '<?php echo base_url() ?>admin/handling/checkCandidate',
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {email: email, cmnd:cmnd, phone1:phone1,phone2:phone2},
-                })
-                .done(function(data) {
-                    if (data != 0) {
-                        $('#err-newUser').text(data).removeClass('hide');
-                    }else{
-                        $('#btn_newProfile').find('i').addClass('fa fa-spin fa-spinner');
-                        $('#btn_newProfile').prop('disabled', true);
-                        $('#form_newProfile').submit();
-                    }
-
-                })
-                .fail(function() {
-                    console.log("error");
-                });
-
+		else if (phone1 == 0 && phone2 == 0) { alert('Vui lòng nhập số điện thoại!'); }
+      else if (!IsInvalidEmail(email) && email.trim() != '') {alert('Vui lòng nhập đúng định dạng mail')}
+      else
+      {
+         $.ajax({
+              url: '<?php echo base_url() ?>admin/handling/checkCandidate',
+              type: 'POST',
+              dataType: 'json',
+              data: {email: email, cmnd:cmnd, phone1:phone1,phone2:phone2},
+         })
+         .done(function(data) {
+            if (data != 0) {
+               $('#err-newUser').text(data).removeClass('hide');
+            }else{
+               $('#btn_newProfile').find('i').addClass('fa fa-spin fa-spinner');
+               $('#btn_newProfile').prop('disabled', true);
+               $('#form_newProfile').submit();
             }
-		// else {
-		// 	$('#btn_newProfile').find('i').addClass('fa fa-spin fa-spinner');
-		// 	$('#btn_newProfile').prop('disabled', true);
-	 //  		$('#form_newProfile').submit();
-		// }
+
+         })
+         .fail(function() {
+              console.log("error");
+         });
+      }
 
 	});
 
@@ -2049,12 +2051,7 @@
         var cb = e.originalEvent.clipboardData || window.clipboardData;
         if(!$.isNumeric(cb.getData('text'))) e.preventDefault();
     });
-    $("input[id='tghoc5']").on('input', function (e) {
-    $(this).val($(this).val().replace(/[^0-9]/g, ''));});
+   $("input[id='tghoc5']").on('input', function (e) {
+      $(this).val($(this).val().replace(/[^0-9]/g, ''));
+   });
 </script>
-<style type="text/css">
-	.tt-input
-	{
-		vertical-align: unset !important;
-	}
-</style>
